@@ -6,22 +6,28 @@
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              x:Class="SelfCheckout.Views.MainView">
     <NavigationPage.TitleView>
-        <StackLayout VerticalOptions="CenterAndExpand" Orientation="Horizontal" Margin="{OnPlatform Android=4}">
-            <StackLayout.Resources>
+        <Grid VerticalOptions="CenterAndExpand" Margin="{OnPlatform Android=4}">
+            <Grid.Resources>
                 <Style TargetType="Label">
                     <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
                     <Setter Property="VerticalOptions" Value="Center"/>
-                    <Setter Property="HorizontalTextAlignment" Value="Center"/>
                 </Style>
                 <Style TargetType="Image">
                     <Setter Property="WidthRequest" Value="{OnPlatform Android=36}"/>
                 </Style>
-            </StackLayout.Resources>
-            <Image Source="ic_lang.png"/>
-            <Image Source="ic_info.png"/>
-            <Label Text="My Orders"/>
-            <Label Text="THB"/>
-        </StackLayout>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".25*"/>
+                <ColumnDefinition Width=".5*"/>
+                <ColumnDefinition Width=".25*"/>
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Column="0" Orientation="Horizontal">
+                <Image Source="ic_lang.png"/>
+                <Image Source="ic_info.png"/>
+            </StackLayout>
+            <Label Grid.Column="1" Text="My Orders" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+            <Label Grid.Column="2" Text="THB" HorizontalTextAlignment="End"/>
+        </Grid>
     </NavigationPage.TitleView>
     <ContentPage.Content>
         <Grid>
