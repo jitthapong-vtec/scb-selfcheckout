@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
+             xmlns:ctrls="clr-namespace:SelfCheckout.Controls"
+             xmlns:animations="clr-namespace:SelfCheckout.Animations"
+             xmlns:trigger="clr-namespace:SelfCheckout.Triggers"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+             x:Name="mainView"
+             x:Class="SelfCheckout.Views.MainView">
+    <NavigationPage.TitleView>
+        <Grid VerticalOptions="CenterAndExpand" Margin="{OnPlatform Android=4}">
+            <Grid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                    <Setter Property="VerticalOptions" Value="Center"/>
+                </Style>
+                <Style TargetType="Image">
+                    <Setter Property="WidthRequest" Value="{OnPlatform Android=36}"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".25*"/>
+                <ColumnDefinition Width=".5*"/>
+                <ColumnDefinition Width=".25*"/>
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Column="0" Orientation="Horizontal">
+                <Image Source="ic_lang.png"/>
+                <Image Source="ic_info.png"/>
+            </StackLayout>
+            <Label Grid.Column="1" Text="My Orders" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+            <Label Grid.Column="2" Text="THB" HorizontalTextAlignment="End"/>
+        </Grid>
+    </NavigationPage.TitleView>
+    <ContentPage.Resources>
+        <animations:StoryBoard x:Key="TestAnimation"
+                               Target="{x:Reference testContainer}">
+            <animations:FadeInAnimation Direction="Up" Duration="1500"/>
+        </animations:StoryBoard>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ctrls:BindableContent Grid.Row="0" View="{Binding CurrentView}"/>
+                <Grid Grid.Row="1" HeightRequest="{OnPlatform Android=56}"
+                             Padding="{OnPlatform Android=4}"
+                             BackgroundColor="{StaticResource Gray100}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="Image">
+                            <Setter Property="HeightRequest" Value="24"/>
+                            <Setter Property="WidthRequest" Value="24"/>
+                        </Style>
+                        <Style TargetType="Label">
+                            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                        </Style>
+                    </Grid.Resources>
+                    <StackLayout Grid.Column="0" VerticalOptions="Center" Spacing="0">
+                        <Image Source="ic_coupon.png"/>
+                        <Label Text="Promotion"/>
+                    </StackLayout>
+                    <StackLayout Grid.Column="1" VerticalOptions="Center" Spacing="0">
+                        <Grid Margin="0,-24,0,0" WidthRequest="56" HeightRequest="56" 
+                              HorizontalOptions="Center" VerticalOptions="Center">
+                            <Frame CornerRadius="50" HasShadow="True" BackgroundColor="{StaticResource Gray100}">
+                                <Image Source="ic_barcode.png" HeightRequest="36"/>
+                            </Frame>
+                        </Grid>
+                        <Label Text="Shopping" VerticalOptions="End" HorizontalTextAlignment="Center"/>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="1"/>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                    <StackLayout Grid.Column="2" Orientation="Horizontal">
+                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="Center" Spacing="0">
+                            <Image Source="ic_myorder.png"/>
+                            <Label Text="My Order"/>
+                        </StackLayout>
+                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="Center" Spacing="0">
+                            <Image Source="ic_user.png"/>
+                            <Label Text="Profile"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Grid>
+            </Grid>
+            <Grid BackgroundColor="Accent" x:Name="testContainer" VerticalOptions="End" HeightRequest="300" IsVisible="False"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
