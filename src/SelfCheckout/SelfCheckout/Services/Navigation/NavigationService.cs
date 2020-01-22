@@ -13,7 +13,7 @@ namespace SelfCheckout.Services.Navigation
     {
         public Task InitializeAsync()
         {
-            return NavigateToAsync<MainViewModel>();
+            return NavigateToAsync<LandingViewModel>();
         }
 
         public Task NavigateToAsync<TViewModel>() where TViewModel : ViewModelBase
@@ -66,7 +66,7 @@ namespace SelfCheckout.Services.Navigation
         private async Task InternalNavigateToAsync(Type viewModelType, object parameter)
         {
             Page page = CreatePage(viewModelType, parameter);
-            if (page is MainView)
+            if (page is LandingView || page is LoginView || page is MainView)
             {
                 Application.Current.MainPage = new CustomNavigationView(page);
             }

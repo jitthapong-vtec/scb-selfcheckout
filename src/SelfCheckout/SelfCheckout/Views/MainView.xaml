@@ -45,7 +45,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <ctrls:BindableContent Grid.Row="0" View="{Binding CurrentView}"/>
+                <ctrls:TabContent Grid.Row="0" Content="{Binding CurrentView}"/>
                 <Grid Grid.Row="1" HeightRequest="{OnPlatform Android=56}"
                              Padding="{OnPlatform Android=4}"
                              BackgroundColor="{StaticResource Gray100}">

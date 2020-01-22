@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             xmlns:views="clr-namespace:SelfCheckout.Views"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:effects="clr-namespace:SelfCheckout.Effects"
+             xmlns:magic="clr-namespace:MagicGradients;assembly=MagicGradients"
+             NavigationPage.HasBackButton="False"
+             mc:Ignorable="d"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+             x:Class="SelfCheckout.Views.BorrowView">
+    <NavigationPage.TitleView>
+        <views:ActionBarView>
+            <ffimageloadingsvg:SvgCachedImage HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
+        </views:ActionBarView>
+    </NavigationPage.TitleView>
+    <ContentPage.Content>
+        <Grid>
+            <ffimageloading:CachedImage Aspect="AspectFill" Margin="0,-56,0,0" Source="resource://SelfCheckout.Resources.Images.landing_bg.png"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height=".4*"/>
+                    <RowDefinition Height=".6*"/>
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0" VerticalOptions="End" Margin="0,0,0,16">
+                    <StackLayout.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                        </Style>
+                        <Style TargetType="controls:CustomLabel">
+                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                        </Style>
+                    </StackLayout.Resources>
+                    <ffimageloadingsvg:SvgCachedImage VerticalOptions="Start" HeightRequest="48" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
+                    <controls:CustomLabel UpperCase="True" Text="self-checkout" HorizontalTextAlignment="Center" FontSize="Large"/>
+                    <Grid Padding="16,0,16,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <BoxView Grid.Column="0" HeightRequest="1" VerticalOptions="Center" BackgroundColor="{StaticResource Gray50}"/>
+                        <controls:CustomLabel Grid.Column="1" UpperCase="True" VerticalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center" Text="{i18n:Translate Borrow}"/>
+                        <BoxView Grid.Column="2" HeightRequest="1" VerticalOptions="Center" BackgroundColor="{StaticResource Gray50}"/>
+                    </Grid>
+                </StackLayout>
+                <StackLayout Grid.Row="1" VerticalOptions="Start" Padding="16">
+                    <Grid VerticalOptions="Start">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:TappedGrid Grid.Column="0" 
+                                             WidthRequest="40"
+                                             TappedCommand="{Binding ScanPassportCommand}"
+                                         effects:RoundCornersEffect.CornerRadius="3"
+                                         BackgroundColor="{StaticResource Secondary}">
+                            <Label Style="{StaticResource LabelIconFontStyle}" Text="&#xf030;" HorizontalOptions="Center" VerticalOptions="Center" FontSize="24" TextColor="{StaticResource Gray50}"/>
+                        </controls:TappedGrid>
+                        <Entry FontSize="Medium" Grid.Column="1"/>
+                        <controls:TappedGrid Grid.Column="2"
+                                             WidthRequest="40"
+                                             TappedCommand="{Binding CheckPassportCommand}"
+                                         BackgroundColor="{StaticResource Gray200}"
+                                         effects:RoundCornersEffect.CornerRadius="3">
+                            <Label Style="{StaticResource LabelIconFontStyle}" HorizontalOptions="Center" VerticalOptions="Center" Text="&#xf00c;" FontSize="24" TextColor="{StaticResource Secondary}"/>
+                        </controls:TappedGrid>
+                    </Grid>
+                </StackLayout>
+            </Grid>
+            <Label VerticalOptions="End" Margin="16,0,0,8" Text="version" TextColor="{StaticResource Gray50}"/>
+
+            <Grid IsVisible="{Binding IsCfPopupVisible}" BackgroundColor="#66000000">
+                <Frame Margin="16" VerticalOptions="Center">
+                    <StackLayout>
+                    <Grid RowSpacing="8" Margin="0,4,0,4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:CustomLabel Grid.Row="0" Grid.Column="0" UpperCase="True" Text="{i18n:Translate Name}"/>
+                        <controls:CustomLabel Grid.Row="0" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="Linsoo Jochoo" />
+                        <controls:CustomLabel Grid.Row="1" Grid.Column="0" UpperCase="True" Text="{i18n:Translate PassportNo}"/>
+                        <controls:CustomLabel Grid.Row="1" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="DF4263586"/>
+                        <controls:CustomLabel Grid.Row="2" Grid.Column="0" UpperCase="True" Text="{i18n:Translate FlightNo}"/>
+                        <controls:CustomLabel Grid.Row="2" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="TF534"/>
+                    </Grid>
+                    <Button HeightRequest="1" BackgroundColor="{StaticResource Gray200}"/>
+                    <Grid Margin="0,4,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:TappedGrid Grid.Column="0"
+                                             Style="{StaticResource TappedGridButtonStyle}"
+                                             TappedCommand="{Binding ConfirmCommand}"
+                                             BackgroundColor="{StaticResource Gray200}"
+                                             effects:RoundCornersEffect.CornerRadius="3">
+                                <magic:GradientView VerticalOptions="FillAndExpand">
+                                    <magic:GradientView.GradientSource>
+                                        <magic:LinearGradient Angle="270">
+                                            <magic:GradientStop Color="{StaticResource Primary}" Offset="0" />
+                                            <magic:GradientStop Color="{StaticResource Secondary}" Offset="1" />
+                                        </magic:LinearGradient>
+                                    </magic:GradientView.GradientSource>
+                                </magic:GradientView>
+                                <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                        </controls:TappedGrid>
+                            <controls:TappedGrid Grid.Column="1"
+                                             Style="{StaticResource TappedGridButtonStyle}"
+                                             TappedCommand="{Binding CancelCommand}"
+                                             BackgroundColor="{StaticResource Gray200}"
+                                             effects:RoundCornersEffect.CornerRadius="3">
+                            <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Cancel}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                        </controls:TappedGrid>
+                    </Grid>
+                </StackLayout>
+                </Frame>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

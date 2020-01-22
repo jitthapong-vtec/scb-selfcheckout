@@ -2,15 +2,20 @@
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:SelfCheckout.Converters"
+             xmlns:magic="clr-namespace:MagicGradients;assembly=MagicGradients"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
              x:Class="SelfCheckout.App">
     <Application.Resources>
-        <Color x:Key="Primary">#0d509f</Color>
-        <Color x:Key="Secondary">#00aab2</Color>
+        <Color x:Key="Primary">#0B56A4</Color>
+        <Color x:Key="Secondary">#00ADBB</Color>
         <Color x:Key="Accent">#16a086</Color>
         <Color x:Key="PrimaryText">#f7f7f7</Color>
-        <Color x:Key="SecondaryText">#d7d7d7</Color>
+        <Color x:Key="SecondaryText">#848484</Color>
         <Color x:Key="Gray50">#fafafa</Color>
         <Color x:Key="Gray100">#f5f5f5</Color>
+        <Color x:Key="Gray200">#eeeeee</Color>
+        <Color x:Key="Gray300">#e0e0e0</Color>
 
         <OnPlatform x:Key="MontserratRegular" 
                         x:TypeArguments="x:String" 
@@ -34,6 +39,15 @@
 
         <Style TargetType="Label">
             <Setter Property="FontFamily" Value="{StaticResource MontserratRegular}"/>
+        </Style>
+
+        <Style TargetType="Label" x:Key="LabelIconFontStyle">
+            <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
+        </Style>
+
+        <Style TargetType="controls:TappedGrid" x:Key="TappedGridButtonStyle">
+            <Setter Property="HeightRequest" Value="40"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
         </Style>
     </Application.Resources>
 </Application>

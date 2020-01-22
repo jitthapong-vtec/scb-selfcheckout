@@ -27,7 +27,10 @@ namespace SelfCheckout.ViewModels.Base
         static ViewModelLocator()
         {
             _container = new TinyIoCContainer();
+            _container.Register<LandingViewModel>();
+            _container.Register<LoginViewModel>();
             _container.Register<MainViewModel>();
+            _container.Register<BorrowViewModel>();
 
             _container.Register<INavigationService, NavigationService>();
             _container.Register<IDialogService, DialogService>();

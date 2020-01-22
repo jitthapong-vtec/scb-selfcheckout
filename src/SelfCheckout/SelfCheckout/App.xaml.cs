@@ -1,6 +1,7 @@
 ﻿using SelfCheckout.Services.Navigation;
 using SelfCheckout.ViewModels.Base;
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -13,6 +14,8 @@ namespace SelfCheckout
         public App()
         {
             InitializeComponent();
+
+            AppManager.Instance.InitLanguage();
 
             if (Device.RuntimePlatform == Device.UWP)
             {
