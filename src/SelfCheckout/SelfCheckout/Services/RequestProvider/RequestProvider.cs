@@ -77,8 +77,9 @@ namespace SelfCheckout.Services.RequestProvider
 
             if (string.IsNullOrEmpty(accessToken))
                 return;
-
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+            httpClient.DefaultRequestHeaders.Add("CallerID", "SCBCHECKOUT");
+            //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         }
 
         private async Task HandleResponse(HttpResponseMessage response)

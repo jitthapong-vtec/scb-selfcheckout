@@ -6,14 +6,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SelfCheckout.Services.LoginAuthen
+namespace SelfCheckout.Services.Authen
 {
-    public class LoginAuthen : ILoginAuthen
+    public class LoginService : ILoginService
     {
         IRequestProvider _requestProvider;
         IApiResponseConverter _apiResponseConverter;
 
-        public LoginAuthen(IRequestProvider request, IApiResponseConverter converter)
+        public LoginService(IRequestProvider request, IApiResponseConverter converter)
         {
             _requestProvider = request;
             _apiResponseConverter = converter;
@@ -23,15 +23,7 @@ namespace SelfCheckout.Services.LoginAuthen
         {
             var url = new UriBuilder($"{AppManager.SaleEngineBaseUrl}/api/Authen/LoginAuthen");
             var response = await _requestProvider.PostAsync(url.ToString(), user, AppManager.AccessToken);
-            try
-            {
-                return await _apiResponseConverter.Convert<LoginData>(response);
-            }
-            catch (Exception ex)
-            {
-                // try pase error model
-                throw ex;
-            }
+            return await _apiResponseConverter.Convert<LoginData>(response);
         }
     }
 }

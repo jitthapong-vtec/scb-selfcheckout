@@ -1,5 +1,8 @@
-﻿using SelfCheckout.Services.Dialog;
+﻿using SelfCheckout.Services.Authen;
+using SelfCheckout.Services.Converter;
+using SelfCheckout.Services.Dialog;
 using SelfCheckout.Services.Navigation;
+using SelfCheckout.Services.RequestProvider;
 using System;
 using System.Globalization;
 using System.Reflection;
@@ -34,6 +37,9 @@ namespace SelfCheckout.ViewModels.Base
 
             _container.Register<INavigationService, NavigationService>();
             _container.Register<IDialogService, DialogService>();
+            _container.Register<IRequestProvider, RequestProvider>().AsSingleton();
+            _container.Register<IApiResponseConverter, ApiResponseConverter>().AsSingleton();
+            _container.Register<ILoginService, LoginService>();
         }
 
         public static void RegisterSingleton<TInterface, T>() where TInterface : class where T : class, TInterface

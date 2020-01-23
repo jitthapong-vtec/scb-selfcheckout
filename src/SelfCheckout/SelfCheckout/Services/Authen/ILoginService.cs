@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SelfCheckout.Services.LoginAuthen
+namespace SelfCheckout.Services.Authen
 {
-    public interface ILoginAuthen
+    public interface ILoginService
     {
         Task<LoginData> LoginAsync(UserInput user);
     }
