@@ -1,5 +1,5 @@
 ﻿using SelfCheckout.Models;
-using SelfCheckout.Services.Authen;
+using SelfCheckout.Services.Identity;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Threading.Tasks;
@@ -10,11 +10,11 @@ namespace SelfCheckout.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
-        ILoginService _loginService;
+        IIdentityService _identityService;
 
-        public LoginViewModel(ILoginService loginService)
+        public LoginViewModel(IIdentityService identityService)
         {
-            _loginService = loginService;
+            _identityService = identityService;
         }
 
         public ICommand ConfirmCommand => new Command(async () => await LoginAsync());
@@ -23,6 +23,7 @@ namespace SelfCheckout.ViewModels
         {
             try
             {
+                IsBusy = true;
                 var userInput = new UserInput()
                 {
                     BranchNo = "40",
@@ -32,12 +33,13 @@ namespace SelfCheckout.ViewModels
                     MachineIp = "127.0.0.1"
                 };
 
-                var loginUser = await _loginService.LoginAsync(userInput);
+                await _identityService.LoginAsync(userInput);
                 await NavigationService.NavigateToAsync<BorrowViewModel>();
+                IsBusy = false;
             }
             catch (Exception ex)
             {
-
+                await DialogService.ShowAlertAsync("", ex.Message);
             }
         }
     }

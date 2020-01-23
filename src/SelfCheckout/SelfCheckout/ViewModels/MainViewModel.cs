@@ -1,5 +1,7 @@
 ﻿using SelfCheckout.Resources;
+using SelfCheckout.Services.Identity;
 using SelfCheckout.ViewModels.Base;
+using SelfCheckout.Views;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +13,7 @@ namespace SelfCheckout.ViewModels
     public class MainViewModel : ViewModelBase
     {
         ObservableCollection<TabItem> _tabs;
+        ContentView _currentView;
 
         public MainViewModel()
         {
@@ -29,6 +32,7 @@ namespace SelfCheckout.ViewModels
             {
                 Icon = "\ue901",
                 Title = AppResources.Shopping,
+                Page = new ShoppingCartView(),
                 Selected = true,
                 TabType = 1
             });
@@ -57,6 +61,7 @@ namespace SelfCheckout.ViewModels
             selectedTab.Selected = false;
 
             item.Selected = true;
+            CurrentView = item.Page;
             return Task.FromResult(true);
         }
 
@@ -67,6 +72,16 @@ namespace SelfCheckout.ViewModels
             {
                 _tabs = value;
                 RaisePropertyChanged(() => Tabs);
+            }
+        }
+
+        public ContentView CurrentView
+        {
+            get => _currentView;
+            set
+            {
+                _currentView = value;
+                RaisePropertyChanged(() => CurrentView);
             }
         }
     }

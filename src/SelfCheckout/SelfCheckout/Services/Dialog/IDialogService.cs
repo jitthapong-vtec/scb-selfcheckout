@@ -9,8 +9,8 @@ namespace SelfCheckout.Services.Dialog
 {
     public interface IDialogService
     {
-        Task ShowAlertAsync(string title, string message, string buttonText);
+        Task ShowAlertAsync(string title, string message, string buttonText = "Close");
 
-        Task<bool> ShowConfirmAsync(string title, string message, string okText, string cancelText);
+        Task<bool> ShowConfirmAsync(string title, string message, string okText = "Ok", string cancelText = "Cancel");
     }
 }

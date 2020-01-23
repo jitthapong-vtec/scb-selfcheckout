@@ -45,13 +45,10 @@
             <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
         </Style>
 
-        <Style TargetType="Label" x:Key="LabelIconFontStyle">
-            <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
-        </Style>
-
         <Style TargetType="controls:TappedGrid" x:Key="TappedGridButtonStyle">
             <Setter Property="HeightRequest" Value="40"/>
             <Setter Property="VerticalOptions" Value="Center"/>
         </Style>
+        
     </Application.Resources>
 </Application>

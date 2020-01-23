@@ -170,6 +170,9 @@
   <data name="ItemDetail" xml:space="preserve">
     <value>Item Detail</value>
   </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
   <data name="MyCart" xml:space="preserve">
     <value>My Cart</value>
   </data>
@@ -202,6 +205,9 @@
   </data>
   <data name="Shopping" xml:space="preserve">
     <value>Shopping</value>
+  </data>
+  <data name="ShoppingCartEmpty" xml:space="preserve">
+    <value>Your shopping cart is empty</value>
   </data>
   <data name="StaffLogin" xml:space="preserve">
     <value>Staff Login</value>

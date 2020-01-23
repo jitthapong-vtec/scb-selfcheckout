@@ -1,4 +1,5 @@
-﻿using SelfCheckout.Resources;
+﻿using SelfCheckout.Models;
+using SelfCheckout.Resources;
 using SelfCheckout.Services.Localize;
 using System.Globalization;
 using Xamarin.Essentials;
@@ -6,16 +7,16 @@ using Xamarin.Forms;
 
 namespace SelfCheckout
 {
-    public class AppManager
+    public class GlobalSettings
     {
         public const string SaleEngineBaseUrl = "https://kpservices.kingpower.com/portal/developer/saleengineapi";
-        public const string AccessToken = "WLR7xq7jrA5t4TF7z3JLTkBFKmskmANQ";
+        public const string AccessKey = "WLR7xq7jrA5t4TF7z3JLTkBFKmskmANQ";
+        public const string CallerId = "SCBCHECKOUT";
 
-
-        static AppManager _instance;
+        static GlobalSettings _instance;
         static object syncRoot = new object();
 
-        public static AppManager Instance
+        public static GlobalSettings Instance
         {
             get
             {
@@ -24,7 +25,7 @@ namespace SelfCheckout
                     lock (syncRoot)
                     {
                         if (_instance == null)
-                            _instance = new AppManager();
+                            _instance = new GlobalSettings();
                     }
                 }
                 return _instance;

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.ShoppingCartView">
+    <ContentView.Content>
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}">
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                            <Setter Property="VerticalOptions" Value="Center"/>
+                            <Setter Property="FontSize" Value="Micro"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="1" Text="890000001654 : Amornrat Doem" HorizontalTextAlignment="End"/>
+                    <Label Grid.Column="2" FontFamily="{StaticResource KPIconFont}" Text="&#xfe906;" FontSize="18"/>
+                </Grid>
+                <RefreshView Grid.Row="1">
+                    <CollectionView>
+                        <CollectionView.EmptyView>
+                            <Grid>
+                                <StackLayout VerticalOptions="Center">
+                                    <Label FontFamily="{StaticResource KPIconFont}" Text="&#xfe907;" FontSize="48" HorizontalOptions="Center"/>
+                                    <Label HorizontalTextAlignment="Center" Text="{i18n:Translate ShoppingCartEmpty}" FontSize="24"/>
+                                </StackLayout>
+                            </Grid>
+                        </CollectionView.EmptyView>
+                    </CollectionView>
+                </RefreshView>
+            </Grid>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

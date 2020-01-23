@@ -28,6 +28,7 @@
   <ItemGroup>
     <Folder Include="Converters\" />
     <Folder Include="Exceptions\" />
+    <Folder Include="Resources\Images\Icons\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +42,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Views\ShoppingCartView.xaml.cs">
+      <DependentUpon>ShoppingCartView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -50,6 +54,9 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ActionBarView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\ActivityIndicatorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\BorrowView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -64,6 +71,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\MainView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\ShoppingCartView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

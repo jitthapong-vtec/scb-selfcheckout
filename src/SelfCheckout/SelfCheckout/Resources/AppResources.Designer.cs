@@ -214,6 +214,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        internal static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to My Cart.
         /// </summary>
         internal static string MyCart {
@@ -309,6 +318,15 @@ namespace SelfCheckout.Resources {
         internal static string Shopping {
             get {
                 return ResourceManager.GetString("Shopping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your shopping cart is empty.
+        /// </summary>
+        internal static string ShoppingCartEmpty {
+            get {
+                return ResourceManager.GetString("ShoppingCartEmpty", resourceCulture);
             }
         }
         

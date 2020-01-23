@@ -15,7 +15,7 @@ namespace SelfCheckout
         {
             InitializeComponent();
 
-            AppManager.Instance.InitLanguage();
+            GlobalSettings.Instance.InitLanguage();
 
             if (Device.RuntimePlatform == Device.UWP)
             {
