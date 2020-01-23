@@ -16,11 +16,5 @@ namespace SelfCheckout.Views
 		{
 			InitializeComponent ();
 		}
-
-        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
-        {
-            testContainer.IsVisible = true;
-            testContainer.TranslateTo(0, 100, 1500);
-        }
     }
 }

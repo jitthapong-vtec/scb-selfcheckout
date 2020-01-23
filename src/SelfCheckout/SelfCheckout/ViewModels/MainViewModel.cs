@@ -1,6 +1,10 @@
-﻿using SelfCheckout.ViewModels.Base;
+﻿using SelfCheckout.Resources;
+using SelfCheckout.ViewModels.Base;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
@@ -10,26 +14,33 @@ namespace SelfCheckout.ViewModels
 
         public MainViewModel()
         {
-            _tabs = new ObservableCollection<TabItem>();
-            _tabs.Add(new TabItem()
+            Tabs = new ObservableCollection<TabItem>();
+            Tabs.Add(new TabItem()
             {
-                PageTitle = "Promotion",
-                Icon = "ic_coupon.png"
+                Icon = "\ue904",
+                Title = AppResources.Home
             });
-            _tabs.Add(new TabItem()
+            Tabs.Add(new TabItem()
             {
-                PageTitle = "",
-                Icon = "ic_barcode.png"
+                Icon = "\ue903",
+                Title = AppResources.Device
             });
-            _tabs.Add(new TabItem()
+            Tabs.Add(new TabItem()
             {
-                PageTitle = "My Order",
-                Icon = "ic_myorder.png"
+                Icon = "\ue901",
+                Title = AppResources.Shopping,
+                Selected = true,
+                TabType = 1
             });
-            _tabs.Add(new TabItem()
+            Tabs.Add(new TabItem()
             {
-                PageTitle = "Profile",
-                Icon = "ic_user.png"
+                Icon = "\ue900",
+                Title = AppResources.Orders
+            });
+            Tabs.Add(new TabItem()
+            {
+                Icon = "\ue902",
+                Title = AppResources.Profile
             });
         }
 
@@ -37,7 +48,18 @@ namespace SelfCheckout.ViewModels
         {
             return base.InitializeAsync(navigationData);
         }
-        
+
+        public ICommand TabSelectedCommand => new Command<TabItem>(async (item) => await SelectTabAsync(item));
+
+        Task SelectTabAsync(TabItem item)
+        {
+            var selectedTab = Tabs.Where(t => t.Selected).FirstOrDefault();
+            selectedTab.Selected = false;
+
+            item.Selected = true;
+            return Task.FromResult(true);
+        }
+
         public ObservableCollection<TabItem> Tabs
         {
             get => _tabs;

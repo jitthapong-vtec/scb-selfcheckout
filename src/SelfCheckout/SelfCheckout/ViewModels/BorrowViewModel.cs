@@ -13,8 +13,11 @@ namespace SelfCheckout.ViewModels
         bool _isCfPopupVisible;
 
         public ICommand ScanPassportCommand => new Command(async () => await ScanPassportAsync());
+
         public ICommand CheckPassportCommand => new Command(async () => await CheckPassportAsync());
+
         public ICommand ConfirmCommand => new Command(async () => await ConfirmAsync());
+
         public ICommand CancelCommand => new Command(() => IsCfPopupVisible = false);
 
         Task ScanPassportAsync()
@@ -28,9 +31,9 @@ namespace SelfCheckout.ViewModels
             return Task.FromResult(false);
         }
 
-        Task ConfirmAsync()
+        async Task ConfirmAsync()
         {
-            return Task.FromResult(false);
+            await NavigationService.NavigateToAsync<MainViewModel>();
         }
 
         public bool IsCfPopupVisible {

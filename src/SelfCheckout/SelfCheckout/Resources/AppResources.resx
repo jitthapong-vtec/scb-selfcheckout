@@ -117,20 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
   <data name="Borrow" xml:space="preserve">
     <value>Borrow</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="ChangeShoppingCart" xml:space="preserve">
+    <value>Change Shopping Cart</value>
+  </data>
+  <data name="Checkout" xml:space="preserve">
+    <value>Checkout</value>
+  </data>
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
+  </data>
+  <data name="ConfirmDeleteItem" xml:space="preserve">
+    <value>Do you have delete item?</value>
+  </data>
+  <data name="ConfirmUseCoupon" xml:space="preserve">
+    <value>Do you have use coupon?</value>
+  </data>
+  <data name="CountDown" xml:space="preserve">
+    <value>Countdown</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Device" xml:space="preserve">
+    <value>Device</value>
+  </data>
+  <data name="DeviceInfo" xml:space="preserve">
+    <value>Device Info</value>
+    <comment>No translate</comment>
   </data>
   <data name="FlightNo" xml:space="preserve">
     <value>Flight No.</value>
   </data>
+  <data name="ForAdmin" xml:space="preserve">
+    <value>For Admin</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>General</value>
+    <comment>No translate</comment>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="ItemDetail" xml:space="preserve">
+    <value>Item Detail</value>
+  </data>
+  <data name="MyCart" xml:space="preserve">
+    <value>My Cart</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="Orders" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="OrderSummary" xml:space="preserve">
+    <value>Order Summary</value>
   </data>
   <data name="PassportNo" xml:space="preserve">
     <value>Passport No.</value>
@@ -138,11 +188,33 @@
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="Paymen" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="ScanShoppingCart" xml:space="preserve">
+    <value>Please scan shopping cart</value>
+  </data>
   <data name="Setting" xml:space="preserve">
     <value>Setting</value>
   </data>
+  <data name="Shopping" xml:space="preserve">
+    <value>Shopping</value>
+  </data>
   <data name="StaffLogin" xml:space="preserve">
     <value>Staff Login</value>
+  </data>
+  <data name="System" xml:space="preserve">
+    <value>System</value>
+    <comment>No translate</comment>
+  </data>
+  <data name="ThkForOrderDetail" xml:space="preserve">
+    <value>You can see order in "My Order" menu</value>
+  </data>
+  <data name="ThkForOrderTitle" xml:space="preserve">
+    <value>Thank you for your order</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>User Name</value>

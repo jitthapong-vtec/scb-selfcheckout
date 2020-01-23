@@ -61,6 +61,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        internal static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Borrow.
         /// </summary>
         internal static string Borrow {
@@ -79,11 +88,83 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Shopping Cart.
+        /// </summary>
+        internal static string ChangeShoppingCart {
+            get {
+                return ResourceManager.GetString("ChangeShoppingCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checkout.
+        /// </summary>
+        internal static string Checkout {
+            get {
+                return ResourceManager.GetString("Checkout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         internal static string Confirm {
             get {
                 return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you have delete item?.
+        /// </summary>
+        internal static string ConfirmDeleteItem {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you have use coupon?.
+        /// </summary>
+        internal static string ConfirmUseCoupon {
+            get {
+                return ResourceManager.GetString("ConfirmUseCoupon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Countdown.
+        /// </summary>
+        internal static string CountDown {
+            get {
+                return ResourceManager.GetString("CountDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device.
+        /// </summary>
+        internal static string Device {
+            get {
+                return ResourceManager.GetString("Device", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device Info.
+        /// </summary>
+        internal static string DeviceInfo {
+            get {
+                return ResourceManager.GetString("DeviceInfo", resourceCulture);
             }
         }
         
@@ -97,11 +178,74 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to For Admin.
+        /// </summary>
+        internal static string ForAdmin {
+            get {
+                return ResourceManager.GetString("ForAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        internal static string General {
+            get {
+                return ResourceManager.GetString("General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        internal static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item Detail.
+        /// </summary>
+        internal static string ItemDetail {
+            get {
+                return ResourceManager.GetString("ItemDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Cart.
+        /// </summary>
+        internal static string MyCart {
+            get {
+                return ResourceManager.GetString("MyCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         internal static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Orders.
+        /// </summary>
+        internal static string Orders {
+            get {
+                return ResourceManager.GetString("Orders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order Summary.
+        /// </summary>
+        internal static string OrderSummary {
+            get {
+                return ResourceManager.GetString("OrderSummary", resourceCulture);
             }
         }
         
@@ -124,6 +268,33 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment.
+        /// </summary>
+        internal static string Paymen {
+            get {
+                return ResourceManager.GetString("Paymen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        internal static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please scan shopping cart.
+        /// </summary>
+        internal static string ScanShoppingCart {
+            get {
+                return ResourceManager.GetString("ScanShoppingCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Setting.
         /// </summary>
         internal static string Setting {
@@ -133,11 +304,47 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shopping.
+        /// </summary>
+        internal static string Shopping {
+            get {
+                return ResourceManager.GetString("Shopping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Staff Login.
         /// </summary>
         internal static string StaffLogin {
             get {
                 return ResourceManager.GetString("StaffLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System.
+        /// </summary>
+        internal static string System {
+            get {
+                return ResourceManager.GetString("System", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can see order in &quot;My Order&quot; menu.
+        /// </summary>
+        internal static string ThkForOrderDetail {
+            get {
+                return ResourceManager.GetString("ThkForOrderDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thank you for your order.
+        /// </summary>
+        internal static string ThkForOrderTitle {
+            get {
+                return ResourceManager.GetString("ThkForOrderTitle", resourceCulture);
             }
         }
         

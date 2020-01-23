@@ -7,13 +7,15 @@ namespace SelfCheckout.ViewModels
     public class TabItem : INotifyPropertyChanged
     {
         int _tabId;
-        string _pageTitle;
+        string _title;
         string _icon;
         ContentView _page;
         bool _selected;
         int _badgeCount;
+        int _tabType;
 
-        public int TabId {
+        public int TabId
+        {
             get => _tabId;
             set => _tabId = value;
         }
@@ -31,15 +33,15 @@ namespace SelfCheckout.ViewModels
             }
         }
 
-        public string PageTitle
+        public string Title
         {
             get
             {
-                return _pageTitle;
+                return _title;
             }
             set
             {
-                _pageTitle = value;
+                _title = value;
                 NotifyPropertyChanged();
             }
         }
@@ -70,7 +72,8 @@ namespace SelfCheckout.ViewModels
             }
         }
 
-        public int BadgeCount {
+        public int BadgeCount
+        {
             get
             {
                 return _badgeCount;
@@ -78,6 +81,16 @@ namespace SelfCheckout.ViewModels
             set
             {
                 _badgeCount = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public int TabType
+        {
+            get => _tabType;
+            set
+            {
+                _tabType = value;
                 NotifyPropertyChanged();
             }
         }
