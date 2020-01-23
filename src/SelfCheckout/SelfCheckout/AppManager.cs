@@ -8,6 +8,10 @@ namespace SelfCheckout
 {
     public class AppManager
     {
+        public const string SaleEngineBaseUrl = "https://kpservices.kingpower.com/portal/developer/saleengineapi";
+        public const string AccessToken = "WLR7xq7jrA5t4TF7z3JLTkBFKmskmANQ";
+
+
         static AppManager _instance;
         static object syncRoot = new object();
 
