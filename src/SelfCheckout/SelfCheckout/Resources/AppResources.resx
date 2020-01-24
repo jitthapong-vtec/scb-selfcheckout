@@ -136,10 +136,10 @@
     <value>Confirm</value>
   </data>
   <data name="ConfirmDeleteItem" xml:space="preserve">
-    <value>Do you have delete item?</value>
+    <value>Do you want to delete item?</value>
   </data>
   <data name="ConfirmUseCoupon" xml:space="preserve">
-    <value>Do you have use coupon?</value>
+    <value>Do you want to use coupon?</value>
   </data>
   <data name="CountDown" xml:space="preserve">
     <value>Countdown</value>

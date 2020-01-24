@@ -115,7 +115,7 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you have delete item?.
+        ///   Looks up a localized string similar to Do you want to delete item?.
         /// </summary>
         internal static string ConfirmDeleteItem {
             get {
@@ -124,7 +124,7 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you have use coupon?.
+        ///   Looks up a localized string similar to Do you want to use coupon?.
         /// </summary>
         internal static string ConfirmUseCoupon {
             get {
