@@ -3,6 +3,7 @@ using SelfCheckout.Services.Dialog;
 using SelfCheckout.Services.Identity;
 using SelfCheckout.Services.Navigation;
 using SelfCheckout.Services.RequestProvider;
+using SelfCheckout.Views;
 using System;
 using System.Globalization;
 using System.Reflection;
@@ -35,6 +36,10 @@ namespace SelfCheckout.ViewModels.Base
             _container.Register<MainViewModel>();
             _container.Register<BorrowViewModel>();
             _container.Register<ShoppingCartViewModel>();
+            _container.Register<DeviceViewModel>();
+            _container.Register<OrderViewModel>();
+            _container.Register<ProfileViewModel>();
+            _container.Register<HomeViewModel>();
 
             _container.Register<INavigationService, NavigationService>();
             _container.Register<IDialogService, DialogService>();

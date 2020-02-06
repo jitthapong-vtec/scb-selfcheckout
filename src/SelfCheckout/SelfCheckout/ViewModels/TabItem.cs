@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using SelfCheckout.Controls;
+using SelfCheckout.ViewModels.Base;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 
@@ -8,6 +10,7 @@ namespace SelfCheckout.ViewModels
     {
         int _tabId;
         string _title;
+        string _tabText;
         string _icon;
         ContentView _page;
         bool _selected;
@@ -46,6 +49,19 @@ namespace SelfCheckout.ViewModels
             }
         }
 
+        public string TabText
+        {
+            get
+            {
+                return _tabText;
+            }
+            set
+            {
+                _tabText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public string Icon
         {
             get
@@ -69,6 +85,10 @@ namespace SelfCheckout.ViewModels
             {
                 _selected = value;
                 NotifyPropertyChanged();
+                if (value)
+                    (_page.BindingContext as ViewModelBase)?.OnTabSelected(this);
+                else
+                    (_page.BindingContext as ViewModelBase)?.OnTabDeSelected(this);
             }
         }
 

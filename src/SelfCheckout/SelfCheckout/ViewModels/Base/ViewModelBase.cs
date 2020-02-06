@@ -20,6 +20,16 @@ namespace SelfCheckout.ViewModels.Base
             NavigationService = ViewModelLocator.Resolve<INavigationService>();
         }
 
+        public virtual Task OnTabSelected(TabItem item)
+        {
+            return Task.FromResult(item);
+        }
+
+        public virtual Task OnTabDeSelected(TabItem item)
+        {
+            return Task.FromResult(item);
+        }
+
         public string PageTitle
         {
             get => _pageTitle;

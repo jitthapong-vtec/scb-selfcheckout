@@ -1,4 +1,6 @@
 ﻿using SelfCheckout.Controls;
+using SelfCheckout.ViewModels;
+using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +13,9 @@ using Xamarin.Forms.Xaml;
 namespace SelfCheckout.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ShoppingCartView : ContentView
+    public partial class HomeView : ContentView
     {
-        public ShoppingCartView()
+        public HomeView()
         {
             InitializeComponent();
         }

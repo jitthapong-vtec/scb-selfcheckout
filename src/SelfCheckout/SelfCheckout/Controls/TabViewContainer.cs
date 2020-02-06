@@ -2,10 +2,10 @@
 
 namespace SelfCheckout.Controls
 {
-    public class TabContent : Grid
+    public class TabViewContainer : Grid
     {
         public static BindableProperty ContentProperty =
-            BindableProperty.Create("Content", typeof(ContentView), typeof(TabContent), propertyChanging: OnContentPropertyChanged);
+            BindableProperty.Create("Content", typeof(ContentView), typeof(TabViewContainer), propertyChanging: OnContentPropertyChanged);
 
         public ContentView Content
         {
@@ -15,7 +15,7 @@ namespace SelfCheckout.Controls
 
         private static void OnContentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var content = bindable as TabContent;
+            var content = bindable as TabViewContainer;
             content.Children.Clear();
             content.Children.Add((View)newValue);
         }

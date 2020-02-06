@@ -1,4 +1,5 @@
-﻿using SelfCheckout.Resources;
+﻿using SelfCheckout.Controls;
+using SelfCheckout.Resources;
 using SelfCheckout.Services.Identity;
 using SelfCheckout.ViewModels.Base;
 using SelfCheckout.Views;
@@ -21,31 +22,43 @@ namespace SelfCheckout.ViewModels
             Tabs.Add(new TabItem()
             {
                 Icon = "\ue904",
-                Title = AppResources.Home
+                Title = AppResources.Home,
+                TabText = AppResources.Home,
+                Page = new HomeView()
             });
             Tabs.Add(new TabItem()
             {
                 Icon = "\ue903",
-                Title = AppResources.Device
+                Title = AppResources.DeviceInfo,
+                TabText = AppResources.Device,
+                Page = new DeviceView()
             });
             Tabs.Add(new TabItem()
             {
                 Icon = "\ue901",
-                Title = AppResources.Shopping,
+                Title = AppResources.MyCart,
+                TabText = AppResources.Shopping,
                 Page = new ShoppingCartView(),
-                Selected = true,
                 TabType = 1
             });
             Tabs.Add(new TabItem()
             {
                 Icon = "\ue900",
-                Title = AppResources.Orders
+                Title = AppResources.Orders,
+                TabText = AppResources.Orders,
+                Page = new OrderView()
             });
             Tabs.Add(new TabItem()
             {
                 Icon = "\ue902",
-                Title = AppResources.Profile
+                Title = AppResources.Profile,
+                TabText = AppResources.Profile,
+                Page = new ProfileView()
             });
+
+            var firstTab = Tabs.FirstOrDefault();
+            firstTab.Selected = true;
+            PageTitle = firstTab.Title;
         }
 
         public override Task InitializeAsync(object navigationData)
@@ -61,6 +74,7 @@ namespace SelfCheckout.ViewModels
             selectedTab.Selected = false;
 
             item.Selected = true;
+            PageTitle = item.Title;
             CurrentView = item.Page;
             return Task.FromResult(true);
         }

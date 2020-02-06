@@ -11,9 +11,9 @@ using Xamarin.Forms.Xaml;
 namespace SelfCheckout.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ShoppingCartView : ContentView
+    public partial class OrderView : ContentView
     {
-        public ShoppingCartView()
+        public OrderView()
         {
             InitializeComponent();
         }
