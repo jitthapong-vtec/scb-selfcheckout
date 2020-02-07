@@ -1,5 +1,4 @@
 ﻿using SelfCheckout.Resources;
-using SelfCheckout.Services.Configuration;
 using SelfCheckout.Services.Identity;
 using SelfCheckout.ViewModels.Base;
 using System;
@@ -23,9 +22,8 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-
-                if(AppConfig == null)
-                    await AppConfigService.GetConfigAsync();
+                
+                await AppConfigService.LoadMasterData();
 
                 if (_identityService.SessionData == null)
                     await NavigationService.NavigateToAsync<LoginViewModel>();

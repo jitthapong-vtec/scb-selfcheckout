@@ -45,6 +45,14 @@
             <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
         </Style>
 
+        <Style x:Key="ActionBarLabelIconStyle" TargetType="{x:Type Label}">
+            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+            <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+        </Style>
+        
         <Style TargetType="controls:TappedGrid" x:Key="TappedGridButtonStyle">
             <Setter Property="HeightRequest" Value="40"/>
             <Setter Property="VerticalOptions" Value="Center"/>

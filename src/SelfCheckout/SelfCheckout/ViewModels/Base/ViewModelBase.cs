@@ -1,16 +1,17 @@
 ﻿using SelfCheckout.Models;
-using SelfCheckout.Services.Configuration;
+using SelfCheckout.Services.Master;
 using SelfCheckout.Services.Dialog;
 using SelfCheckout.Services.Navigation;
 using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels.Base
 {
     public abstract class ViewModelBase : ExtendedBindableObject
     {
-        protected readonly IAppConfigService AppConfigService;
+        protected readonly IMasterDataService AppConfigService;
         protected readonly IDialogService DialogService;
         protected readonly INavigationService NavigationService;
 
@@ -19,10 +20,15 @@ namespace SelfCheckout.ViewModels.Base
 
         public ViewModelBase()
         {
-            AppConfigService = ViewModelLocator.Resolve<IAppConfigService>();
+            AppConfigService = ViewModelLocator.Resolve<IMasterDataService>();
             DialogService = ViewModelLocator.Resolve<IDialogService>();
             NavigationService = ViewModelLocator.Resolve<INavigationService>();
         }
+
+        public ICommand BackCommand => new Command(async () =>
+        {
+            await NavigationService.PopBackAsync();
+        });
 
         public virtual Task OnTabSelected(TabItem item)
         {
@@ -34,8 +40,9 @@ namespace SelfCheckout.ViewModels.Base
             return Task.FromResult(item);
         }
 
-        public AppConfig AppConfig { 
-            get => AppConfigService.AppConfig; 
+        public AppConfig AppConfig
+        {
+            get => AppConfigService.AppConfig;
         }
 
         public string PageTitle
@@ -62,60 +69,6 @@ namespace SelfCheckout.ViewModels.Base
             }
         }
 
-        public double BarcodeWidth
-        {
-            get => Device.Info.PixelScreenSize.Width;
-        }
-
-        public double QRcodeWidth
-        {
-            get => Device.Info.PixelScreenSize.Width * .50;
-        }
-
-        public double QRcodeHeight
-        {
-            get => Device.Info.PixelScreenSize.Height * .33;
-        }
-
-        public double QRcodeHeightRequest
-        {
-            get => Device.Info.ScaledScreenSize.Height * .33;
-        }
-
-        public double BarcodeHeight
-        {
-            get => Device.Info.PixelScreenSize.Height * .25;
-        }
-
-        public double BarcodeHeightRequest
-        {
-            get => Device.Info.ScaledScreenSize.Height * .15;
-        }
-
-        public double ListItemImageHeight
-        {
-            get
-            {
-                var height = Device.Info.ScaledScreenSize.Height * .25;
-                return height;
-            }
-        }
-
-        public double DetailImageHeight
-        {
-            get => Device.Info.ScaledScreenSize.Height * .33;
-        }
-
-        public double ScaledScreenWidth
-        {
-            get => Device.Info.ScaledScreenSize.Width;
-        }
-
-        public double ScaledScreenHeight
-        {
-            get => Device.Info.ScaledScreenSize.Height;
-        }
-
         public virtual Task InitializeAsync(object navigationData)
         {
             return Task.FromResult(false);
@@ -126,10 +79,14 @@ namespace SelfCheckout.ViewModels.Base
             return Task.FromResult(false);
         }
 
-        public virtual Task OnPopbackAsync()
+        public virtual Task NavigationPushed()
         {
-            NavigationService.SendPopbackMessage();
-            return Task.FromResult(true);
+            return Task.FromResult(false);
+        }
+
+        public virtual Task NavigationPoped()
+        {
+            return Task.FromResult(false);
         }
     }
 }

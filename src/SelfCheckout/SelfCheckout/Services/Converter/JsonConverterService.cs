@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace SelfCheckout.Services.Converter
 {
-    public class JsonConverter : IConverter
+    public class JsonConverterService : IConverterService
     {
         private readonly JsonSerializerSettings _serializerSettings;
 
-        public JsonConverter()
+        public JsonConverterService()
         {
             _serializerSettings = new JsonSerializerSettings
             {

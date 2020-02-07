@@ -7,19 +7,14 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace SelfCheckout.Views
+namespace SelfCheckout.Controls
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class BorrowView : ContentPage
+    public partial class GradientBackground : ContentView
     {
-        public BorrowView()
+        public GradientBackground()
         {
             InitializeComponent();
         }
-
-        //protected override bool OnBackButtonPressed()
-        //{
-        //    return true;
-        //}
     }
 }

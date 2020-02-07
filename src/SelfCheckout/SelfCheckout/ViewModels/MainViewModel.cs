@@ -1,4 +1,5 @@
 ﻿using SelfCheckout.Controls;
+using SelfCheckout.Models;
 using SelfCheckout.Resources;
 using SelfCheckout.Services.Identity;
 using SelfCheckout.ViewModels.Base;

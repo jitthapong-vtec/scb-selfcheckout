@@ -33,25 +33,18 @@
                         <Label FontSize="Small" Text="{i18n:Translate Password}"/>
                         <Entry FontSize="Medium" HorizontalOptions="FillAndExpand" IsPassword="True" Text="{Binding UserPassword}"/>
                         <controls:TappedGrid Grid.Column="0"
-                                         Padding="0"
-                                         Margin="0,4,0,0"
+                                             Padding="0"
+                                             Margin="0,4,0,0"
                                              Style="{StaticResource TappedGridButtonStyle}"
                                              TappedCommand="{Binding ConfirmCommand}"
                                              effects:RoundCornersEffect.CornerRadius="3">
-                            <magic:GradientView VerticalOptions="FillAndExpand">
-                                <magic:GradientView.GradientSource>
-                                    <magic:LinearGradient Angle="270">
-                                        <magic:GradientStop Color="{StaticResource Primary}" Offset="0" />
-                                        <magic:GradientStop Color="{StaticResource Secondary}" Offset="1" />
-                                    </magic:LinearGradient>
-                                </magic:GradientView.GradientSource>
-                            </magic:GradientView>
+                            <controls:GradientBackground/>
                             <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
                         </controls:TappedGrid>
                     </StackLayout>
                 </Frame>
                 <Label VerticalOptions="End" Margin="16,0,0,8" Text="version" TextColor="{StaticResource Gray50}"/>
-                <controls:TappedGrid VerticalOptions="End" HorizontalOptions="End" Margin="0,0,16,8">
+                <controls:TappedGrid VerticalOptions="End" HorizontalOptions="End" Margin="0,0,16,8" TappedCommand="{Binding SettingCommand}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>

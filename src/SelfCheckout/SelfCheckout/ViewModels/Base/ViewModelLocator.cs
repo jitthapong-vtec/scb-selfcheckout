@@ -1,4 +1,4 @@
-﻿using SelfCheckout.Services.Configuration;
+﻿using SelfCheckout.Services.Master;
 using SelfCheckout.Services.Converter;
 using SelfCheckout.Services.Dialog;
 using SelfCheckout.Services.Identity;
@@ -32,6 +32,7 @@ namespace SelfCheckout.ViewModels.Base
         static ViewModelLocator()
         {
             _container = new TinyIoCContainer();
+            _container.Register<SettingViewModel>();
             _container.Register<LandingViewModel>();
             _container.Register<LoginViewModel>();
             _container.Register<MainViewModel>();
@@ -45,9 +46,9 @@ namespace SelfCheckout.ViewModels.Base
             _container.Register<INavigationService, NavigationService>();
             _container.Register<IDialogService, DialogService>();
             _container.Register<IRequestProvider, RequestProvider>();
-            _container.Register<IConverter, JsonConverter>();
+            _container.Register<IConverterService, JsonConverterService>();
             _container.Register<IIdentityService, IdentityService>();
-            _container.Register<IAppConfigService, AppConfigService>();
+            _container.Register<IMasterDataService, MasterDataService>();
         }
 
         public static void RegisterSingleton<TInterface, T>() where TInterface : class where T : class, TInterface

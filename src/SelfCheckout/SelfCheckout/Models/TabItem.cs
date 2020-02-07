@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 
-namespace SelfCheckout.ViewModels
+namespace SelfCheckout.Models
 {
     public class TabItem : INotifyPropertyChanged
     {

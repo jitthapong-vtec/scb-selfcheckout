@@ -21,6 +21,8 @@ namespace SelfCheckout.ViewModels
             _identityService = identityService;
         }
 
+        public ICommand SettingCommand => new Command(async () => await NavigationService.NavigateToAsync<SettingViewModel>());
+
         public ICommand ConfirmCommand => new Command(async () => await LoginAsync());
 
         async Task LoginAsync()
@@ -30,10 +32,10 @@ namespace SelfCheckout.ViewModels
                 IsBusy = true;
                 var userInput = new UserInput()
                 {
-                    //BranchNo = "40",
-                    //ModuleCode = "MpKpi",
-                    BranchNo = AppConfig.BranchNo,
-                    ModuleCode = AppConfig.Module,
+                    BranchNo = "40",
+                    ModuleCode = "MpKpi",
+                    //BranchNo = AppConfig.BranchNo,
+                    //ModuleCode = AppConfig.Module,
                     UserCode = UserCode,
                     UserPassword = UserPassword,
                     MachineIp = "127.0.0.1"

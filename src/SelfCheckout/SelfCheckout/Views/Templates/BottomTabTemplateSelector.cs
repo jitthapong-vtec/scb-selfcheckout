@@ -1,4 +1,5 @@
-﻿using SelfCheckout.ViewModels;
+﻿using SelfCheckout.Models;
+using SelfCheckout.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;

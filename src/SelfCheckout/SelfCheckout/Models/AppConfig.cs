@@ -17,7 +17,7 @@ namespace SelfCheckout.Models
         {
             get
             {
-                if (!_urlRegisterApi.EndsWith("/"))
+                if (!(_urlRegisterApi ?? "").EndsWith("/"))
                     _urlRegisterApi += "/";
                 return _urlRegisterApi;
             }
@@ -33,7 +33,7 @@ namespace SelfCheckout.Models
         {
             get
             {
-                if (!_urlSaleEngineApi.EndsWith("/"))
+                if (!(_urlSaleEngineApi ?? "").EndsWith("/"))
                     _urlSaleEngineApi += "/";
                 return _urlSaleEngineApi;
             }

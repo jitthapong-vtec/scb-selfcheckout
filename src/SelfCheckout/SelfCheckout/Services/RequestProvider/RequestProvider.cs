@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SelfCheckout.Models;
+using SelfCheckout.Services.Converter;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -12,7 +13,14 @@ namespace SelfCheckout.Services.RequestProvider
 {
     public class RequestProvider : IRequestProvider
     {
-        public async Task<string> GetAsync(string uri, string accessToken = "")
+        IConverterService _converterService;
+
+        public RequestProvider(IConverterService converterService)
+        {
+            _converterService = converterService;
+        }
+
+        public async Task<TResult> GetAsync<TResult>(string uri, string accessToken = "")
         {
             HttpClient httpClient = CreateHttpClient();
             if (!string.IsNullOrEmpty(accessToken))
@@ -30,12 +38,12 @@ namespace SelfCheckout.Services.RequestProvider
             }
 
             await HandleResponse(response);
-            return await response.Content.ReadAsStringAsync();
+            var result = await response.Content.ReadAsStringAsync();
+            return await _converterService.Convert<TResult>(result);
         }
 
-        public async Task<string> PostAsync<TRequest>(string uri, TRequest data, string accessToken = "")
+        public async Task<TResult> PostAsync<TRequest, TResult>(string uri, TRequest data, string accessToken = "")
         {
-            string serialized = string.Empty;
             HttpClient httpClient = CreateHttpClient();
 
             if (!string.IsNullOrEmpty(accessToken))
@@ -59,7 +67,8 @@ namespace SelfCheckout.Services.RequestProvider
             }
 
             await HandleResponse(response);
-            return await response.Content.ReadAsStringAsync();
+            var result = await response.Content.ReadAsStringAsync();
+            return await _converterService.Convert<TResult>(result);
         }
 
         private HttpClient CreateHttpClient()

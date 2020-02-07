@@ -7,8 +7,8 @@ namespace SelfCheckout.Services.RequestProvider
 {
     public interface IRequestProvider
     {
-        Task<string> GetAsync(string uri, string accessToken = "");
+        Task<TResult> GetAsync<TResult>(string uri, string accessToken = "");
 
-        Task<string> PostAsync<TRequest>(string uri, TRequest data, string accessToken = "");
+        Task<TResult> PostAsync<TRequest, TResult>(string uri, TRequest data, string accessToken = "");
     }
 }

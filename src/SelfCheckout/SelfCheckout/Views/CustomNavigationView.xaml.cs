@@ -21,15 +21,18 @@ namespace SelfCheckout.Views
 
         void Init()
         {
-            Popped += (s, e) =>
-            {
-                InvokePopback(e.Page);
-            };
+            Pushed += CustomNavigationView_Pushed;
+            Popped += CustomNavigationView_Popped;
         }
 
-        void InvokePopback(Page page)
+        private void CustomNavigationView_Pushed(object sender, NavigationEventArgs e)
         {
-            ((ViewModelBase)page.BindingContext).OnPopbackAsync();
+            ((ViewModelBase)e.Page.BindingContext).NavigationPushed();
+        }
+
+        private void CustomNavigationView_Popped(object sender, NavigationEventArgs e)
+        {
+            ((ViewModelBase)CurrentPage.BindingContext).NavigationPoped();
         }
     }
 }

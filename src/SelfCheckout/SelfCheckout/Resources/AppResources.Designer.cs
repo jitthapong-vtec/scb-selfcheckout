@@ -79,6 +79,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Branch No..
+        /// </summary>
+        internal static string BranchNo {
+            get {
+                return ResourceManager.GetString("BranchNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {
@@ -147,6 +156,15 @@ namespace SelfCheckout.Resources {
         internal static string CountDown {
             get {
                 return ResourceManager.GetString("CountDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date/Time.
+        /// </summary>
+        internal static string DateTime {
+            get {
+                return ResourceManager.GetString("DateTime", resourceCulture);
             }
         }
         
@@ -237,6 +255,33 @@ namespace SelfCheckout.Resources {
         internal static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine No..
+        /// </summary>
+        internal static string MachineNo {
+            get {
+                return ResourceManager.GetString("MachineNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mobile No..
+        /// </summary>
+        internal static string MobileNo {
+            get {
+                return ResourceManager.GetString("MobileNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Module.
+        /// </summary>
+        internal static string Module {
+            get {
+                return ResourceManager.GetString("Module", resourceCulture);
             }
         }
         
@@ -372,6 +417,15 @@ namespace SelfCheckout.Resources {
         internal static string StaffLogin {
             get {
                 return ResourceManager.GetString("StaffLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub Branch.
+        /// </summary>
+        internal static string SubBranch {
+            get {
+                return ResourceManager.GetString("SubBranch", resourceCulture);
             }
         }
         

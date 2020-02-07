@@ -10,16 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace SelfCheckout.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class BorrowView : ContentPage
+    public partial class SettingView : ContentPage
     {
-        public BorrowView()
+        public SettingView()
         {
             InitializeComponent();
         }
-
-        //protected override bool OnBackButtonPressed()
-        //{
-        //    return true;
-        //}
     }
 }

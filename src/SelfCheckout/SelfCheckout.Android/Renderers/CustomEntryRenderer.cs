@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using Android.Content;
 using Android.Widget;
+using SelfCheckout.Controls;
 using SelfCheckout.Droid.Renderers;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
