@@ -9,7 +9,8 @@ namespace SelfCheckout
 {
     public class GlobalSettings
     {
-        public const string SaleEngineBaseUrl = "https://kpservices.kingpower.com/portal/developer/saleengineapi";
+        public const string SelfCheckoutBaseUrl = "https://kpservices.kingpower.com/portal/developer/selfcheckoutapi/";
+
         public const string AccessKey = "WLR7xq7jrA5t4TF7z3JLTkBFKmskmANQ";
         public const string CallerId = "SCBCHECKOUT";
 

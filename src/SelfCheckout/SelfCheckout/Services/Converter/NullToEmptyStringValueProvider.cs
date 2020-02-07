@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace SelfCheckout.Models
+namespace SelfCheckout.Services.Converter
 {
     public class NullToEmptyStringValueProvider : IValueProvider
     {

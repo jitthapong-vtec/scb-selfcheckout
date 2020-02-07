@@ -8,9 +8,9 @@ namespace SelfCheckout.Services.Identity
 {
     public interface IIdentityService
     {
-        LoginData LoginData { get; }
+        SessionKeyData SessionData { get; }
 
-        Task LoginAsync(UserInput user);
+        Task<ApiResultData<SessionKeyData>> LoginAsync(UserInput user);
 
         Task LogoutAsync();
     }

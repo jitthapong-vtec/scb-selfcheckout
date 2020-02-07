@@ -1,4 +1,6 @@
-﻿using SelfCheckout.Services.Dialog;
+﻿using SelfCheckout.Models;
+using SelfCheckout.Services.Configuration;
+using SelfCheckout.Services.Dialog;
 using SelfCheckout.Services.Navigation;
 using System;
 using System.Threading.Tasks;
@@ -8,6 +10,7 @@ namespace SelfCheckout.ViewModels.Base
 {
     public abstract class ViewModelBase : ExtendedBindableObject
     {
+        protected readonly IAppConfigService AppConfigService;
         protected readonly IDialogService DialogService;
         protected readonly INavigationService NavigationService;
 
@@ -16,6 +19,7 @@ namespace SelfCheckout.ViewModels.Base
 
         public ViewModelBase()
         {
+            AppConfigService = ViewModelLocator.Resolve<IAppConfigService>();
             DialogService = ViewModelLocator.Resolve<IDialogService>();
             NavigationService = ViewModelLocator.Resolve<INavigationService>();
         }
@@ -28,6 +32,10 @@ namespace SelfCheckout.ViewModels.Base
         public virtual Task OnTabDeSelected(TabItem item)
         {
             return Task.FromResult(item);
+        }
+
+        public AppConfig AppConfig { 
+            get => AppConfigService.AppConfig; 
         }
 
         public string PageTitle

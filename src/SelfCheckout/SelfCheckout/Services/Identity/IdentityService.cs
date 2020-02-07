@@ -1,4 +1,5 @@
 ﻿using SelfCheckout.Models;
+using SelfCheckout.Services.Configuration;
 using SelfCheckout.Services.Converter;
 using SelfCheckout.Services.RequestProvider;
 using System;
@@ -10,27 +11,31 @@ namespace SelfCheckout.Services.Identity
 {
     public class IdentityService : IIdentityService
     {
+        IAppConfigService _appConfigService;
         IRequestProvider _requestProvider;
-        IApiResponseConverter _apiResponseConverter;
+        IConverter _converter;
 
-        public IdentityService(IRequestProvider request, IApiResponseConverter converter)
+        public IdentityService(IAppConfigService appConfigService, IRequestProvider request, IConverter converter)
         {
+            _appConfigService = appConfigService;
             _requestProvider = request;
-            _apiResponseConverter = converter;
+            _converter = converter;
         }
 
-        public LoginData LoginData { get; private set; }
+        public SessionKeyData SessionData { get; private set; }
 
-        public async Task LoginAsync(UserInput user)
+        public async Task<ApiResultData<SessionKeyData>> LoginAsync(UserInput user)
         {
-            var url = new UriBuilder($"{GlobalSettings.SaleEngineBaseUrl}/api/Authen/LoginAuthen");
-            var response = await _requestProvider.PostAsync(url.ToString(), user, GlobalSettings.AccessKey);
-            LoginData = await _apiResponseConverter.Convert<LoginData>(response);
+            var uri = new UriBuilder($"{_appConfigService.AppConfig.UrlSaleEngineApi}api/Authen/LoginAuthen");
+            var response = await _requestProvider.PostAsync(uri.ToString(), user, GlobalSettings.AccessKey);
+            var result = await _converter.Convert<ApiResultData<SessionKeyData>>(response);
+            SessionData = result.Data;
+            return result;
         }
 
         public Task LogoutAsync()
         {
-            LoginData = null;
+            SessionData = null;
             return Task.FromResult(true);
         }
     }

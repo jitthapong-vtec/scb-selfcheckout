@@ -1,14 +1,15 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SelfCheckout.Models
 {
-    public class LoginData
+    public class ApiResultData<T>
     {
-        [JsonProperty("Data")]
-        public SessionKeyData SessionKeyData{ get; set; }
+        [JsonProperty("data")]
+        public T Data { get; set; }
 
         [JsonProperty("totalCount")]
         public int TotalCount { get; set; }
@@ -24,5 +25,7 @@ namespace SelfCheckout.Models
 
         [JsonProperty("Message")]
         public Message[] Message { get; set; }
+
+        public string DefaultMessage { get => Message?.FirstOrDefault()?.MessageDesc ?? "Sorry, unknown error"; }
     }
 }

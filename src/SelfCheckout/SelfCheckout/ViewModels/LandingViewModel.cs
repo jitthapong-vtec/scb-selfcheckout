@@ -1,4 +1,6 @@
-﻿using SelfCheckout.Services.Identity;
+﻿using SelfCheckout.Resources;
+using SelfCheckout.Services.Configuration;
+using SelfCheckout.Services.Identity;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -18,10 +20,26 @@ namespace SelfCheckout.ViewModels
 
         public override async Task InitializeAsync(object navigationData)
         {
-            if (_identityService.LoginData == null)
-                await NavigationService.NavigateToAsync<LoginViewModel>();
-            else
-                await NavigationService.NavigateToAsync<BorrowViewModel>();
+            try
+            {
+                IsBusy = true;
+
+                if(AppConfig == null)
+                    await AppConfigService.GetConfigAsync();
+
+                if (_identityService.SessionData == null)
+                    await NavigationService.NavigateToAsync<LoginViewModel>();
+                else
+                    await NavigationService.NavigateToAsync<BorrowViewModel>();
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlertAsync(AppResources.Info, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }

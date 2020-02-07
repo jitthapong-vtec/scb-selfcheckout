@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SelfCheckout.Services.Converter
 {
-    public interface IApiResponseConverter
+    public interface IConverter
     {
         Task<TResult> Convert<TResult>(string data);
     }

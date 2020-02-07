@@ -1,4 +1,5 @@
 ﻿using SelfCheckout.Models;
+using SelfCheckout.Resources;
 using SelfCheckout.Services.Identity;
 using SelfCheckout.ViewModels.Base;
 using System;
@@ -11,6 +12,9 @@ namespace SelfCheckout.ViewModels
     public class LoginViewModel : ViewModelBase
     {
         IIdentityService _identityService;
+
+        string _userCode = "k";
+        string _userPassword = "kkkk";
 
         public LoginViewModel(IIdentityService identityService)
         {
@@ -26,20 +30,52 @@ namespace SelfCheckout.ViewModels
                 IsBusy = true;
                 var userInput = new UserInput()
                 {
-                    BranchNo = "40",
-                    ModuleCode = "MpKpi",
-                    UserCode = "k",
-                    UserPassword = "kkkk",
+                    //BranchNo = "40",
+                    //ModuleCode = "MpKpi",
+                    BranchNo = AppConfig.BranchNo,
+                    ModuleCode = AppConfig.Module,
+                    UserCode = UserCode,
+                    UserPassword = UserPassword,
                     MachineIp = "127.0.0.1"
                 };
 
-                await _identityService.LoginAsync(userInput);
-                await NavigationService.NavigateToAsync<BorrowViewModel>();
-                IsBusy = false;
+                var loginResult = await _identityService.LoginAsync(userInput);
+                if (loginResult.IsCompleted)
+                {
+                    await NavigationService.NavigateToAsync<BorrowViewModel>();
+                }
+                else
+                {
+                    await DialogService.ShowAlertAsync(AppResources.StaffLogin, loginResult.DefaultMessage);
+                }
             }
             catch (Exception ex)
             {
                 await DialogService.ShowAlertAsync("", ex.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public string UserCode
+        {
+            get => _userCode;
+            set
+            {
+                _userCode = value;
+                RaisePropertyChanged(() => UserCode);
+            }
+        }
+
+        public string UserPassword
+        {
+            get => _userPassword;
+            set
+            {
+                _userPassword = value;
+                RaisePropertyChanged(() => UserPassword);
             }
         }
     }

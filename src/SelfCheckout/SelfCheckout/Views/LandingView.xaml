@@ -7,6 +7,7 @@
              xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.LandingView">
@@ -16,10 +17,9 @@
         </views:ActionBarView>
     </NavigationPage.TitleView>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid>
+            <ffimageloading:CachedImage Aspect="AspectFill" Margin="0,-56,0,0" Source="resource://SelfCheckout.Resources.Images.landing_bg.png"/>
+            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

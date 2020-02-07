@@ -11,7 +11,7 @@
              x:Name="mainView"
              x:Class="SelfCheckout.Views.MainView">
     <NavigationPage.TitleView>
-        <Grid VerticalOptions="CenterAndExpand" Margin="{OnPlatform Android=4}">
+        <Grid VerticalOptions="FillAndExpand" Margin="{OnPlatform Android=4}">
             <Grid.Resources>
                 <Style TargetType="Label">
                     <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
@@ -21,17 +21,14 @@
                     <Setter Property="WidthRequest" Value="{OnPlatform Android=36}"/>
                 </Style>
             </Grid.Resources>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width=".25*"/>
-                <ColumnDefinition Width=".5*"/>
-                <ColumnDefinition Width=".25*"/>
-            </Grid.ColumnDefinitions>
-            <StackLayout Grid.Column="0" Orientation="Horizontal">
-                <Image Source="ic_lang.png"/>
-                <Image Source="ic_info.png"/>
+            <StackLayout HorizontalOptions="Start" Orientation="Horizontal">
+                <Image Source="ic_lang"/>
             </StackLayout>
-            <Label Grid.Column="1" Text="{Binding PageTitle}" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
-            <Label Grid.Column="2" Text="THB" HorizontalTextAlignment="End"/>
+            <Label Text="{Binding PageTitle}" FontAttributes="Bold" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+            <StackLayout HorizontalOptions="End" Orientation="Horizontal">
+                <Image Source="ic_info"/>
+                <Label Text="THB" HorizontalOptions="Center"/>
+            </StackLayout>
         </Grid>
     </NavigationPage.TitleView>
     <ContentPage.Resources>

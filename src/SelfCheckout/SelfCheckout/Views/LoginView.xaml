@@ -29,9 +29,9 @@
                         <Label HorizontalTextAlignment="Center" FontSize="Large" Text="{i18n:Translate StaffLogin}"/>
                         <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray200}" Margin="0,4,0,4"/>
                         <Label FontSize="Small" Text="{i18n:Translate UserName}"/>
-                        <Entry FontSize="Medium" HorizontalOptions="FillAndExpand"/>
+                        <Entry FontSize="Medium" HorizontalOptions="FillAndExpand" Text="{Binding UserCode}"/>
                         <Label FontSize="Small" Text="{i18n:Translate Password}"/>
-                        <Entry FontSize="Medium" HorizontalOptions="FillAndExpand" IsPassword="True"/>
+                        <Entry FontSize="Medium" HorizontalOptions="FillAndExpand" IsPassword="True" Text="{Binding UserPassword}"/>
                         <controls:TappedGrid Grid.Column="0"
                                          Padding="0"
                                          Margin="0,4,0,0"
