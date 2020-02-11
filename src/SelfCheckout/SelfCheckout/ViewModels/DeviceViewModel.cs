@@ -22,6 +22,7 @@ namespace SelfCheckout.ViewModels
 
         IMasterDataService _masterDataService;
 
+        bool _isAuthorized;
         bool _logoutButtonVisible;
 
         public DeviceViewModel(IMasterDataService masterDataService)
@@ -98,10 +99,19 @@ namespace SelfCheckout.ViewModels
             RefreshDeviceInfo(1);
         }
 
-        public ICommand TabSelectedCommand => new Command<SimpleSelectedItem>((item) =>
+        public ICommand TabSelectedCommand => new Command<SimpleSelectedItem>(async (item) =>
         {
             var seletedItem = Tabs.Where(t => t.Selected).FirstOrDefault();
             seletedItem.Selected = false;
+
+            if ((int)item.Arg1 == 2 && !IsAuthorized)
+            {
+                var task = new TaskCompletionSource<bool>();
+                await NavigationService.NavigateToAsync<AuthorizationViewModel, bool>(null, task);
+                var result = await task.Task;
+                if (!result)
+                    return;
+            }
 
             item.Selected = true;
             LogoutButtonVisible = (int)item.Arg1 == 2 ? true : false;
@@ -131,6 +141,16 @@ namespace SelfCheckout.ViewModels
             {
                 _deviceInfoItems = value;
                 RaisePropertyChanged(() => DeviceInfoItems);
+            }
+        }
+
+        public bool IsAuthorized
+        {
+            get => _isAuthorized;
+            set
+            {
+                _isAuthorized = value;
+                RaisePropertyChanged(() => IsAuthorized);
             }
         }
 

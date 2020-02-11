@@ -403,6 +403,24 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter your password.
+        /// </summary>
+        internal static string PleaseEnterPassword {
+            get {
+                return ResourceManager.GetString("PleaseEnterPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter your username.
+        /// </summary>
+        internal static string PleaseEnterUserName {
+            get {
+                return ResourceManager.GetString("PleaseEnterUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile.
         /// </summary>
         internal static string Profile {

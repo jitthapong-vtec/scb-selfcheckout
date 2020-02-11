@@ -4,6 +4,7 @@
              xmlns:magic="clr-namespace:MagicGradients;assembly=MagicGradients"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:converter="clr-namespace:SelfCheckout.Converters"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="SelfCheckout.App">
     <Application.Resources>
@@ -16,6 +17,10 @@
         <Color x:Key="Gray100">#f5f5f5</Color>
         <Color x:Key="Gray200">#eeeeee</Color>
         <Color x:Key="Gray300">#e0e0e0</Color>
+
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <converter:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter"/>
+        <converter:ValidatableObjectErrorConverter x:Key="ValidatableObjectErrorConverter"/>
 
         <OnPlatform x:Key="MontserratRegular" 
                         x:TypeArguments="x:String" 
@@ -46,6 +51,12 @@
             <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
         </Style>
 
+        <Style x:Key="ValidationErrorLabelStyle" TargetType="{x:Type Label}">
+            <Setter Property="Margin" Value="4,0,0,0" />
+            <Setter Property="TextColor" Value="Red" />
+            <Setter Property="FontSize" Value="Small" />
+        </Style>
+        
         <Style x:Key="LabelIconStyle" TargetType="{x:Type Label}">
             <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
             <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
@@ -63,6 +74,13 @@
             <Setter Property="HeightRequest" Value="40"/>
             <Setter Property="VerticalOptions" Value="Center"/>
         </Style>
-        
+
+        <ControlTemplate x:Key="PopupTemplate">
+            <Grid BackgroundColor="#66000000">
+                <Frame Margin="16" VerticalOptions="Center">
+                    <ContentPresenter/>
+                </Frame>
+            </Grid>
+        </ControlTemplate>
     </Application.Resources>
 </Application>

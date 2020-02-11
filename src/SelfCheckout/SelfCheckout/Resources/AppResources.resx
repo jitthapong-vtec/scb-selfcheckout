@@ -233,6 +233,12 @@
   <data name="Paymen" xml:space="preserve">
     <value>Payment</value>
   </data>
+  <data name="PleaseEnterPassword" xml:space="preserve">
+    <value>Please enter your password</value>
+  </data>
+  <data name="PleaseEnterUserName" xml:space="preserve">
+    <value>Please enter your username</value>
+  </data>
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
   </data>
