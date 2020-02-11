@@ -42,6 +42,7 @@ namespace SelfCheckout.ViewModels.Base
             _container.Register<OrderViewModel>();
             _container.Register<ProfileViewModel>();
             _container.Register<HomeViewModel>();
+            _container.Register<BarcodeScanViewModel>();
 
             _container.Register<INavigationService, NavigationService>();
             _container.Register<IDialogService, DialogService>();

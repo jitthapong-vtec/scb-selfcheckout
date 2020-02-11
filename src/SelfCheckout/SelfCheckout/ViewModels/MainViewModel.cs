@@ -4,6 +4,7 @@ using SelfCheckout.Resources;
 using SelfCheckout.Services.Identity;
 using SelfCheckout.ViewModels.Base;
 using SelfCheckout.Views;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +16,10 @@ namespace SelfCheckout.ViewModels
     public class MainViewModel : ViewModelBase
     {
         ObservableCollection<TabItem> _tabs;
+
         ContentView _currentView;
+
+        bool _langShowing;
 
         public MainViewModel()
         {
@@ -40,6 +44,7 @@ namespace SelfCheckout.ViewModels
                 Title = AppResources.MyCart,
                 TabText = AppResources.Shopping,
                 Page = new ShoppingCartView(),
+                BadgeCount = 0,
                 TabType = 1
             });
             Tabs.Add(new TabItem()
@@ -69,6 +74,16 @@ namespace SelfCheckout.ViewModels
 
         public ICommand TabSelectedCommand => new Command<TabItem>(async (item) => await SelectTabAsync(item));
 
+        public ICommand LanguageTappedCommand => new Command(() =>
+        {
+            LangShowing = !LangShowing;
+        });
+
+        public ICommand LanguageSelectionCommand => new Command(() =>
+        {
+            LangShowing = false;
+        });
+
         Task SelectTabAsync(TabItem item)
         {
             var selectedTab = Tabs.Where(t => t.Selected).FirstOrDefault();
@@ -90,6 +105,11 @@ namespace SelfCheckout.ViewModels
             }
         }
 
+        public IList<Language> Languages
+        {
+            get => MasterDataService.Languages;
+        }
+
         public ContentView CurrentView
         {
             get => _currentView;
@@ -97,6 +117,16 @@ namespace SelfCheckout.ViewModels
             {
                 _currentView = value;
                 RaisePropertyChanged(() => CurrentView);
+            }
+        }
+
+        public bool LangShowing
+        {
+            get => _langShowing;
+            set
+            {
+                _langShowing = value;
+                RaisePropertyChanged(() => LangShowing);
             }
         }
     }

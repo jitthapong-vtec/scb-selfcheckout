@@ -43,7 +43,16 @@
                         </controls:TappedGrid>
                     </StackLayout>
                 </Frame>
-                <Label VerticalOptions="End" Margin="16,0,0,8" Text="version" TextColor="{StaticResource Gray50}"/>
+                <Label VerticalOptions="End" Margin="16,0,0,8" TextColor="{StaticResource Gray50}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Version"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding Version}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
                 <controls:TappedGrid VerticalOptions="End" HorizontalOptions="End" Margin="0,0,16,8" TappedCommand="{Binding SettingCommand}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>

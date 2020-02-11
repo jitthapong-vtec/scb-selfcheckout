@@ -3,6 +3,7 @@ using SelfCheckout.Services.Identity;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +24,8 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = true;
                 
-                await AppConfigService.LoadMasterData();
+                await MasterDataService.LoadMasterData();
+                LanguageSelected = MasterDataService.Languages.FirstOrDefault();
 
                 if (_identityService.SessionData == null)
                     await NavigationService.NavigateToAsync<LoginViewModel>();

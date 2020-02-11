@@ -11,15 +11,8 @@ namespace SelfCheckout.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
-        IIdentityService _identityService;
-
         string _userCode = "k";
         string _userPassword = "kkkk";
-
-        public LoginViewModel(IIdentityService identityService)
-        {
-            _identityService = identityService;
-        }
 
         public ICommand SettingCommand => new Command(async () => await NavigationService.NavigateToAsync<SettingViewModel>());
 
@@ -41,7 +34,7 @@ namespace SelfCheckout.ViewModels
                     MachineIp = "127.0.0.1"
                 };
 
-                var loginResult = await _identityService.LoginAsync(userInput);
+                var loginResult = await IdentityService.LoginAsync(userInput);
                 if (loginResult.IsCompleted)
                 {
                     await NavigationService.NavigateToAsync<BorrowViewModel>();

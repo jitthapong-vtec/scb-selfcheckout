@@ -46,7 +46,7 @@
                         <DataTemplate>
                             <Grid Padding="4" Margin="4">
                                 <Label Margin="4,0,100,0" HorizontalOptions="Start" Text="{Binding Text1}"/>
-                                <Label Margin="50,0,8,0" HorizontalOptions="End" Text="{Binding Text2}"/>
+                                <Label Margin="50,0,8,0" HorizontalOptions="End" Text="{Binding Text2}" TextColor="{StaticResource SecondaryText}"/>
                                 <BoxView BackgroundColor="{StaticResource Gray100}" HeightRequest="1" VerticalOptions="End"/>
                             </Grid>
                         </DataTemplate>
@@ -55,12 +55,13 @@
             </Frame>
             <Grid Grid.Row="2">
                 <controls:TappedGrid Padding="0" VerticalOptions="Center" HorizontalOptions="Center"
+                                     IsVisible="{Binding LogoutButtonVisible}"
                                      Style="{StaticResource TappedGridButtonStyle}"
                                      TappedCommand="{Binding LogoutCommand}"
                                      WidthRequest="100"
                                      effects:RoundCornersEffect.CornerRadius="3">
                     <controls:GradientBackground/>
-                    <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                    <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Logout}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
                 </controls:TappedGrid>
             </Grid>
         </Grid>

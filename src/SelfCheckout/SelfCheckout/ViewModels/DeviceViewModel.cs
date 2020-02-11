@@ -1,6 +1,7 @@
 ﻿using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Master;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,14 @@ namespace SelfCheckout.ViewModels
         ObservableCollection<SimpleSelectedItem> _tabs;
         ObservableCollection<SimpleSelectedItem> _deviceInfoItems;
 
-        public DeviceViewModel()
+        IMasterDataService _masterDataService;
+
+        bool _logoutButtonVisible;
+
+        public DeviceViewModel(IMasterDataService masterDataService)
         {
+            _masterDataService = masterDataService;
+
             Tabs = new ObservableCollection<SimpleSelectedItem>()
             {
                 new SimpleSelectedItem()
@@ -41,7 +48,7 @@ namespace SelfCheckout.ViewModels
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.Name,
-                    Text2 = "",
+                    Text2 = "-",
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
@@ -53,37 +60,37 @@ namespace SelfCheckout.ViewModels
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.FlightNo,
-                    Text2 = "",
+                    Text2 = "-",
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.MobileNo,
-                    Text2 = "",
+                    Text2 = "-",
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.Module,
-                    Text2 = "",
+                    Text2 = _masterDataService.AppConfig.Module,
                     Arg1 = 2
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.BranchNo,
-                    Text2 = "",
+                    Text2 = _masterDataService.AppConfig.BranchNo,
                     Arg1 = 2
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.SubBranch,
-                    Text2 = "",
+                    Text2 = _masterDataService.AppConfig.SubBranch,
                     Arg1 = 2
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.MachineNo,
-                    Text2 = "",
+                    Text2 = "-",
                     Arg1 = 2
                 },
             };
@@ -97,6 +104,7 @@ namespace SelfCheckout.ViewModels
             seletedItem.Selected = false;
 
             item.Selected = true;
+            LogoutButtonVisible = (int)item.Arg1 == 2 ? true : false;
             RefreshDeviceInfo(item.Arg1);
         });
 
@@ -123,6 +131,16 @@ namespace SelfCheckout.ViewModels
             {
                 _deviceInfoItems = value;
                 RaisePropertyChanged(() => DeviceInfoItems);
+            }
+        }
+
+        public bool LogoutButtonVisible
+        {
+            get => _logoutButtonVisible;
+            set
+            {
+                _logoutButtonVisible = value;
+                RaisePropertyChanged(() => LogoutButtonVisible);
             }
         }
     }

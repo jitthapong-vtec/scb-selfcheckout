@@ -75,7 +75,15 @@
                     </Grid>
                 </StackLayout>
             </Grid>
-            <Label VerticalOptions="End" Margin="16,0,0,8" Text="version" TextColor="{StaticResource Gray50}"/>
+            <Label VerticalOptions="End" Margin="16,0,0,8" TextColor="{StaticResource Gray50}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Version"/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding Version}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
 
             <Grid IsVisible="{Binding IsCfPopupVisible}" BackgroundColor="#66000000">
                 <Frame Margin="16" VerticalOptions="Center">

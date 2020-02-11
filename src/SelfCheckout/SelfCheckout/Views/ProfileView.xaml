@@ -8,8 +8,8 @@
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.ProfileView">
   <ContentView.Content>
-      <StackLayout>
-          <Label Text="Profile" />
-      </StackLayout>
+      <Grid>
+          <Label VerticalOptions="Center" HorizontalOptions="Center" Text="Profile" />
+      </Grid>
   </ContentView.Content>
 </ContentView>

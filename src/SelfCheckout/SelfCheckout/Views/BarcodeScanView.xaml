@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SelfCheckout.Views.BarcodeScanView"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
+             NavigationPage.HasNavigationBar="False"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="True">
+    <ContentPage.Content>
+        <Grid>
+            <zxing:ZXingScannerView x:Name="scanView" ScanResultCommand="{Binding ScanResultCommand}"/>
+            <zxing:ZXingDefaultOverlay TopText="Hold camera over QR Code"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

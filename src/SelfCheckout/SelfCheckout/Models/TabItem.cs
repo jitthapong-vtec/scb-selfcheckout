@@ -15,6 +15,7 @@ namespace SelfCheckout.Models
         ContentView _page;
         bool _selected;
         int _badgeCount;
+        bool _badgeVisible;
         int _tabType;
 
         public int TabId
@@ -101,6 +102,17 @@ namespace SelfCheckout.Models
             set
             {
                 _badgeCount = value;
+                NotifyPropertyChanged();
+                BadgeVisible = value > 0;
+            }
+        }
+
+        public bool BadgeVisible
+        {
+            get => _badgeVisible;
+            set
+            {
+                _badgeVisible = value;
                 NotifyPropertyChanged();
             }
         }

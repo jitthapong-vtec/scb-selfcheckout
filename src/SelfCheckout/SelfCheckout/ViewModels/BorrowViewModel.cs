@@ -20,9 +20,12 @@ namespace SelfCheckout.ViewModels
 
         public ICommand CancelCommand => new Command(() => IsCfPopupVisible = false);
 
-        Task ScanPassportAsync()
+        async Task ScanPassportAsync()
         {
-            return Task.FromResult(false);
+            var task = new TaskCompletionSource<string>();
+            await NavigationService.NavigateToAsync<BarcodeScanViewModel, string>(null, task);
+            var result = task.Task;
+            await CheckPassportAsync();
         }
 
         Task CheckPassportAsync()

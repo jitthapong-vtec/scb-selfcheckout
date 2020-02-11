@@ -8,8 +8,8 @@
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.OrderView">
   <ContentView.Content>
-      <StackLayout>
-          <Label Text="Orders" />
-      </StackLayout>
+      <Grid>
+          <Label VerticalOptions="Center" HorizontalOptions="Center" Text="Orders" />
+      </Grid>
   </ContentView.Content>
 </ContentView>

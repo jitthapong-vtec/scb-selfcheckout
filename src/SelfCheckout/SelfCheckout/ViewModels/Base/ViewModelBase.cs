@@ -6,24 +6,41 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using SelfCheckout.Services.Identity;
+using Xamarin.Essentials;
+using SelfCheckout.Resources;
 
 namespace SelfCheckout.ViewModels.Base
 {
     public abstract class ViewModelBase : ExtendedBindableObject
     {
-        protected readonly IMasterDataService AppConfigService;
+        protected readonly IMasterDataService MasterDataService;
+        protected readonly IIdentityService IdentityService;
         protected readonly IDialogService DialogService;
         protected readonly INavigationService NavigationService;
+
+        Language _languageSelected;
 
         string _pageTitle;
         bool _isBusy;
 
         public ViewModelBase()
         {
-            AppConfigService = ViewModelLocator.Resolve<IMasterDataService>();
+            MasterDataService = ViewModelLocator.Resolve<IMasterDataService>();
+            IdentityService = ViewModelLocator.Resolve<IIdentityService>();
             DialogService = ViewModelLocator.Resolve<IDialogService>();
             NavigationService = ViewModelLocator.Resolve<INavigationService>();
         }
+
+        public ICommand LogoutCommand => new Command(async () =>
+        {
+            var result = await DialogService.ShowConfirmAsync(AppResources.Logout, AppResources.ConfirmLogout, AppResources.Yes, AppResources.No);
+            if (result)
+            {
+                await IdentityService.LogoutAsync();
+                await NavigationService.InitializeAsync();
+            }
+        });
 
         public ICommand BackCommand => new Command(async () =>
         {
@@ -42,7 +59,7 @@ namespace SelfCheckout.ViewModels.Base
 
         public AppConfig AppConfig
         {
-            get => AppConfigService.AppConfig;
+            get => MasterDataService.AppConfig;
         }
 
         public string PageTitle
@@ -52,6 +69,16 @@ namespace SelfCheckout.ViewModels.Base
             {
                 _pageTitle = value;
                 RaisePropertyChanged(() => PageTitle);
+            }
+        }
+
+        public Language LanguageSelected
+        {
+            get => _languageSelected;
+            set
+            {
+                _languageSelected = value;
+                RaisePropertyChanged(() => LanguageSelected);
             }
         }
 
@@ -68,6 +95,8 @@ namespace SelfCheckout.ViewModels.Base
                 RaisePropertyChanged(() => IsBusy);
             }
         }
+
+        public string Version { get => VersionTracking.CurrentVersion; }
 
         public virtual Task InitializeAsync(object navigationData)
         {

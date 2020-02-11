@@ -6,8 +6,12 @@
              xmlns:animations="clr-namespace:SelfCheckout.Animations"
              xmlns:trigger="clr-namespace:SelfCheckout.Triggers"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:template="clr-namespace:SelfCheckout.Views.Templates"
+             xmlns:views="clr-namespace:SelfCheckout.Views"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+             NavigationPage.HasBackButton="False"
              x:Name="mainView"
              x:Class="SelfCheckout.Views.MainView">
     <NavigationPage.TitleView>
@@ -21,10 +25,10 @@
                     <Setter Property="WidthRequest" Value="{OnPlatform Android=36}"/>
                 </Style>
             </Grid.Resources>
-            <StackLayout HorizontalOptions="Start" Orientation="Horizontal">
-                <Image Source="ic_lang"/>
-            </StackLayout>
-            <Label Text="{Binding PageTitle}" FontAttributes="Bold" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+            <ctrls:TappedGrid HorizontalOptions="Start" TappedCommand="{Binding LanguageTappedCommand}">
+                <Image Source="ic_lang" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="24"/>
+            </ctrls:TappedGrid>
+            <Label Text="{Binding PageTitle}" FontAttributes="Bold" HorizontalOptions="Center" Margin="50,0,50,0" HorizontalTextAlignment="Center"/>
             <StackLayout HorizontalOptions="End" Orientation="Horizontal">
                 <Image Source="ic_info"/>
                 <Label Text="THB" HorizontalOptions="Center"/>
@@ -81,8 +85,8 @@
                             <Label FontSize="Micro" VerticalOptions="Center" HorizontalTextAlignment="Center" Text="{Binding TabText}" Style="{StaticResource SelectedLabelStyle}"/>
                         </StackLayout>
                     </Frame>
-                    <Frame VerticalOptions="Start" HorizontalOptions="End" CornerRadius="48" Padding="8,4,8,4" BackgroundColor="Red">
-                        <Label VerticalOptions="Center" HorizontalTextAlignment="Center" Text="2" FontSize="Micro" TextColor="{StaticResource Gray50}"/>
+                    <Frame VerticalOptions="Start" HorizontalOptions="End" CornerRadius="48" Padding="8,4,8,4" BackgroundColor="Red" IsVisible="{Binding BadgeVisible}">
+                        <Label VerticalOptions="Center" HorizontalTextAlignment="Center" Text="{Binding BadgeCount}" FontSize="Micro" TextColor="{StaticResource Gray50}"/>
                     </Frame>
                 </Grid>
                 <BoxView Grid.Row="1" BackgroundColor="{StaticResource Primary}" HeightRequest="4">
@@ -102,6 +106,7 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
+            <forms:CachedImage Aspect="AspectFill" Margin="0,-56,0,0" Source="resource://SelfCheckout.Resources.Images.bg.png"/>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -113,6 +118,26 @@
                     <StackLayout HeightRequest="56" Orientation="Horizontal" BindableLayout.ItemsSource="{Binding Tabs}" 
                                  BindableLayout.ItemTemplateSelector="{StaticResource BottomTemplateSelector}"/>
                 </Grid>
+            </Grid>
+            <Grid IsVisible="{Binding LangShowing}" HeightRequest="300" BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="8">
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Label Text="{i18n:Translate Language}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding LanguageTappedCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+                <views:LanguageSelectionView Grid.Row="1"/>
             </Grid>
         </Grid>
     </ContentPage.Content>

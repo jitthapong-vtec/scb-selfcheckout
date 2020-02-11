@@ -8,8 +8,8 @@
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.HomeView">
   <ContentView.Content>
-      <StackLayout>
-          <Label Text="Home" />
-      </StackLayout>
+      <Grid>
+          <Label VerticalOptions="Center" HorizontalOptions="Center" Text="Home" />
+      </Grid>
   </ContentView.Content>
 </ContentView>

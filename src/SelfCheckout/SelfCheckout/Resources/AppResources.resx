@@ -144,11 +144,17 @@
   <data name="ConfirmDeleteItem" xml:space="preserve">
     <value>Do you want to delete item?</value>
   </data>
+  <data name="ConfirmLogout" xml:space="preserve">
+    <value>Are you sure you want to log out?</value>
+  </data>
   <data name="ConfirmUseCoupon" xml:space="preserve">
     <value>Do you want to use coupon?</value>
   </data>
   <data name="CountDown" xml:space="preserve">
     <value>Countdown</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>Currency</value>
   </data>
   <data name="DateTime" xml:space="preserve">
     <value>Date/Time</value>
@@ -182,8 +188,14 @@
   <data name="ItemDetail" xml:space="preserve">
     <value>Item Detail</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="Loading" xml:space="preserve">
     <value>Loading...</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Log Out</value>
   </data>
   <data name="MachineNo" xml:space="preserve">
     <value>Machine No.</value>
