@@ -218,6 +218,9 @@
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="Opps" xml:space="preserve">
+    <value>Opps</value>
+  </data>
   <data name="Orders" xml:space="preserve">
     <value>Orders</value>
   </data>

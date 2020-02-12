@@ -9,8 +9,6 @@ namespace SelfCheckout
 {
     public class GlobalSettings
     {
-        public const string SelfCheckoutBaseUrl = "https://kpservices.kingpower.com/portal/developer/selfcheckoutapi/";
-
         public const string AccessKey = "WLR7xq7jrA5t4TF7z3JLTkBFKmskmANQ";
         public const string CallerId = "SCBCHECKOUT";
 
@@ -56,6 +54,10 @@ namespace SelfCheckout
                 return code;
             }
             set => Preferences.Set("lang_code", value);
+        }
+
+        public string SelfCheckoutApi {
+            get => Preferences.Get("self_checkout_api", "https://kpservices.kingpower.com/portal/developer/selfcheckoutapi/");
         }
     }
 }

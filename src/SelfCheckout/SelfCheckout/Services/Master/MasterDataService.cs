@@ -32,21 +32,21 @@ namespace SelfCheckout.Services.Master
 
         async Task LoadConfigAsync()
         {
-            var uri = new UriBuilder($"{GlobalSettings.SelfCheckoutBaseUrl}api/Master/GetConfig");
+            var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Master/GetConfig");
             var result = await _requestProvider.GetAsync<ApiResultData<AppConfig>>(uri.ToString());
             AppConfig = result.Data;
         }
 
         async Task LoadLanguageAsync()
         {
-            var uri = new UriBuilder($"{GlobalSettings.SelfCheckoutBaseUrl}api/Master/LanguageList");
+            var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Master/LanguageList");
             var response = await _requestProvider.GetAsync<ApiResultData<IList<Language>>>(uri.ToString());
             Languages = response.Data;
         }
 
         async Task LoadPaymentAsync()
         {
-            var uri = new UriBuilder($"{GlobalSettings.SelfCheckoutBaseUrl}api/Master/PaymentList");
+            var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Master/PaymentList");
             var response = await _requestProvider.GetAsync<ApiResultData<IList<Payment>>>(uri.ToString());
             Payments = response.Data;
         }

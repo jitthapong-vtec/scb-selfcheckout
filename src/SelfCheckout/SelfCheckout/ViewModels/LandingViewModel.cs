@@ -27,7 +27,7 @@ namespace SelfCheckout.ViewModels
                 await MasterDataService.LoadMasterData();
                 LanguageSelected = MasterDataService.Languages.FirstOrDefault();
 
-                if (_identityService.SessionData == null)
+                if (_identityService.LoginData == null)
                     await NavigationService.NavigateToAsync<LoginViewModel>();
                 else
                     await NavigationService.NavigateToAsync<BorrowViewModel>();

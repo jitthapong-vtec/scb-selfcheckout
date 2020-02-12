@@ -20,19 +20,19 @@ namespace SelfCheckout.Services.Identity
             _requestProvider = request;
         }
 
-        public SessionKeyData SessionData { get; private set; }
+        public LoginData LoginData { get; private set; }
 
-        public async Task<ApiResultData<SessionKeyData>> LoginAsync(UserInput user)
+        public async Task<ApiResultData<LoginData>> LoginAsync(object user)
         {
             var uri = new UriBuilder($"{_appConfigService.AppConfig.UrlSaleEngineApi}api/Authen/LoginAuthen");
-            var response = await _requestProvider.PostAsync<UserInput, ApiResultData<SessionKeyData>>(uri.ToString(), user, GlobalSettings.AccessKey);
-            SessionData = response.Data;
+            var response = await _requestProvider.PostAsync<object, ApiResultData<LoginData>>(uri.ToString(), user, GlobalSettings.AccessKey);
+            LoginData = response.Data;
             return response;
         }
 
         public Task LogoutAsync()
         {
-            SessionData = null;
+            LoginData = null;
             return Task.FromResult(true);
         }
     }

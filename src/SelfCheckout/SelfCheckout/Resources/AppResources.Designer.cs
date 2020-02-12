@@ -358,6 +358,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Opps.
+        /// </summary>
+        internal static string Opps {
+            get {
+                return ResourceManager.GetString("Opps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Orders.
         /// </summary>
         internal static string Orders {

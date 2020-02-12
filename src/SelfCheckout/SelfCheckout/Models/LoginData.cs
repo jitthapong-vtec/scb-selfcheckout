@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SelfCheckout.Models
 {
-    public class SessionKeyData
+    public class LoginData
     {
         [JsonProperty("session_key")]
         public string SessionKey { get; set; }

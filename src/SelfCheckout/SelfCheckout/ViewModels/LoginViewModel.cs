@@ -23,15 +23,15 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var userInput = new UserInput()
+                var userInput = new
                 {
-                    BranchNo = "40",
-                    ModuleCode = "MpKpi",
+                    branch_no = "40",
+                    module_code = "MpKpi",
                     //BranchNo = AppConfig.BranchNo,
                     //ModuleCode = AppConfig.Module,
-                    UserCode = UserCode,
-                    UserPassword = UserPassword,
-                    MachineIp = "127.0.0.1"
+                    user_code = UserCode,
+                    user_password = UserPassword,
+                    machine_ip = "127.0.0.1"
                 };
 
                 var loginResult = await IdentityService.LoginAsync(userInput);

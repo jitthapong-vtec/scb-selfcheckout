@@ -9,6 +9,7 @@ using System;
 using System.Globalization;
 using System.Reflection;
 using Xamarin.Forms;
+using SelfCheckout.Services.Session;
 
 namespace SelfCheckout.ViewModels.Base
 {
@@ -51,6 +52,7 @@ namespace SelfCheckout.ViewModels.Base
             _container.Register<IConverterService, JsonConverterService>();
             _container.Register<IIdentityService, IdentityService>();
             _container.Register<IMasterDataService, MasterDataService>();
+            _container.Register<ISessionService, SessionService>();
         }
 
         public static void RegisterSingleton<TInterface, T>() where TInterface : class where T : class, TInterface

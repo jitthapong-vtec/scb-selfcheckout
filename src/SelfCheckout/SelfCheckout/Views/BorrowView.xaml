@@ -59,7 +59,7 @@
                         </Grid.ColumnDefinitions>
                         <controls:TappedGrid Grid.Column="0" 
                                              WidthRequest="40"
-                                             TappedCommand="{Binding ScanPassportCommand}"
+                                             TappedCommand="{Binding ScanShoppingCartCommand}"
                                          effects:RoundCornersEffect.CornerRadius="3"
                                          BackgroundColor="{StaticResource Secondary}">
                             <Label FontFamily="{StaticResource FontAwesome}" Text="&#xf030;" HorizontalOptions="Center" VerticalOptions="Center" FontSize="24" TextColor="{StaticResource Gray50}"/>
@@ -67,7 +67,7 @@
                         <Entry FontSize="Medium" Grid.Column="1"/>
                         <controls:TappedGrid Grid.Column="2"
                                              WidthRequest="40"
-                                             TappedCommand="{Binding CheckPassportCommand}"
+                                             TappedCommand="{Binding ValidateShoppingCartCommand}"
                                          BackgroundColor="{StaticResource Gray200}"
                                          effects:RoundCornersEffect.CornerRadius="3">
                             <Label FontFamily="{StaticResource FontAwesome}" HorizontalOptions="Center" VerticalOptions="Center" Text="&#xf00c;" FontSize="24" TextColor="{StaticResource Secondary}"/>

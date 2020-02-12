@@ -15,6 +15,14 @@ namespace SelfCheckout.Services.RequestProvider
     {
         IConverterService _converterService;
 
+        enum RequestTypes
+        {
+            Get,
+            Post,
+            Put,
+            Delete
+        }
+
         public RequestProvider(IConverterService converterService)
         {
             _converterService = converterService;
@@ -22,27 +30,15 @@ namespace SelfCheckout.Services.RequestProvider
 
         public async Task<TResult> GetAsync<TResult>(string uri, string accessToken = "")
         {
-            HttpClient httpClient = CreateHttpClient();
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                SetAccessToken(httpClient, accessToken);
-            }
-            HttpResponseMessage response;
-            try
-            {
-                response = await httpClient.GetAsync(uri);
-            }
-            catch (TaskCanceledException)
-            {
-                throw new HttpRequestExceptionEx(HttpStatusCode.RequestTimeout, "Connection timeout");
-            }
-
-            await HandleResponse(response);
-            var result = await response.Content.ReadAsStringAsync();
-            return await _converterService.Convert<TResult>(result);
+            return await RequestAsync<object, TResult>(uri, RequestTypes.Get, null, accessToken);
         }
 
         public async Task<TResult> PostAsync<TRequest, TResult>(string uri, TRequest data, string accessToken = "")
+        {
+            return await RequestAsync<TRequest, TResult>(uri, RequestTypes.Post, data, accessToken);
+        }
+
+        private async Task<TResult> RequestAsync<TRequest, TResult>(string uri, RequestTypes requestType, TRequest data, string accessToken)
         {
             HttpClient httpClient = CreateHttpClient();
 
@@ -59,7 +55,14 @@ namespace SelfCheckout.Services.RequestProvider
             HttpResponseMessage response = null;
             try
             {
-                response = await httpClient.PostAsync(uri, content);
+                if (requestType == RequestTypes.Get)
+                    response = await httpClient.GetAsync(uri);
+                else if (requestType == RequestTypes.Post)
+                    response = await httpClient.PostAsync(uri, content);
+                else if (requestType == RequestTypes.Put)
+                    response = await httpClient.PutAsync(uri, content);
+                else if (requestType == RequestTypes.Delete)
+                    response = await httpClient.DeleteAsync(uri);
             }
             catch (TaskCanceledException)
             {
@@ -98,6 +101,35 @@ namespace SelfCheckout.Services.RequestProvider
                 var content = await response.Content.ReadAsStringAsync();
                 throw new HttpRequestExceptionEx(response.StatusCode, content);
             }
+        }
+
+        public async Task<TResult> PutAsync<TRequest, TResult>(string uri, TRequest data, string accessToken = "")
+        {
+            HttpClient httpClient = CreateHttpClient();
+
+            if (!string.IsNullOrEmpty(accessToken))
+            {
+                SetAccessToken(httpClient, accessToken);
+            }
+
+            var content = new StringContent(string.Empty);
+            if (data != null)
+                content = new StringContent(JsonConvert.SerializeObject(data));
+
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = null;
+            try
+            {
+                response = await httpClient.PutAsync(uri, content);
+            }
+            catch (TaskCanceledException)
+            {
+                throw new HttpRequestExceptionEx(HttpStatusCode.RequestTimeout, "Connection timeout");
+            }
+
+            await HandleResponse(response);
+            var result = await response.Content.ReadAsStringAsync();
+            return await _converterService.Convert<TResult>(result);
         }
     }
 }

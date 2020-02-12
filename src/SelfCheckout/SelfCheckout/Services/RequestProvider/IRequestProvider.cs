@@ -10,5 +10,7 @@ namespace SelfCheckout.Services.RequestProvider
         Task<TResult> GetAsync<TResult>(string uri, string accessToken = "");
 
         Task<TResult> PostAsync<TRequest, TResult>(string uri, TRequest data, string accessToken = "");
+
+        Task<TResult> PutAsync<TRequest, TResult>(string uri, TRequest data, string accessToken = "");
     }
 }

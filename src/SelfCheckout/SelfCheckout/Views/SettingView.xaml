@@ -8,6 +8,8 @@
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:ctrls="clr-namespace:SelfCheckout.Controls"
+             xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
+             xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              NavigationPage.HasBackButton="False"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              Visual="Material"
@@ -22,22 +24,34 @@
         </views:ActionBarView>
     </NavigationPage.TitleView>
     <ContentPage.Content>
-        <ScrollView>
+        <ScrollView BackgroundColor="White">
             <StackLayout Spacing="0">
                 <StackLayout.Resources>
                     <Style TargetType="Entry">
                         <Setter Property="IsReadOnly" Value="True"/>
+                        <Setter Property="FontSize" Value="Small"/>
                     </Style>
                 </StackLayout.Resources>
-                <Entry Placeholder="API Self-Checkout" Text="{Binding AppConfig.UrlSaleEngineApi}"/>
+                <Entry Placeholder="API Self-Checkout" Text="{Binding SelfCheckoutApi}" IsReadOnly="False"/>
                 <Entry Placeholder="Module" Text="{Binding AppConfig.Module}"/>
                 <Entry Placeholder="Branch No." Text="{Binding AppConfig.BranchNo}"/>
                 <Entry Placeholder="Sub Branch" Text="{Binding AppConfig.SubBranch}"/>
                 <Entry Placeholder="API Register" Text="{Binding AppConfig.UrlRegisterApi}"/>
                 <Entry Placeholder="API Member" Text="{Binding AppConfig.UrlMemberApi}"/>
+                <Entry Placeholder="API Self-Checkout" Text="{Binding AppConfig.UrlSaleEngineApi}"/>
                 <Entry Placeholder="Web Member" Text="{Binding AppConfig.UrlMemberWeb}"/>
                 <Entry Placeholder="Payment Time out" Keyboard="Numeric" Text="{Binding AppConfig.PaymentTimeout}"/>
                 <Entry Placeholder="Device UID" Text="{Binding DeviceUID}" IsReadOnly="True"/>
+
+                <forms:ZXingBarcodeImageView
+                                BarcodeFormat="QR_CODE"
+                                HeightRequest="200"
+                                WidthRequest="200"
+                                BarcodeValue="{Binding DeviceUID}">
+                    <forms:ZXingBarcodeImageView.BarcodeOptions>
+                        <common:EncodingOptions Width="200" Height="200" PureBarcode="True"/>
+                    </forms:ZXingBarcodeImageView.BarcodeOptions>
+                </forms:ZXingBarcodeImageView>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
