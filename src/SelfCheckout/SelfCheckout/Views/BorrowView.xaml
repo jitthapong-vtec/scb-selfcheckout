@@ -64,7 +64,7 @@
                                          BackgroundColor="{StaticResource Secondary}">
                             <Label FontFamily="{StaticResource FontAwesome}" Text="&#xf030;" HorizontalOptions="Center" VerticalOptions="Center" FontSize="24" TextColor="{StaticResource Gray50}"/>
                         </controls:TappedGrid>
-                        <Entry FontSize="Medium" Grid.Column="1"/>
+                        <Entry FontSize="Medium" Grid.Column="1" Text="{Binding InputValue}"/>
                         <controls:TappedGrid Grid.Column="2"
                                              WidthRequest="40"
                                              TappedCommand="{Binding ValidateShoppingCartCommand}"

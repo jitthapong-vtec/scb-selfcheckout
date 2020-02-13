@@ -47,7 +47,7 @@
             </Style.Triggers>
         </Style>
         <DataTemplate x:Key="CommonTapTemplate">
-            <ctrls:TappedGrid RowSpacing="0" HorizontalOptions="FillAndExpand"
+            <ctrls:TappedGrid RowSpacing="0" WidthRequest="{Binding Source={x:Reference tabContainer}, Path=Width, Converter={StaticResource TabItemWidthConverter}, ConverterParameter=5}"
                               TappedCommand="{Binding Source={x:Reference mainView}, Path=BindingContext.TabSelectedCommand}"
                               CommandParameter="{Binding .}">
                 <Grid.RowDefinitions>
@@ -71,7 +71,7 @@
             </ctrls:TappedGrid>
         </DataTemplate>
         <DataTemplate x:Key="BarcodeTapTemplate">
-            <ctrls:TappedGrid RowSpacing="0" VerticalOptions="Center" 
+            <ctrls:TappedGrid RowSpacing="0" VerticalOptions="Center"
                               TappedCommand="{Binding Source={x:Reference mainView}, Path=BindingContext.TabSelectedCommand}"
                               CommandParameter="{Binding .}">
                 <Grid.RowDefinitions>
@@ -115,7 +115,7 @@
                 <ctrls:TabViewContainer Grid.Row="0" Content="{Binding CurrentView}"/>
                 <Grid Grid.Row="1">
                     <Frame Margin="0,0,0,-2" Padding="2" CornerRadius="0"/>
-                    <StackLayout HeightRequest="56" Orientation="Horizontal" BindableLayout.ItemsSource="{Binding Tabs}" 
+                    <StackLayout HeightRequest="56" x:Name="tabContainer" Orientation="Horizontal" BindableLayout.ItemsSource="{Binding Tabs}" 
                                  BindableLayout.ItemTemplateSelector="{StaticResource BottomTemplateSelector}"/>
                 </Grid>
             </Grid>

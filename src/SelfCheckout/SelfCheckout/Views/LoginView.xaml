@@ -11,6 +11,7 @@
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:magic="clr-namespace:MagicGradients;assembly=MagicGradients"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
+             xmlns:behaviors="clr-namespace:SelfCheckout.Behaviors"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.LoginView">
@@ -25,13 +26,25 @@
                 <ffimageloading:CachedImage Aspect="AspectFill" Margin="0,-56,0,0" Source="resource://SelfCheckout.Resources.Images.landing_bg.png"/>
                 <ffimageloadingsvg:SvgCachedImage VerticalOptions="Start" HeightRequest="48" Source="resource://SelfCheckout.Resources.Images.header_logo.svg" Margin="0,72,0,0"/>
                 <Frame Margin="16" VerticalOptions="Center">
-                    <StackLayout>
+                    <StackLayout VerticalOptions="Center">
                         <Label HorizontalTextAlignment="Center" FontSize="Large" Text="{i18n:Translate StaffLogin}"/>
-                        <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray200}" Margin="0,4,0,4"/>
-                        <Label FontSize="Small" Text="{i18n:Translate UserName}"/>
-                        <Entry FontSize="Medium" HorizontalOptions="FillAndExpand" Text="{Binding UserCode}"/>
-                        <Label FontSize="Small" Text="{i18n:Translate Password}"/>
-                        <Entry FontSize="Medium" HorizontalOptions="FillAndExpand" IsPassword="True" Text="{Binding UserPassword}"/>
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
+                        <Label Text="{i18n:Translate UserName}" FontSize="Small"/>
+                        <Entry FontSize="Medium" Text="{Binding UserName.Value, Mode=TwoWay}"
+                                             IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+                            <Entry.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateUserNameCommand}" />
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Label Text="{Binding UserName.Errors, Converter={StaticResource FirstValidationErrorConverter}}" IsVisible="{Binding UserName.Errors, Converter={StaticResource ValidatableObjectErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" />
+                        <Label Text="{i18n:Translate Password}" FontSize="Small"/>
+                        <Entry FontSize="Medium" Text="{Binding Password.Value, Mode=TwoWay}" IsPassword="True"
+                                             IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+                            <Entry.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidatePasswordCommand}" />
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Label Text="{Binding Password.Errors, Converter={StaticResource FirstValidationErrorConverter}}" IsVisible="{Binding Password.Errors, Converter={StaticResource ValidatableObjectErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" />
                         <controls:TappedGrid Grid.Column="0"
                                              Padding="0"
                                              Margin="0,4,0,0"

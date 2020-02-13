@@ -13,11 +13,15 @@ namespace SelfCheckout.Services.Navigation
 
         Task NavigateToAsync<TViewModel, TResult>(object parameter, TaskCompletionSource<TResult> task) where TViewModel : ViewModelBase;
 
+        Task PushModalAsync<TViewModel, TResult>(object parameter, TaskCompletionSource<TResult> task) where TViewModel : ViewModelBase;
+
         Task RemoveLastFromBackStackAsync();
 
         Task RemoveBackStackAsync();
 
         Task PopBackAsync();
+
+        Task PopModalAsync();
 
         Task SendPopbackMessage();
     }

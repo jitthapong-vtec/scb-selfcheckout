@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SelfCheckout.Services.Converter
+namespace SelfCheckout.Services.Serializer
 {
     public class NullToEmptyStringResolver : DefaultContractResolver
     {

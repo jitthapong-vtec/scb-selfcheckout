@@ -101,17 +101,17 @@ namespace SelfCheckout.ViewModels
 
         public ICommand TabSelectedCommand => new Command<SimpleSelectedItem>(async (item) =>
         {
-            var seletedItem = Tabs.Where(t => t.Selected).FirstOrDefault();
-            seletedItem.Selected = false;
-
             if ((int)item.Arg1 == 2 && !IsAuthorized)
             {
                 var task = new TaskCompletionSource<bool>();
-                await NavigationService.NavigateToAsync<AuthorizationViewModel, bool>(null, task);
+                await NavigationService.PushModalAsync<AuthorizationViewModel, bool>(null, task);
                 var result = await task.Task;
                 if (!result)
                     return;
             }
+
+            var seletedItem = Tabs.Where(t => t.Selected).FirstOrDefault();
+            seletedItem.Selected = false;
 
             item.Selected = true;
             LogoutButtonVisible = (int)item.Arg1 == 2 ? true : false;

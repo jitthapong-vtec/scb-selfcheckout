@@ -1,5 +1,4 @@
 ﻿using SelfCheckout.Models;
-using SelfCheckout.Services.Converter;
 using SelfCheckout.Services.Master;
 using SelfCheckout.Services.RequestProvider;
 using System;
@@ -20,13 +19,20 @@ namespace SelfCheckout.Services.Identity
             _requestProvider = request;
         }
 
-        public LoginData LoginData { get; private set; }
+        public LoginData LoginData { get; set; }
 
-        public async Task<ApiResultData<LoginData>> LoginAsync(object user)
+        public async Task<ApiResultData<LoginData>> LoginAsync(string branchNo, string moduleCode, string matchineIp, string userCode, string userPassword)
         {
+            var payload = new
+            {
+                branch_no = branchNo,
+                module_code = moduleCode,
+                user_code = userCode,
+                user_password = userPassword,
+                machine_ip = matchineIp
+            };
             var uri = new UriBuilder($"{_appConfigService.AppConfig.UrlSaleEngineApi}api/Authen/LoginAuthen");
-            var response = await _requestProvider.PostAsync<object, ApiResultData<LoginData>>(uri.ToString(), user, GlobalSettings.AccessKey);
-            LoginData = response.Data;
+            var response = await _requestProvider.PostAsync<object, ApiResultData<LoginData>>(uri.ToString(), payload, GlobalSettings.AccessKey);
             return response;
         }
 

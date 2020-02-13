@@ -1,4 +1,6 @@
-﻿using SelfCheckout.ViewModels;
+﻿using Rg.Plugins.Popup.Extensions;
+using Rg.Plugins.Popup.Pages;
+using SelfCheckout.ViewModels;
 using SelfCheckout.ViewModels.Base;
 using SelfCheckout.Views;
 using System;
@@ -120,6 +122,23 @@ namespace SelfCheckout.Services.Navigation
         {
             MessagingCenter.Send(this, MessageKeys.NavigationPopback);
             return Task.FromResult(true);
+        }
+
+        public async Task PushModalAsync<TViewModel, TResult>(object parameter, TaskCompletionSource<TResult> task) where TViewModel : ViewModelBase
+        {
+            var page = (PopupPage)CreatePage(typeof(TViewModel), parameter);
+            await Application.Current.MainPage.Navigation.PushPopupAsync(page, true);
+            var viewModel = page.BindingContext as ViewModelBase;
+            await viewModel.InitializeAsync<TViewModel, TResult>(parameter, task);
+        }
+
+        public async Task PopModalAsync()
+        {
+            try
+            {
+                await Application.Current.MainPage.Navigation.PopAllPopupAsync(true);
+            }
+            catch (Exception) { }
         }
     }
 }

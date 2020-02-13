@@ -1,5 +1,4 @@
 ﻿using SelfCheckout.Services.Master;
-using SelfCheckout.Services.Converter;
 using SelfCheckout.Services.Dialog;
 using SelfCheckout.Services.Identity;
 using SelfCheckout.Services.Navigation;
@@ -10,6 +9,7 @@ using System.Globalization;
 using System.Reflection;
 using Xamarin.Forms;
 using SelfCheckout.Services.Session;
+using SelfCheckout.Services.Serializer;
 
 namespace SelfCheckout.ViewModels.Base
 {
@@ -49,7 +49,7 @@ namespace SelfCheckout.ViewModels.Base
             _container.Register<INavigationService, NavigationService>();
             _container.Register<IDialogService, DialogService>();
             _container.Register<IRequestProvider, RequestProvider>();
-            _container.Register<IConverterService, JsonConverterService>();
+            _container.Register<ISerializeService, JsonSerializeService>();
             _container.Register<IIdentityService, IdentityService>();
             _container.Register<IMasterDataService, MasterDataService>();
             _container.Register<ISessionService, SessionService>();

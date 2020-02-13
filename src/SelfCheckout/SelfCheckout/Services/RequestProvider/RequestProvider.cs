@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SelfCheckout.Models;
-using SelfCheckout.Services.Converter;
+using SelfCheckout.Services.Serializer;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -13,7 +13,7 @@ namespace SelfCheckout.Services.RequestProvider
 {
     public class RequestProvider : IRequestProvider
     {
-        IConverterService _converterService;
+        ISerializeService _converterService;
 
         enum RequestTypes
         {
@@ -23,7 +23,7 @@ namespace SelfCheckout.Services.RequestProvider
             Delete
         }
 
-        public RequestProvider(IConverterService converterService)
+        public RequestProvider(ISerializeService converterService)
         {
             _converterService = converterService;
         }
@@ -71,7 +71,7 @@ namespace SelfCheckout.Services.RequestProvider
 
             await HandleResponse(response);
             var result = await response.Content.ReadAsStringAsync();
-            return await _converterService.Convert<TResult>(result);
+            return await _converterService.Serialize<TResult>(result);
         }
 
         private HttpClient CreateHttpClient()
@@ -129,7 +129,7 @@ namespace SelfCheckout.Services.RequestProvider
 
             await HandleResponse(response);
             var result = await response.Content.ReadAsStringAsync();
-            return await _converterService.Convert<TResult>(result);
+            return await _converterService.Serialize<TResult>(result);
         }
     }
 }

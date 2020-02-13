@@ -18,6 +18,7 @@
         <Color x:Key="Gray200">#eeeeee</Color>
         <Color x:Key="Gray300">#e0e0e0</Color>
 
+        <converter:TabItemWidthConverter x:Key="TabItemWidthConverter"/>
         <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
         <converter:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter"/>
         <converter:ValidatableObjectErrorConverter x:Key="ValidatableObjectErrorConverter"/>
@@ -54,7 +55,7 @@
         <Style x:Key="ValidationErrorLabelStyle" TargetType="{x:Type Label}">
             <Setter Property="Margin" Value="4,0,0,0" />
             <Setter Property="TextColor" Value="Red" />
-            <Setter Property="FontSize" Value="Small" />
+            <Setter Property="FontSize" Value="Micro" />
         </Style>
         
         <Style x:Key="LabelIconStyle" TargetType="{x:Type Label}">

@@ -1,6 +1,6 @@
 ﻿using SelfCheckout.Models;
-using SelfCheckout.Services.Converter;
 using SelfCheckout.Services.RequestProvider;
+using SelfCheckout.Services.Serializer;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +12,7 @@ namespace SelfCheckout.Services.Master
     {
         IRequestProvider _requestProvider;
 
-        public MasterDataService(IRequestProvider request, IConverterService converter)
+        public MasterDataService(IRequestProvider request, ISerializeService converter)
         {
             _requestProvider = request;
         }

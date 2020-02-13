@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SelfCheckout.Services.Converter
+namespace SelfCheckout.Services.Serializer
 {
-    public class JsonConverterService : IConverterService
+    public class JsonSerializeService : ISerializeService
     {
         private readonly JsonSerializerSettings _serializerSettings;
 
-        public JsonConverterService()
+        public JsonSerializeService()
         {
             _serializerSettings = new JsonSerializerSettings
             {
@@ -21,7 +21,7 @@ namespace SelfCheckout.Services.Converter
             };
         }
 
-        public async Task<TResult> Convert<TResult>(string data)
+        public async Task<TResult> Serialize<TResult>(string data)
         {
             return await Task.Run(() =>
                 JsonConvert.DeserializeObject<TResult>(data, _serializerSettings));

@@ -26,6 +26,6 @@ namespace SelfCheckout.Models
         [JsonProperty("Message")]
         public Message[] Message { get; set; }
 
-        public string DefaultMessage { get => Message?.FirstOrDefault()?.MessageDesc ?? "Sorry, unknown error"; }
+        public string DefaultMessage { get => Message?.FirstOrDefault()?.MessageDesc; }
     }
 }

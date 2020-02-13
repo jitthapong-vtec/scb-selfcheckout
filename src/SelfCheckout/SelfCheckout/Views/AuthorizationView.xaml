@@ -14,34 +14,39 @@
     mc:Ignorable="d"
     x:Class="SelfCheckout.Views.AuthorizationView">
     <ContentPage.Content>
-        <Grid BackgroundColor="#66000000">
-            <StackLayout Margin="16" VerticalOptions="Center">
-                <Label Text="{i18n:Translate ForAdmin}" FontSize="Large" VerticalOptions="Center" HorizontalTextAlignment="Center" Margin="16"/>
-                <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
-                <Label Text="{i18n:Translate UserName}" FontSize="Small"/>
-                <Entry FontSize="Medium" Text="{Binding UserName.Value, Mode=TwoWay}">
-                    <Entry.Behaviors>
-                        <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateUserNameCommand}" />
-                    </Entry.Behaviors>
-                </Entry>
-                <Label Text="{Binding UserName.Errors, Converter={StaticResource FirstValidationErrorConverter}}" IsVisible="{Binding UserName.Errors, Converter={StaticResource ValidatableObjectErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" />
-                <Label Text="{i18n:Translate Password}" FontSize="Small"/>
-                <Entry FontSize="Medium" Text="{Binding Password.Value, Mode=TwoWay}" IsPassword="True">
-                    <Entry.Behaviors>
-                        <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidatePasswordCommand}" />
-                    </Entry.Behaviors>
-                </Entry>
-                <Label Text="{Binding Password.Errors, Converter={StaticResource FirstValidationErrorConverter}}" IsVisible="{Binding Password.Errors, Converter={StaticResource ValidatableObjectErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" />
-                <StackLayout Orientation="Horizontal">
-                    <controls:TappedGrid HorizontalOptions="FillAndExpand">
-                        <controls:GradientBackground/>
-                        <Label Text="{i18n:Translate Confirm}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
-                    </controls:TappedGrid>
-                    <controls:TappedGrid HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray200}">
-                        <Label Text="{i18n:Translate Cancel}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
-                    </controls:TappedGrid>
+        <Grid Margin="48">
+            <Frame VerticalOptions="Center">
+                <StackLayout VerticalOptions="Center">
+                    <Label Text="{i18n:Translate ForAdmin}" FontSize="Large" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                    <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
+                    <Label Text="{i18n:Translate UserName}" FontSize="Small"/>
+                    <Entry FontSize="Medium" Text="{Binding UserName.Value, Mode=TwoWay}"
+                                             IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateUserNameCommand}" />
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Label Text="{Binding UserName.Errors, Converter={StaticResource FirstValidationErrorConverter}}" IsVisible="{Binding UserName.Errors, Converter={StaticResource ValidatableObjectErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" />
+                    <Label Text="{i18n:Translate Password}" FontSize="Small"/>
+                    <Entry FontSize="Medium" Text="{Binding Password.Value, Mode=TwoWay}" IsPassword="True"
+                                             IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidatePasswordCommand}" />
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Label Text="{Binding Password.Errors, Converter={StaticResource FirstValidationErrorConverter}}" IsVisible="{Binding Password.Errors, Converter={StaticResource ValidatableObjectErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" />
+                    <StackLayout Orientation="Horizontal">
+                        <controls:TappedGrid HorizontalOptions="FillAndExpand" TappedCommand="{Binding ConfirmCommand}"
+                                             IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+                            <controls:GradientBackground/>
+                            <Label Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                        </controls:TappedGrid>
+                        <controls:TappedGrid HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray200}" TappedCommand="{Binding CancelCommand}">
+                            <Label Text="{i18n:Translate Cancel}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                        </controls:TappedGrid>
+                    </StackLayout>
                 </StackLayout>
-            </StackLayout>
+            </Frame>
         </Grid>
     </ContentPage.Content>
 </pages:PopupPage>
