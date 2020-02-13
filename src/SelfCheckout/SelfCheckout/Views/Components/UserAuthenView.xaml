@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             xmlns:behaviors="clr-namespace:SelfCheckout.Behaviors"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.Components.UserAuthenView">
+  <ContentView.Content>
+        <StackLayout VerticalOptions="Center">
+            <Label Text="{i18n:Translate UserName}" FontSize="Small"/>
+            <Entry FontSize="Medium" Text="{Binding UserName.Value, Mode=TwoWay}"
+                                             IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+                <Entry.Behaviors>
+                    <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateUserNameCommand}" />
+                </Entry.Behaviors>
+            </Entry>
+            <Label Text="{Binding UserName.Errors, Converter={StaticResource FirstValidationErrorConverter}}" IsVisible="{Binding UserName.Errors, Converter={StaticResource ValidatableObjectErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" />
+            <Label Text="{i18n:Translate Password}" FontSize="Small"/>
+            <Entry FontSize="Medium" Text="{Binding Password.Value, Mode=TwoWay}" IsPassword="True"
+                                             IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+                <Entry.Behaviors>
+                    <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidatePasswordCommand}" />
+                </Entry.Behaviors>
+            </Entry>
+            <Label Text="{Binding Password.Errors, Converter={StaticResource FirstValidationErrorConverter}}" IsVisible="{Binding Password.Errors, Converter={StaticResource ValidatableObjectErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" />
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

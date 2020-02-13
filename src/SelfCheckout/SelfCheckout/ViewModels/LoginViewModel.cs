@@ -12,7 +12,14 @@ namespace SelfCheckout.ViewModels
 {
     public class LoginViewModel : AuthorizationViewModelBase
     {
-        public ICommand SettingCommand => new Command(async () => await NavigationService.NavigateToAsync<SettingViewModel>());
+        public ICommand SettingCommand => new Command(async () =>
+        {
+            var task = new TaskCompletionSource<bool>();
+            await NavigationService.PushModalAsync<AuthorizationViewModel, bool>(null, task);
+            var result = await task.Task;
+            if (result)
+                await NavigationService.NavigateToAsync<SettingViewModel>();
+        });
 
         public ICommand ConfirmCommand => new Command(async () => await LoginAsync());
 

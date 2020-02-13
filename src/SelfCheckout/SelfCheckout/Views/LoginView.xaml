@@ -12,6 +12,7 @@
              xmlns:magic="clr-namespace:MagicGradients;assembly=MagicGradients"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              xmlns:behaviors="clr-namespace:SelfCheckout.Behaviors"
+             xmlns:components="clr-namespace:SelfCheckout.Views.Components"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.LoginView">
@@ -29,22 +30,7 @@
                     <StackLayout VerticalOptions="Center">
                         <Label HorizontalTextAlignment="Center" FontSize="Large" Text="{i18n:Translate StaffLogin}"/>
                         <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
-                        <Label Text="{i18n:Translate UserName}" FontSize="Small"/>
-                        <Entry FontSize="Medium" Text="{Binding UserName.Value, Mode=TwoWay}"
-                                             IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
-                            <Entry.Behaviors>
-                                <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateUserNameCommand}" />
-                            </Entry.Behaviors>
-                        </Entry>
-                        <Label Text="{Binding UserName.Errors, Converter={StaticResource FirstValidationErrorConverter}}" IsVisible="{Binding UserName.Errors, Converter={StaticResource ValidatableObjectErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" />
-                        <Label Text="{i18n:Translate Password}" FontSize="Small"/>
-                        <Entry FontSize="Medium" Text="{Binding Password.Value, Mode=TwoWay}" IsPassword="True"
-                                             IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
-                            <Entry.Behaviors>
-                                <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidatePasswordCommand}" />
-                            </Entry.Behaviors>
-                        </Entry>
-                        <Label Text="{Binding Password.Errors, Converter={StaticResource FirstValidationErrorConverter}}" IsVisible="{Binding Password.Errors, Converter={StaticResource ValidatableObjectErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" />
+                        <components:UserAuthenView/>
                         <controls:TappedGrid Grid.Column="0"
                                              Padding="0"
                                              Margin="0,4,0,0"

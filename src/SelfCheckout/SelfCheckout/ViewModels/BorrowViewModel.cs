@@ -38,9 +38,11 @@ namespace SelfCheckout.ViewModels
             var task = new TaskCompletionSource<string>();
             await NavigationService.NavigateToAsync<BarcodeScanViewModel, string>(null, task);
             var result = await task.Task;
-            //if (!string.IsNullOrEmpty(result))
-            //    InputValue = result;
-            await ValidateShoppingCartAsync();
+            if (!string.IsNullOrEmpty(result))
+            {
+                InputValue = result;
+                await ValidateShoppingCartAsync();
+            }
         }
 
         async Task ValidateShoppingCartAsync()
