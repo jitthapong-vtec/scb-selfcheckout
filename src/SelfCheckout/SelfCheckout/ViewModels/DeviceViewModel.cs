@@ -49,7 +49,7 @@ namespace SelfCheckout.ViewModels
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.Name,
-                    Text2 = "-",
+                    Text2 = CustomerData.Person?.EnglishName,
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
@@ -61,13 +61,13 @@ namespace SelfCheckout.ViewModels
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.FlightNo,
-                    Text2 = "-",
+                    Text2 = CustomerData.Person?.FlightCode,
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.MobileNo,
-                    Text2 = "-",
+                    Text2 = CustomerData.Person?.ListContact.FirstOrDefault()?.ContactValue,
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()

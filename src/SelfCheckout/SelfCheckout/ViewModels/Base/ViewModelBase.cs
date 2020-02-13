@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using SelfCheckout.Services.Identity;
 using Xamarin.Essentials;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
 
 namespace SelfCheckout.ViewModels.Base
 {
@@ -18,6 +19,7 @@ namespace SelfCheckout.ViewModels.Base
         protected readonly IIdentityService IdentityService;
         protected readonly IDialogService DialogService;
         protected readonly INavigationService NavigationService;
+        protected readonly IRegisterService RegisterService;
 
         Language _languageSelected;
 
@@ -28,6 +30,7 @@ namespace SelfCheckout.ViewModels.Base
         {
             MasterDataService = ViewModelLocator.Resolve<IMasterDataService>();
             IdentityService = ViewModelLocator.Resolve<IIdentityService>();
+            RegisterService = ViewModelLocator.Resolve<IRegisterService>();
             DialogService = ViewModelLocator.Resolve<IDialogService>();
             NavigationService = ViewModelLocator.Resolve<INavigationService>();
         }
@@ -60,6 +63,11 @@ namespace SelfCheckout.ViewModels.Base
         public AppConfig AppConfig
         {
             get => MasterDataService.AppConfig;
+        }
+
+        public CustomerData CustomerData
+        {
+            get => RegisterService.CustomerData;
         }
 
         public string PageTitle

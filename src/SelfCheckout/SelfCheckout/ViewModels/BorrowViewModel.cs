@@ -15,17 +15,15 @@ namespace SelfCheckout.ViewModels
     public class BorrowViewModel : ViewModelBase
     {
         ISessionService _sessionService;
-        IRegisterService _registerService;
-
-        string _inputValue = "1910001252256";
+        //1910001252256
+        string _inputValue = "3600000711400";
         Person _person;
 
         bool _isCfPopupVisible;
 
-        public BorrowViewModel(ISessionService sessionService, IRegisterService registerService)
+        public BorrowViewModel(ISessionService sessionService)
         {
             _sessionService = sessionService;
-            _registerService = registerService;
         }
 
         public ICommand ScanShoppingCartCommand => new Command(async () => await ScanShoppingCartAsync());
@@ -71,13 +69,13 @@ namespace SelfCheckout.ViewModels
                     isGenImgShoppingCard = false
                 };
 
-                var customerDataResult = await _registerService.GetCustomerAsync(payload);
+                var customerDataResult = await RegisterService.GetCustomerAsync(payload);
                 if (!customerDataResult.IsCompleted)
                 {
                     await DialogService.ShowAlertAsync(AppResources.Opps, validateResult.DefaultMessage, AppResources.Close);
                     return;
                 }
-                Person = _registerService.CustomerData?.Person;
+                Person = CustomerData?.Person;
                 IsCfPopupVisible = true;
             }
             catch (Exception ex)
