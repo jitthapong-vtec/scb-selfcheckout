@@ -22,7 +22,15 @@ namespace SelfCheckout.ViewModels
                 try
                 {
                     IsBusy = true;
-                    var loginResult = await IdentityService.LoginAsync("40", "MpKpi", "127.0.0.1", UserName.Value, Password.Value);
+                    var payload = new
+                    {
+                        branch_no = "40",
+                        module_code = "MpKpi",
+                        user_code = UserName.Value,
+                        user_password = Password.Value,
+                        machine_ip = "127.0.0.1"
+                    };
+                    var loginResult = await IdentityService.LoginAsync(payload);
                     if (loginResult.IsCompleted)
                     {
                         await NavigationService.PopModalAsync();

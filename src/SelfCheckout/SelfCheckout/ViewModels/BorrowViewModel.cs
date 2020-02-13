@@ -1,5 +1,6 @@
 ﻿using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
 using SelfCheckout.Services.Session;
 using SelfCheckout.ViewModels.Base;
 using System;
@@ -14,15 +15,17 @@ namespace SelfCheckout.ViewModels
     public class BorrowViewModel : ViewModelBase
     {
         ISessionService _sessionService;
+        IRegisterService _registerService;
 
         string _inputValue = "1910001252256";
-        SessionData _sessionData;
+        Person _person;
 
         bool _isCfPopupVisible;
 
-        public BorrowViewModel(ISessionService sessionService)
+        public BorrowViewModel(ISessionService sessionService, IRegisterService registerService)
         {
             _sessionService = sessionService;
+            _registerService = registerService;
         }
 
         public ICommand ScanShoppingCartCommand => new Command(async () => await ScanShoppingCartAsync());
@@ -57,16 +60,25 @@ namespace SelfCheckout.ViewModels
                     return;
                 }
 
+                var payload = new
+                {
+                    shoppingCard = "3600000711400",
+                    SubBranch = "MHN-MA-DT",
+                    pickupCode = "",
+                    isTour = false,
+                    platform = "FRMFIT",
+                    isGenPdfPromotion = false,
+                    isGenImgShoppingCard = false
+                };
+
+                var customerDataResult = await _registerService.GetCustomerAsync(payload);
+                if (!customerDataResult.IsCompleted)
+                {
+                    await DialogService.ShowAlertAsync(AppResources.Opps, validateResult.DefaultMessage, AppResources.Close);
+                    return;
+                }
+                Person = _registerService.CustomerData?.Person;
                 IsCfPopupVisible = true;
-
-                //var sessionDetailResult = await _sessionService.GetSessionDetialAsync(startResult.Data);
-                //if (!sessionDetailResult.IsCompleted)
-                //{
-                //    await DialogService.ShowAlertAsync(AppResources.Opps, validateResult.DefaultMessage, AppResources.Close);
-                //    return;
-                //}
-                //SessionData = sessionDetailResult.Data;
-
             }
             catch (Exception ex)
             {
@@ -106,13 +118,13 @@ namespace SelfCheckout.ViewModels
             }
         }
 
-        public SessionData SessionData
+        public Person Person
         {
-            get => _sessionData;
+            get => _person;
             set
             {
-                _sessionData = value;
-                RaisePropertyChanged(() => SessionData);
+                _person = value;
+                RaisePropertyChanged(() => Person);
             }
         }
 

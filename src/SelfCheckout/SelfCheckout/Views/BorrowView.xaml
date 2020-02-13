@@ -98,11 +98,11 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <controls:CustomLabel Grid.Row="0" Grid.Column="0" UpperCase="True" Text="{i18n:Translate Name}"/>
-                        <controls:CustomLabel Grid.Row="0" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="Linsoo Jochoo" />
+                        <controls:CustomLabel Grid.Row="0" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.EnglishName}" />
                         <controls:CustomLabel Grid.Row="1" Grid.Column="0" UpperCase="True" Text="{i18n:Translate PassportNo}"/>
-                        <controls:CustomLabel Grid.Row="1" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="DF4263586"/>
+                        <controls:CustomLabel Grid.Row="1" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.PassportNo}"/>
                         <controls:CustomLabel Grid.Row="2" Grid.Column="0" UpperCase="True" Text="{i18n:Translate FlightNo}"/>
-                        <controls:CustomLabel Grid.Row="2" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="TF534"/>
+                        <controls:CustomLabel Grid.Row="2" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.FlightCode}"/>
                     </Grid>
                     <Button HeightRequest="1" BackgroundColor="{StaticResource Gray200}"/>
                     <Grid Margin="0,4,0,0">

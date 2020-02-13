@@ -10,28 +10,20 @@ namespace SelfCheckout.Services.Identity
 {
     public class IdentityService : IIdentityService
     {
-        IMasterDataService _appConfigService;
+        IMasterDataService _masterDataService;
         IRequestProvider _requestProvider;
 
-        public IdentityService(IMasterDataService appConfigService, IRequestProvider request)
+        public IdentityService(IMasterDataService masterDataService, IRequestProvider request)
         {
-            _appConfigService = appConfigService;
+            _masterDataService = masterDataService;
             _requestProvider = request;
         }
 
         public LoginData LoginData { get; set; }
 
-        public async Task<ApiResultData<LoginData>> LoginAsync(string branchNo, string moduleCode, string matchineIp, string userCode, string userPassword)
+        public async Task<ApiResultData<LoginData>> LoginAsync(object payload)
         {
-            var payload = new
-            {
-                branch_no = branchNo,
-                module_code = moduleCode,
-                user_code = userCode,
-                user_password = userPassword,
-                machine_ip = matchineIp
-            };
-            var uri = new UriBuilder($"{_appConfigService.AppConfig.UrlSaleEngineApi}api/Authen/LoginAuthen");
+            var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/Authen/LoginAuthen");
             var response = await _requestProvider.PostAsync<object, ApiResultData<LoginData>>(uri.ToString(), payload, GlobalSettings.AccessKey);
             return response;
         }

@@ -28,4 +28,42 @@ namespace SelfCheckout.Models
 
         public string DefaultMessage { get => Message?.FirstOrDefault()?.MessageDesc; }
     }
+
+    public class Message
+    {
+        [JsonProperty("MessageType")]
+        public string MessageType { get; set; }
+
+        [JsonProperty("MessageCode")]
+        public string MessageCode { get; set; }
+
+        [JsonProperty("MessageDesc")]
+        public string MessageDesc { get; set; }
+    }
+
+    public class ProcessTracking
+    {
+        public int ProcessSeq { get; set; }
+        public string ProcessName { get; set; }
+        public string ProcessDT { get; set; }
+        public string ProcessData { get; set; }
+    }
+
+    public class Tracking
+    {
+        [JsonProperty("MyException")]
+        public object MyException { get; set; }
+
+        [JsonProperty("Namespace")]
+        public string Namespace { get; set; }
+
+        [JsonProperty("ClassName")]
+        public string ClassName { get; set; }
+
+        [JsonProperty("MethodName")]
+        public string MethodName { get; set; }
+
+        [JsonProperty("AssemblyInfo")]
+        public string AssemblyInfo { get; set; }
+    }
 }

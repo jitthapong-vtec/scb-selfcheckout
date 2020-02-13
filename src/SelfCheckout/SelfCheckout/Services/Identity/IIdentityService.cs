@@ -10,7 +10,7 @@ namespace SelfCheckout.Services.Identity
     {
         LoginData LoginData { get; set; }
 
-        Task<ApiResultData<LoginData>> LoginAsync(string branchNo, string moduleCode, string machineIp, string userCode, string userPassword);
+        Task<ApiResultData<LoginData>> LoginAsync(object payload);
 
         Task LogoutAsync();
     }
