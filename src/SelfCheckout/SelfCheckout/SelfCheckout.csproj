@@ -50,6 +50,9 @@
     <Compile Update="Views\Components\UserAuthenView.xaml.cs">
       <DependentUpon>UserAuthenView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\SummaryView.xaml.cs">
+      <DependentUpon>SummaryView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\CurrencySelectionView.xaml.cs">
       <DependentUpon>CurrencySelectionView.xaml</DependentUpon>
     </Compile>

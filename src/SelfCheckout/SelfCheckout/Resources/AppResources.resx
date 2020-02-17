@@ -169,6 +169,9 @@
     <value>Device Info</value>
     <comment>No translate</comment>
   </data>
+  <data name="Discount" xml:space="preserve">
+    <value>Discount</value>
+  </data>
   <data name="FlightNo" xml:space="preserve">
     <value>Flight No.</value>
   </data>
@@ -227,6 +230,9 @@
   <data name="OrderSummary" xml:space="preserve">
     <value>Order Summary</value>
   </data>
+  <data name="OrderTotal" xml:space="preserve">
+    <value>Order Total</value>
+  </data>
   <data name="PassportNo" xml:space="preserve">
     <value>Passport No.</value>
   </data>
@@ -244,6 +250,9 @@
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
+  </data>
+  <data name="ScanCoupon" xml:space="preserve">
+    <value>Scan Coupon</value>
   </data>
   <data name="ScanShoppingCart" xml:space="preserve">
     <value>Please scan shopping cart</value>
@@ -263,6 +272,9 @@
   <data name="SubBranch" xml:space="preserve">
     <value>Sub Branch</value>
   </data>
+  <data name="SubTotal" xml:space="preserve">
+    <value>Sub Total</value>
+  </data>
   <data name="System" xml:space="preserve">
     <value>System</value>
     <comment>No translate</comment>
@@ -272,6 +284,9 @@
   </data>
   <data name="ThkForOrderTitle" xml:space="preserve">
     <value>Thank you for your order</value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Units</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>User Name</value>

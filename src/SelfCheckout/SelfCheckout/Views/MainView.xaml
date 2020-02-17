@@ -109,12 +109,15 @@
     <ContentPage.Content>
         <Grid>
             <forms:CachedImage Aspect="AspectFill" Margin="0,-56,0,0" Source="resource://SelfCheckout.Resources.Images.bg.png"/>
-            <Grid>
+            <Grid RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <ctrls:TabViewContainer Grid.Row="0" Content="{Binding CurrentView}"/>
+                <Grid Grid.Row="0">
+                    <ctrls:TabViewContainer Content="{Binding CurrentView}"/>
+                    <views:SummaryView VerticalOptions="End"/>
+                </Grid>
                 <Grid Grid.Row="1">
                     <Frame Margin="0,0,0,-2" Padding="2" CornerRadius="0"/>
                     <StackLayout HeightRequest="56" x:Name="tabContainer" Orientation="Horizontal" BindableLayout.ItemsSource="{Binding Tabs}" 

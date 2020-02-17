@@ -214,6 +214,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discount.
+        /// </summary>
+        internal static string Discount {
+            get {
+                return ResourceManager.GetString("Discount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flight No..
         /// </summary>
         internal static string FlightNo {
@@ -385,6 +394,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order Total.
+        /// </summary>
+        internal static string OrderTotal {
+            get {
+                return ResourceManager.GetString("OrderTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Passport No..
         /// </summary>
         internal static string PassportNo {
@@ -435,6 +453,15 @@ namespace SelfCheckout.Resources {
         internal static string Profile {
             get {
                 return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan Coupon.
+        /// </summary>
+        internal static string ScanCoupon {
+            get {
+                return ResourceManager.GetString("ScanCoupon", resourceCulture);
             }
         }
         
@@ -493,6 +520,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sub Total.
+        /// </summary>
+        internal static string SubTotal {
+            get {
+                return ResourceManager.GetString("SubTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to System.
         /// </summary>
         internal static string System {
@@ -516,6 +552,15 @@ namespace SelfCheckout.Resources {
         internal static string ThkForOrderTitle {
             get {
                 return ResourceManager.GetString("ThkForOrderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Units.
+        /// </summary>
+        internal static string Units {
+            get {
+                return ResourceManager.GetString("Units", resourceCulture);
             }
         }
         
