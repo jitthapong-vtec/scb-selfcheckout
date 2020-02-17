@@ -14,6 +14,10 @@ namespace SelfCheckout.Services.Master
 
         IList<Language> Languages { get; }
 
-        Task LoadMasterData();
+        Task LoadConfigAsync();
+
+        Task LoadLanguageAsync();
+
+        Task LoadPaymentAsync();
     }
 }

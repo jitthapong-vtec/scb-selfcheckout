@@ -31,7 +31,9 @@
             <Label Text="{Binding PageTitle}" FontAttributes="Bold" HorizontalOptions="Center" Margin="50,0,50,0" HorizontalTextAlignment="Center"/>
             <StackLayout HorizontalOptions="End" Orientation="Horizontal">
                 <Image Source="ic_info"/>
-                <Label Text="THB" HorizontalOptions="Center"/>
+                <ctrls:TappedGrid TappedCommand="{Binding CurrencyTappedCommand}">
+                    <Label Text="{Binding CurrencySelected.CurrCode}" HorizontalOptions="Center"/>
+                </ctrls:TappedGrid>
             </StackLayout>
         </Grid>
     </NavigationPage.TitleView>
@@ -138,6 +140,26 @@
                     </Label>
                 </Grid>
                 <views:LanguageSelectionView Grid.Row="1"/>
+            </Grid>
+            <Grid IsVisible="{Binding CurrencyShowing}" HeightRequest="300" BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="8">
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Label Text="{i18n:Translate Currency}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding CurrencyTappedCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+                <views:CurrencySelectionView Grid.Row="1"/>
             </Grid>
         </Grid>
     </ContentPage.Content>

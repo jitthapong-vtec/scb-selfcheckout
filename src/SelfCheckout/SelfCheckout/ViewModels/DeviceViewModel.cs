@@ -49,7 +49,7 @@ namespace SelfCheckout.ViewModels
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.Name,
-                    Text2 = CustomerData.Person?.EnglishName,
+                    Text2 = CustomerData?.Person?.EnglishName,
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
@@ -61,31 +61,31 @@ namespace SelfCheckout.ViewModels
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.FlightNo,
-                    Text2 = CustomerData.Person?.FlightCode,
+                    Text2 = CustomerData?.Person?.FlightCode,
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.MobileNo,
-                    Text2 = CustomerData.Person?.ListContact.FirstOrDefault()?.ContactValue,
+                    Text2 = CustomerData?.Person?.ListContact.FirstOrDefault()?.ContactValue,
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.Module,
-                    Text2 = _masterDataService.AppConfig.Module,
+                    Text2 = AppConfig?.Module,
                     Arg1 = 2
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.BranchNo,
-                    Text2 = _masterDataService.AppConfig.BranchNo,
+                    Text2 = AppConfig?.BranchNo,
                     Arg1 = 2
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.SubBranch,
-                    Text2 = _masterDataService.AppConfig.SubBranch,
+                    Text2 = AppConfig?.SubBranch,
                     Arg1 = 2
                 },
                 new SimpleSelectedItem()

@@ -6,16 +6,16 @@
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
-             mc:Ignorable="d"
              x:Name="this"
-             x:Class="SelfCheckout.Views.LanguageSelectionView">
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.CurrencySelectionView">
   <ContentView.Content>
         <Grid>
-            <CollectionView ItemsSource="{Binding Languages}">
+            <CollectionView ItemsSource="{Binding Currencies}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <controls:TappedGrid Padding="16" TappedCommand="{Binding Source={x:Reference this}, Path=BindingContext.LanguageSelectionCommand}" CommandParameter="{Binding .}">
-                            <Label Text="{Binding LangDesc}" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                        <controls:TappedGrid Padding="16" TappedCommand="{Binding Source={x:Reference this}, Path=BindingContext.CurrencySelectionCommand}" CommandParameter="{Binding .}">
+                            <Label Text="{Binding CurrCode}" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
                         </controls:TappedGrid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

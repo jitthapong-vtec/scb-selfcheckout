@@ -6,22 +6,20 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using SelfCheckout.Services.Identity;
 using Xamarin.Essentials;
 using SelfCheckout.Resources;
 using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
 
 namespace SelfCheckout.ViewModels.Base
 {
     public abstract class ViewModelBase : ExtendedBindableObject
     {
         protected readonly IMasterDataService MasterDataService;
-        protected readonly IIdentityService IdentityService;
+        protected readonly ISaleEngineService SaleEngineService;
         protected readonly IDialogService DialogService;
         protected readonly INavigationService NavigationService;
         protected readonly IRegisterService RegisterService;
-
-        Language _languageSelected;
 
         string _pageTitle;
         bool _isBusy;
@@ -29,7 +27,7 @@ namespace SelfCheckout.ViewModels.Base
         public ViewModelBase()
         {
             MasterDataService = ViewModelLocator.Resolve<IMasterDataService>();
-            IdentityService = ViewModelLocator.Resolve<IIdentityService>();
+            SaleEngineService = ViewModelLocator.Resolve<ISaleEngineService>();
             RegisterService = ViewModelLocator.Resolve<IRegisterService>();
             DialogService = ViewModelLocator.Resolve<IDialogService>();
             NavigationService = ViewModelLocator.Resolve<INavigationService>();
@@ -40,7 +38,7 @@ namespace SelfCheckout.ViewModels.Base
             var result = await DialogService.ShowConfirmAsync(AppResources.Logout, AppResources.ConfirmLogout, AppResources.Yes, AppResources.No);
             if (result)
             {
-                await IdentityService.LogoutAsync();
+                await SaleEngineService.LogoutAsync();
                 await NavigationService.InitializeAsync();
             }
         });
@@ -77,16 +75,6 @@ namespace SelfCheckout.ViewModels.Base
             {
                 _pageTitle = value;
                 RaisePropertyChanged(() => PageTitle);
-            }
-        }
-
-        public Language LanguageSelected
-        {
-            get => _languageSelected;
-            set
-            {
-                _languageSelected = value;
-                RaisePropertyChanged(() => LanguageSelected);
             }
         }
 

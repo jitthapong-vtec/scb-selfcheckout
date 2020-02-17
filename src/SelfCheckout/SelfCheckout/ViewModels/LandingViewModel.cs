@@ -1,5 +1,4 @@
 ﻿using SelfCheckout.Resources;
-using SelfCheckout.Services.Identity;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -11,23 +10,15 @@ namespace SelfCheckout.ViewModels
 {
     public class LandingViewModel : ViewModelBase
     {
-        IIdentityService _identityService;
-
-        public LandingViewModel(IIdentityService identityService)
-        {
-            _identityService = identityService;
-        }
-
         public override async Task InitializeAsync(object navigationData)
         {
             try
             {
                 IsBusy = true;
                 
-                await MasterDataService.LoadMasterData();
-                LanguageSelected = MasterDataService.Languages.FirstOrDefault();
+                await MasterDataService.LoadConfigAsync();
 
-                if (_identityService.LoginData == null)
+                if (SaleEngineService.LoginData == null)
                     await NavigationService.NavigateToAsync<LoginViewModel>();
                 else
                     await NavigationService.NavigateToAsync<BorrowViewModel>();

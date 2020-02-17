@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Exceptions\" />
     <Folder Include="Resources\Images\Icons\" />
   </ItemGroup>
 
@@ -50,6 +49,9 @@
     </Compile>
     <Compile Update="Views\Components\UserAuthenView.xaml.cs">
       <DependentUpon>UserAuthenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CurrencySelectionView.xaml.cs">
+      <DependentUpon>CurrencySelectionView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\ShoppingCartView.xaml.cs">
       <DependentUpon>ShoppingCartView.xaml</DependentUpon>

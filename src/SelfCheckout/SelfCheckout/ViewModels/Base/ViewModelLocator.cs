@@ -1,6 +1,5 @@
 ﻿using SelfCheckout.Services.Master;
 using SelfCheckout.Services.Dialog;
-using SelfCheckout.Services.Identity;
 using SelfCheckout.Services.Navigation;
 using SelfCheckout.Services.RequestProvider;
 using SelfCheckout.Views;
@@ -11,6 +10,7 @@ using Xamarin.Forms;
 using SelfCheckout.Services.Session;
 using SelfCheckout.Services.Serializer;
 using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
 
 namespace SelfCheckout.ViewModels.Base
 {
@@ -51,8 +51,8 @@ namespace SelfCheckout.ViewModels.Base
             _container.Register<IDialogService, DialogService>();
             _container.Register<IRequestProvider, RequestProvider>();
             _container.Register<ISerializeService, JsonSerializeService>();
-            _container.Register<IIdentityService, IdentityService>();
             _container.Register<IMasterDataService, MasterDataService>();
+            _container.Register<ISaleEngineService, SaleEngineService>();
             _container.Register<ISessionService, SessionService>();
             _container.Register<IRegisterService, RegisterService>();
         }

@@ -30,7 +30,7 @@ namespace SelfCheckout.ViewModels
                         user_password = Password.Value,
                         machine_ip = "127.0.0.1"
                     };
-                    var loginResult = await IdentityService.LoginAsync(payload);
+                    var loginResult = await SaleEngineService.LoginAsync(payload);
                     if (loginResult.IsCompleted)
                     {
                         await NavigationService.PopModalAsync();

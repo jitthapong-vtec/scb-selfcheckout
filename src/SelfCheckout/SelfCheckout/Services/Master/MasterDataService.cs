@@ -1,4 +1,5 @@
-﻿using SelfCheckout.Models;
+﻿using SelfCheckout.Exceptions;
+using SelfCheckout.Models;
 using SelfCheckout.Services.RequestProvider;
 using SelfCheckout.Services.Serializer;
 using System;
@@ -23,32 +24,31 @@ namespace SelfCheckout.Services.Master
 
         public IList<Language> Languages { get; private set; }
 
-        public async Task LoadMasterData()
-        {
-            await LoadConfigAsync();
-            await LoadLanguageAsync();
-            await LoadPaymentAsync();
-        }
-
-        async Task LoadConfigAsync()
+        public async Task LoadConfigAsync()
         {
             var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Master/GetConfig");
             var result = await _requestProvider.GetAsync<ApiResultData<AppConfig>>(uri.ToString());
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
             AppConfig = result.Data;
         }
 
-        async Task LoadLanguageAsync()
+        public async Task LoadLanguageAsync()
         {
             var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Master/LanguageList");
-            var response = await _requestProvider.GetAsync<ApiResultData<IList<Language>>>(uri.ToString());
-            Languages = response.Data;
+            var result = await _requestProvider.GetAsync<ApiResultData<IList<Language>>>(uri.ToString());
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            Languages = result.Data;
         }
 
-        async Task LoadPaymentAsync()
+        public async Task LoadPaymentAsync()
         {
             var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Master/PaymentList");
-            var response = await _requestProvider.GetAsync<ApiResultData<IList<Payment>>>(uri.ToString());
-            Payments = response.Data;
+            var result = await _requestProvider.GetAsync<ApiResultData<IList<Payment>>>(uri.ToString());
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            Payments = result.Data;
         }
     }
 }

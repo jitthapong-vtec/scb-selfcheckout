@@ -1,9 +1,10 @@
 ﻿using SelfCheckout.Controls;
+using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
-using SelfCheckout.Services.Identity;
 using SelfCheckout.ViewModels.Base;
 using SelfCheckout.Views;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,10 +17,16 @@ namespace SelfCheckout.ViewModels
     public class MainViewModel : ViewModelBase
     {
         ObservableCollection<TabItem> _tabs;
+        ObservableCollection<Language> _languages;
+        ObservableCollection<Payment> _payments;
+        ObservableCollection<Currency> _currencies;
 
         ContentView _currentView;
+        Language _languageSelected;
+        Currency _currencySelected;
 
         bool _langShowing;
+        bool _currencyShowing;
 
         public MainViewModel()
         {
@@ -67,9 +74,10 @@ namespace SelfCheckout.ViewModels
             PageTitle = firstTab.Title;
         }
 
-        public override Task InitializeAsync(object navigationData)
+        public override async Task InitializeAsync(object navigationData)
         {
-            return base.InitializeAsync(navigationData);
+            await LoadMasterDataAsync();
+            await LoadCurrencyAsync();
         }
 
         public ICommand TabSelectedCommand => new Command<TabItem>(async (item) => await SelectTabAsync(item));
@@ -79,9 +87,21 @@ namespace SelfCheckout.ViewModels
             LangShowing = !LangShowing;
         });
 
-        public ICommand LanguageSelectionCommand => new Command(() =>
+        public ICommand CurrencyTappedCommand => new Command(() =>
         {
+            CurrencyShowing = !CurrencyShowing;
+        });
+
+        public ICommand LanguageSelectionCommand => new Command<Language>((lang) =>
+        {
+            LanguageSelected = lang;
             LangShowing = false;
+        });
+
+        public ICommand CurrencySelectionCommand => new Command<Currency>((currency) =>
+        {
+            CurrencySelected = currency;
+            CurrencyShowing = false;
         });
 
         Task SelectTabAsync(TabItem item)
@@ -95,6 +115,40 @@ namespace SelfCheckout.ViewModels
             return Task.FromResult(true);
         }
 
+        async Task LoadMasterDataAsync()
+        {
+            try
+            {
+                await MasterDataService.LoadLanguageAsync();
+                await MasterDataService.LoadPaymentAsync();
+
+                Languages = MasterDataService.Languages?.ToObservableCollection();
+                Payments = MasterDataService.Payments?.ToObservableCollection();
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+            }
+        }
+
+        async Task LoadCurrencyAsync()
+        {
+            try
+            {
+                var payload = new
+                {
+                    branch_no = "40"
+                };
+                await SaleEngineService.LoadCurrencyAsync(payload);
+                Currencies = SaleEngineService.Currencies?.ToObservableCollection();
+                CurrencySelected = SaleEngineService.Currencies?.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+            }
+        }
+
         public ObservableCollection<TabItem> Tabs
         {
             get => _tabs;
@@ -105,9 +159,34 @@ namespace SelfCheckout.ViewModels
             }
         }
 
-        public IList<Language> Languages
+        public ObservableCollection<Language> Languages
         {
-            get => MasterDataService.Languages;
+            get => _languages;
+            set
+            {
+                _languages = value;
+                RaisePropertyChanged(() => Languages);
+            }
+        }
+
+        public ObservableCollection<Currency> Currencies
+        {
+            get => _currencies;
+            set
+            {
+                _currencies = value;
+                RaisePropertyChanged(() => Currencies);
+            }
+        }
+
+        public ObservableCollection<Payment> Payments
+        {
+            get => _payments;
+            set
+            {
+                _payments = value;
+                RaisePropertyChanged(() => Payments);
+            }
         }
 
         public ContentView CurrentView
@@ -117,6 +196,36 @@ namespace SelfCheckout.ViewModels
             {
                 _currentView = value;
                 RaisePropertyChanged(() => CurrentView);
+            }
+        }
+
+        public Language LanguageSelected
+        {
+            get => _languageSelected;
+            set
+            {
+                _languageSelected = value;
+                RaisePropertyChanged(() => LanguageSelected);
+            }
+        }
+
+        public Currency CurrencySelected
+        {
+            get => _currencySelected;
+            set
+            {
+                _currencySelected = value;
+                RaisePropertyChanged(() => CurrencySelected);
+            }
+        }
+
+        public bool CurrencyShowing
+        {
+            get => _currencyShowing;
+            set
+            {
+                _currencyShowing = value;
+                RaisePropertyChanged(() => CurrencyShowing);
             }
         }
 
