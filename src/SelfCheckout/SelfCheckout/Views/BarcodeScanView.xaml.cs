@@ -29,8 +29,8 @@ namespace SelfCheckout.Views
         {
             base.OnDisappearing();
 
-            ((BarcodeScanViewModel)BindingContext).SetResult(null);
             scanView.IsScanning = false;
+            ((BarcodeScanViewModel)BindingContext).SetResult(null);
         }
     }
 }

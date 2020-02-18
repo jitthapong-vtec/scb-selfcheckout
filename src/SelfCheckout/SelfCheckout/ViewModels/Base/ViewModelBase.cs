@@ -10,12 +10,14 @@ using Xamarin.Essentials;
 using SelfCheckout.Resources;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.Session;
 
 namespace SelfCheckout.ViewModels.Base
 {
     public abstract class ViewModelBase : ExtendedBindableObject
     {
         protected readonly IMasterDataService MasterDataService;
+        protected readonly ISessionService SessionService;
         protected readonly ISaleEngineService SaleEngineService;
         protected readonly IDialogService DialogService;
         protected readonly INavigationService NavigationService;
@@ -27,6 +29,7 @@ namespace SelfCheckout.ViewModels.Base
         public ViewModelBase()
         {
             MasterDataService = ViewModelLocator.Resolve<IMasterDataService>();
+            SessionService = ViewModelLocator.Resolve<ISessionService>();
             SaleEngineService = ViewModelLocator.Resolve<ISaleEngineService>();
             RegisterService = ViewModelLocator.Resolve<IRegisterService>();
             DialogService = ViewModelLocator.Resolve<IDialogService>();
@@ -66,6 +69,11 @@ namespace SelfCheckout.ViewModels.Base
         public CustomerData CustomerData
         {
             get => RegisterService.CustomerData;
+        }
+
+        public string CurrentShoppingCart
+        {
+            get => SessionService.CurrentShoppingCart;
         }
 
         public string PageTitle

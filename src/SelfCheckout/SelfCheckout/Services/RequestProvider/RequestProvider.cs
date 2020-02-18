@@ -49,7 +49,10 @@ namespace SelfCheckout.Services.RequestProvider
 
             var content = new StringContent(string.Empty);
             if (data != null)
-                content = new StringContent(JsonConvert.SerializeObject(data));
+            {
+                var json = JsonConvert.SerializeObject(data);
+                content = new StringContent(json);
+            }
 
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = null;

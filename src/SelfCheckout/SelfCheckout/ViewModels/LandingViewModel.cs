@@ -16,7 +16,7 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = true;
                 
-                await MasterDataService.LoadConfigAsync();
+                //await MasterDataService.LoadConfigAsync();
 
                 if (SaleEngineService.LoginData == null)
                     await NavigationService.NavigateToAsync<LoginViewModel>();
@@ -25,7 +25,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Info, ex.Message, AppResources.Close);
+                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {

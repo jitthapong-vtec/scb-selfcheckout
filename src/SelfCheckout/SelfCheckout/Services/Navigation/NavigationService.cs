@@ -15,7 +15,7 @@ namespace SelfCheckout.Services.Navigation
     {
         public Task InitializeAsync()
         {
-            return NavigateToAsync<LandingViewModel>();
+            return NavigateToAsync<MainViewModel>();
         }
 
         public Task NavigateToAsync<TViewModel>() where TViewModel : ViewModelBase

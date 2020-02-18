@@ -5,6 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:views="clr-namespace:SelfCheckout.Views"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.ShoppingCartView">
@@ -15,7 +18,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}">
+                <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="4">
                     <Grid.Resources>
                         <Style TargetType="Label">
                             <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
@@ -28,11 +31,33 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="1" Text="890000001654 : Amornrat Doem" HorizontalTextAlignment="End"/>
-                    <Label Grid.Column="2" FontFamily="{StaticResource KPIconFont}" Text="&#xfe906;" FontSize="18"/>
+                    <StackLayout Grid.Column="0" Orientation="Horizontal">
+                        <controls:TappedGrid>
+                            <ffimageloadingsvg:SvgCachedImage HeightRequest="32" VerticalOptions="Center">
+                                <ffimageloadingsvg:SvgCachedImage.Triggers>
+                                    <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage" Binding="{Binding IsSelectAllOrder}" Value="False">
+                                        <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.Icons.check_box_normal.svg"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage" Binding="{Binding IsSelectAllOrder}" Value="True">
+                                        <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.Icons.check_box_active.svg"/>
+                                    </DataTrigger>
+                                </ffimageloadingsvg:SvgCachedImage.Triggers>
+                            </ffimageloadingsvg:SvgCachedImage>
+                        </controls:TappedGrid>
+                    </StackLayout>
+                    <Label Grid.Column="1" HorizontalTextAlignment="End">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding CurrentShoppingCart}"/>
+                                <Span Text=" : "/>
+                                <Span Text="{Binding CustomerData.Person.NativeName}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Grid.Column="2" FontFamily="{StaticResource KPIconFont}" Text="&#xe906;" FontSize="18"/>
                 </Grid>
-                <RefreshView Grid.Row="1">
-                    <CollectionView>
+                <RefreshView Grid.Row="1" IsRefreshing="{Binding IsBusy}">
+                    <CollectionView ItemsSource="{Binding OrderDetails}">
                         <CollectionView.EmptyView>
                             <Grid>
                                 <StackLayout VerticalOptions="Center">
@@ -41,6 +66,11 @@
                                 </StackLayout>
                             </Grid>
                         </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <views:OrderDetailItemView/>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
                     </CollectionView>
                 </RefreshView>
             </Grid>

@@ -15,14 +15,11 @@
              x:Name="mainView"
              x:Class="SelfCheckout.Views.MainView">
     <NavigationPage.TitleView>
-        <Grid VerticalOptions="FillAndExpand" Margin="{OnPlatform Android=4}">
+        <Grid VerticalOptions="FillAndExpand" Padding="{OnPlatform Android=4}">
             <Grid.Resources>
                 <Style TargetType="Label">
                     <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
                     <Setter Property="VerticalOptions" Value="Center"/>
-                </Style>
-                <Style TargetType="Image">
-                    <Setter Property="WidthRequest" Value="{OnPlatform Android=36}"/>
                 </Style>
             </Grid.Resources>
             <ctrls:TappedGrid HorizontalOptions="Start" TappedCommand="{Binding LanguageTappedCommand}">
@@ -116,7 +113,7 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <ctrls:TabViewContainer Content="{Binding CurrentView}"/>
-                    <views:SummaryView VerticalOptions="End"/>
+                    <views:SummaryView VerticalOptions="End" IsVisible="{Binding SummaryVisible}"/>
                 </Grid>
                 <Grid Grid.Row="1">
                     <Frame Margin="0,0,0,-2" Padding="2" CornerRadius="0"/>

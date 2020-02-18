@@ -12,7 +12,7 @@
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.SummaryView">
     <ContentView.Content>
-        <Grid BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
+        <Grid BackgroundColor="{StaticResource Gray50}" RowSpacing="0" VerticalOptions="End">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -25,12 +25,20 @@
                 </Grid.Resources>
                 <Label Text="{i18n:Translate OrderSummary}" HorizontalOptions="Start" VerticalOptions="Center"/>
                 <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding SummaryShowing}" Value="True">
+                            <Setter Property="Text" Value="&#xf078;"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label" Binding="{Binding SummaryShowing}" Value="False">
+                            <Setter Property="Text" Value="&#xf077;"/>
+                        </DataTrigger>
+                    </Label.Triggers>
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ExpandSummaryTappedCommand}"/>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ShowSummaryCommand}"/>
                     </Label.GestureRecognizers>
                 </Label>
             </Grid>
-            <StackLayout Grid.Row="1" Padding="0,0,0,16">
+            <StackLayout Grid.Row="1" Padding="0,0,0,16" IsVisible="{Binding SummaryShowing}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -39,9 +47,7 @@
                     <controls:TappedGrid Grid.Column="0" Margin="8" BackgroundColor="{StaticResource Brown}"
                                      Padding="4" VerticalOptions="Center" 
                                      HorizontalOptions="Start"
-                                     IsVisible="{Binding LogoutButtonVisible}"
                                      Style="{StaticResource TappedGridButtonStyle}"
-                                     TappedCommand="{Binding LogoutCommand}"
                                      effects:RoundCornersEffect.CornerRadius="3">
                         <StackLayout Orientation="Horizontal" VerticalOptions="Center" Margin="4">
                             <Label Text="&#xe901;" TextColor="{StaticResource Gray50}" FontSize="18" FontFamily="{StaticResource KPIconFont}" VerticalOptions="Center"/>
@@ -86,9 +92,7 @@
                         <controls:TappedGrid Grid.RowSpan="2" Grid.Column="1" Margin="8,0,8,0" BackgroundColor="{StaticResource Secondary}"
                                      Padding="8" VerticalOptions="Center" 
                                      HorizontalOptions="Start"
-                                     IsVisible="{Binding LogoutButtonVisible}"
                                      Style="{StaticResource TappedGridButtonStyle}"
-                                     TappedCommand="{Binding LogoutCommand}"
                                      effects:RoundCornersEffect.CornerRadius="3">
                             <Label Text="{i18n:Translate Checkout}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
                         </controls:TappedGrid>

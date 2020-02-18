@@ -23,6 +23,7 @@
         <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
         <converter:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter"/>
         <converter:ValidatableObjectErrorConverter x:Key="ValidatableObjectErrorConverter"/>
+        <converter:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter"/>
 
         <OnPlatform x:Key="MontserratRegular" 
                         x:TypeArguments="x:String" 
@@ -71,18 +72,10 @@
             <Setter Property="Margin" Value="2"/>
             <Setter Property="VerticalOptions" Value="Center"/>
         </Style>
-        
+
         <Style TargetType="controls:TappedGrid" x:Key="TappedGridButtonStyle">
             <Setter Property="HeightRequest" Value="40"/>
             <Setter Property="VerticalOptions" Value="Center"/>
         </Style>
-
-        <ControlTemplate x:Key="PopupTemplate">
-            <Grid BackgroundColor="#66000000">
-                <Frame Margin="16" VerticalOptions="Center">
-                    <ContentPresenter/>
-                </Frame>
-            </Grid>
-        </ControlTemplate>
     </Application.Resources>
 </Application>

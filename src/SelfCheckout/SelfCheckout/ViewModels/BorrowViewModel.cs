@@ -1,4 +1,5 @@
-﻿using SelfCheckout.Models;
+﻿using Newtonsoft.Json;
+using SelfCheckout.Models;
 using SelfCheckout.Resources;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.Session;
@@ -14,25 +15,11 @@ namespace SelfCheckout.ViewModels
 {
     public class BorrowViewModel : ViewModelBase
     {
-        ISessionService _sessionService;
-        //1910001252256
-        string _inputValue = "3600000711400";
-        Person _person;
-
-        bool _isCfPopupVisible;
-
-        public BorrowViewModel(ISessionService sessionService)
-        {
-            _sessionService = sessionService;
-        }
+        string _inputValue;
 
         public ICommand ScanShoppingCartCommand => new Command(async () => await ScanShoppingCartAsync());
 
         public ICommand ValidateShoppingCartCommand => new Command(async () => await ValidateShoppingCartAsync());
-
-        public ICommand ConfirmCommand => new Command(async () => await ConfirmAsync());
-
-        public ICommand CancelCommand => new Command(() => IsCfPopupVisible = false);
 
         async Task ScanShoppingCartAsync()
         {
@@ -41,8 +28,16 @@ namespace SelfCheckout.ViewModels
             var result = await task.Task;
             if (!string.IsNullOrEmpty(result))
             {
-                InputValue = result;
-                await ValidateShoppingCartAsync();
+                try
+                {
+                    var definition = new { S = "", C = "" };
+                    var qrFromKiosk = JsonConvert.DeserializeAnonymousType(result, definition);
+                    InputValue = qrFromKiosk.S;
+                }
+                catch
+                {
+                    InputValue = result;
+                }
             }
         }
 
@@ -51,16 +46,18 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var validateResult = await _sessionService.ValidateShoppingCartAsync("172.X.2.006", InputValue);
+                var validateResult = await SessionService.ValidateShoppingCartAsync("172.X.2.006", InputValue);
                 if (!validateResult.IsCompleted)
                 {
                     await DialogService.ShowAlertAsync(AppResources.Opps, validateResult.DefaultMessage, AppResources.Close);
                     return;
                 }
 
+                SessionService.CurrentShoppingCart = InputValue;
+
                 var payload = new
                 {
-                    shoppingCard = "3600000711400",
+                    shoppingCard = InputValue,
                     SubBranch = "MHN-MA-DT",
                     pickupCode = "",
                     isTour = false,
@@ -75,8 +72,20 @@ namespace SelfCheckout.ViewModels
                     await DialogService.ShowAlertAsync(AppResources.Opps, validateResult.DefaultMessage, AppResources.Close);
                     return;
                 }
-                Person = CustomerData?.Person;
-                IsCfPopupVisible = true;
+
+                if (CustomerData?.Person != null)
+                {
+                    //if (!CustomerData.Person.IsActivate)
+                    //{
+                    //    await DialogService.ShowAlertAsync(AppResources.Opps, $"{CustomerData.Person.NativeName} is not activate!", AppResources.Close);
+                    //    return;
+                    //}
+                    var task = new TaskCompletionSource<bool>();
+                    await NavigationService.PushModalAsync<CustomerCartConfirmViewModel, bool>(CustomerData.Person, task);
+                    var result = await task.Task;
+                    if (result)
+                        await StartSessionAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -88,21 +97,26 @@ namespace SelfCheckout.ViewModels
             }
         }
 
-        async Task ConfirmAsync()
+        async Task StartSessionAsync()
         {
             try
             {
-                var startResult = await _sessionService.StartSessionAsync("test_user", "99908", InputValue);
-                if (!startResult.IsCompleted)
-                {
-                    await DialogService.ShowAlertAsync(AppResources.Opps, startResult.DefaultMessage, AppResources.Close);
-                    return;
-                }
+                IsBusy = true;
+                //var startResult = await SessionService.StartSessionAsync("test_user", "99908", InputValue);
+                //if (!startResult.IsCompleted)
+                //{
+                //    await DialogService.ShowAlertAsync(AppResources.Opps, startResult.DefaultMessage, AppResources.Close);
+                //    return;
+                //}
                 await NavigationService.NavigateToAsync<MainViewModel>();
             }
             catch (Exception ex)
             {
                 await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
@@ -113,26 +127,6 @@ namespace SelfCheckout.ViewModels
             {
                 _inputValue = value;
                 RaisePropertyChanged(() => InputValue);
-            }
-        }
-
-        public Person Person
-        {
-            get => _person;
-            set
-            {
-                _person = value;
-                RaisePropertyChanged(() => Person);
-            }
-        }
-
-        public bool IsCfPopupVisible
-        {
-            get => _isCfPopupVisible;
-            set
-            {
-                _isCfPopupVisible = value;
-                RaisePropertyChanged(() => IsCfPopupVisible);
             }
         }
     }

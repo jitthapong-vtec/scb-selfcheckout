@@ -64,10 +64,11 @@
                                          BackgroundColor="{StaticResource Secondary}">
                             <Label FontFamily="{StaticResource FontAwesome}" Text="&#xf030;" HorizontalOptions="Center" VerticalOptions="Center" FontSize="24" TextColor="{StaticResource Gray50}"/>
                         </controls:TappedGrid>
-                        <Entry FontSize="Medium" Grid.Column="1" Text="{Binding InputValue}"/>
+                        <Entry x:Name="etShoppingCart" FontSize="Medium" Grid.Column="1" Text="{Binding InputValue}"/>
                         <controls:TappedGrid Grid.Column="2"
                                              WidthRequest="40"
                                              TappedCommand="{Binding ValidateShoppingCartCommand}"
+                                             IsEnabled="{Binding Source={x:Reference etShoppingCart}, Path=Text, Converter={StaticResource StringNotNullOrEmptyConverter}}"
                                          BackgroundColor="{StaticResource Gray200}"
                                          effects:RoundCornersEffect.CornerRadius="3">
                             <Label FontFamily="{StaticResource FontAwesome}" HorizontalOptions="Center" VerticalOptions="Center" Text="&#xf00c;" FontSize="24" TextColor="{StaticResource Secondary}"/>
@@ -84,46 +85,7 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-
-            <ContentView ControlTemplate="{StaticResource PopupTemplate}" IsVisible="{Binding IsCfPopupVisible}">
-                <StackLayout>
-                    <Grid RowSpacing="8" Margin="0,4,0,4">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <controls:CustomLabel Grid.Row="0" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate Name}"/>
-                        <controls:CustomLabel Grid.Row="0" UpperCase="True" HorizontalOptions="End" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.EnglishName}" />
-                        <controls:CustomLabel Grid.Row="1" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate PassportNo}"/>
-                        <controls:CustomLabel Grid.Row="1" UpperCase="True" HorizontalOptions="End" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.PassportNo}"/>
-                        <controls:CustomLabel Grid.Row="2" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate FlightNo}"/>
-                        <controls:CustomLabel Grid.Row="2" UpperCase="True" HorizontalOptions="End" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.FlightCode}"/>
-                    </Grid>
-                    <Button HeightRequest="1" BackgroundColor="{StaticResource Gray200}"/>
-                    <Grid Margin="0,4,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <controls:TappedGrid Grid.Column="0"
-                                             Style="{StaticResource TappedGridButtonStyle}"
-                                             TappedCommand="{Binding ConfirmCommand}"
-                                             BackgroundColor="{StaticResource Gray200}"
-                                             effects:RoundCornersEffect.CornerRadius="3">
-                            <controls:GradientBackground/>
-                            <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-                        </controls:TappedGrid>
-                        <controls:TappedGrid Grid.Column="1"
-                                             Style="{StaticResource TappedGridButtonStyle}"
-                                             TappedCommand="{Binding CancelCommand}"
-                                             BackgroundColor="{StaticResource Gray200}"
-                                             effects:RoundCornersEffect.CornerRadius="3">
-                            <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Cancel}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-                        </controls:TappedGrid>
-                    </Grid>
-                </StackLayout>
-            </ContentView>
+            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

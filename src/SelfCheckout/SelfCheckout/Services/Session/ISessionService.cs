@@ -8,6 +8,8 @@ namespace SelfCheckout.Services.Session
 {
     public interface ISessionService
     {
+        string CurrentShoppingCart { get; set; }
+
         Task<ApiResultData<int>> StartSessionAsync(string userId, string machineNo, string shoppingCartNo);
 
         Task<ApiResultData<bool>> UpdateSessionAsync(int sessionKey, int orderNo, string shoppingCartNo);

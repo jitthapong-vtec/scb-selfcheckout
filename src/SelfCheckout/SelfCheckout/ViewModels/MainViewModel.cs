@@ -5,7 +5,6 @@ using SelfCheckout.Resources;
 using SelfCheckout.ViewModels.Base;
 using SelfCheckout.Views;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,6 +26,8 @@ namespace SelfCheckout.ViewModels
 
         bool _langShowing;
         bool _currencyShowing;
+        bool _summaryVisible;
+        bool _summaryShowing;
 
         public MainViewModel()
         {
@@ -92,6 +93,11 @@ namespace SelfCheckout.ViewModels
             CurrencyShowing = !CurrencyShowing;
         });
 
+        public ICommand ShowSummaryCommand => new Command(() =>
+        {
+            SummaryShowing = !SummaryShowing;
+        });
+
         public ICommand LanguageSelectionCommand => new Command<Language>((lang) =>
         {
             LanguageSelected = lang;
@@ -109,6 +115,10 @@ namespace SelfCheckout.ViewModels
             var selectedTab = Tabs.Where(t => t.Selected).FirstOrDefault();
             selectedTab.Selected = false;
 
+            if (item.Page is ShoppingCartView || item.Page is OrderView)
+                SummaryVisible = true;
+            else
+                SummaryVisible = false;
             item.Selected = true;
             PageTitle = item.Title;
             CurrentView = item.Page;
@@ -199,6 +209,26 @@ namespace SelfCheckout.ViewModels
             }
         }
 
+        public bool SummaryShowing
+        {
+            get => _summaryShowing;
+            set
+            {
+                _summaryShowing = value;
+                RaisePropertyChanged(() => SummaryShowing);
+            }
+        }
+
+        public bool SummaryVisible
+        {
+            get => _summaryVisible;
+            set
+            {
+                _summaryVisible = value;
+                RaisePropertyChanged(() => SummaryVisible);
+            }
+        }
+
         public Language LanguageSelected
         {
             get => _languageSelected;
@@ -226,6 +256,9 @@ namespace SelfCheckout.ViewModels
             {
                 _currencyShowing = value;
                 RaisePropertyChanged(() => CurrencyShowing);
+
+                if (value)
+                    LangShowing = false;
             }
         }
 
@@ -236,6 +269,9 @@ namespace SelfCheckout.ViewModels
             {
                 _langShowing = value;
                 RaisePropertyChanged(() => LangShowing);
+
+                if (value)
+                    CurrencyShowing = false;
             }
         }
     }

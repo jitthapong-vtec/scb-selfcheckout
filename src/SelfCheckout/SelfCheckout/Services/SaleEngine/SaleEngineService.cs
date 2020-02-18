@@ -24,6 +24,18 @@ namespace SelfCheckout.Services.SaleEngine
 
         public IList<Currency> Currencies { get; private set; }
 
+        public async Task<ApiResultData<List<OrderData>>> GetOrderAsync(object payload)
+        {
+            var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrder");
+            return await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+        }
+
+        public async Task<ApiResultData<List<OrderData>>> GetOrderListAsync(object payload)
+        {
+            var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrderList");
+            return await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+        }
+
         public async Task LoadCurrencyAsync(object payload)
         {
             var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetCurrency");

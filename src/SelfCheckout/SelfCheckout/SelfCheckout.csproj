@@ -12,8 +12,11 @@
   <ItemGroup>
     <None Remove="Resources\Images\bg.png" />
     <None Remove="Resources\Images\header_logo.svg" />
+    <None Remove="Resources\Images\Icons\check_box_active.svg" />
+    <None Remove="Resources\Images\Icons\check_box_normal.svg" />
     <None Remove="Resources\Images\landing_bg.png" />
     <None Remove="Resources\Images\line_seperator.png" />
+    <None Remove="Resources\order_list.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,14 +34,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Images\Icons\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="Resources\Images\bg.png" />
     <EmbeddedResource Include="Resources\Images\header_logo.svg" />
+    <EmbeddedResource Include="Resources\Images\Icons\check_box_active.svg" />
+    <EmbeddedResource Include="Resources\Images\Icons\check_box_normal.svg" />
     <EmbeddedResource Include="Resources\Images\landing_bg.png" />
     <EmbeddedResource Include="Resources\Images\line_seperator.png" />
+    <EmbeddedResource Include="Resources\order_list.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -84,6 +86,9 @@
     <EmbeddedResource Update="Views\Components\UserAuthenView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\CustomerCartConfirmView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\CustomNavigationView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
@@ -103,6 +108,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\MainView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\OrderDetailItemView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\OrderView.xaml">

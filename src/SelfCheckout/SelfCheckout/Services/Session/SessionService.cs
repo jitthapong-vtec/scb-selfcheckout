@@ -16,6 +16,8 @@ namespace SelfCheckout.Services.Session
             _requestProvider = provider;
         }
 
+        public string CurrentShoppingCart { get; set; }
+
         public async Task<ApiResultData<bool>> EndSessionAsync(int sessionKey, string userId, string machineNo)
         {
             var payload = new

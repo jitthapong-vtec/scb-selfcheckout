@@ -13,12 +13,16 @@ namespace SelfCheckout.Services.Master
     {
         IRequestProvider _requestProvider;
 
-        public MasterDataService(IRequestProvider request, ISerializeService converter)
+        public MasterDataService(IRequestProvider request)
         {
             _requestProvider = request;
         }
 
-        public AppConfig AppConfig { get; private set; }
+        public AppConfig AppConfig { get; private set; } = new AppConfig()
+        {
+            UrlSaleEngineApi = "https://kpservices.kingpower.com/portal/developer/SaleEngineAPI/",
+            UrlRegisterApi = "https://kpservices.kingpower.com/portal/developer/registerapi/"
+        };
 
         public IList<Payment> Payments { get; private set; }
 

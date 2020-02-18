@@ -5,6 +5,7 @@
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
+             xmlns:views="clr-namespace:SelfCheckout.Views"
              NavigationPage.HasNavigationBar="False"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True">
     <ContentPage.Content>
