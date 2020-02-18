@@ -120,6 +120,9 @@
   <data name="All" xml:space="preserve">
     <value>All</value>
   </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
   <data name="Borrow" xml:space="preserve">
     <value>Borrow</value>
   </data>

@@ -56,7 +56,7 @@
                     </Label>
                     <Label Grid.Column="2" FontFamily="{StaticResource KPIconFont}" Text="&#xe906;" FontSize="18"/>
                 </Grid>
-                <RefreshView Grid.Row="1" IsRefreshing="{Binding IsBusy}">
+                <RefreshView Grid.Row="1" IsRefreshing="{Binding IsBusy}" Command="{Binding RefreshOrderCommand}">
                     <CollectionView ItemsSource="{Binding OrderDetails}">
                         <CollectionView.EmptyView>
                             <Grid>
@@ -68,7 +68,7 @@
                         </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <views:OrderDetailItemView/>
+                                <views:OrderItemView/>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

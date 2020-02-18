@@ -10,6 +10,8 @@ namespace SelfCheckout.Services.SaleEngine
     {
         LoginData LoginData { get; set; }
 
+        OrderData OrderData { get; }
+
         IList<Currency> Currencies { get; }
 
         Task<ApiResultData<LoginData>> LoginAsync(object payload);

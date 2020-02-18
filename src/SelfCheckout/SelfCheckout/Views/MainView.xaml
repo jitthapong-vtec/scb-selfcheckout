@@ -113,7 +113,8 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <ctrls:TabViewContainer Content="{Binding CurrentView}"/>
-                    <views:SummaryView VerticalOptions="End" IsVisible="{Binding SummaryVisible}"/>
+                    <Grid BackgroundColor="#66000000" IsVisible="{Binding SummaryShowing}"/>
+                    <views:SummaryView IsVisible="{Binding SummaryVisible}" VerticalOptions="End"/>
                 </Grid>
                 <Grid Grid.Row="1">
                     <Frame Margin="0,0,0,-2" Padding="2" CornerRadius="0"/>

@@ -52,6 +52,9 @@
     <Compile Update="Views\Components\UserAuthenView.xaml.cs">
       <DependentUpon>UserAuthenView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\OrderItemView.xaml.cs">
+      <DependentUpon>OrderItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\SummaryView.xaml.cs">
       <DependentUpon>SummaryView.xaml</DependentUpon>
     </Compile>
@@ -110,7 +113,7 @@
     <EmbeddedResource Update="Views\MainView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\OrderDetailItemView.xaml">
+    <EmbeddedResource Update="Views\OrderItemView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\OrderView.xaml">

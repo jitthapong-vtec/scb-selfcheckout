@@ -23,6 +23,7 @@ namespace SelfCheckout.ViewModels
         ContentView _currentView;
         Language _languageSelected;
         Currency _currencySelected;
+        OrderData _orderData;
 
         bool _langShowing;
         bool _currencyShowing;
@@ -73,6 +74,11 @@ namespace SelfCheckout.ViewModels
             var firstTab = Tabs.FirstOrDefault();
             firstTab.Selected = true;
             PageTitle = firstTab.Title;
+
+            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderLoaded", (s) =>
+            {
+                OrderData = SaleEngineService.OrderData;
+            });
         }
 
         public override async Task InitializeAsync(object navigationData)
@@ -196,6 +202,16 @@ namespace SelfCheckout.ViewModels
             {
                 _payments = value;
                 RaisePropertyChanged(() => Payments);
+            }
+        }
+
+        public OrderData OrderData
+        {
+            get => _orderData;
+            set
+            {
+                _orderData = value;
+                RaisePropertyChanged(() => OrderData);
             }
         }
 

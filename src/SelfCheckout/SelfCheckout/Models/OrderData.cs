@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace SelfCheckout.Models
@@ -257,8 +259,10 @@ namespace SelfCheckout.Models
         public object DataType { get; set; }
     }
 
-    public class OrderDetail
+    public class OrderDetail : INotifyPropertyChanged
     {
+        bool _isSelected;
+
         [JsonProperty("Guid")]
         public string Guid { get; set; }
 
@@ -312,6 +316,21 @@ namespace SelfCheckout.Models
 
         [JsonProperty("DetailAttributes")]
         public object DetailAttributes { get; set; }
+
+        public bool IsSelected {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     public class ItemDetail

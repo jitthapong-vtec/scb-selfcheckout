@@ -1,9 +1,13 @@
-﻿using SelfCheckout.Exceptions;
+﻿using Newtonsoft.Json;
+using SelfCheckout.Exceptions;
 using SelfCheckout.Models;
 using SelfCheckout.Services.Master;
 using SelfCheckout.Services.RequestProvider;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,10 +28,30 @@ namespace SelfCheckout.Services.SaleEngine
 
         public IList<Currency> Currencies { get; private set; }
 
+        public OrderData OrderData { get; private set; }
+
         public async Task<ApiResultData<List<OrderData>>> GetOrderAsync(object payload)
         {
-            var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrder");
-            return await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "SelfCheckout.Resources.order_list.json";
+
+            try
+            {
+                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    var json = await reader.ReadToEndAsync();
+                    var result = JsonConvert.DeserializeObject<ApiResultData<List<OrderData>>>(json);
+
+                    OrderData = result.Data.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            //var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrder");
+            //return await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+            return new ApiResultData<List<OrderData>>();
         }
 
         public async Task<ApiResultData<List<OrderData>>> GetOrderListAsync(object payload)

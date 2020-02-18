@@ -11,6 +11,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
@@ -40,6 +42,13 @@ namespace SelfCheckout.ViewModels
             }
         }
 
+        public ICommand OrderSelectedCommand => new Command<OrderDetail>((order) =>
+        {
+            order.IsSelected = !order.IsSelected;
+        });
+
+        public ICommand RefreshOrderCommand => new Command(async () => await LoadOrderAsync());
+
         public override async Task OnTabSelected(TabItem item)
         {
             await LoadOrderAsync();
@@ -49,43 +58,33 @@ namespace SelfCheckout.ViewModels
         {
             try
             {
-                //var payload = new
-                //{
-                //    SessionKey = "634ffe1e-b61c-4810-a431-0e7cd4f2d581",
-                //    Attributes = new object[]
-                //    {
-                //        new {
-                //            GROUP = "tran_no",
-                //            CODE = "shopping_card",
-                //            valueOfString = CurrentShoppingCart
-                //        }
-                //    }
-                //};
-                //var result = await SaleEngineService.GetOrderAsync(payload);
-                //var data = result.Data;
-
-                var assembly = Assembly.GetExecutingAssembly();
-                var resourceName = "SelfCheckout.Resources.order_list.json";
-
-                try
+                IsBusy = true;
+                var payload = new
                 {
-                    using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-                    using (StreamReader reader = new StreamReader(stream))
+                    SessionKey = "634ffe1e-b61c-4810-a431-0e7cd4f2d581",
+                    Attributes = new object[]
                     {
-                        var json = await reader.ReadToEndAsync();
-                        var result = JsonConvert.DeserializeObject<ApiResultData<List<OrderData>>>(json);
-
-                        var orderData = result.Data.FirstOrDefault();
-                        OrderDetails = orderData.OrderDetails.ToObservableCollection();
+                        new {
+                            GROUP = "tran_no",
+                            CODE = "shopping_card",
+                            valueOfString = CurrentShoppingCart
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                }
+                };
+
+                await SaleEngineService.GetOrderAsync(payload);
+
+                OrderDetails = SaleEngineService.OrderData.OrderDetails?.ToObservableCollection();
+
+                MessagingCenter.Send(this, "OrderLoaded");
             }
             catch (Exception ex)
             {
                 await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
     }

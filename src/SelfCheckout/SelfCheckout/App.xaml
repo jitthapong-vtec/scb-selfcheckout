@@ -64,6 +64,10 @@
             <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
             <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
         </Style>
+
+        <Style x:Key="LabelNumericStyle" TargetType="Label">
+            <Setter Property="HorizontalTextAlignment" Value="End"/>
+        </Style>
         
         <Style x:Key="ActionBarLabelIconStyle" TargetType="{x:Type Label}">
             <Setter Property="TextColor" Value="{StaticResource Gray50}"/>

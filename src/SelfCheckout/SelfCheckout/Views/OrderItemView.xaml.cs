@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace SelfCheckout.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class OrderDetailItemView : ContentView
+    public partial class OrderItemView : ContentView
     {
-        public OrderDetailItemView()
+        public OrderItemView()
         {
             InitializeComponent();
         }

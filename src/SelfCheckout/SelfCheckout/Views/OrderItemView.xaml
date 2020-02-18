@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.OrderItemView">
+    <ContentView.Content>
+        <Frame Margin="4" Padding="8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <controls:TappedGrid Grid.Column="0" TappedCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.OrderSelectedCommand}" CommandParameter="{Binding .}">
+                    <Image Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image" Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="Source" Value="ic_check_active"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Image" Binding="{Binding IsSelected}" Value="False">
+                                <Setter Property="Source" Value="ic_check_normal"/>
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
+                </controls:TappedGrid>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Text="{Binding ItemDetail.Item.Desc}" MaxLines="1" LineBreakMode="TailTruncation"/>
+                    <Label Grid.Row="1" Grid.Column="0" FontSize="Micro" Text="{Binding ItemDetail.Item.Code}"/>
+                    <Label Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="End" Text="{Binding ItemDetail.UnitPrice, StringFormat='{0:#,##0.00}'}" Style="{StaticResource LabelNumericStyle}"/>
+                    <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate Amount}"/>
+                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding BillingAmount.TotalAmount.CurrAmt, StringFormat='{0:#,##0.00}'}" Style="{StaticResource LabelNumericStyle}"/>
+                    <Label Grid.Row="3" Grid.Column="0" Text="{i18n:Translate Discount}" TextColor="Red"/>
+                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding BillingAmount.DiscountAmount.CurrAmt, StringFormat='{0:#,##0.00}'}" TextColor="Red" Style="{StaticResource LabelNumericStyle}"/>
+                    <BoxView Grid.Row="4" Grid.ColumnSpan="2" BackgroundColor="{StaticResource Gray100}" HeightRequest="1"/>
+                    <Entry Grid.Row="5" Grid.Column="0" HorizontalOptions="Start" HorizontalTextAlignment="Center" WidthRequest="72" Text="{Binding BillingQuantity.Quantity}" Keyboard="Numeric"/>
+                    <Label Grid.Row="5" Grid.Column="1" Text="{Binding BillingAmount.NetAmount.CurrAmt, StringFormat='{0:#,##0.00}'}" VerticalOptions="Center" TextColor="{StaticResource Primary}" Style="{StaticResource LabelNumericStyle}"/>
+                </Grid>
+            </Grid>
+        </Frame>
+    </ContentView.Content>
+</ContentView>
