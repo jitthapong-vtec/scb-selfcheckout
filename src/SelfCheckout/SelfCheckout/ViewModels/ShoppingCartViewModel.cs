@@ -21,6 +21,7 @@ namespace SelfCheckout.ViewModels
         ObservableCollection<OrderDetail> _orderDetails;
 
         bool _isSelectAllOrder;
+        bool _isAnyOrderSelected;
 
         public bool IsSelectAllOrder
         {
@@ -29,6 +30,18 @@ namespace SelfCheckout.ViewModels
             {
                 _isSelectAllOrder = value;
                 RaisePropertyChanged(() => IsSelectAllOrder);
+
+                IsAnyOrderSelected = value;
+            }
+        }
+
+        public bool IsAnyOrderSelected
+        {
+            get => _isAnyOrderSelected;
+            set
+            {
+                _isAnyOrderSelected = value;
+                RaisePropertyChanged(() => IsAnyOrderSelected);
             }
         }
 
@@ -42,9 +55,37 @@ namespace SelfCheckout.ViewModels
             }
         }
 
+        public ICommand SelectAllOrderCommand => new Command(() =>
+        {
+            IsSelectAllOrder = !IsSelectAllOrder;
+            foreach (var order in OrderDetails)
+            {
+                order.IsSelected = IsSelectAllOrder;
+            }
+        });
+
         public ICommand OrderSelectedCommand => new Command<OrderDetail>((order) =>
         {
             order.IsSelected = !order.IsSelected;
+
+            try
+            {
+                IsAnyOrderSelected = OrderDetails.Where(o => o.IsSelected).Any();
+                if (!IsAnyOrderSelected)
+                    IsSelectAllOrder = false;
+            }
+            catch { }
+        });
+
+        public ICommand DeleteOrderCommand => new Command(async() =>
+        {
+            var selectedOrder = OrderDetails.Where(o => o.IsSelected).ToList();
+            if (selectedOrder.Any())
+            {
+                var result = await DialogService.ShowConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteItem, AppResources.Yes, AppResources.No);
+
+                await LoadOrderAsync();
+            }
         });
 
         public ICommand RefreshOrderCommand => new Command(async () => await LoadOrderAsync());

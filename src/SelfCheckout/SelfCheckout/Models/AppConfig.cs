@@ -52,5 +52,9 @@ namespace SelfCheckout.Models
         public string UrlMemberApi { get; set; }
         [JsonProperty("url_member_web")]
         public string UrlMemberWeb { get; set; }
+        [JsonProperty("username")]
+        public string UserName { get; set; }
+        [JsonProperty("password")]
+        public string Password { get; set; }
     }
 }

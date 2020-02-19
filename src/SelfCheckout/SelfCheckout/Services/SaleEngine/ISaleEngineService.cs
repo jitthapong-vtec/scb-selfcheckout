@@ -20,6 +20,12 @@ namespace SelfCheckout.Services.SaleEngine
 
         Task<ApiResultData<List<OrderData>>> GetOrderListAsync(object payload);
 
+        Task<ApiResultData<List<OrderData>>> AddItemToOrderAsync(object payload);
+
+        Task<ApiResultData<List<OrderData>>> ActionItemToOrderAsync(object payload);
+
+        Task<ApiResultData<List<OrderData>>> ActionListItemToOrderAsync(object payload);
+
         Task LoadCurrencyAsync(object payload);
 
         Task LogoutAsync();

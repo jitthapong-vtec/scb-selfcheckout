@@ -16,7 +16,7 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = true;
                 
-                //await MasterDataService.LoadConfigAsync();
+                await MasterDataService.LoadConfigAsync();
 
                 if (SaleEngineService.LoginData == null)
                     await NavigationService.NavigateToAsync<LoginViewModel>();

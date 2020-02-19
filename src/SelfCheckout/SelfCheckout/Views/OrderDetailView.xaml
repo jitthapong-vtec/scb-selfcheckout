@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             xmlns:views="clr-namespace:SelfCheckout.Views"
+             NavigationPage.HasBackButton="False"
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.OrderDetailView">
+    <NavigationPage.TitleView>
+        <views:ActionBarView>
+            <Label HorizontalOptions="Center" VerticalOptions="Center" Text="{i18n:Translate ItemDetail}" FontAttributes="Bold"/>
+        </views:ActionBarView>
+    </NavigationPage.TitleView>
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Text="{Binding OrderDetail.ItemDetail.Item.Desc}"/>
+                <Label Grid.Row="0" Grid.Column="1">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding ItemDetail.UnitPrice, Converter={StaticResource CurrencyFormatConverter}}"/>
+                            <Span Text=" / "/>
+                            <Span Text="Unit"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Grid.Row="1" Grid.Column="0" Text="{Binding OrderDetail.ItemDetail.Item.Code}" FontSize="Micro"/>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

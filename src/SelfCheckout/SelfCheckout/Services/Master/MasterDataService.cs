@@ -18,11 +18,7 @@ namespace SelfCheckout.Services.Master
             _requestProvider = request;
         }
 
-        public AppConfig AppConfig { get; private set; } = new AppConfig()
-        {
-            UrlSaleEngineApi = "https://kpservices.kingpower.com/portal/developer/SaleEngineAPI/",
-            UrlRegisterApi = "https://kpservices.kingpower.com/portal/developer/registerapi/"
-        };
+        public AppConfig AppConfig { get; private set; }
 
         public IList<Payment> Payments { get; private set; }
 

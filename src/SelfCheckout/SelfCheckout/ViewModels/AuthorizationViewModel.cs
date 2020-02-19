@@ -22,24 +22,24 @@ namespace SelfCheckout.ViewModels
                 try
                 {
                     IsBusy = true;
-                    var payload = new
-                    {
-                        branch_no = "40",
-                        module_code = "MpKpi",
-                        user_code = UserName.Value,
-                        user_password = Password.Value,
-                        machine_ip = "127.0.0.1"
-                    };
-                    var loginResult = await SaleEngineService.LoginAsync(payload);
-                    if (loginResult.IsCompleted)
-                    {
+                    //var payload = new
+                    //{
+                    //    branch_no = "40",
+                    //    module_code = "MpKpi",
+                    //    user_code = UserName.Value,
+                    //    user_password = Password.Value,
+                    //    machine_ip = "127.0.0.1"
+                    //};
+                    //var loginResult = await SaleEngineService.LoginAsync(payload);
+                    //if (loginResult.IsCompleted)
+                    //{
                         await NavigationService.PopModalAsync();
                         _task?.SetResult(true);
-                    }
-                    else
-                    {
-                        Password.Errors = new List<string>() { loginResult.Message.FirstOrDefault()?.MessageDesc };
-                    }
+                    //}
+                    //else
+                    //{
+                    //    Password.Errors = new List<string>() { loginResult.Message.FirstOrDefault()?.MessageDesc };
+                    //}
                 }
                 catch (Exception ex)
                 {

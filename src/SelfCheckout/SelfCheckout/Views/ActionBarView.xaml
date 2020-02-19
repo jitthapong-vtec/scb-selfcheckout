@@ -7,7 +7,7 @@
              x:Class="SelfCheckout.Views.ActionBarView">
     <Grid.Resources>
         <ControlTemplate x:Key="ActionBarTemplate">
-            <Grid HeightRequest="56">
+            <Grid HeightRequest="56" ColumnSpacing="0">
                 <ContentPresenter Padding="8"/>
             </Grid>
         </ControlTemplate>

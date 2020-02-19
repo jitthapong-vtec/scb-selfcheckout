@@ -15,24 +15,23 @@
              x:Name="mainView"
              x:Class="SelfCheckout.Views.MainView">
     <NavigationPage.TitleView>
-        <Grid VerticalOptions="FillAndExpand" Padding="{OnPlatform Android=4}">
+        <views:ActionBarView>
             <Grid.Resources>
                 <Style TargetType="Label">
                     <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
-                    <Setter Property="VerticalOptions" Value="Center"/>
                 </Style>
             </Grid.Resources>
             <ctrls:TappedGrid HorizontalOptions="Start" TappedCommand="{Binding LanguageTappedCommand}">
-                <Image Source="ic_lang" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="24"/>
+                <Image Source="ic_lang" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="24"/>
             </ctrls:TappedGrid>
             <Label Text="{Binding PageTitle}" FontAttributes="Bold" HorizontalOptions="Center" Margin="50,0,50,0" HorizontalTextAlignment="Center"/>
-            <StackLayout HorizontalOptions="End" Orientation="Horizontal">
+            <StackLayout HorizontalOptions="End" Orientation="Horizontal" Margin="4">
                 <Image Source="ic_info"/>
                 <ctrls:TappedGrid TappedCommand="{Binding CurrencyTappedCommand}">
                     <Label Text="{Binding CurrencySelected.CurrCode}" HorizontalOptions="Center"/>
                 </ctrls:TappedGrid>
             </StackLayout>
-        </Grid>
+        </views:ActionBarView>
     </NavigationPage.TitleView>
     <ContentPage.Resources>
         <Style TargetType="Label" x:Key="SelectedLabelStyle">
@@ -85,7 +84,7 @@
                         </StackLayout>
                     </Frame>
                     <Frame VerticalOptions="Start" HorizontalOptions="End" CornerRadius="48" Padding="8,4,8,4" BackgroundColor="Red" IsVisible="{Binding BadgeVisible}">
-                        <Label VerticalOptions="Center" HorizontalTextAlignment="Center" Text="{Binding BadgeCount}" FontSize="Micro" TextColor="{StaticResource Gray50}"/>
+                        <Label VerticalOptions="Center" HorizontalTextAlignment="Center" Text="{Binding Source={x:Reference mainView}, Path=BindingContext.OrderData.BillingQuantities[1].Quantity}" FontSize="Micro" TextColor="{StaticResource Gray50}"/>
                     </Frame>
                 </Grid>
                 <BoxView Grid.Row="1" BackgroundColor="{StaticResource Primary}" HeightRequest="4">

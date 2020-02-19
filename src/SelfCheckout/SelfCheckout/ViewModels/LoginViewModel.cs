@@ -32,8 +32,8 @@ namespace SelfCheckout.ViewModels
 
                     var payload = new
                     {
-                        branch_no = "40",
-                        module_code = "MpKpi",
+                        branch_no = AppConfig.BranchNo,
+                        module_code = AppConfig.Module,
                         user_code = UserName.Value,
                         user_password = Password.Value,
                         machine_ip = "127.0.0.1"

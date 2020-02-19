@@ -66,6 +66,11 @@ namespace SelfCheckout.ViewModels.Base
             get => MasterDataService.AppConfig;
         }
 
+        public LoginData LoginData
+        {
+            get => SaleEngineService.LoginData;
+        }
+
         public CustomerData CustomerData
         {
             get => RegisterService.CustomerData;

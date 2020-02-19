@@ -31,18 +31,29 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <StackLayout Grid.Column="0" Orientation="Horizontal">
-                        <controls:TappedGrid>
-                            <ffimageloadingsvg:SvgCachedImage HeightRequest="32" VerticalOptions="Center">
-                                <ffimageloadingsvg:SvgCachedImage.Triggers>
-                                    <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage" Binding="{Binding IsSelectAllOrder}" Value="False">
-                                        <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.Icons.check_box_normal.svg"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="ffimageloadingsvg:SvgCachedImage" Binding="{Binding IsSelectAllOrder}" Value="True">
-                                        <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.Icons.check_box_active.svg"/>
-                                    </DataTrigger>
-                                </ffimageloadingsvg:SvgCachedImage.Triggers>
-                            </ffimageloadingsvg:SvgCachedImage>
+                    <StackLayout Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                        <controls:TappedGrid Margin="8,0,0,0" TappedCommand="{Binding SelectAllOrderCommand}">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Aspect="AspectFit" Source="ic_check_normal" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image" Binding="{Binding IsSelectAllOrder}" Value="True">
+                                            <Setter Property="Source" Value="ic_check_active"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image" Binding="{Binding IsSelectAllOrder}" Value="False">
+                                            <Setter Property="Source" Value="ic_check_normal"/>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                                <Label Text="{i18n:Translate All}" VerticalOptions="Center"/>
+                            </StackLayout>
+                        </controls:TappedGrid>
+                        <controls:TappedGrid IsVisible="{Binding IsAnyOrderSelected}" TappedCommand="{Binding DeleteOrderCommand}">
+                            <StackLayout Orientation="Horizontal">
+                                <Frame HorizontalOptions="Center" VerticalOptions="Center" Padding="0" WidthRequest="24" HeightRequest="24" CornerRadius="12" BackgroundColor="Red">
+                                    <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="16" Text="&#xf1f8;" TextColor="{StaticResource Gray50}" Style="{StaticResource LabelIconStyle}"/>
+                                </Frame>
+                                <Label Text="{i18n:Translate Delete}" VerticalOptions="Center"/>
+                            </StackLayout>
                         </controls:TappedGrid>
                     </StackLayout>
                     <Label Grid.Column="1" HorizontalTextAlignment="End">

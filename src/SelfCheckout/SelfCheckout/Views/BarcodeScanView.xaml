@@ -11,7 +11,7 @@
     <ContentPage.Content>
         <Grid>
             <zxing:ZXingScannerView x:Name="scanView" ScanResultCommand="{Binding ScanResultCommand}"/>
-            <zxing:ZXingDefaultOverlay TopText="Hold camera over QR Code"/>
+            <zxing:ZXingDefaultOverlay BottomText="Please scan laser on QR Shopping cart"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

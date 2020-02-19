@@ -30,6 +30,36 @@ namespace SelfCheckout.Services.SaleEngine
 
         public OrderData OrderData { get; private set; }
 
+        public async Task<ApiResultData<List<OrderData>>> ActionItemToOrderAsync(object payload)
+        {
+            var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/ActionItemToOrder");
+            var result = await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            OrderData = result.Data.FirstOrDefault();
+            return result;
+        }
+
+        public async Task<ApiResultData<List<OrderData>>> ActionListItemToOrderAsync(object payload)
+        {
+            var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/ActionItemListToOrder");
+            var result = await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            OrderData = result.Data.FirstOrDefault();
+            return result;
+        }
+
+        public async Task<ApiResultData<List<OrderData>>> AddItemToOrderAsync(object payload)
+        {
+            var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/AddItemToOrder");
+            var result = await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            OrderData = result.Data.FirstOrDefault();
+            return result;
+        }
+
         public async Task<ApiResultData<List<OrderData>>> GetOrderAsync(object payload)
         {
             var assembly = Assembly.GetExecutingAssembly();

@@ -46,7 +46,7 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var validateResult = await SessionService.ValidateShoppingCartAsync("172.X.2.006", InputValue);
+                var validateResult = await SessionService.ValidateShoppingCartAsync(LoginData.UserInfo.MachineEnv.MachineIp, InputValue);
                 if (!validateResult.IsCompleted)
                 {
                     await DialogService.ShowAlertAsync(AppResources.Opps, validateResult.DefaultMessage, AppResources.Close);
@@ -58,10 +58,10 @@ namespace SelfCheckout.ViewModels
                 var payload = new
                 {
                     shoppingCard = InputValue,
-                    SubBranch = "MHN-MA-DT",
+                    SubBranch = AppConfig.SubBranch,
                     pickupCode = "",
                     isTour = false,
-                    platform = "FRMFIT",
+                    /*platform = "FRMFIT",*/
                     isGenPdfPromotion = false,
                     isGenImgShoppingCard = false
                 };
@@ -102,12 +102,13 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                //var startResult = await SessionService.StartSessionAsync("test_user", "99908", InputValue);
-                //if (!startResult.IsCompleted)
-                //{
-                //    await DialogService.ShowAlertAsync(AppResources.Opps, startResult.DefaultMessage, AppResources.Close);
-                //    return;
-                //}
+                // Have no data with this machine_no
+                var startResult = await SessionService.StartSessionAsync(LoginData.UserInfo.UserCode, LoginData.UserInfo.MachineEnv.MachineNo, InputValue);
+                if (!startResult.IsCompleted)
+                {
+                    await DialogService.ShowAlertAsync(AppResources.Opps, startResult.DefaultMessage, AppResources.Close);
+                    return;
+                }
                 await NavigationService.NavigateToAsync<MainViewModel>();
             }
             catch (Exception ex)

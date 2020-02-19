@@ -24,6 +24,8 @@
         <converter:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter"/>
         <converter:ValidatableObjectErrorConverter x:Key="ValidatableObjectErrorConverter"/>
         <converter:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter"/>
+        <converter:CurrencyFormatConverter x:Key="CurrencyFormatConverter"/>
+        <converter:DecimalFormatConverter x:Key="DecimalFormatConverter"/>
 
         <OnPlatform x:Key="MontserratRegular" 
                         x:TypeArguments="x:String" 
@@ -50,7 +52,7 @@
                         Android="KP-Icon-Font.ttf#KP Icon Font"/>
 
         <Style TargetType="Label">
-            <Setter Property="FontFamily" Value="{StaticResource MontserratRegular}"/>
+            <!--<Setter Property="FontFamily" Value="{StaticResource MontserratRegular}"/>-->
             <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
         </Style>
 
