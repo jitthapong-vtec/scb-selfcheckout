@@ -61,7 +61,7 @@ namespace SelfCheckout.ViewModels
                     SubBranch = AppConfig.SubBranch,
                     pickupCode = "",
                     isTour = false,
-                    /*platform = "FRMFIT",*/
+                    platform = "FRMFIT",
                     isGenPdfPromotion = false,
                     isGenImgShoppingCard = false
                 };
@@ -102,7 +102,6 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                // Have no data with this machine_no
                 var startResult = await SessionService.StartSessionAsync(LoginData.UserInfo.UserCode, LoginData.UserInfo.MachineEnv.MachineNo, InputValue);
                 if (!startResult.IsCompleted)
                 {

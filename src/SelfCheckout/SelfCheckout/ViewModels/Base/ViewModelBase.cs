@@ -25,6 +25,7 @@ namespace SelfCheckout.ViewModels.Base
 
         string _pageTitle;
         bool _isBusy;
+        bool _isRefreshing;
 
         public ViewModelBase()
         {
@@ -88,6 +89,16 @@ namespace SelfCheckout.ViewModels.Base
             {
                 _pageTitle = value;
                 RaisePropertyChanged(() => PageTitle);
+            }
+        }
+
+        public bool IsRefreshing
+        {
+            get => _isRefreshing;
+            set
+            {
+                _isRefreshing = value;
+                RaisePropertyChanged(() => IsRefreshing);
             }
         }
 

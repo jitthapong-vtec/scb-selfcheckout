@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SelfCheckout.Services.RequestProvider
@@ -23,38 +24,49 @@ namespace SelfCheckout.Services.RequestProvider
             Delete
         }
 
+        HttpClient httpClient;
+
         public RequestProvider(ISerializeService converterService)
         {
             _converterService = converterService;
+
+            httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {GlobalSettings.AccessKey}");
+            httpClient.DefaultRequestHeaders.Add("CallerID", "SCBCHECKOUT");
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.Timeout = TimeSpan.FromSeconds(60);
         }
 
-        public async Task<TResult> GetAsync<TResult>(string uri, string accessToken = "")
+        public async Task<TResult> GetAsync<TResult>(string uri)
         {
-            return await RequestAsync<object, TResult>(uri, RequestTypes.Get, null, accessToken);
+            return await RequestAsync<object, TResult>(uri, RequestTypes.Get, null);
         }
 
-        public async Task<TResult> PostAsync<TRequest, TResult>(string uri, TRequest data, string accessToken = "")
+        public async Task<TResult> PostAsync<TRequest, TResult>(string uri, TRequest data)
         {
-            return await RequestAsync<TRequest, TResult>(uri, RequestTypes.Post, data, accessToken);
+            return await RequestAsync<TRequest, TResult>(uri, RequestTypes.Post, data);
         }
 
-        private async Task<TResult> RequestAsync<TRequest, TResult>(string uri, RequestTypes requestType, TRequest data, string accessToken)
+        public async Task<TResult> PutAsync<TRequest, TResult>(string uri, TRequest data)
         {
-            HttpClient httpClient = CreateHttpClient();
+            return await RequestAsync<TRequest, TResult>(uri, RequestTypes.Put, data);
+        }
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                SetAccessToken(httpClient, accessToken);
-            }
+        public async Task<TResult> DeleteAsync<TRequest, TResult>(string uri, TRequest data)
+        {
+            return await RequestAsync<TRequest, TResult>(uri, RequestTypes.Delete, data);
+        }
 
-            var content = new StringContent(string.Empty);
+        private async Task<TResult> RequestAsync<TRequest, TResult>(string uri, RequestTypes requestType, TRequest data)
+        {
+            StringContent content = null;
             if (data != null)
             {
                 var json = JsonConvert.SerializeObject(data);
-                content = new StringContent(json);
+                content = new StringContent(json, Encoding.UTF8, "application/json");
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             }
 
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = null;
             try
             {
@@ -77,26 +89,6 @@ namespace SelfCheckout.Services.RequestProvider
             return await _converterService.Serialize<TResult>(result);
         }
 
-        private HttpClient CreateHttpClient()
-        {
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.Timeout = TimeSpan.FromSeconds(30);
-            return httpClient;
-        }
-
-        private void SetAccessToken(HttpClient httpClient, string accessToken)
-        {
-            if (httpClient == null)
-                return;
-
-            if (string.IsNullOrEmpty(accessToken))
-                return;
-            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
-            httpClient.DefaultRequestHeaders.Add("CallerID", "SCBCHECKOUT");
-            //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        }
-
         private async Task HandleResponse(HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode)
@@ -104,35 +96,6 @@ namespace SelfCheckout.Services.RequestProvider
                 var content = await response.Content.ReadAsStringAsync();
                 throw new HttpRequestExceptionEx(response.StatusCode, content);
             }
-        }
-
-        public async Task<TResult> PutAsync<TRequest, TResult>(string uri, TRequest data, string accessToken = "")
-        {
-            HttpClient httpClient = CreateHttpClient();
-
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                SetAccessToken(httpClient, accessToken);
-            }
-
-            var content = new StringContent(string.Empty);
-            if (data != null)
-                content = new StringContent(JsonConvert.SerializeObject(data));
-
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            HttpResponseMessage response = null;
-            try
-            {
-                response = await httpClient.PutAsync(uri, content);
-            }
-            catch (TaskCanceledException)
-            {
-                throw new HttpRequestExceptionEx(HttpStatusCode.RequestTimeout, "Connection timeout");
-            }
-
-            await HandleResponse(response);
-            var result = await response.Content.ReadAsStringAsync();
-            return await _converterService.Serialize<TResult>(result);
         }
     }
 }

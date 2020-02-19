@@ -25,7 +25,7 @@ namespace SelfCheckout.Services.Register
         public async Task<ApiResultData<List<CustomerData>>> GetCustomerAsync(object payload)
         {
             var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlRegisterApi}api/Register/GetCustomer");
-            var response = await _requestProvider.PostAsync<object, ApiResultData<List<CustomerData>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+            var response = await _requestProvider.PostAsync<object, ApiResultData<List<CustomerData>>>(uri.ToString(), payload);
             CustomerData = response.Data?.FirstOrDefault();
             return response;
         }

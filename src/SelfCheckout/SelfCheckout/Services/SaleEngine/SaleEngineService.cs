@@ -24,7 +24,7 @@ namespace SelfCheckout.Services.SaleEngine
             _requestProvider = request;
         }
 
-        public LoginData LoginData { get; set; }
+        public LoginData LoginData { get; private set; }
 
         public IList<Currency> Currencies { get; private set; }
 
@@ -33,7 +33,7 @@ namespace SelfCheckout.Services.SaleEngine
         public async Task<ApiResultData<List<OrderData>>> ActionItemToOrderAsync(object payload)
         {
             var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/ActionItemToOrder");
-            var result = await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+            var result = await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             OrderData = result.Data.FirstOrDefault();
@@ -42,8 +42,8 @@ namespace SelfCheckout.Services.SaleEngine
 
         public async Task<ApiResultData<List<OrderData>>> ActionListItemToOrderAsync(object payload)
         {
-            var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/ActionItemListToOrder");
-            var result = await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+            var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/ActionListItemToOrder");
+            var result = await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             OrderData = result.Data.FirstOrDefault();
@@ -53,7 +53,7 @@ namespace SelfCheckout.Services.SaleEngine
         public async Task<ApiResultData<List<OrderData>>> AddItemToOrderAsync(object payload)
         {
             var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/AddItemToOrder");
-            var result = await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+            var result = await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             OrderData = result.Data.FirstOrDefault();
@@ -62,38 +62,42 @@ namespace SelfCheckout.Services.SaleEngine
 
         public async Task<ApiResultData<List<OrderData>>> GetOrderAsync(object payload)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "SelfCheckout.Resources.order_list.json";
+            //var assembly = Assembly.GetExecutingAssembly();
+            //var resourceName = "SelfCheckout.Resources.order_list.json";
 
-            try
-            {
-                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    var json = await reader.ReadToEndAsync();
-                    var result = JsonConvert.DeserializeObject<ApiResultData<List<OrderData>>>(json);
+            //try
+            //{
+            //    using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            //    using (StreamReader reader = new StreamReader(stream))
+            //    {
+            //        var json = await reader.ReadToEndAsync();
+            //        var result = JsonConvert.DeserializeObject<ApiResultData<List<OrderData>>>(json);
 
-                    OrderData = result.Data.FirstOrDefault();
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-            //var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrder");
-            //return await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
-            return new ApiResultData<List<OrderData>>();
+            //        OrderData = result.Data.FirstOrDefault();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //}
+            //return new ApiResultData<List<OrderData>>();
+            var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrder");
+            var result = await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            OrderData = result.Data.FirstOrDefault();
+            return result;
         }
 
         public async Task<ApiResultData<List<OrderData>>> GetOrderListAsync(object payload)
         {
             var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrderList");
-            return await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+            return await _requestProvider.PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
         }
 
         public async Task LoadCurrencyAsync(object payload)
         {
             var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetCurrency");
-            var result = await _requestProvider.PostAsync<object, ApiResultData<List<Currency>>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+            var result = await _requestProvider.PostAsync<object, ApiResultData<List<Currency>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             Currencies = result.Data;
@@ -102,7 +106,11 @@ namespace SelfCheckout.Services.SaleEngine
         public async Task<ApiResultData<LoginData>> LoginAsync(object payload)
         {
             var uri = new UriBuilder($"{_masterDataService.AppConfig.UrlSaleEngineApi}api/Authen/LoginAuthen");
-            return await _requestProvider.PostAsync<object, ApiResultData<LoginData>>(uri.ToString(), payload, GlobalSettings.AccessKey);
+            var result = await _requestProvider.PostAsync<object, ApiResultData<LoginData>>(uri.ToString(), payload);
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            LoginData = result.Data;
+            return result;
         }
 
         public Task LogoutAsync()

@@ -38,16 +38,8 @@ namespace SelfCheckout.ViewModels
                         user_password = Password.Value,
                         machine_ip = "127.0.0.1"
                     };
-                    var loginResult = await SaleEngineService.LoginAsync(payload);
-                    if (loginResult.IsCompleted)
-                    {
-                        SaleEngineService.LoginData = loginResult.Data;
-                        await NavigationService.NavigateToAsync<BorrowViewModel>();
-                    }
-                    else
-                    {
-                        Password.Errors = new List<string>() { loginResult.DefaultMessage };
-                    }
+                    await SaleEngineService.LoginAsync(payload);
+                    await NavigationService.NavigateToAsync<BorrowViewModel>();
                 }
                 catch (Exception ex)
                 {

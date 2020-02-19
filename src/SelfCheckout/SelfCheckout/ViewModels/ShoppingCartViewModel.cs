@@ -77,22 +77,31 @@ namespace SelfCheckout.ViewModels
             catch { }
         });
 
-        public ICommand DeleteOrderCommand => new Command(async() =>
+        public ICommand DeleteOrderCommand => new Command(async () =>
         {
             var selectedOrder = OrderDetails.Where(o => o.IsSelected).ToList();
             if (selectedOrder.Any())
             {
                 var result = await DialogService.ShowConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteItem, AppResources.Yes, AppResources.No);
 
-                await LoadOrderAsync();
+                if (result)
+                {
+                    await DeleteItemAsync();
+                }
             }
         });
 
-        public ICommand RefreshOrderCommand => new Command(async () => await LoadOrderAsync());
+        public ICommand RefreshOrderCommand => new Command(async () =>
+        {
+            IsRefreshing = true;
+            await LoadOrderAsync();
+            IsRefreshing = false;
+        });
 
         public override async Task OnTabSelected(TabItem item)
         {
             await LoadOrderAsync();
+            await TestAddOrder();
         }
 
         public async Task LoadOrderAsync()
@@ -102,7 +111,7 @@ namespace SelfCheckout.ViewModels
                 IsBusy = true;
                 var payload = new
                 {
-                    SessionKey = "634ffe1e-b61c-4810-a431-0e7cd4f2d581",
+                    SessionKey = LoginData.SessionKey,
                     Attributes = new object[]
                     {
                         new {
@@ -113,11 +122,8 @@ namespace SelfCheckout.ViewModels
                     }
                 };
 
-                await SaleEngineService.GetOrderAsync(payload);
-
-                OrderDetails = SaleEngineService.OrderData.OrderDetails?.ToObservableCollection();
-
-                MessagingCenter.Send(this, "OrderLoaded");
+                var result = await SaleEngineService.GetOrderAsync(payload);
+                await RefreshOrderAsync();
             }
             catch (Exception ex)
             {
@@ -127,6 +133,85 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        Task RefreshOrderAsync()
+        {
+            OrderDetails = SaleEngineService.OrderData.OrderDetails?.ToObservableCollection();
+            MessagingCenter.Send(this, "OrderLoaded");
+
+            IsSelectAllOrder = false;
+            return Task.FromResult(true);
+        }
+
+        async Task DeleteItemAsync()
+        {
+            var selectedOrders = OrderDetails.Where(o => o.IsSelected).ToList();
+            if (selectedOrders.Any())
+            {
+                var payload = new
+                {
+                    SessionKey = LoginData.SessionKey,
+                    Rows = selectedOrders.Select(o => o.Guid).ToArray(),
+                    ActionItemValue = new
+                    {
+                        Action = "cancel",
+                        Value = "1"
+                    }
+                };
+                try
+                {
+                    await SaleEngineService.ActionListItemToOrderAsync(payload);
+                }
+                catch (Exception ex)
+                {
+                }
+                await RefreshOrderAsync();
+            }
+        }
+
+        async Task TestAddOrder()
+        {
+            var payloads = new object[]
+            {
+                    new
+                    {
+                        SessionKey = LoginData.SessionKey,
+                        ItemCode = "00008211470207673"
+                    }
+                    ,new
+                    {
+                        SessionKey = LoginData.SessionKey,
+                        ItemCode = "00008190415206226"
+                    }
+                    //,new
+                    //{
+                    //    SessionKey = LoginData.SessionKey,
+                    //    ItemCode = "00008215930215710"
+                    //},new
+                    //{
+                    //    SessionKey = LoginData.SessionKey,
+                    //    ItemCode = "00008215659204729"
+                    //},new
+                    //{
+                    //    SessionKey = LoginData.SessionKey,
+                    //    ItemCode = "00008215930215710"
+                    //}
+            };
+
+            foreach (var payload in payloads)
+            {
+                try
+                {
+                    var result = await SaleEngineService.AddItemToOrderAsync(payload);
+                    var success = result.IsCompleted;
+                }
+                catch (Exception ex)
+                {
+                    await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+                }
+            }
+            await RefreshOrderAsync();
         }
     }
 }
