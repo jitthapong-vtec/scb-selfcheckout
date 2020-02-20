@@ -83,6 +83,13 @@ namespace SelfCheckout.ViewModels
             MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderLoaded", (s) =>
             {
                 OrderData = SaleEngineService.OrderData;
+
+                try
+                {
+                    var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
+                    tab.BadgeCount = Convert.ToInt32(OrderData.BillingQty);
+                }
+                catch { }
             });
         }
 

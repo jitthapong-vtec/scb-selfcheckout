@@ -77,14 +77,14 @@
                     <RowDefinition Height="4"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Margin="0,-22,0,4">
-                    <Frame Padding="2" WidthRequest="64" HeightRequest="64" CornerRadius="128" VerticalOptions="Center" HorizontalOptions="Center">
-                        <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="0">
-                            <Label Text="{Binding Icon}" FontFamily="{StaticResource KPIconFont}" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource SelectedLabelStyle}"/>
+                    <Frame Padding="0" WidthRequest="64" HeightRequest="64" CornerRadius="128" VerticalOptions="Center" HorizontalOptions="Center">
+                        <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="0" Margin="2">
+                            <Label Text="{Binding Icon}" FontSize="24" FontFamily="{StaticResource KPIconFont}" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource SelectedLabelStyle}"/>
                             <Label FontSize="Micro" VerticalOptions="Center" HorizontalTextAlignment="Center" Text="{Binding TabText}" Style="{StaticResource SelectedLabelStyle}"/>
                         </StackLayout>
                     </Frame>
                     <Frame VerticalOptions="Start" HorizontalOptions="End" CornerRadius="48" Padding="8,4,8,4" BackgroundColor="Red" IsVisible="{Binding BadgeVisible}">
-                        <Label VerticalOptions="Center" HorizontalTextAlignment="Center" Text="{Binding Source={x:Reference mainView}, Path=BindingContext.OrderData.BillingQuantities[1].Quantity}" FontSize="Micro" TextColor="{StaticResource Gray50}"/>
+                        <Label VerticalOptions="Center" HorizontalTextAlignment="Center" Text="{Binding BadgeCount}" FontSize="Micro" TextColor="{StaticResource Gray50}"/>
                     </Frame>
                 </Grid>
                 <BoxView Grid.Row="1" BackgroundColor="{StaticResource Primary}" HeightRequest="4">

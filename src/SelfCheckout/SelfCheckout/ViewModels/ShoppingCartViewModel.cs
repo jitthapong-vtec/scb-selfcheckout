@@ -30,16 +30,16 @@ namespace SelfCheckout.ViewModels
         {
             items = new object[]
             {
-                    new
-                    {
-                        SessionKey = LoginData.SessionKey,
-                        ItemCode = "00008211470207673"
-                    }
-                    ,new
-                    {
-                        SessionKey = LoginData.SessionKey,
-                        ItemCode = "00008190415206226"
-                    }
+                new
+                {
+                    SessionKey = LoginData.SessionKey,
+                    ItemCode = "00008211470207673"
+                },
+                new
+                {
+                    SessionKey = LoginData.SessionKey,
+                    ItemCode = "00008190415206226"
+                }
             };
         }
 
