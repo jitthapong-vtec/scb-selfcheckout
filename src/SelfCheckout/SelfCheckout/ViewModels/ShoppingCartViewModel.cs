@@ -113,16 +113,23 @@ namespace SelfCheckout.ViewModels
             await SetActionToOrder(payload);
         });
 
-        public ICommand DeleteOrderCommand => new Command(async () =>
+        public ICommand DeleteOrderCommand => new Command<OrderDetail>(async (order) =>
         {
-            var selectedOrder = OrderDetails.Where(o => o.IsSelected).ToList();
-            if (selectedOrder.Any())
+            if (order != null)
             {
-                var result = await DialogService.ShowConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteItem, AppResources.Yes, AppResources.No);
-
-                if (result)
+                await DeleteItemAsync(new OrderDetail[] { order });
+            }
+            else
+            {
+                var selectedOrders = OrderDetails.Where(o => o.IsSelected).ToArray();
+                if (selectedOrders.Any())
                 {
-                    await DeleteItemAsync();
+                    var result = await DialogService.ShowConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteItem, AppResources.Yes, AppResources.No);
+
+                    if (result)
+                    {
+                        await DeleteItemAsync(selectedOrders);
+                    }
                 }
             }
         });
@@ -193,15 +200,14 @@ namespace SelfCheckout.ViewModels
             return Task.FromResult(true);
         }
 
-        async Task DeleteItemAsync()
+        async Task DeleteItemAsync(OrderDetail[] orders)
         {
-            var selectedOrders = OrderDetails.Where(o => o.IsSelected).ToList();
-            if (selectedOrders.Any())
+            if (orders.Any())
             {
                 var payload = new
                 {
                     SessionKey = LoginData.SessionKey,
-                    Rows = selectedOrders.Select(o => o.Guid).ToArray(),
+                    Rows = orders.Select(o => o.Guid).ToArray(),
                     ActionItemValue = new
                     {
                         Action = "delete",

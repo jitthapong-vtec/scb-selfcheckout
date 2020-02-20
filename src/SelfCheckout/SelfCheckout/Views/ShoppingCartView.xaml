@@ -6,7 +6,7 @@
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:component="clr-namespace:SelfCheckout.Views.Components"
              xmlns:views="clr-namespace:SelfCheckout.Views"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
@@ -79,7 +79,10 @@
                         </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <views:OrderItemView/>
+                                <component:OrderItemView DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.DeleteOrderCommand}" 
+                                                         ChangeQtyCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.ChangeQtyCommand}"
+                                                         SelectionCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.OrderSelectedCommand}"
+                                                         CommandParameter="{Binding .}"/>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

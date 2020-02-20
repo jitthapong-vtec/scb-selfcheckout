@@ -35,6 +35,7 @@ namespace SelfCheckout.Droid
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
             UserDialogs.Init(this);
 
+            global::Xamarin.Forms.Forms.SetFlags("SwipeView_Experimental");
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
         }
