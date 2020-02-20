@@ -72,7 +72,7 @@
                 <BoxView HeightRequest="1" Margin="4" BackgroundColor="{StaticResource Gray200}"/>
                 <Grid>
                     <Grid HorizontalOptions="Start" Padding="12,0,8,8">
-                        <Label VerticalTextAlignment="Center" HorizontalOptions="Start">
+                        <Label VerticalTextAlignment="Center" HorizontalOptions="Start" FontSize="Large">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="{Binding OrderData.BillingQty}"/>

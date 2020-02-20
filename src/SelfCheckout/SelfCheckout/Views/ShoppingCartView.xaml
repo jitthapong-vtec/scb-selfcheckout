@@ -85,6 +85,7 @@
                     </CollectionView>
                 </RefreshView>
             </Grid>
+            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentView.Content>
 </ContentView>

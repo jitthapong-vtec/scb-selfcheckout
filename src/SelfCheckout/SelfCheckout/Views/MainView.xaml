@@ -25,7 +25,7 @@
                 <Image Source="ic_lang" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="24"/>
             </ctrls:TappedGrid>
             <Label Text="{Binding PageTitle}" FontAttributes="Bold" HorizontalOptions="Center" Margin="50,0,50,0" HorizontalTextAlignment="Center"/>
-            <StackLayout HorizontalOptions="End" Orientation="Horizontal" Margin="4">
+            <StackLayout HorizontalOptions="End" Orientation="Horizontal" Margin="4,0,12,0">
                 <Image Source="ic_info"/>
                 <ctrls:TappedGrid TappedCommand="{Binding CurrencyTappedCommand}">
                     <Label Text="{Binding CurrencySelected.CurrCode}" HorizontalOptions="Center"/>

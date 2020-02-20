@@ -139,11 +139,11 @@ namespace SelfCheckout.ViewModels
             if (!_firstSelect)
             {
                 await TestAddOrder();
-                _firstSelect = false;
             }
             else
             {
                 await LoadOrderAsync();
+                _firstSelect = false;
             }
         }
 
@@ -230,12 +230,17 @@ namespace SelfCheckout.ViewModels
             var payload = items[random.Next(items.Length)];
             try
             {
+                IsBusy = true;
                 var result = await SaleEngineService.AddItemToOrderAsync(payload);
                 var success = result.IsCompleted;
             }
             catch (Exception ex)
             {
                 await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+            }
+            finally
+            {
+                IsBusy = false;
             }
             await RefreshOrderAsync();
         }
