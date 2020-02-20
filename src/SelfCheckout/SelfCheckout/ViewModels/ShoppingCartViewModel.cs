@@ -18,10 +18,30 @@ namespace SelfCheckout.ViewModels
 {
     public class ShoppingCartViewModel : ViewModelBase
     {
+        object[] items;
+
         ObservableCollection<OrderDetail> _orderDetails;
 
         bool _isSelectAllOrder;
         bool _isAnyOrderSelected;
+        bool _firstSelect = true;
+
+        public ShoppingCartViewModel()
+        {
+            items = new object[]
+            {
+                    new
+                    {
+                        SessionKey = LoginData.SessionKey,
+                        ItemCode = "00008211470207673"
+                    }
+                    ,new
+                    {
+                        SessionKey = LoginData.SessionKey,
+                        ItemCode = "00008190415206226"
+                    }
+            };
+        }
 
         public bool IsSelectAllOrder
         {
@@ -77,6 +97,22 @@ namespace SelfCheckout.ViewModels
             catch { }
         });
 
+        public ICommand ChangeQtyCommand => new Command<OrderDetail>(async (order) =>
+        {
+            var qty = order.BillingQuantity.Quantity;
+            var payload = new
+            {
+                SessionKey = LoginData.SessionKey,
+                Rows = new string[] { order.Guid },
+                ActionItemValue = new
+                {
+                    Action = "change_qty",
+                    Value = $"{qty}"
+                }
+            };
+            await SetActionToOrder(payload);
+        });
+
         public ICommand DeleteOrderCommand => new Command(async () =>
         {
             var selectedOrder = OrderDetails.Where(o => o.IsSelected).ToList();
@@ -100,8 +136,21 @@ namespace SelfCheckout.ViewModels
 
         public override async Task OnTabSelected(TabItem item)
         {
-            await LoadOrderAsync();
-            await TestAddOrder();
+            if (!_firstSelect)
+            {
+                await TestAddOrder();
+                _firstSelect = false;
+            }
+            else
+            {
+                await LoadOrderAsync();
+            }
+        }
+
+        public override Task OnTabDeSelected(TabItem item)
+        {
+            _firstSelect = true;
+            return base.OnTabDeSelected(item);
         }
 
         public async Task LoadOrderAsync()
@@ -155,61 +204,38 @@ namespace SelfCheckout.ViewModels
                     Rows = selectedOrders.Select(o => o.Guid).ToArray(),
                     ActionItemValue = new
                     {
-                        Action = "cancel",
+                        Action = "delete",
                         Value = "1"
                     }
                 };
-                try
-                {
-                    await SaleEngineService.ActionListItemToOrderAsync(payload);
-                }
-                catch (Exception ex)
-                {
-                }
-                await RefreshOrderAsync();
+                await SetActionToOrder(payload);
             }
+        }
+
+        async Task SetActionToOrder(object payload)
+        {
+            try
+            {
+                await SaleEngineService.ActionListItemToOrderAsync(payload);
+            }
+            catch (Exception ex)
+            {
+            }
+            await RefreshOrderAsync();
         }
 
         async Task TestAddOrder()
         {
-            var payloads = new object[]
+            var random = new Random();
+            var payload = items[random.Next(items.Length)];
+            try
             {
-                    new
-                    {
-                        SessionKey = LoginData.SessionKey,
-                        ItemCode = "00008211470207673"
-                    }
-                    ,new
-                    {
-                        SessionKey = LoginData.SessionKey,
-                        ItemCode = "00008190415206226"
-                    }
-                    //,new
-                    //{
-                    //    SessionKey = LoginData.SessionKey,
-                    //    ItemCode = "00008215930215710"
-                    //},new
-                    //{
-                    //    SessionKey = LoginData.SessionKey,
-                    //    ItemCode = "00008215659204729"
-                    //},new
-                    //{
-                    //    SessionKey = LoginData.SessionKey,
-                    //    ItemCode = "00008215930215710"
-                    //}
-            };
-
-            foreach (var payload in payloads)
+                var result = await SaleEngineService.AddItemToOrderAsync(payload);
+                var success = result.IsCompleted;
+            }
+            catch (Exception ex)
             {
-                try
-                {
-                    var result = await SaleEngineService.AddItemToOrderAsync(payload);
-                    var success = result.IsCompleted;
-                }
-                catch (Exception ex)
-                {
-                    await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
-                }
+                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
             }
             await RefreshOrderAsync();
         }

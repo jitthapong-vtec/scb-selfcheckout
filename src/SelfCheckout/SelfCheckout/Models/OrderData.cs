@@ -27,6 +27,15 @@ namespace SelfCheckout.Models
         [JsonProperty("BillingQuantities")]
         public List<BillingQuantity> BillingQuantities { get; set; }
 
+        public double? BillingQty {
+            get => BillingQuantities[1].Quantity;
+        }
+
+        public string BillingUnit
+        {
+            get => BillingQuantities[1].Uom;
+        }
+
         [JsonProperty("CustomerDetail")]
         public CustomerDetail CustomerDetail { get; set; }
 

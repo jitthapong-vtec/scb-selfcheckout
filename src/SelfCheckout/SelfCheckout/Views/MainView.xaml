@@ -45,7 +45,7 @@
             </Style.Triggers>
         </Style>
         <DataTemplate x:Key="CommonTapTemplate">
-            <ctrls:TappedGrid RowSpacing="0" WidthRequest="{Binding Source={x:Reference tabContainer}, Path=Width, Converter={StaticResource TabItemWidthConverter}, ConverterParameter=5}"
+            <ctrls:TappedGrid RowSpacing="0" ColumnSpacing="0" WidthRequest="{Binding Source={x:Reference tabContainer}, Path=Width, Converter={StaticResource TabItemWidthConverter}, ConverterParameter=5}"
                               TappedCommand="{Binding Source={x:Reference mainView}, Path=BindingContext.TabSelectedCommand}"
                               CommandParameter="{Binding .}">
                 <Grid.RowDefinitions>
@@ -69,7 +69,7 @@
             </ctrls:TappedGrid>
         </DataTemplate>
         <DataTemplate x:Key="BarcodeTapTemplate">
-            <ctrls:TappedGrid RowSpacing="0" VerticalOptions="Center"
+            <ctrls:TappedGrid RowSpacing="0" ColumnSpacing="0" VerticalOptions="Center"
                               TappedCommand="{Binding Source={x:Reference mainView}, Path=BindingContext.TabSelectedCommand}"
                               CommandParameter="{Binding .}">
                 <Grid.RowDefinitions>
@@ -77,9 +77,9 @@
                     <RowDefinition Height="4"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Margin="0,-22,0,4">
-                    <Frame Padding="4" WidthRequest="64" HeightRequest="64" CornerRadius="128">
-                        <StackLayout VerticalOptions="Center" Spacing="2">
-                            <Label Text="{Binding Icon}" FontSize="24" FontFamily="{StaticResource KPIconFont}" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource SelectedLabelStyle}"/>
+                    <Frame Padding="2" WidthRequest="64" HeightRequest="64" CornerRadius="128" VerticalOptions="Center" HorizontalOptions="Center">
+                        <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="0">
+                            <Label Text="{Binding Icon}" FontFamily="{StaticResource KPIconFont}" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource SelectedLabelStyle}"/>
                             <Label FontSize="Micro" VerticalOptions="Center" HorizontalTextAlignment="Center" Text="{Binding TabText}" Style="{StaticResource SelectedLabelStyle}"/>
                         </StackLayout>
                     </Frame>
@@ -112,7 +112,6 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <ctrls:TabViewContainer Content="{Binding CurrentView}"/>
-                    <Grid BackgroundColor="#66000000" IsVisible="{Binding SummaryShowing}"/>
                     <views:SummaryView IsVisible="{Binding SummaryVisible}" VerticalOptions="End"/>
                 </Grid>
                 <Grid Grid.Row="1">
@@ -133,11 +132,10 @@
                         </Style>
                     </Grid.Resources>
                     <Label Text="{i18n:Translate Language}" HorizontalOptions="Start" VerticalOptions="Center"/>
-                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding LanguageTappedCommand}"/>
-                        </Label.GestureRecognizers>
-                    </Label>
+                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding LanguageTappedCommand}"/>
+                    </Grid.GestureRecognizers>
                 </Grid>
                 <views:LanguageSelectionView Grid.Row="1"/>
             </Grid>
@@ -153,11 +151,10 @@
                         </Style>
                     </Grid.Resources>
                     <Label Text="{i18n:Translate Currency}" HorizontalOptions="Start" VerticalOptions="Center"/>
-                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding CurrencyTappedCommand}"/>
-                        </Label.GestureRecognizers>
-                    </Label>
+                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding CurrencyTappedCommand}"/>
+                    </Grid.GestureRecognizers>
                 </Grid>
                 <views:CurrencySelectionView Grid.Row="1"/>
             </Grid>

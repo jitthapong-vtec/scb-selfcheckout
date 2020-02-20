@@ -35,6 +35,7 @@ namespace SelfCheckout.ViewModels
             Tabs = new ObservableCollection<TabItem>();
             Tabs.Add(new TabItem()
             {
+                TabId = 1,
                 Icon = "\ue904",
                 Title = AppResources.Home,
                 TabText = AppResources.Home,
@@ -42,6 +43,7 @@ namespace SelfCheckout.ViewModels
             });
             Tabs.Add(new TabItem()
             {
+                TabId = 2,
                 Icon = "\ue903",
                 Title = AppResources.DeviceInfo,
                 TabText = AppResources.Device,
@@ -49,6 +51,7 @@ namespace SelfCheckout.ViewModels
             });
             Tabs.Add(new TabItem()
             {
+                TabId = 3,
                 Icon = "\ue901",
                 Title = AppResources.MyCart,
                 TabText = AppResources.Shopping,
@@ -58,6 +61,7 @@ namespace SelfCheckout.ViewModels
             });
             Tabs.Add(new TabItem()
             {
+                TabId = 4,
                 Icon = "\ue900",
                 Title = AppResources.Orders,
                 TabText = AppResources.Orders,
@@ -65,6 +69,7 @@ namespace SelfCheckout.ViewModels
             });
             Tabs.Add(new TabItem()
             {
+                TabId = 5,
                 Icon = "\ue902",
                 Title = AppResources.Profile,
                 TabText = AppResources.Profile,
@@ -118,8 +123,12 @@ namespace SelfCheckout.ViewModels
 
         Task SelectTabAsync(TabItem item)
         {
-            var selectedTab = Tabs.Where(t => t.Selected).FirstOrDefault();
-            selectedTab.Selected = false;
+            try
+            {
+                var selectedTab = Tabs.Where(t => t.TabId != item.TabId && t.Selected).FirstOrDefault();
+                selectedTab.Selected = false;
+            }
+            catch { }
 
             if (item.Page is ShoppingCartView || item.Page is OrderView)
                 SummaryVisible = true;

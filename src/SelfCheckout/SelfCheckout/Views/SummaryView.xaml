@@ -33,10 +33,10 @@
                             <Setter Property="Text" Value="&#xf077;"/>
                         </DataTrigger>
                     </Label.Triggers>
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ShowSummaryCommand}"/>
-                    </Label.GestureRecognizers>
                 </Label>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ShowSummaryCommand}"/>
+                </Grid.GestureRecognizers>
             </Grid>
             <StackLayout Grid.Row="1" Padding="0,0,0,16" IsVisible="{Binding SummaryShowing}">
                 <Grid>
@@ -71,13 +71,13 @@
                 </Grid>
                 <BoxView HeightRequest="1" Margin="4" BackgroundColor="{StaticResource Gray200}"/>
                 <Grid>
-                    <Grid HorizontalOptions="Start" Padding="8,0,8,8">
+                    <Grid HorizontalOptions="Start" Padding="12,0,8,8">
                         <Label VerticalTextAlignment="Center" HorizontalOptions="Start">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{Binding OrderData.BillingQuantities[1].Quantity}"/>
+                                    <Span Text="{Binding OrderData.BillingQty}"/>
                                     <Span Text=" "/>
-                                    <Span Text="{Binding OrderData.BillingQuantities[1].UOM}"/>
+                                    <Span Text="{Binding OrderData.BillingUnit}"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
@@ -92,7 +92,7 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Label Grid.Row="0" Grid.Column="0" HorizontalOptions="End" Text="{i18n:Translate OrderTotal}"/>
-                        <Label Grid.Row="1" Grid.Column="0" HorizontalOptions="End" TextColor="{StaticResource Primary}">
+                        <Label Grid.Row="1" Grid.Column="0" HorizontalOptions="End" TextColor="{StaticResource Primary}" FontAttributes="Bold">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="{Binding OrderData.BillingAmount.TotalAmount.CurrCode.Code}"/>

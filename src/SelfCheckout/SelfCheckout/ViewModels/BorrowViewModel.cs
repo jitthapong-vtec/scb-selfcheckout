@@ -15,7 +15,7 @@ namespace SelfCheckout.ViewModels
 {
     public class BorrowViewModel : ViewModelBase
     {
-        string _inputValue;
+        string _inputValue = "9898989898989";
 
         public ICommand ScanShoppingCartCommand => new Command(async () => await ScanShoppingCartAsync());
 
