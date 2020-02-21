@@ -130,20 +130,20 @@ namespace SelfCheckout.ViewModels
 
         Task SelectTabAsync(TabItem item)
         {
+            if (item.Page is ShoppingCartView || item.Page is OrderView)
+                SummaryVisible = true;
+            else
+                SummaryVisible = false;
+            PageTitle = item.Title;
+            CurrentView = item.Page;
+            item.Selected = true;
+
             try
             {
                 var selectedTab = Tabs.Where(t => t.TabId != item.TabId && t.Selected).FirstOrDefault();
                 selectedTab.Selected = false;
             }
             catch { }
-
-            if (item.Page is ShoppingCartView || item.Page is OrderView)
-                SummaryVisible = true;
-            else
-                SummaryVisible = false;
-            item.Selected = true;
-            PageTitle = item.Title;
-            CurrentView = item.Page;
             return Task.FromResult(true);
         }
 
@@ -169,7 +169,7 @@ namespace SelfCheckout.ViewModels
             {
                 var payload = new
                 {
-                    branch_no = "40"
+                    branch_no = SelfCheckoutService.AppConfig.BranchNo
                 };
                 await SaleEngineService.LoadCurrencyAsync(payload);
                 Currencies = SaleEngineService.Currencies?.ToObservableCollection();

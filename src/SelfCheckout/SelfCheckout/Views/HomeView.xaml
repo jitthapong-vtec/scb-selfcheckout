@@ -16,9 +16,10 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <forms:CachedImage Source="{Binding Url}" Aspect="AspectFit" WidthRequest="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=Width}"/>
-                        </Grid>
+                        <forms:CachedImage Source="{Binding Url}" 
+                                               Aspect="AspectFit" 
+                                               WidthRequest="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=Width}"
+                                               HeightRequest="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=Height, ConverterParameter=.75}"/>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

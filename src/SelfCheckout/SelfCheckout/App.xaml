@@ -20,6 +20,7 @@
         <Color x:Key="Brown">#9F8A58</Color>
 
         <converter:TabItemWidthConverter x:Key="TabItemWidthConverter"/>
+        <converter:ImageHeightConverter x:Key="ImageHeightConverter"/>
         <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
         <converter:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter"/>
         <converter:ValidatableObjectErrorConverter x:Key="ValidatableObjectErrorConverter"/>

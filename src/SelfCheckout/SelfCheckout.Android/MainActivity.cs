@@ -10,12 +10,16 @@ using Acr.UserDialogs;
 using FFImageLoading;
 using Android.Support.V4.App;
 using Android;
+using Com.Densowave.Bhtsdk.Barcode;
+using System.Collections.Generic;
 
 namespace SelfCheckout.Droid
 {
     [Activity(Label = "Self Checkout", Icon = "@mipmap/ic_launcher", Theme = "@style/Theme.Splash", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, BarcodeManager_.IBarcodeManagerListener_, BarcodeScanner_.IBarcodeDataListener_
     {
+        BarcodeScanner_ mBarcodeScanner;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             SetTheme(Resource.Style.MainTheme);
@@ -45,7 +49,25 @@ namespace SelfCheckout.Droid
             ActivityCompat.RequestPermissions(this, new string[]{
                     Manifest.Permission.WriteExternalStorage,
                     Manifest.Permission.Camera}, 1212);
+
+            try
+            {
+                BarcodeManager_.Create(this, this);
+            }
+            catch { }
+
             base.OnStart();
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            try
+            {
+                mBarcodeScanner.Destroy();
+            }
+            catch { }
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
@@ -53,6 +75,28 @@ namespace SelfCheckout.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        public void OnBarcodeDataReceived(BarcodeDataReceivedEvent_ dataReceivedEvent)
+        {
+            IList<BarcodeDataReceivedEvent_.BarcodeData_> listBarcodeData = dataReceivedEvent.BarcodeData;
+        }
+
+        public void OnBarcodeManagerCreated(BarcodeManager_ barcodeManager)
+        {
+            try
+            {
+                IList<BarcodeScanner_> listScanner = barcodeManager.BarcodeScanners;
+                if (listScanner.Count > 0)
+                {
+                    mBarcodeScanner = listScanner[0];
+                    mBarcodeScanner.AddDataListener(this);
+                    mBarcodeScanner.Claim();
+                }
+            }
+            catch (BarcodeException_ e)
+            {
+            }
         }
     }
 }

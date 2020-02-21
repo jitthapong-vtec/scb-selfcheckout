@@ -1,5 +1,6 @@
 ﻿using SelfCheckout.Controls;
 using SelfCheckout.ViewModels.Base;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms;

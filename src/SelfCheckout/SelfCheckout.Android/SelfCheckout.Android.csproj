@@ -51,6 +51,9 @@
     <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="bhtsdk_r1001300_v1.00.13">
+      <HintPath>..\..\Dlls\bhtsdk_r1001300_v1.00.13.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="System" />
     <Reference Include="System.Core" />

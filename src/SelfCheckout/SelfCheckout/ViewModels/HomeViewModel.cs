@@ -31,7 +31,6 @@ namespace SelfCheckout.ViewModels
         public HomeViewModel(IPimCoreService pimCoreService)
         {
             _pimCoreService = pimCoreService;
-            _assets = new ObservableCollection<PimCoreImageAsset>();
         }
 
         public override async Task OnTabSelected(TabItem item)
@@ -47,22 +46,21 @@ namespace SelfCheckout.ViewModels
                 var result = await _pimCoreService.GetMediaByLocationAsync();
                 if (result.Status == "success")
                 {
-                    var assets = new List<PimCoreImageAsset>();
+                    Assets = new ObservableCollection<PimCoreImageAsset>();
                     foreach (var media in result.Data.ListMedia)
                     {
                         try
                         {
-                            var assetResult = await _pimCoreService.GetImageByAssetIdAsync(media.Id, "600x800");
+                            var assetResult = await _pimCoreService.GetImageByAssetIdAsync(media.Id, "400x200");
                             if (assetResult.Status == "success")
                             {
                                 var asset = assetResult.Data;
                                 asset.DetailLink = media.Link;
-                                assets.Add(asset);
+                                Assets.Add(asset);
                             }
                         }
                         catch { }
                     }
-                    Assets = assets.ToObservableCollection();
                 }
             }
             catch { }
