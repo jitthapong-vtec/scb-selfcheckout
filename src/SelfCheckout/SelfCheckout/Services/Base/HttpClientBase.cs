@@ -10,9 +10,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SelfCheckout.Services.RequestProvider
+namespace SelfCheckout.Services.Base
 {
-    public class RequestProvider : IRequestProvider
+    public abstract class HttpClientBase
     {
         ISerializeService _converterService;
 
@@ -24,17 +24,20 @@ namespace SelfCheckout.Services.RequestProvider
             Delete
         }
 
-        HttpClient httpClient;
+        HttpClient _httpClient;
 
-        public RequestProvider(ISerializeService converterService)
+        public HttpClientBase(ISerializeService converterService)
         {
             _converterService = converterService;
 
-            httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {GlobalSettings.AccessKey}");
-            httpClient.DefaultRequestHeaders.Add("CallerID", "SCBCHECKOUT");
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.Timeout = TimeSpan.FromSeconds(60);
+            _httpClient = new HttpClient();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.Timeout = TimeSpan.FromSeconds(60);
+        }
+
+        protected void SetRequestHeader(string key, string val)
+        {
+            _httpClient.DefaultRequestHeaders.Add(key, val);
         }
 
         public async Task<TResult> GetAsync<TResult>(string uri)
@@ -71,13 +74,13 @@ namespace SelfCheckout.Services.RequestProvider
             try
             {
                 if (requestType == RequestTypes.Get)
-                    response = await httpClient.GetAsync(uri);
+                    response = await _httpClient.GetAsync(uri);
                 else if (requestType == RequestTypes.Post)
-                    response = await httpClient.PostAsync(uri, content);
+                    response = await _httpClient.PostAsync(uri, content);
                 else if (requestType == RequestTypes.Put)
-                    response = await httpClient.PutAsync(uri, content);
+                    response = await _httpClient.PutAsync(uri, content);
                 else if (requestType == RequestTypes.Delete)
-                    response = await httpClient.DeleteAsync(uri);
+                    response = await _httpClient.DeleteAsync(uri);
             }
             catch (TaskCanceledException)
             {

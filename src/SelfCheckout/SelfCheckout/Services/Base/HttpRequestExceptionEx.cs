@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 
-namespace SelfCheckout.Services.RequestProvider
+namespace SelfCheckout.Services.Base
 {
     public class HttpRequestExceptionEx : HttpRequestException
     {

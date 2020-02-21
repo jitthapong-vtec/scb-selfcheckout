@@ -4,11 +4,23 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SelfCheckout.Services.Session
+namespace SelfCheckout.Services.SelfCheckout
 {
-    public interface ISessionService
+    public interface ISelfCheckoutService
     {
+        AppConfig AppConfig { get; }
+
+        IList<Payment> Payments { get; }
+
+        IList<Language> Languages { get; }
+
         string CurrentShoppingCart { get; set; }
+
+        Task LoadConfigAsync();
+
+        Task LoadLanguageAsync();
+
+        Task LoadPaymentAsync();
 
         Task<ApiResultData<int>> StartSessionAsync(string userId, string machineNo, string shoppingCartNo);
 

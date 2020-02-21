@@ -151,11 +151,11 @@ namespace SelfCheckout.ViewModels
         {
             try
             {
-                await MasterDataService.LoadLanguageAsync();
-                await MasterDataService.LoadPaymentAsync();
+                await SelfCheckoutService.LoadLanguageAsync();
+                await SelfCheckoutService.LoadPaymentAsync();
 
-                Languages = MasterDataService.Languages?.ToObservableCollection();
-                Payments = MasterDataService.Payments?.ToObservableCollection();
+                Languages = SelfCheckoutService.Languages?.ToObservableCollection();
+                Payments = SelfCheckoutService.Payments?.ToObservableCollection();
             }
             catch (Exception ex)
             {

@@ -1,5 +1,4 @@
 ﻿using SelfCheckout.Models;
-using SelfCheckout.Services.Master;
 using SelfCheckout.Services.Dialog;
 using SelfCheckout.Services.Navigation;
 using System;
@@ -10,14 +9,13 @@ using Xamarin.Essentials;
 using SelfCheckout.Resources;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
-using SelfCheckout.Services.Session;
+using SelfCheckout.Services.SelfCheckout;
 
 namespace SelfCheckout.ViewModels.Base
 {
     public abstract class ViewModelBase : ExtendedBindableObject
     {
-        protected readonly IMasterDataService MasterDataService;
-        protected readonly ISessionService SessionService;
+        protected readonly ISelfCheckoutService SelfCheckoutService;
         protected readonly ISaleEngineService SaleEngineService;
         protected readonly IDialogService DialogService;
         protected readonly INavigationService NavigationService;
@@ -29,8 +27,7 @@ namespace SelfCheckout.ViewModels.Base
 
         public ViewModelBase()
         {
-            MasterDataService = ViewModelLocator.Resolve<IMasterDataService>();
-            SessionService = ViewModelLocator.Resolve<ISessionService>();
+            SelfCheckoutService = ViewModelLocator.Resolve<ISelfCheckoutService>();
             SaleEngineService = ViewModelLocator.Resolve<ISaleEngineService>();
             RegisterService = ViewModelLocator.Resolve<IRegisterService>();
             DialogService = ViewModelLocator.Resolve<IDialogService>();
@@ -64,7 +61,7 @@ namespace SelfCheckout.ViewModels.Base
 
         public AppConfig AppConfig
         {
-            get => MasterDataService.AppConfig;
+            get => SelfCheckoutService.AppConfig;
         }
 
         public LoginData LoginData
@@ -79,7 +76,7 @@ namespace SelfCheckout.ViewModels.Base
 
         public string CurrentShoppingCart
         {
-            get => SessionService.CurrentShoppingCart;
+            get => SelfCheckoutService.CurrentShoppingCart;
         }
 
         public string PageTitle

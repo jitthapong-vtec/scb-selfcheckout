@@ -12,6 +12,8 @@ namespace SelfCheckout
         public const string AccessKey = "WLR7xq7jrA5t4TF7z3JLTkBFKmskmANQ";
         public const string CallerId = "SCBCHECKOUT";
 
+        public const string PimCoreApiKey = "db4dd68cb67e35107ad2f9f78a316a42ae981466ce095498af3000ced075d00f";
+
         static GlobalSettings _instance;
         static object syncRoot = new object();
 
@@ -59,5 +61,7 @@ namespace SelfCheckout
         public string SelfCheckoutApi {
             get => Preferences.Get("self_checkout_api", "https://kpservices.kingpower.com/portal/developer/selfcheckoutapi/");
         }
+
+        public string PimCoreUrl { get => "https://pim.kingpower.com/"; }
     }
 }

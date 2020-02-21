@@ -2,7 +2,6 @@
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
 using SelfCheckout.Services.Register;
-using SelfCheckout.Services.Session;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -46,14 +45,14 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var validateResult = await SessionService.ValidateShoppingCartAsync(LoginData.UserInfo.MachineEnv.MachineIp, InputValue);
+                var validateResult = await SelfCheckoutService.ValidateShoppingCartAsync(LoginData.UserInfo.MachineEnv.MachineIp, InputValue);
                 if (!validateResult.IsCompleted)
                 {
                     await DialogService.ShowAlertAsync(AppResources.Opps, validateResult.DefaultMessage, AppResources.Close);
                     return;
                 }
 
-                SessionService.CurrentShoppingCart = InputValue;
+                SelfCheckoutService.CurrentShoppingCart = InputValue;
 
                 var payload = new
                 {
@@ -102,7 +101,7 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var startResult = await SessionService.StartSessionAsync(LoginData.UserInfo.UserCode, LoginData.UserInfo.MachineEnv.MachineNo, InputValue);
+                var startResult = await SelfCheckoutService.StartSessionAsync(LoginData.UserInfo.UserCode, LoginData.UserInfo.MachineEnv.MachineNo, InputValue);
                 if (!startResult.IsCompleted)
                 {
                     await DialogService.ShowAlertAsync(AppResources.Opps, startResult.DefaultMessage, AppResources.Close);

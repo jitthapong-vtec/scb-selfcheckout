@@ -1,16 +1,15 @@
-﻿using SelfCheckout.Services.Master;
-using SelfCheckout.Services.Dialog;
+﻿using SelfCheckout.Services.Dialog;
 using SelfCheckout.Services.Navigation;
-using SelfCheckout.Services.RequestProvider;
 using SelfCheckout.Views;
 using System;
 using System.Globalization;
 using System.Reflection;
 using Xamarin.Forms;
-using SelfCheckout.Services.Session;
 using SelfCheckout.Services.Serializer;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
+using SelfCheckout.Services.PimCore;
 
 namespace SelfCheckout.ViewModels.Base
 {
@@ -50,12 +49,11 @@ namespace SelfCheckout.ViewModels.Base
 
             _container.Register<INavigationService, NavigationService>();
             _container.Register<IDialogService, DialogService>();
-            _container.Register<IRequestProvider, RequestProvider>();
             _container.Register<ISerializeService, JsonSerializeService>();
-            _container.Register<IMasterDataService, MasterDataService>();
             _container.Register<ISaleEngineService, SaleEngineService>();
-            _container.Register<ISessionService, SessionService>();
+            _container.Register<ISelfCheckoutService, SelfCheckoutService>();
             _container.Register<IRegisterService, RegisterService>();
+            _container.Register<IPimCoreService, PimCoreService>();
         }
 
         public static void RegisterSingleton<TInterface, T>() where TInterface : class where T : class, TInterface

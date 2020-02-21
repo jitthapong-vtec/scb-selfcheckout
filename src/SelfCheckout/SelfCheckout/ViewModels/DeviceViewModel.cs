@@ -1,7 +1,7 @@
 ﻿using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
-using SelfCheckout.Services.Master;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -20,14 +20,14 @@ namespace SelfCheckout.ViewModels
         ObservableCollection<SimpleSelectedItem> _tabs;
         ObservableCollection<SimpleSelectedItem> _deviceInfoItems;
 
-        IMasterDataService _masterDataService;
+        ISelfCheckoutService _selfCheckoutService;
 
         bool _isAuthorized;
         bool _logoutButtonVisible;
 
-        public DeviceViewModel(IMasterDataService masterDataService)
+        public DeviceViewModel(ISelfCheckoutService selfCheckoutService)
         {
-            _masterDataService = masterDataService;
+            _selfCheckoutService = selfCheckoutService;
 
             Tabs = new ObservableCollection<SimpleSelectedItem>()
             {

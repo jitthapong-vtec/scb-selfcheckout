@@ -4,12 +4,24 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.HomeView">
   <ContentView.Content>
       <Grid>
-          <Label VerticalOptions="Center" HorizontalOptions="Center" Text="Home" />
+            <CollectionView ItemsSource="{Binding Assets}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="8" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <forms:CachedImage Source="{Binding Url}" Aspect="AspectFit" WidthRequest="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=Width}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
       </Grid>
   </ContentView.Content>
 </ContentView>
