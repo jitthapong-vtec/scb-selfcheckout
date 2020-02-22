@@ -94,6 +94,7 @@
     <Compile Include="Renderers\CustomEntryRenderer.cs" />
     <Compile Include="Renderers\CustomLabelRenderer.cs" />
     <Compile Include="Effects\RoundCornersEffectDroid.cs" />
+    <Compile Include="Renderers\DensoScannerPageRenderer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Localize.cs" />

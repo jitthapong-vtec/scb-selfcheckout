@@ -145,7 +145,7 @@ namespace SelfCheckout.ViewModels
         {
             if (!_firstSelect)
             {
-                await TestAddOrder();
+                //await TestAddOrder();
             }
             else
             {
@@ -226,6 +226,25 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
+            }
+            await RefreshOrderAsync();
+        }
+
+        public async Task AddOrderAsync(string barcode)
+        {
+            try
+            {
+                IsBusy = true;
+                var result = await SaleEngineService.AddItemToOrderAsync(barcode);
+                var success = result.IsCompleted;
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+            }
+            finally
+            {
+                IsBusy = false;
             }
             await RefreshOrderAsync();
         }

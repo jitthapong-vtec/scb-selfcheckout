@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SelfCheckout.Controls;
+using SelfCheckout.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,17 +11,27 @@ using Xamarin.Forms.Xaml;
 
 namespace SelfCheckout.Views
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class MainView : ContentPage
-	{
-		public MainView ()
-		{
-			InitializeComponent ();
-		}
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class MainView : DensoScannerPage
+    {
+        MainViewModel _viewModel;
 
-		protected override bool OnBackButtonPressed()
-		{
-			return true;
-		}
-	}
+        public MainView()
+        {
+            InitializeComponent();
+
+            _viewModel = BindingContext as MainViewModel;
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
+        }
+
+        private void TappedGrid_Tapped(object sender, object e)
+        {
+            if (_viewModel.CurrentView is ShoppingCartView)
+                FireScanEvent();
+        }
+    }
 }

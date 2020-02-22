@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ctrls:DensoScannerPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
              xmlns:ctrls="clr-namespace:SelfCheckout.Controls"
@@ -11,6 +11,7 @@
              xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+                        ScanCommand="{Binding ScanCommand}"
              NavigationPage.HasBackButton="False"
              x:Name="mainView"
              x:Class="SelfCheckout.Views.MainView">
@@ -70,6 +71,7 @@
         </DataTemplate>
         <DataTemplate x:Key="BarcodeTapTemplate">
             <ctrls:TappedGrid RowSpacing="0" ColumnSpacing="0" VerticalOptions="Center"
+                              Tapped="TappedGrid_Tapped"
                               TappedCommand="{Binding Source={x:Reference mainView}, Path=BindingContext.TabSelectedCommand}"
                               CommandParameter="{Binding .}">
                 <Grid.RowDefinitions>
@@ -160,4 +162,4 @@
             </Grid>
         </Grid>
     </ContentPage.Content>
-</ContentPage>
+</ctrls:DensoScannerPage>

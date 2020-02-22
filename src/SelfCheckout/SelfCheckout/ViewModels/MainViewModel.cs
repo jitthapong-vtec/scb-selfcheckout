@@ -101,6 +101,16 @@ namespace SelfCheckout.ViewModels
 
         public ICommand TabSelectedCommand => new Command<TabItem>(async (item) => await SelectTabAsync(item));
 
+        public ICommand ScanCommand => new Command<object>(async (data) =>
+        {
+            try
+            {
+                var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
+                await (tab.Page.BindingContext as ShoppingCartViewModel).AddOrderAsync(data?.ToString());
+            }
+            catch { }
+        });
+
         public ICommand LanguageTappedCommand => new Command(() =>
         {
             LangShowing = !LangShowing;
