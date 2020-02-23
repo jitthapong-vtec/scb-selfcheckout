@@ -31,7 +31,11 @@ namespace SelfCheckout.Views
         private void TappedGrid_Tapped(object sender, object e)
         {
             if (_viewModel.CurrentView is ShoppingCartView)
-                FireScanEvent();
+            {
+                var shoppingCartViewModel = _viewModel.CurrentView.BindingContext as ShoppingCartViewModel;
+                if (!shoppingCartViewModel.IsFirstSelect)
+                    FireScanEvent();
+            }
         }
     }
 }

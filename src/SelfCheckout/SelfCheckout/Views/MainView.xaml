@@ -11,25 +11,30 @@
              xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
-                        ScanCommand="{Binding ScanCommand}"
+             ScanCommand="{Binding ScanCommand}"
              NavigationPage.HasBackButton="False"
              x:Name="mainView"
              x:Class="SelfCheckout.Views.MainView">
     <NavigationPage.TitleView>
         <views:ActionBarView>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".2*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width=".3*"/>
+            </Grid.ColumnDefinitions>
             <Grid.Resources>
                 <Style TargetType="Label">
                     <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
                 </Style>
             </Grid.Resources>
-            <ctrls:TappedGrid HorizontalOptions="Start" TappedCommand="{Binding LanguageTappedCommand}">
+            <ctrls:TappedGrid Grid.Column="0" HorizontalOptions="Start" TappedCommand="{Binding LanguageTappedCommand}">
                 <Image Source="ic_lang" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="24"/>
             </ctrls:TappedGrid>
-            <Label Text="{Binding PageTitle}" FontAttributes="Bold" HorizontalOptions="Center" Margin="50,0,50,0" HorizontalTextAlignment="Center"/>
-            <StackLayout HorizontalOptions="End" Orientation="Horizontal" Margin="4,0,12,0">
-                <Image Source="ic_info"/>
+            <Label Grid.Column="1" Text="{Binding PageTitle}" FontAttributes="Bold" FontSize="Large" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+            <StackLayout Grid.Column="2" Orientation="Horizontal" Margin="4,0,12,0">
+                <Image Source="ic_info" VerticalOptions="Center"/>
                 <ctrls:TappedGrid TappedCommand="{Binding CurrencyTappedCommand}">
-                    <Label Text="{Binding CurrencySelected.CurrCode}" HorizontalOptions="Center"/>
+                    <Label Text="{Binding CurrencySelected.CurrCode}" VerticalTextAlignment="Center" HorizontalOptions="Center"/>
                 </ctrls:TappedGrid>
             </StackLayout>
         </views:ActionBarView>
@@ -78,12 +83,16 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="4"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Margin="0,-22,0,4">
-                    <Frame Padding="4" WidthRequest="64" HeightRequest="64" CornerRadius="128" VerticalOptions="Center" HorizontalOptions="Center">
-                        <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="0" Margin="2">
-                            <Label Text="{Binding Icon}" FontSize="24" FontFamily="{StaticResource KPIconFont}" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource SelectedLabelStyle}"/>
-                            <Label FontSize="Micro" VerticalOptions="Center" HorizontalTextAlignment="Center" Text="{Binding TabText}" Style="{StaticResource SelectedLabelStyle}"/>
-                        </StackLayout>
+                <Grid Grid.Row="0" Margin="0,-22,0,4" RowSpacing="0" ColumnSpacing="0">
+                    <Frame Padding="0" WidthRequest="72" HeightRequest="72" CornerRadius="144" VerticalOptions="Center" HorizontalOptions="Center">
+                        <Grid VerticalOptions="Center" HorizontalOptions="Center" RowSpacing="0" ColumnSpacing="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Text="{Binding Icon}" Grid.Row="0" FontSize="24" FontFamily="{StaticResource KPIconFont}" VerticalOptions="Start" HorizontalOptions="Center" Style="{StaticResource SelectedLabelStyle}"/>
+                            <Label FontSize="Micro" Grid.Row="1" VerticalOptions="End" HorizontalTextAlignment="Center" Text="{Binding TabText}" Style="{StaticResource SelectedLabelStyle}"/>
+                        </Grid>
                     </Frame>
                     <Frame VerticalOptions="Start" HorizontalOptions="End" CornerRadius="48" Padding="8,4,8,4" BackgroundColor="Red" IsVisible="{Binding BadgeVisible}">
                         <Label VerticalOptions="Center" HorizontalTextAlignment="Center" Text="{Binding BadgeCount}" FontSize="Micro" TextColor="{StaticResource Gray50}"/>

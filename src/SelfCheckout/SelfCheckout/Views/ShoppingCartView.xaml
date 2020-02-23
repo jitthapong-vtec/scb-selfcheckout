@@ -72,8 +72,8 @@
                         <CollectionView.EmptyView>
                             <Grid>
                                 <StackLayout VerticalOptions="Center">
-                                    <Label FontFamily="{StaticResource KPIconFont}" Text="&#xfe907;" FontSize="48" HorizontalOptions="Center"/>
-                                    <Label HorizontalTextAlignment="Center" Text="{i18n:Translate ShoppingCartEmpty}" FontSize="24"/>
+                                    <Image Source="shopping_cart" HorizontalOptions="Center" Aspect="AspectFit"/>
+                                    <Label HorizontalTextAlignment="Center" Text="{i18n:Translate ShoppingCartEmpty}" FontSize="Large"/>
                                 </StackLayout>
                             </Grid>
                         </CollectionView.EmptyView>

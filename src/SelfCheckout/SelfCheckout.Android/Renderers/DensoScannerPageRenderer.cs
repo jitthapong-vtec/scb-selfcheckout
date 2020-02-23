@@ -15,7 +15,7 @@ using SelfCheckout.Droid.Renderers;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
-[assembly:ExportRenderer(typeof(DensoScannerPage), typeof(DensoScannerPageRenderer))]
+[assembly: ExportRenderer(typeof(DensoScannerPage), typeof(DensoScannerPageRenderer))]
 namespace SelfCheckout.Droid.Renderers
 {
     public class DensoScannerPageRenderer : PageRenderer, BarcodeManager_.IBarcodeManagerListener_, BarcodeScanner_.IBarcodeDataListener_
@@ -49,15 +49,11 @@ namespace SelfCheckout.Droid.Renderers
                 Task.Delay(1000).Wait();
                 mBarcodeScanner.PressSoftwareTrigger(false);
             }
-            catch(Exception ex)
-            {
-                mBarcodeScanner.PressSoftwareTrigger(false);
-            }
+            catch { }
         }
 
         public void OnBarcodeDataReceived(BarcodeDataReceivedEvent_ dataReceivedEvent)
         {
-            mBarcodeScanner.PressSoftwareTrigger(false);
             IList<BarcodeDataReceivedEvent_.BarcodeData_> listBarcodeData = dataReceivedEvent.BarcodeData;
 
             (Element as DensoScannerPage).ScanCommand?.Execute(listBarcodeData.FirstOrDefault().Data);

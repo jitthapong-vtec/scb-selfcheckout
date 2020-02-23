@@ -11739,16 +11739,19 @@ namespace SelfCheckout.Droid
 			public const int shape_edittext_active = 2131165514;
 			
 			// aapt resource value: 0x7F07014B
-			public const int splash_screen_background = 2131165515;
+			public const int shopping_cart = 2131165515;
 			
 			// aapt resource value: 0x7F07014C
-			public const int toolbar_background = 2131165516;
+			public const int splash_screen_background = 2131165516;
 			
 			// aapt resource value: 0x7F07014D
-			public const int tooltip_frame_dark = 2131165517;
+			public const int toolbar_background = 2131165517;
 			
 			// aapt resource value: 0x7F07014E
-			public const int tooltip_frame_light = 2131165518;
+			public const int tooltip_frame_dark = 2131165518;
+			
+			// aapt resource value: 0x7F07014F
+			public const int tooltip_frame_light = 2131165519;
 			
 			static Drawable()
 			{

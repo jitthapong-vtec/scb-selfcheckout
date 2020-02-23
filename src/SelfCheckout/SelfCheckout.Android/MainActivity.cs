@@ -38,7 +38,14 @@ namespace SelfCheckout.Droid
             UserDialogs.Init(this);
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             LoadApplication(new App());
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
         }
 
         protected override void OnStart()

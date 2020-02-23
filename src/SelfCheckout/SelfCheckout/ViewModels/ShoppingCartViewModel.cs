@@ -24,7 +24,6 @@ namespace SelfCheckout.ViewModels
 
         bool _isSelectAllOrder;
         bool _isAnyOrderSelected;
-        bool _firstSelect = true;
 
         public ShoppingCartViewModel()
         {
@@ -65,6 +64,8 @@ namespace SelfCheckout.ViewModels
             }
         }
 
+        public bool IsFirstSelect { get; set; } = true;
+
         public ObservableCollection<OrderDetail> OrderDetails
         {
             get => _orderDetails;
@@ -77,6 +78,8 @@ namespace SelfCheckout.ViewModels
 
         public ICommand SelectAllOrderCommand => new Command(() =>
         {
+            if (OrderDetails == null)
+                return;
             IsSelectAllOrder = !IsSelectAllOrder;
             foreach (var order in OrderDetails)
             {
@@ -143,20 +146,16 @@ namespace SelfCheckout.ViewModels
 
         public override async Task OnTabSelected(TabItem item)
         {
-            if (!_firstSelect)
-            {
-                //await TestAddOrder();
-            }
-            else
+            if (IsFirstSelect)
             {
                 await LoadOrderAsync();
-                _firstSelect = false;
+                IsFirstSelect = false;
             }
         }
 
         public override Task OnTabDeSelected(TabItem item)
         {
-            _firstSelect = true;
+            IsFirstSelect = true;
             return base.OnTabDeSelected(item);
         }
 
@@ -194,7 +193,7 @@ namespace SelfCheckout.ViewModels
         Task RefreshOrderAsync()
         {
             OrderDetails = SaleEngineService.OrderData.OrderDetails?.ToObservableCollection();
-            MessagingCenter.Send(this, "OrderLoaded");
+            MessagingCenter.Send(this, "OrderRefresh");
 
             IsSelectAllOrder = false;
             return Task.FromResult(true);

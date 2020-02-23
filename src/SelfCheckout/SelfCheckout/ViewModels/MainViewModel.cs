@@ -79,8 +79,9 @@ namespace SelfCheckout.ViewModels
             var firstTab = Tabs.FirstOrDefault();
             firstTab.Selected = true;
             PageTitle = firstTab.Title;
+            CurrentView = firstTab.Page;
 
-            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderLoaded", (s) =>
+            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderRefresh", (s) =>
             {
                 OrderData = SaleEngineService.OrderData;
 
