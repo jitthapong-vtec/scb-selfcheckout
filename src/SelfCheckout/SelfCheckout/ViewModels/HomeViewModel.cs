@@ -55,6 +55,8 @@ namespace SelfCheckout.ViewModels
                             if (assetResult.Status == "success")
                             {
                                 var asset = assetResult.Data;
+                                asset.DetailTitle = "Detail title";
+                                asset.DetailDesc = "Detail desc";
                                 asset.DetailLink = media.Link;
                                 Assets.Add(asset);
                             }

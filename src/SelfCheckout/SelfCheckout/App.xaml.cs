@@ -15,6 +15,12 @@ namespace SelfCheckout
         {
             InitializeComponent();
 
+            Device.SetFlags(new[] {
+                "CarouselView_Experimental",
+                "IndicatorView_Experimental",
+                "SwipeView_Experimental"
+            });
+
             GlobalSettings.Instance.InitLanguage();
 
             if (Device.RuntimePlatform == Device.UWP)

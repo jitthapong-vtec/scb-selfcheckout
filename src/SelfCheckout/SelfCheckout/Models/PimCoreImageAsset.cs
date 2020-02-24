@@ -16,6 +16,8 @@ namespace SelfCheckout.Models
         [JsonProperty("ratio")]
         public string Ratio { get; set; }
 
+        public string DetailTitle { get; set; }
+        public string DetailDesc { get; set; }
         public string DetailLink { get; set; }
     }
 }
