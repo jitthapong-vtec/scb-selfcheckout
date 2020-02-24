@@ -23,12 +23,16 @@ namespace SelfCheckout.ViewModels
         ContentView _currentView;
         Language _languageSelected;
         Currency _currencySelected;
+        Payment _paymentSelected;
         OrderData _orderData;
 
         bool _langShowing;
         bool _currencyShowing;
         bool _summaryVisible;
         bool _summaryShowing;
+        bool _onProcessPayment;
+        bool _paymentSelectionShowing;
+        bool _paymentProcessShowing;
 
         public MainViewModel()
         {
@@ -127,6 +131,17 @@ namespace SelfCheckout.ViewModels
             SummaryShowing = !SummaryShowing;
         });
 
+        public ICommand PaymentMethodTappedCommand => new Command(() =>
+        {
+            PaymentSelectionShowing = !PaymentSelectionShowing;
+        });
+
+        public ICommand PaymentSelectionCommand => new Command<Payment>((payment) =>
+        {
+            PaymentSelectionShowing = false;
+            PaymentSelected = payment;
+        });
+
         public ICommand LanguageSelectionCommand => new Command<Language>((lang) =>
         {
             LanguageSelected = lang;
@@ -137,6 +152,42 @@ namespace SelfCheckout.ViewModels
         {
             CurrencySelected = currency;
             CurrencyShowing = false;
+        });
+
+        public ICommand ScanPaymentCommand => new Command<int>(async(type) =>
+        {
+            if(type == 1)
+            {
+                var task = new TaskCompletionSource<string>();
+                await NavigationService.PushModalAsync<BarcodeScanViewModel, string>(null, task);
+                var result = await task.Task;
+                if (!string.IsNullOrEmpty(result))
+                {
+
+                }
+            }
+            else
+            {
+                //TODO: hardware scan
+            }
+        });
+
+        public ICommand SimulatePaymentProcessCancelCommand => new Command(() =>
+        {
+            PaymentProcessShowing = false;
+        });
+
+        public ICommand CheckoutCommand => new Command(() =>
+        {
+            if (OnProcessPayment)
+            {
+                //TODO: call payment api
+                PaymentProcessShowing = true;
+            }
+            else
+            {
+                OnProcessPayment = true;
+            }
         });
 
         Task SelectTabAsync(TabItem item)
@@ -167,6 +218,9 @@ namespace SelfCheckout.ViewModels
 
                 Languages = SelfCheckoutService.Languages?.ToObservableCollection();
                 Payments = SelfCheckoutService.Payments?.ToObservableCollection();
+
+                LanguageSelected = SelfCheckoutService.Languages.FirstOrDefault();
+                PaymentSelected = SelfCheckoutService.Payments.FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -232,6 +286,16 @@ namespace SelfCheckout.ViewModels
             }
         }
 
+        public Payment PaymentSelected
+        {
+            get => _paymentSelected;
+            set
+            {
+                _paymentSelected = value;
+                RaisePropertyChanged(() => PaymentSelected);
+            }
+        }
+
         public OrderData OrderData
         {
             get => _orderData;
@@ -259,6 +323,36 @@ namespace SelfCheckout.ViewModels
             {
                 _summaryShowing = value;
                 RaisePropertyChanged(() => SummaryShowing);
+            }
+        }
+
+        public bool OnProcessPayment
+        {
+            get => _onProcessPayment;
+            set
+            {
+                _onProcessPayment = value;
+                RaisePropertyChanged(() => OnProcessPayment);
+            }
+        }
+
+        public bool PaymentProcessShowing
+        {
+            get => _paymentProcessShowing;
+            set
+            {
+                _paymentProcessShowing = value;
+                RaisePropertyChanged(() => PaymentProcessShowing);
+            }
+        }
+
+        public bool PaymentSelectionShowing
+        {
+            get => _paymentSelectionShowing;
+            set
+            {
+                _paymentSelectionShowing = value;
+                RaisePropertyChanged(() => PaymentSelectionShowing);
             }
         }
 

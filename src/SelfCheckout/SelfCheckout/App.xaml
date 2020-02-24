@@ -27,6 +27,7 @@
         <converter:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter"/>
         <converter:CurrencyFormatConverter x:Key="CurrencyFormatConverter"/>
         <converter:DecimalFormatConverter x:Key="DecimalFormatConverter"/>
+        <converter:TranslateConverter x:Key="TranslateConverter"/>
 
         <OnPlatform x:Key="MontserratRegular" 
                         x:TypeArguments="x:String" 

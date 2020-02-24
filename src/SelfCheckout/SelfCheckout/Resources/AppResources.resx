@@ -242,7 +242,10 @@
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="Paymen" xml:space="preserve">
+  <data name="Pay" xml:space="preserve">
+    <value>Pay</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
     <value>Payment</value>
   </data>
   <data name="PleaseEnterPassword" xml:space="preserve">
@@ -250,6 +253,9 @@
   </data>
   <data name="PleaseEnterUserName" xml:space="preserve">
     <value>Please enter your username</value>
+  </data>
+  <data name="PleaseScanPayment" xml:space="preserve">
+    <value>Please scan payment</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
@@ -259,6 +265,9 @@
   </data>
   <data name="ScanShoppingCart" xml:space="preserve">
     <value>Please scan shopping cart</value>
+  </data>
+  <data name="SelectPaymentMethod" xml:space="preserve">
+    <value>Select payment method</value>
   </data>
   <data name="Setting" xml:space="preserve">
     <value>Setting</value>

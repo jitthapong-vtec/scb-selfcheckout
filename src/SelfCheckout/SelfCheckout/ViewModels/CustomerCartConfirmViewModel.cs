@@ -34,14 +34,14 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ConfirmCommand => new Command(async () =>
         {
-            _task.SetResult(true);
             await NavigationService.PopModalAsync();
+            _task.SetResult(true);
         });
 
         public ICommand CancelCommand => new Command(async () =>
         {
-            _task.SetResult(false);
             await NavigationService.PopModalAsync();
+            _task.SetResult(false);
         });
 
     }

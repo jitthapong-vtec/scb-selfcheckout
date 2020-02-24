@@ -430,11 +430,20 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pay.
+        /// </summary>
+        internal static string Pay {
+            get {
+                return ResourceManager.GetString("Pay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payment.
         /// </summary>
-        internal static string Paymen {
+        internal static string Payment {
             get {
-                return ResourceManager.GetString("Paymen", resourceCulture);
+                return ResourceManager.GetString("Payment", resourceCulture);
             }
         }
         
@@ -453,6 +462,15 @@ namespace SelfCheckout.Resources {
         internal static string PleaseEnterUserName {
             get {
                 return ResourceManager.GetString("PleaseEnterUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please scan payment.
+        /// </summary>
+        internal static string PleaseScanPayment {
+            get {
+                return ResourceManager.GetString("PleaseScanPayment", resourceCulture);
             }
         }
         
@@ -480,6 +498,15 @@ namespace SelfCheckout.Resources {
         internal static string ScanShoppingCart {
             get {
                 return ResourceManager.GetString("ScanShoppingCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select payment method.
+        /// </summary>
+        internal static string SelectPaymentMethod {
+            get {
+                return ResourceManager.GetString("SelectPaymentMethod", resourceCulture);
             }
         }
         

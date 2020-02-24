@@ -11,7 +11,7 @@ namespace SelfCheckout.Services.Localize
     public class TranslateExtension : IMarkupExtension
     {
         readonly CultureInfo ci = null;
-        const string ResourceId = "SelfCheckout.Resources.AppResources";
+        public const string ResourceId = "SelfCheckout.Resources.AppResources";
 
         public TranslateExtension()
         {

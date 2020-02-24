@@ -169,6 +169,9 @@
                 </Grid>
                 <views:CurrencySelectionView Grid.Row="1"/>
             </Grid>
+            
+            <views:PaymentMethodSelectionView IsVisible="{Binding PaymentSelectionShowing}"/>
+            <views:PaymentProcessView IsVisible="{Binding PaymentProcessShowing}"/>
         </Grid>
     </ContentPage.Content>
 </ctrls:DensoScannerPage>

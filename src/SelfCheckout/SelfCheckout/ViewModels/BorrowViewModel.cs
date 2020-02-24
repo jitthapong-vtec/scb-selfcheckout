@@ -58,9 +58,7 @@ namespace SelfCheckout.ViewModels
                 {
                     shoppingCard = InputValue,
                     SubBranch = AppConfig.SubBranch,
-                    pickupCode = "",
                     isTour = false,
-                    platform = "FRMFIT",
                     isGenPdfPromotion = false,
                     isGenImgShoppingCard = false
                 };
