@@ -26,10 +26,13 @@ namespace SelfCheckout.ViewModels
         Payment _paymentSelected;
         OrderData _orderData;
 
+        string _paymentBarCode;
+
         bool _langShowing;
         bool _currencyShowing;
         bool _summaryVisible;
         bool _summaryShowing;
+        bool _isSummaryOrder;
         bool _onProcessPayment;
         bool _paymentSelectionShowing;
         bool _paymentProcessShowing;
@@ -154,16 +157,17 @@ namespace SelfCheckout.ViewModels
             CurrencyShowing = false;
         });
 
-        public ICommand ScanPaymentCommand => new Command<int>(async(type) =>
+        public ICommand ScanPaymentCommand => new Command<object>(async (type) =>
         {
-            if(type == 1)
+            if (Convert.ToInt32(type) == 1)
             {
                 var task = new TaskCompletionSource<string>();
                 await NavigationService.PushModalAsync<BarcodeScanViewModel, string>(null, task);
                 var result = await task.Task;
                 if (!string.IsNullOrEmpty(result))
                 {
-
+                    PaymentBarcode = result;
+                    await PaymentAsync();
                 }
             }
             else
@@ -181,7 +185,6 @@ namespace SelfCheckout.ViewModels
         {
             if (OnProcessPayment)
             {
-                //TODO: call payment api
                 PaymentProcessShowing = true;
             }
             else
@@ -193,9 +196,22 @@ namespace SelfCheckout.ViewModels
         Task SelectTabAsync(TabItem item)
         {
             if (item.Page is ShoppingCartView || item.Page is OrderView)
+            {
                 SummaryVisible = true;
+                if (item.Page is OrderView)
+                {
+                    OnProcessPayment = false;
+                    IsOrderSummary = true;
+                }
+                else
+                {
+                    IsOrderSummary = false;
+                }
+            }
             else
+            {
                 SummaryVisible = false;
+            }
             PageTitle = item.Title;
             CurrentView = item.Page;
             item.Selected = true;
@@ -243,6 +259,117 @@ namespace SelfCheckout.ViewModels
             catch (Exception ex)
             {
                 await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+            }
+        }
+
+        async Task PaymentAsync()
+        {
+            try
+            {
+                IsBusy = true;
+                var walletRequestPayload = new
+                {
+                    barcode = PaymentBarcode,
+                    machine_ip = LoginData.UserInfo.MachineEnv.MachineIp,
+                    branch_no = AppConfig.BranchNo
+                };
+                var walletResult = await SaleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
+                if (walletResult.IsCompleted)
+                {
+                    //var wallet = walletResult.Data;
+                    //var netAmount = OrderData.BillingAmount.NetAmount.CurrAmt;
+                    //var paymentRequestPayload = new
+                    //{
+                    //    SessionKey = LoginData.SessionKey,
+                    //    OrderGuid = OrderData.Guid,
+                    //    Payment = new
+                    //    {
+                    //        PaymentCode = PaymentSelected.MethodCode,
+                    //        PaymentType = wallet.WalletType,
+                    //        RefNo = PaymentBarcode,
+                    //        URLService = wallet.WalletagentMaster.Wsurl,
+                    //        WalletBarcode = PaymentBarcode,
+                    //        WalletMerchantID = wallet.WalletagentMaster.MerchantId,
+                    //        GatewayId = PaymentSelected.GatewayId,
+                    //        PaymentAmounts = new
+                    //        {
+                    //            CurrAmt = netAmount,
+                    //            CrrCode = new
+                    //            {
+                    //                Code = CurrencySelected.CurrCode,
+                    //                Desc = CurrencySelected.CurrDesc
+                    //            },
+                    //            CurrRate = CurrencySelected.CurrRate,
+                    //            BaseCurrCode = new
+                    //            {
+                    //                Code = BaseCurrency.CurrCode,
+                    //                Desc = BaseCurrency.CurrDesc
+                    //            },
+                    //            BaseCurrRate = 1,
+                    //            BaseCurrAmt = netAmount
+                    //        },
+                    //        Transaction = new
+                    //        {
+                    //            TransactionGroup = 2,
+                    //            TransactionType = 1,
+                    //            PartnerId = wallet.WalletagentMaster.PartnertypeId,
+                    //            PartnerType = wallet.WalletagentMaster.PartnertypeId,
+                    //            LastStatus = 1,
+                    //            CurrentStatus = 1,
+                    //            Movements = new[]
+                    //            {
+                    //                new
+                    //                {
+                    //                    TransactionMovementType = 1,
+                    //                    Amount = netAmount,
+                    //                    Description = "",
+                    //                    Status = 1
+                    //                }
+                    //            }
+                    //        },
+                    //        ChangeAmounts = new
+                    //        {
+                    //            CurrAmt = netAmount,
+                    //            CrrCode = new
+                    //            {
+                    //                Code = CurrencySelected.CurrCode,
+                    //                Desc = CurrencySelected.CurrDesc
+                    //            },
+                    //            CurrRate = CurrencySelected.CurrRate,
+                    //            BaseCurrCode = new
+                    //            {
+                    //                Code = BaseCurrency.CurrCode,
+                    //                Desc = BaseCurrency.CurrDesc
+                    //            },
+                    //            BaseCurrRate = 1,
+                    //            BaseCurrAmt = netAmount
+                    //        }
+                    //    }
+                    //};
+
+                    //var paymentResult = await SaleEngineService.AddPaymentToOrderAsync(paymentRequestPayload);
+                    //if (paymentResult.IsCompleted)
+                    //{
+                    //    //TODO: Show thank you popup and goto order tab
+                    //}
+                    //else
+                    //{
+                    //    await DialogService.ShowAlertAsync(AppResources.Opps, paymentResult.DefaultMessage, AppResources.Close);
+                    //}
+                }
+                else
+                {
+                    await DialogService.ShowAlertAsync(AppResources.Opps, walletResult.DefaultMessage, AppResources.Close);
+                }
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
+                PaymentProcessShowing = false;
             }
         }
 
@@ -316,6 +443,16 @@ namespace SelfCheckout.ViewModels
             }
         }
 
+        public string PaymentBarcode
+        {
+            get => _paymentBarCode;
+            set
+            {
+                _paymentBarCode = value;
+                RaisePropertyChanged(() => PaymentBarcode);
+            }
+        }
+
         public bool SummaryShowing
         {
             get => _summaryShowing;
@@ -323,6 +460,16 @@ namespace SelfCheckout.ViewModels
             {
                 _summaryShowing = value;
                 RaisePropertyChanged(() => SummaryShowing);
+            }
+        }
+
+        public bool IsOrderSummary
+        {
+            get => _isSummaryOrder;
+            set
+            {
+                _isSummaryOrder = value;
+                RaisePropertyChanged(() => IsOrderSummary);
             }
         }
 
@@ -383,6 +530,19 @@ namespace SelfCheckout.ViewModels
             {
                 _currencySelected = value;
                 RaisePropertyChanged(() => CurrencySelected);
+            }
+        }
+
+        public Currency BaseCurrency
+        {
+            get
+            {
+                return Currencies.Where(c => c.CurrCode == "THB").FirstOrDefault() ?? new Currency
+                {
+                    CurrCode = "THB",
+                    CurrDesc = "THB",
+                    CurrRate = 1
+                };
             }
         }
 

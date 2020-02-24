@@ -1,4 +1,5 @@
-﻿using SelfCheckout.ViewModels;
+﻿using Rg.Plugins.Popup.Pages;
+using SelfCheckout.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using Xamarin.Forms.Xaml;
 namespace SelfCheckout.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class BarcodeScanView : ContentPage
+	public partial class BarcodeScanView : PopupPage
 	{
 		public BarcodeScanView ()
 		{

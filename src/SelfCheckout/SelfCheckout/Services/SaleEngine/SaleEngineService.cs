@@ -62,6 +62,18 @@ namespace SelfCheckout.Services.SaleEngine
             return result;
         }
 
+        public async Task<ApiResultData<List<OrderData>>> AddPaymentToOrderAsync(object payload)
+        {
+            var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/AddPaymentToOrder");
+            return await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
+        }
+
+        public async Task<ApiResultData<List<OrderData>>> FinishPaymentOrderAsync(object payload)
+        {
+            var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/FinishPaymentOrder");
+            return await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
+        }
+
         public async Task<ApiResultData<List<OrderData>>> GetOrderAsync(object payload)
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrder");
@@ -76,6 +88,12 @@ namespace SelfCheckout.Services.SaleEngine
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrderList");
             return await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
+        }
+
+        public async Task<ApiResultData<Wallet>> GetWalletTypeFromBarcodeAsync(object payload)
+        {
+            var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetWalletTypeFromBarcode");
+            return await PostAsync<object, ApiResultData<Wallet>>(uri.ToString(), payload);
         }
 
         public async Task LoadCurrencyAsync(object payload)

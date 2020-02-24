@@ -23,7 +23,7 @@ namespace SelfCheckout.ViewModels
         async Task ScanShoppingCartAsync()
         {
             var task = new TaskCompletionSource<string>();
-            await NavigationService.NavigateToAsync<BarcodeScanViewModel, string>(null, task);
+            await NavigationService.PushModalAsync<BarcodeScanViewModel, string>(null, task);
             var result = await task.Task;
             if (!string.IsNullOrEmpty(result))
             {

@@ -25,7 +25,7 @@ namespace SelfCheckout.ViewModels
             {
                 var scanResult = result.Text;
                 SetResult(scanResult);
-                await NavigationService.PopBackAsync();
+                await NavigationService.PopModalAsync();
             });
         }
 

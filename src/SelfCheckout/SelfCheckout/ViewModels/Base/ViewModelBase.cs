@@ -108,6 +108,9 @@ namespace SelfCheckout.ViewModels.Base
 
             set
             {
+                if (_isBusy == value)
+                    return;
+
                 _isBusy = value;
                 RaisePropertyChanged(() => IsBusy);
             }

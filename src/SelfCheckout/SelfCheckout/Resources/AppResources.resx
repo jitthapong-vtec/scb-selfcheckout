@@ -191,6 +191,9 @@
   <data name="Info" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="Invoices" xml:space="preserve">
+    <value>Invoices</value>
+  </data>
   <data name="ItemDetail" xml:space="preserve">
     <value>Item Detail</value>
   </data>

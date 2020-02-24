@@ -7,6 +7,8 @@ namespace SelfCheckout.Models
 {
     public class Payment
     {
+        [JsonProperty("gateway_id")]
+        public int GatewayId { get; set; }
         [JsonProperty("method_code")]
         public string MethodCode { get; set; }
         [JsonProperty("method_desc")]
