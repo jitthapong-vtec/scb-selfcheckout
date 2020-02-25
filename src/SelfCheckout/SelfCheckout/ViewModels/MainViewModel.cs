@@ -2,11 +2,13 @@
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Base;
 using SelfCheckout.ViewModels.Base;
 using SelfCheckout.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -33,9 +35,10 @@ namespace SelfCheckout.ViewModels
         bool _summaryVisible;
         bool _summaryShowing;
         bool _isSummaryOrder;
-        bool _onProcessPayment;
+        bool _isBeingPaymentProcess;
+        bool _isPaymentProcessing;
         bool _paymentSelectionShowing;
-        bool _paymentProcessShowing;
+        bool _paymentInputShowing;
 
         public MainViewModel()
         {
@@ -91,7 +94,6 @@ namespace SelfCheckout.ViewModels
             MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderRefresh", (s) =>
             {
                 OrderData = SaleEngineService.OrderData;
-
                 try
                 {
                     var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
@@ -111,12 +113,21 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ScanCommand => new Command<object>(async (data) =>
         {
-            try
+            if (IsBeingPaymentProcess)
             {
-                var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
-                await (tab.Page.BindingContext as ShoppingCartViewModel).AddOrderAsync(data?.ToString());
+                PaymentBarcode = data?.ToString();
+                if (!string.IsNullOrEmpty(PaymentBarcode))
+                    await PaymentAsync();
             }
-            catch { }
+            else
+            {
+                try
+                {
+                    var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
+                    await (tab.Page.BindingContext as ShoppingCartViewModel).AddOrderAsync(data?.ToString());
+                }
+                catch { }
+            }
         });
 
         public ICommand LanguageTappedCommand => new Command(() =>
@@ -132,6 +143,8 @@ namespace SelfCheckout.ViewModels
         public ICommand ShowSummaryCommand => new Command(() =>
         {
             SummaryShowing = !SummaryShowing;
+            if (SummaryShowing == false)
+                IsBeingPaymentProcess = false;
         });
 
         public ICommand PaymentMethodTappedCommand => new Command(() =>
@@ -172,24 +185,25 @@ namespace SelfCheckout.ViewModels
             }
             else
             {
-                //TODO: hardware scan
             }
         });
 
-        public ICommand SimulatePaymentProcessCancelCommand => new Command(() =>
+        public ICommand CancelPaymentProcessCommand => new Command(() =>
         {
-            PaymentProcessShowing = false;
+            if (IsPaymentProcessing)
+                return;
+            PaymentInputShowing = false;
         });
 
         public ICommand CheckoutCommand => new Command(() =>
         {
-            if (OnProcessPayment)
+            if (IsBeingPaymentProcess)
             {
-                PaymentProcessShowing = true;
+                PaymentInputShowing = true;
             }
             else
             {
-                OnProcessPayment = true;
+                IsBeingPaymentProcess = true;
             }
         });
 
@@ -200,7 +214,7 @@ namespace SelfCheckout.ViewModels
                 SummaryVisible = true;
                 if (item.Page is OrderView)
                 {
-                    OnProcessPayment = false;
+                    IsBeingPaymentProcess = false;
                     IsOrderSummary = true;
                 }
                 else
@@ -223,6 +237,11 @@ namespace SelfCheckout.ViewModels
             }
             catch { }
             return Task.FromResult(true);
+        }
+
+        bool PaymentCountdown()
+        {
+            return false;
         }
 
         async Task LoadMasterDataAsync()
@@ -276,86 +295,87 @@ namespace SelfCheckout.ViewModels
                 var walletResult = await SaleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
                 if (walletResult.IsCompleted)
                 {
-                    //var wallet = walletResult.Data;
-                    //var netAmount = OrderData.BillingAmount.NetAmount.CurrAmt;
-                    //var paymentRequestPayload = new
-                    //{
-                    //    SessionKey = LoginData.SessionKey,
-                    //    OrderGuid = OrderData.Guid,
-                    //    Payment = new
-                    //    {
-                    //        PaymentCode = PaymentSelected.MethodCode,
-                    //        PaymentType = wallet.WalletType,
-                    //        RefNo = PaymentBarcode,
-                    //        URLService = wallet.WalletagentMaster.Wsurl,
-                    //        WalletBarcode = PaymentBarcode,
-                    //        WalletMerchantID = wallet.WalletagentMaster.MerchantId,
-                    //        GatewayId = PaymentSelected.GatewayId,
-                    //        PaymentAmounts = new
-                    //        {
-                    //            CurrAmt = netAmount,
-                    //            CrrCode = new
-                    //            {
-                    //                Code = CurrencySelected.CurrCode,
-                    //                Desc = CurrencySelected.CurrDesc
-                    //            },
-                    //            CurrRate = CurrencySelected.CurrRate,
-                    //            BaseCurrCode = new
-                    //            {
-                    //                Code = BaseCurrency.CurrCode,
-                    //                Desc = BaseCurrency.CurrDesc
-                    //            },
-                    //            BaseCurrRate = 1,
-                    //            BaseCurrAmt = netAmount
-                    //        },
-                    //        Transaction = new
-                    //        {
-                    //            TransactionGroup = 2,
-                    //            TransactionType = 1,
-                    //            PartnerId = wallet.WalletagentMaster.PartnertypeId,
-                    //            PartnerType = wallet.WalletagentMaster.PartnertypeId,
-                    //            LastStatus = 1,
-                    //            CurrentStatus = 1,
-                    //            Movements = new[]
-                    //            {
-                    //                new
-                    //                {
-                    //                    TransactionMovementType = 1,
-                    //                    Amount = netAmount,
-                    //                    Description = "",
-                    //                    Status = 1
-                    //                }
-                    //            }
-                    //        },
-                    //        ChangeAmounts = new
-                    //        {
-                    //            CurrAmt = netAmount,
-                    //            CrrCode = new
-                    //            {
-                    //                Code = CurrencySelected.CurrCode,
-                    //                Desc = CurrencySelected.CurrDesc
-                    //            },
-                    //            CurrRate = CurrencySelected.CurrRate,
-                    //            BaseCurrCode = new
-                    //            {
-                    //                Code = BaseCurrency.CurrCode,
-                    //                Desc = BaseCurrency.CurrDesc
-                    //            },
-                    //            BaseCurrRate = 1,
-                    //            BaseCurrAmt = netAmount
-                    //        }
-                    //    }
-                    //};
+                    var wallet = walletResult.Data;
+                    var netAmount = OrderData.BillingAmount.NetAmount.CurrAmt;
+                    var paymentRequestPayload = new
+                    {
+                        SessionKey = LoginData.SessionKey,
+                        OrderGuid = OrderData.Guid,
+                        Payment = new
+                        {
+                            PaymentCode = PaymentSelected.MethodCode,
+                            PaymentType = wallet.WalletType,
+                            RefNo = PaymentBarcode,
+                            URLService = wallet.WalletagentMaster.Wsurl,
+                            WalletBarcode = PaymentBarcode,
+                            WalletMerchantID = wallet.WalletagentMaster.MerchantId,
+                            GatewayId = PaymentSelected.GatewayId,
+                            PaymentAmounts = new
+                            {
+                                CurrAmt = netAmount,
+                                CrrCode = new
+                                {
+                                    Code = CurrencySelected.CurrCode,
+                                    Desc = CurrencySelected.CurrDesc
+                                },
+                                CurrRate = CurrencySelected.CurrRate,
+                                BaseCurrCode = new
+                                {
+                                    Code = BaseCurrency.CurrCode,
+                                    Desc = BaseCurrency.CurrDesc
+                                },
+                                BaseCurrRate = 1,
+                                BaseCurrAmt = netAmount
+                            },
+                            Transaction = new
+                            {
+                                TransactionGroup = 2,
+                                TransactionType = 1,
+                                PartnerId = wallet.WalletagentMaster.PartnertypeId,
+                                PartnerType = wallet.WalletagentMaster.PartnertypeId,
+                                LastStatus = 1,
+                                CurrentStatus = 1,
+                                Movements = new[]
+                                {
+                                    new
+                                    {
+                                        TransactionMovementType = 1,
+                                        Amount = netAmount,
+                                        Description = "",
+                                        Status = 1
+                                    }
+                                }
+                            },
+                            ChangeAmounts = new
+                            {
+                                CurrAmt = netAmount,
+                                CrrCode = new
+                                {
+                                    Code = CurrencySelected.CurrCode,
+                                    Desc = CurrencySelected.CurrDesc
+                                },
+                                CurrRate = CurrencySelected.CurrRate,
+                                BaseCurrCode = new
+                                {
+                                    Code = BaseCurrency.CurrCode,
+                                    Desc = BaseCurrency.CurrDesc
+                                },
+                                BaseCurrRate = 1,
+                                BaseCurrAmt = netAmount
+                            }
+                        }
+                    };
 
-                    //var paymentResult = await SaleEngineService.AddPaymentToOrderAsync(paymentRequestPayload);
-                    //if (paymentResult.IsCompleted)
-                    //{
-                    //    //TODO: Show thank you popup and goto order tab
-                    //}
-                    //else
-                    //{
-                    //    await DialogService.ShowAlertAsync(AppResources.Opps, paymentResult.DefaultMessage, AppResources.Close);
-                    //}
+                    IsPaymentProcessing = true;
+                    var paymentResult = await SaleEngineService.AddPaymentToOrderAsync(paymentRequestPayload);
+                    if (paymentResult.IsCompleted)
+                    {
+                        //TODO: Show thank you popup and goto order tab
+                    }
+                    else
+                    {
+                        await DialogService.ShowAlertAsync(AppResources.Opps, paymentResult.DefaultMessage, AppResources.Close);
+                    }
                 }
                 else
                 {
@@ -369,7 +389,9 @@ namespace SelfCheckout.ViewModels
             finally
             {
                 IsBusy = false;
-                PaymentProcessShowing = false;
+                IsPaymentProcessing = false;
+                PaymentInputShowing = false;
+                PaymentBarcode = "";
             }
         }
 
@@ -473,23 +495,23 @@ namespace SelfCheckout.ViewModels
             }
         }
 
-        public bool OnProcessPayment
+        public bool IsPaymentProcessing
         {
-            get => _onProcessPayment;
+            get => _isPaymentProcessing;
             set
             {
-                _onProcessPayment = value;
-                RaisePropertyChanged(() => OnProcessPayment);
+                _isPaymentProcessing = value;
+                RaisePropertyChanged(() => IsPaymentProcessing);
             }
         }
 
-        public bool PaymentProcessShowing
+        public bool IsBeingPaymentProcess
         {
-            get => _paymentProcessShowing;
+            get => _isBeingPaymentProcess;
             set
             {
-                _paymentProcessShowing = value;
-                RaisePropertyChanged(() => PaymentProcessShowing);
+                _isBeingPaymentProcess = value;
+                RaisePropertyChanged(() => IsBeingPaymentProcess);
             }
         }
 
@@ -500,6 +522,16 @@ namespace SelfCheckout.ViewModels
             {
                 _paymentSelectionShowing = value;
                 RaisePropertyChanged(() => PaymentSelectionShowing);
+            }
+        }
+
+        public bool PaymentInputShowing
+        {
+            get => _paymentInputShowing;
+            set
+            {
+                _paymentInputShowing = value;
+                RaisePropertyChanged(() => PaymentInputShowing);
             }
         }
 

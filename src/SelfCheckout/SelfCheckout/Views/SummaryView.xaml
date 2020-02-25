@@ -132,10 +132,10 @@
                                              effects:RoundCornersEffect.CornerRadius="3">
                             <Label TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center">
                                 <Label.Triggers>
-                                    <DataTrigger TargetType="Label" Binding="{Binding OnProcessPayment}" Value="False">
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsBeingPaymentProcess}" Value="False">
                                         <Setter Property="Text" Value="{i18n:Translate Checkout}"/>
                                     </DataTrigger>
-                                    <DataTrigger TargetType="Label" Binding="{Binding OnProcessPayment}" Value="True">
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsBeingPaymentProcess}" Value="True">
                                         <Setter Property="Text" Value="{i18n:Translate Pay}"/>
                                     </DataTrigger>
                                 </Label.Triggers>
@@ -143,7 +143,7 @@
                         </controls:TappedGrid>
                     </Grid>
                 </Grid>
-                <StackLayout Padding="8,0,8,8" IsVisible="{Binding OnProcessPayment}">
+                <StackLayout Padding="8,0,8,8" IsVisible="{Binding IsBeingPaymentProcess}">
                     <Label Margin="8,0,0,0" Text="{i18n:Translate SelectPaymentMethod}"/>
                     <Grid>
                         <BoxView BackgroundColor="{StaticResource Gray100}"/>

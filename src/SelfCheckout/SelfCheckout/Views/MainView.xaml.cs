@@ -1,4 +1,6 @@
 ﻿using SelfCheckout.Controls;
+using SelfCheckout.Exceptions;
+using SelfCheckout.Resources;
 using SelfCheckout.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -34,7 +36,16 @@ namespace SelfCheckout.Views
             {
                 var shoppingCartViewModel = _viewModel.CurrentView.BindingContext as ShoppingCartViewModel;
                 if (!shoppingCartViewModel.IsFirstSelect)
-                    FireScanEvent();
+                {
+                    try
+                    {
+                        FireScanEvent();
+                    }
+                    catch (DensoScannerException ex)
+                    {
+                        _viewModel.DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                    }
+                }
             }
         }
     }

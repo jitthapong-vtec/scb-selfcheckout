@@ -35,6 +35,11 @@ namespace SelfCheckout.Services.Base
             _httpClient.Timeout = TimeSpan.FromSeconds(60);
         }
 
+        public TimeSpan RequestTimeout
+        {
+            set => _httpClient.Timeout = value;
+        }
+
         protected void SetRequestHeader(string key, string val)
         {
             _httpClient.DefaultRequestHeaders.Add(key, val);

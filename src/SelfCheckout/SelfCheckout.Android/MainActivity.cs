@@ -15,7 +15,12 @@ using System.Collections.Generic;
 
 namespace SelfCheckout.Droid
 {
-    [Activity(Label = "Self Checkout", Icon = "@mipmap/ic_launcher", Theme = "@style/Theme.Splash", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "Self Checkout", 
+        Icon = "@mipmap/ic_launcher", 
+        Theme = "@style/Theme.Splash", 
+        MainLauncher = true, 
+        ScreenOrientation = ScreenOrientation.Portrait,
+        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)

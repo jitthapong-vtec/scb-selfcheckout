@@ -12,6 +12,7 @@ using Android.Widget;
 using Com.Densowave.Bhtsdk.Barcode;
 using SelfCheckout.Controls;
 using SelfCheckout.Droid.Renderers;
+using SelfCheckout.Exceptions;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
@@ -49,7 +50,10 @@ namespace SelfCheckout.Droid.Renderers
                 Task.Delay(1000).Wait();
                 mBarcodeScanner.PressSoftwareTrigger(false);
             }
-            catch { }
+            catch
+            {
+                throw new DensoScannerException("This device doesn't have hardware scanner!");
+            }
         }
 
         public void OnBarcodeDataReceived(BarcodeDataReceivedEvent_ dataReceivedEvent)

@@ -15,11 +15,11 @@ namespace SelfCheckout.ViewModels.Base
 {
     public abstract class ViewModelBase : ExtendedBindableObject
     {
-        protected readonly ISelfCheckoutService SelfCheckoutService;
-        protected readonly ISaleEngineService SaleEngineService;
-        protected readonly IDialogService DialogService;
-        protected readonly INavigationService NavigationService;
-        protected readonly IRegisterService RegisterService;
+        public readonly ISelfCheckoutService SelfCheckoutService;
+        public readonly ISaleEngineService SaleEngineService;
+        public readonly IDialogService DialogService;
+        public readonly INavigationService NavigationService;
+        public readonly IRegisterService RegisterService;
 
         string _pageTitle;
         bool _isBusy;

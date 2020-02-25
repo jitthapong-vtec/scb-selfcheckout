@@ -14,7 +14,7 @@
     x:Class="SelfCheckout.Views.CustomerCartConfirmView">
     <ContentPage.Content>
         <Grid BackgroundColor="#66000000">
-            <Frame Margin="48" VerticalOptions="Center">
+            <Frame Margin="16" VerticalOptions="Center">
                 <StackLayout>
                     <Grid RowSpacing="8" Margin="0,4,0,4">
                         <Grid.RowDefinitions>
@@ -22,12 +22,16 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <controls:CustomLabel Grid.Row="0" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate Name}"/>
-                        <controls:CustomLabel Grid.Row="0" UpperCase="True" HorizontalOptions="End" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.EnglishName}" />
-                        <controls:CustomLabel Grid.Row="1" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate PassportNo}"/>
-                        <controls:CustomLabel Grid.Row="1" UpperCase="True" HorizontalOptions="End" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.PassportNo}"/>
-                        <controls:CustomLabel Grid.Row="2" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate FlightNo}"/>
-                        <controls:CustomLabel Grid.Row="2" UpperCase="True" HorizontalOptions="End" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.FlightCode}"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:CustomLabel Grid.Row="0" Grid.Column="0" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate Name}"/>
+                        <controls:CustomLabel Grid.Row="0" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalOptions="End" Text="{Binding Person.EnglishName}" />
+                        <controls:CustomLabel Grid.Row="1" Grid.Column="0" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate PassportNo}"/>
+                        <controls:CustomLabel Grid.Row="1" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.PassportNo}"/>
+                        <controls:CustomLabel Grid.Row="2" Grid.Column="0" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate FlightNo}"/>
+                        <controls:CustomLabel Grid.Row="2" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.FlightCode}"/>
                     </Grid>
                     <Button HeightRequest="1" BackgroundColor="{StaticResource Gray200}"/>
                     <Grid Margin="0,4,0,0">

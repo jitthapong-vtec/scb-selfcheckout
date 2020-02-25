@@ -95,8 +95,6 @@ namespace SelfCheckout.ViewModels
                     Arg1 = 2
                 },
             };
-
-            RefreshDeviceInfo(1);
         }
 
         public ICommand TabSelectedCommand => new Command<SimpleSelectedItem>(async (item) =>
@@ -117,6 +115,18 @@ namespace SelfCheckout.ViewModels
             LogoutButtonVisible = (int)item.Arg1 == 2 ? true : false;
             RefreshDeviceInfo(item.Arg1);
         });
+
+        public override Task OnTabSelected(TabItem item)
+        {
+            TabSelectedCommand.Execute(Tabs.FirstOrDefault());
+            return base.OnTabSelected(item);
+        }
+
+        public override Task OnTabDeSelected(TabItem item)
+        {
+            IsAuthorized = false;
+            return base.OnTabDeSelected(item);
+        }
 
         void RefreshDeviceInfo(object arg)
         {

@@ -8,7 +8,7 @@
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.PaymentProcessView">
-  <ContentView.Content>
+    <ContentView.Content>
         <Grid BackgroundColor="#99000000">
             <StackLayout BackgroundColor="{StaticResource Gray200}" VerticalOptions="End" Spacing="0" Padding="0,0,0,8">
                 <Grid BackgroundColor="{StaticResource Secondary}" Padding="8">
@@ -20,10 +20,10 @@
                     <Label Text="{i18n:Translate PleaseScanPayment}" HorizontalOptions="Start" VerticalOptions="Center"/>
                     <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
                     <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding SimulatePaymentProcessCancelCommand}"/>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding CancelPaymentProcessCommand}"/>
                     </Grid.GestureRecognizers>
                 </Grid>
-                <Grid Padding="10">
+                <Grid Padding="10" IsVisible="{Binding IsPaymentProcessing, Converter={StaticResource InverseBooleanConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -46,26 +46,36 @@
                         <Label FontFamily="{StaticResource KPIconFont}" HorizontalOptions="Center" VerticalOptions="Center" Text="&#xe901;" FontSize="24" TextColor="{StaticResource Primary}"/>
                     </controls:TappedGrid>
                 </Grid>
-                <Grid Padding="10,0,10,0">
+                <Grid Padding="12,0,12,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Text="{i18n:Translate Payment}"/>
-                    <Label Grid.Column="1" HorizontalTextAlignment="End" Text="{Binding OrderData.BillingAmount.NetAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}"/>
+                    <Label Grid.Column="0" Text="{i18n:Translate Payment}" FontSize="Medium"/>
+                    <Label Grid.Column="1" HorizontalTextAlignment="End" FontSize="Medium">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding OrderData.BillingAmount.TotalAmount.CurrCode.Code}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding OrderData.BillingAmount.NetAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
                 </Grid>
-                <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray200}"/>
-                <Label HorizontalTextAlignment="Center" Text="{i18n:Translate CountDown}"/>
-                <Label HorizontalTextAlignment="Center">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="&#xf017;" Style="{StaticResource LabelIconStyle}" TextColor="{StaticResource Secondary}"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding PaymentCountdownTimer}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                <StackLayout IsVisible="{Binding IsPaymentProcessing}">
+                    <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray200}"/>
+                    <Label HorizontalTextAlignment="Center" Text="{i18n:Translate CountDown}"/>
+                    <Label HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="&#xf017;" Style="{StaticResource LabelIconStyle}" TextColor="{StaticResource Secondary}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding PaymentCountdownTimer}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
             </StackLayout>
         </Grid>
-  </ContentView.Content>
+    </ContentView.Content>
 </ContentView>

@@ -16,21 +16,6 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <!--<CollectionView Grid.Row="0" x:Name="tutorialList" ItemsSource="{Binding Assets}">
-                        <CollectionView.ItemsLayout>
-                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="8" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <forms:CachedImage Source="{Binding Url}" 
-                                                   Aspect="AspectFit" 
-                                                   WidthRequest="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=Width, Converter={StaticResource ImageWidthConverter}}"
-                                                   HeightRequest="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=Height, Converter={StaticResource ImageHeightConverter}, ConverterParameter=.75}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>-->
                     <CarouselView ItemsSource="{Binding Assets}" x:Name="carouselView">
                         <CarouselView.ItemsLayout>
                             <LinearItemsLayout Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
@@ -46,10 +31,10 @@
                                                    Aspect="AspectFit" 
                                                    WidthRequest="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=Width, Converter={StaticResource ImageWidthConverter}}"
                                                    HeightRequest="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=Height, Converter={StaticResource ImageHeightConverter}, ConverterParameter=.75}"/>
-                                    <StackLayout Grid.Row="1" Margin="0,-16,0,8">
+                                    <!--<StackLayout Grid.Row="1" Margin="0,-16,0,8">
                                         <Label FontSize="Medium" Text="{Binding DetailTitle}" HorizontalTextAlignment="Center"/>
                                         <Label FontSize="Small" Text="{Binding DetailDesc}" HorizontalTextAlignment="Center"/>
-                                    </StackLayout>
+                                    </StackLayout>-->
                                 </Grid>
                             </DataTemplate>
                         </CarouselView.ItemTemplate>

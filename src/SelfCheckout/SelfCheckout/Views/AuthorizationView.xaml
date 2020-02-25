@@ -15,7 +15,7 @@
     mc:Ignorable="d"
     x:Class="SelfCheckout.Views.AuthorizationView">
     <ContentPage.Content>
-        <Grid Margin="48">
+        <Grid Margin="16">
             <Frame VerticalOptions="Center">
                 <StackLayout>
                     <Label Text="{i18n:Translate ForAdmin}" FontSize="Large" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
