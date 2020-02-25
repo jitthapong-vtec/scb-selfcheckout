@@ -19,19 +19,10 @@ namespace SelfCheckout.Views
 			InitializeComponent ();
 		}
 
-        protected override void OnAppearing()
+        protected override bool OnBackButtonPressed()
         {
-            base.OnAppearing();
-
-            scanView.IsScanning = true;
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-
-            scanView.IsScanning = false;
-            ((BarcodeScanViewModel)BindingContext).SetResult(null);
+            Task.Run(() => ((BarcodeScanViewModel)BindingContext).CancelScan());
+            return base.OnBackButtonPressed();
         }
     }
 }

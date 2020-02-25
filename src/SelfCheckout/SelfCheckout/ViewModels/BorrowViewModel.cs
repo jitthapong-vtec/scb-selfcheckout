@@ -14,7 +14,7 @@ namespace SelfCheckout.ViewModels
 {
     public class BorrowViewModel : ViewModelBase
     {
-        string _inputValue = "9898989898989";
+        string _inputValue = "3600000711400";
 
         public ICommand ScanShoppingCartCommand => new Command(async () => await ScanShoppingCartAsync());
 
@@ -63,12 +63,7 @@ namespace SelfCheckout.ViewModels
                     isGenImgShoppingCard = false
                 };
 
-                var customerDataResult = await RegisterService.GetCustomerAsync(payload);
-                if (!customerDataResult.IsCompleted)
-                {
-                    await DialogService.ShowAlertAsync(AppResources.Opps, validateResult.DefaultMessage, AppResources.Close);
-                    return;
-                }
+                await RegisterService.GetCustomerAsync(payload);
 
                 if (CustomerData?.Person != null)
                 {

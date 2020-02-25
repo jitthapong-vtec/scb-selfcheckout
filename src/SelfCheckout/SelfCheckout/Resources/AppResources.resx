@@ -221,6 +221,9 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>Nationality</value>
+  </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
@@ -266,6 +269,9 @@
   <data name="ScanCoupon" xml:space="preserve">
     <value>Scan Coupon</value>
   </data>
+  <data name="ScanLaserOnShoppingCart" xml:space="preserve">
+    <value>Please scan laser on QR Shopping cart</value>
+  </data>
   <data name="ScanShoppingCart" xml:space="preserve">
     <value>Please scan shopping cart</value>
   </data>
@@ -299,6 +305,9 @@
   </data>
   <data name="ThkForOrderTitle" xml:space="preserve">
     <value>Thank you for your order</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
   <data name="Units" xml:space="preserve">
     <value>Units</value>

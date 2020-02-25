@@ -20,15 +20,11 @@ namespace SelfCheckout.ViewModels
         ObservableCollection<SimpleSelectedItem> _tabs;
         ObservableCollection<SimpleSelectedItem> _deviceInfoItems;
 
-        ISelfCheckoutService _selfCheckoutService;
-
         bool _isAuthorized;
         bool _logoutButtonVisible;
 
-        public DeviceViewModel(ISelfCheckoutService selfCheckoutService)
+        public DeviceViewModel()
         {
-            _selfCheckoutService = selfCheckoutService;
-
             Tabs = new ObservableCollection<SimpleSelectedItem>()
             {
                 new SimpleSelectedItem()

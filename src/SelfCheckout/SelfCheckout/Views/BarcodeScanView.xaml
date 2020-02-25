@@ -8,12 +8,17 @@
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
              xmlns:views="clr-namespace:SelfCheckout.Views"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
              NavigationPage.HasNavigationBar="False"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True">
     <ContentPage.Content>
         <Grid>
-            <zxing:ZXingScannerView x:Name="scanView" ScanResultCommand="{Binding ScanResultCommand}"/>
-            <zxing:ZXingDefaultOverlay BottomText="Please scan laser on QR Shopping cart"/>
+            <zxing:ZXingScannerView ScanResultCommand="{Binding ScanResultCommand}" IsScanning="{Binding IsScanning}"/>
+            <zxing:ZXingDefaultOverlay BottomText="{i18n:Translate ScanLaserOnShoppingCart}"/>
+            <controls:TappedGrid TappedCommand="{Binding CancelCommand}" VerticalOptions="Start" HorizontalOptions="End" Margin="12">
+                <Label Style="{StaticResource LabelIconStyle}" FontSize="32" HorizontalOptions="Center" VerticalOptions="Center"
+                       Text="&#xf057;" TextColor="{StaticResource Gray50}"/>
+            </controls:TappedGrid>
         </Grid>
     </ContentPage.Content>
 </pages:PopupPage>

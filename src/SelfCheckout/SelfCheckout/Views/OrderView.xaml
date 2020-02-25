@@ -4,12 +4,71 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
+             xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.OrderView">
   <ContentView.Content>
-      <Grid>
-          <Label VerticalOptions="Center" HorizontalOptions="Center" Text="Orders" />
-      </Grid>
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <forms:ZXingBarcodeImageView
+                            BarcodeFormat="QR_CODE"
+                            HeightRequest="150"
+                            WidthRequest="150"
+                            BarcodeValue="{Binding LoginData.SessionKey}">
+                            <forms:ZXingBarcodeImageView.BarcodeOptions>
+                                <common:EncodingOptions Width="150" Height="150" PureBarcode="True"/>
+                            </forms:ZXingBarcodeImageView.BarcodeOptions>
+                        </forms:ZXingBarcodeImageView>
+                    </Grid>
+                    <StackLayout Grid.Column="1" Margin="8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackLayout Grid.Column="0">
+                                <Label FontAttributes="Bold" Text="{Binding CurrentShoppingCart}"/>
+                                <Label Text="{Binding CustomerData.Person.NativeName}"/>
+                            </StackLayout>
+                            <Image Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Source="ic_user"/>
+                        </Grid>
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Text="{i18n:Translate PassportNo}"/>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding CustomerData.Person.PassportNo}" HorizontalTextAlignment="End"/>
+                            <Label Grid.Row="1" Grid.Column="0" Text="{i18n:Translate Nationality}"/>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding CustomerData.Person.Nationality}" HorizontalTextAlignment="End"/>
+                            <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate Type}"/>
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding CustomerData.Person.CustomerTypeCode}" HorizontalTextAlignment="End"/>
+                        </Grid>
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
+                    </StackLayout>
+                </Grid>
+            </Grid>
+        </Grid>
   </ContentView.Content>
 </ContentView>

@@ -367,6 +367,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nationality.
+        /// </summary>
+        internal static string Nationality {
+            get {
+                return ResourceManager.GetString("Nationality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
         internal static string No {
@@ -502,6 +511,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please scan laser on QR Shopping cart.
+        /// </summary>
+        internal static string ScanLaserOnShoppingCart {
+            get {
+                return ResourceManager.GetString("ScanLaserOnShoppingCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please scan shopping cart.
         /// </summary>
         internal static string ScanShoppingCart {
@@ -597,6 +615,15 @@ namespace SelfCheckout.Resources {
         internal static string ThkForOrderTitle {
             get {
                 return ResourceManager.GetString("ThkForOrderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
         

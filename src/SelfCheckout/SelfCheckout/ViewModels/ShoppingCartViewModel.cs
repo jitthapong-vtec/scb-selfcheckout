@@ -151,6 +151,10 @@ namespace SelfCheckout.ViewModels
                 await LoadOrderAsync();
                 IsFirstSelect = false;
             }
+            else
+            {
+                await TestAddOrder();
+            }
         }
 
         public override Task OnTabDeSelected(TabItem item)
@@ -190,7 +194,7 @@ namespace SelfCheckout.ViewModels
             }
         }
 
-        Task RefreshOrderAsync()
+        public Task RefreshOrderAsync()
         {
             OrderDetails = SaleEngineService.OrderData.OrderDetails?.ToObservableCollection();
             MessagingCenter.Send(this, "OrderRefresh");
@@ -234,7 +238,12 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var result = await SaleEngineService.AddItemToOrderAsync(barcode);
+                var payload = new
+                {
+                    SessionKey = LoginData.SessionKey,
+                    ItemCode = barcode
+                };
+                var result = await SaleEngineService.AddItemToOrderAsync(payload);
                 var success = result.IsCompleted;
             }
             catch (Exception ex)

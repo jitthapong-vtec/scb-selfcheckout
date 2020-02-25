@@ -164,10 +164,12 @@ namespace SelfCheckout.ViewModels
             LangShowing = false;
         });
 
-        public ICommand CurrencySelectionCommand => new Command<Currency>((currency) =>
+        public ICommand CurrencySelectionCommand => new Command<Currency>(async (currency) =>
         {
             CurrencySelected = currency;
             CurrencyShowing = false;
+
+            await ChangeCurrency();
         });
 
         public ICommand ScanPaymentCommand => new Command<object>(async (type) =>
@@ -244,6 +246,25 @@ namespace SelfCheckout.ViewModels
             return false;
         }
 
+        async Task ChangeCurrency()
+        {
+            try
+            {
+                var payload = new
+                {
+                    SessionKey = LoginData.SessionKey,
+                    ActionItemValue = new
+                    {
+                        Action = "change_currency",
+                        Value = CurrencySelected.CurrCode
+                    }
+                };
+                await SaleEngineService.ActionListItemToOrderAsync(payload);
+                await (CurrentView.BindingContext as ShoppingCartViewModel).RefreshOrderAsync();
+            }
+            catch { }
+        }
+
         async Task LoadMasterDataAsync()
         {
             try
@@ -273,7 +294,7 @@ namespace SelfCheckout.ViewModels
                 };
                 await SaleEngineService.LoadCurrencyAsync(payload);
                 Currencies = SaleEngineService.Currencies?.ToObservableCollection();
-                CurrencySelected = SaleEngineService.Currencies?.FirstOrDefault();
+                CurrencySelected = SaleEngineService.Currencies.Where(c => c.CurrCode == "THB").FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -299,21 +320,33 @@ namespace SelfCheckout.ViewModels
                     var netAmount = OrderData.BillingAmount.NetAmount.CurrAmt;
                     var paymentRequestPayload = new
                     {
-                        SessionKey = LoginData.SessionKey,
                         OrderGuid = OrderData.Guid,
                         Payment = new
                         {
+                            Guid = "",
+                            LineNo = 0,
                             PaymentCode = PaymentSelected.MethodCode,
                             PaymentType = wallet.WalletType,
+                            PaymentIcon = "",
                             RefNo = PaymentBarcode,
                             URLService = wallet.WalletagentMaster.Wsurl,
+                            CardHolderName = "",
+                            ApproveCode = "",
+                            BankOfEDC = "",
+                            IssuerID = "",
                             WalletBarcode = PaymentBarcode,
                             WalletMerchantID = wallet.WalletagentMaster.MerchantId,
                             GatewayId = PaymentSelected.GatewayId,
+                            WalletTransID = "",
+                            isDCC = false,
+                            isCheckVoucher = false,
+                            isFixAmount = false,
+                            isNotAllowSMC = false,
+                            isComplete = false,
                             PaymentAmounts = new
                             {
                                 CurrAmt = netAmount,
-                                CrrCode = new
+                                CurrCode = new
                                 {
                                     Code = CurrencySelected.CurrCode,
                                     Desc = CurrencySelected.CurrDesc
@@ -329,6 +362,8 @@ namespace SelfCheckout.ViewModels
                             },
                             Transaction = new
                             {
+                                TransactionId = 0,
+                                GatewaySessionKey = "",
                                 TransactionGroup = 2,
                                 TransactionType = 1,
                                 PartnerId = wallet.WalletagentMaster.PartnertypeId,
@@ -349,7 +384,7 @@ namespace SelfCheckout.ViewModels
                             ChangeAmounts = new
                             {
                                 CurrAmt = netAmount,
-                                CrrCode = new
+                                CurrCode = new
                                 {
                                     Code = CurrencySelected.CurrCode,
                                     Desc = CurrencySelected.CurrDesc
@@ -362,8 +397,10 @@ namespace SelfCheckout.ViewModels
                                 },
                                 BaseCurrRate = 1,
                                 BaseCurrAmt = netAmount
-                            }
-                        }
+                            },
+                            status = ""
+                        },
+                        SessionKey = LoginData.SessionKey,
                     };
 
                     IsPaymentProcessing = true;
