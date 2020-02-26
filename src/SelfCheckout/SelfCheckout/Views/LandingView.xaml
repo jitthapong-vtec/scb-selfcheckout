@@ -9,16 +9,15 @@
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+             NavigationPage.HasNavigationBar="False"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.LandingView">
-    <NavigationPage.TitleView>
-        <views:ActionBarView>
-            <ffimageloadingsvg:SvgCachedImage HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
-        </views:ActionBarView>
-    </NavigationPage.TitleView>
     <ContentPage.Content>
         <Grid>
-            <ffimageloading:CachedImage Aspect="AspectFill" Margin="0,-56,0,0" Source="resource://SelfCheckout.Resources.Images.landing_bg.png"/>
+            <ffimageloading:CachedImage Aspect="AspectFill" Source="resource://SelfCheckout.Resources.Images.landing_bg.png"/>
+            <controls:ActionBarView>
+                <ffimageloadingsvg:SvgCachedImage HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
+            </controls:ActionBarView>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentPage.Content>

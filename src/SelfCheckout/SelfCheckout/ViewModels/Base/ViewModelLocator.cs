@@ -46,6 +46,7 @@ namespace SelfCheckout.ViewModels.Base
             _container.Register<BarcodeScanViewModel>();
             _container.Register<AuthorizationViewModel>();
             _container.Register<CustomerCartConfirmViewModel>();
+            _container.Register<CheckerMainViewModel>();
 
             _container.Register<INavigationService, NavigationService>();
             _container.Register<IDialogService, DialogService>();

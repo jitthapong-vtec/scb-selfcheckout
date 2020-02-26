@@ -26,7 +26,7 @@ namespace SelfCheckout.Services.SaleEngine
             SetRequestHeader("CallerID", "SCBCHECKOUT");
         }
 
-        public LoginData LoginData { get; private set; }
+        public LoginData LoginData { get; set; }
 
         public IList<Currency> Currencies { get; private set; }
 
@@ -119,7 +119,6 @@ namespace SelfCheckout.Services.SaleEngine
             var result = await PostAsync<object, ApiResultData<LoginData>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
-            LoginData = result.Data;
             return result;
         }
 

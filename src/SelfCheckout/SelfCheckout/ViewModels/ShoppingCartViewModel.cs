@@ -151,10 +151,6 @@ namespace SelfCheckout.ViewModels
                 await LoadOrderAsync();
                 IsFirstSelect = false;
             }
-            else
-            {
-                await TestAddOrder();
-            }
         }
 
         public override Task OnTabDeSelected(TabItem item)
@@ -257,7 +253,7 @@ namespace SelfCheckout.ViewModels
             await RefreshOrderAsync();
         }
 
-        async Task TestAddOrder()
+        public async Task TestAddOrder()
         {
             var random = new Random();
             var payload = items[random.Next(items.Length)];

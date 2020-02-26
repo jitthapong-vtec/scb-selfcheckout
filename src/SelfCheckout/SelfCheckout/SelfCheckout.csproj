@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -11,8 +12,14 @@
 
   <ItemGroup>
     <None Remove="Resources\Images\bg.png" />
+    <None Remove="Resources\Images\desktop_bg.png" />
+    <None Remove="Resources\Images\header_logo.png" />
     <None Remove="Resources\Images\header_logo.svg" />
+    <None Remove="Resources\Images\header_logo_blue.png" />
+    <None Remove="Resources\Images\ic_user_share.png" />
     <None Remove="Resources\Images\landing_bg.png" />
+    <None Remove="Resources\Images\tab_active.png" />
+    <None Remove="Resources\Images\tab_normal.png" />
     <None Remove="Resources\order_list.json" />
   </ItemGroup>
 
@@ -32,8 +39,14 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\Images\bg.png" />
+    <EmbeddedResource Include="Resources\Images\desktop_bg.png" />
+    <EmbeddedResource Include="Resources\Images\header_logo.png" />
     <EmbeddedResource Include="Resources\Images\header_logo.svg" />
+    <EmbeddedResource Include="Resources\Images\ic_user_share.png" />
     <EmbeddedResource Include="Resources\Images\landing_bg.png" />
+    <EmbeddedResource Include="Resources\Images\header_logo_blue.png" />
+    <EmbeddedResource Include="Resources\Images\tab_active.png" />
+    <EmbeddedResource Include="Resources\Images\tab_normal.png" />
     <EmbeddedResource Include="Resources\order_list.json" />
   </ItemGroup>
 
@@ -61,15 +74,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Controls\ActionBarView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Controls\GradientBackground.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\AppResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\ActionBarView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ActivityIndicatorView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -78,6 +91,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\BorrowView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\CheckerMainView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Components\UserAuthenView.xaml">

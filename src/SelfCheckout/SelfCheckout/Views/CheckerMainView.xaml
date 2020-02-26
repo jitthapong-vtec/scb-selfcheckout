@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False"
+             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.CheckerMainView">
+    <ContentPage.Content>
+        <Grid>
+            <ffimageloading:CachedImage 
+                    Aspect="AspectFill"
+                    Source="{OnIdiom Phone=resource://SelfCheckout.Resources.Images.landing_bg.png, 
+                    Desktop=resource://SelfCheckout.Resources.Images.desktop_bg.png}"/>
+            <Grid RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <controls:ActionBarView Grid.Row="0">
+                    <Grid Padding="48,8,16,8">
+                        <Grid.Resources>
+                            <Style TargetType="Label">
+                                <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                                <Setter Property="VerticalOptions" Value="Center"/>
+                            </Style>
+                        </Grid.Resources>
+                        <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Start">
+                            <ffimageloading:CachedImage 
+                            HorizontalOptions="Start"
+                            HeightRequest="32"
+                            Margin="0,-12,0,0"
+                            VerticalOptions="Center"
+                            Source="resource://SelfCheckout.Resources.Images.header_logo.png"/>
+                            <BoxView HeightRequest="32" WidthRequest="1" VerticalOptions="Center" BackgroundColor="{StaticResource Gray50}"/>
+                            <Label Text="{i18n:Translate CheckerManagementSystem}" VerticalOptions="Center"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                            <Label Text="{i18n:Translate Order}"/>
+                            <Label Text="{i18n:Translate AllDevice}"/>
+                            <ffimageloading:CachedImage VerticalOptions="Center" HorizontalOptions="Center" Source="resource://SelfCheckout.Resources.Images.ic_user_share.png" HeightRequest="32"/>
+                        </StackLayout>
+                    </Grid>
+                </controls:ActionBarView>
+                <Grid Grid.Row="1" Margin="48,12,48,48" RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackLayout Grid.Row="0" Orientation="Horizontal" Spacing="0" BindableLayout.ItemsSource="{Binding Tabs}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <controls:TappedGrid HeightRequest="36" TappedCommand="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}, AncestorLevel=1}, Path=BindingContext.TabSelectionCommand}" CommandParameter="{Binding .}">
+                                    <ffimageloading:CachedImage>
+                                        <ffimageloading:CachedImage.Triggers>
+                                            <DataTrigger TargetType="ffimageloading:CachedImage" Binding="{Binding Selected}" Value="True">
+                                                <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.tab_active.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="ffimageloading:CachedImage" Binding="{Binding Selected}" Value="False">
+                                                <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.tab_normal.png"/>
+                                            </DataTrigger>
+                                        </ffimageloading:CachedImage.Triggers>
+                                    </ffimageloading:CachedImage>
+                                    <Label Text="{Binding TabText}" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Selected}" Value="True">
+                                                <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding Selected}" Value="False">
+                                                <Setter Property="TextColor" Value="{StaticResource SecondaryText}"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </controls:TappedGrid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                    <Frame Grid.Row="1">
+                        
+                    </Frame>
+                </Grid>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

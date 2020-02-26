@@ -87,10 +87,14 @@ namespace SelfCheckout.Models
             {
                 _selected = value;
                 NotifyPropertyChanged();
-                if (value)
-                    (_page.BindingContext as ViewModelBase)?.OnTabSelected(this);
-                else
-                    (_page.BindingContext as ViewModelBase)?.OnTabDeSelected(this);
+                try
+                {
+                    if (value)
+                        (_page.BindingContext as ViewModelBase)?.OnTabSelected(this);
+                    else
+                        (_page.BindingContext as ViewModelBase)?.OnTabDeSelected(this);
+                }
+                catch { }
             }
         }
 

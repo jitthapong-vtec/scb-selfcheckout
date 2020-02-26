@@ -9,24 +9,34 @@
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:resx="clr-namespace:SelfCheckout.Resources"
              xmlns:magic="clr-namespace:MagicGradients;assembly=MagicGradients"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              xmlns:behaviors="clr-namespace:SelfCheckout.Behaviors"
              xmlns:components="clr-namespace:SelfCheckout.Views.Components"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+             NavigationPage.HasNavigationBar="False"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.LoginView">
-    <NavigationPage.TitleView>
-        <views:ActionBarView>
-            <ffimageloadingsvg:SvgCachedImage HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
-        </views:ActionBarView>
-    </NavigationPage.TitleView>
     <ContentPage.Content>
         <Grid>
-            <Grid>
-                <ffimageloading:CachedImage Aspect="AspectFill" Margin="0,-56,0,0" Source="resource://SelfCheckout.Resources.Images.landing_bg.png"/>
-                <ffimageloadingsvg:SvgCachedImage VerticalOptions="Start" HeightRequest="48" Source="resource://SelfCheckout.Resources.Images.header_logo.svg" Margin="0,72,0,0"/>
-                <Frame Margin="16" VerticalOptions="Center">
+            <ffimageloading:CachedImage 
+                    Aspect="AspectFill"
+                    Source="{OnIdiom Phone=resource://SelfCheckout.Resources.Images.landing_bg.png, 
+                    Desktop=resource://SelfCheckout.Resources.Images.desktop_bg.png}"/>
+            <controls:ActionBarView IsVisible="{OnIdiom Phone=True}">
+                <ffimageloading:CachedImage IsVisible="{OnIdiom Phone=True, Desktop=False}" HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.png"/>
+            </controls:ActionBarView>
+            <Grid VerticalOptions="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ffimageloading:CachedImage Grid.Row="0" Margin="0,-16,0,16"
+                                            VerticalOptions="Start" HeightRequest="48" 
+                                            Source="{OnIdiom Phone=resource://SelfCheckout.Resources.Images.header_logo.png, Desktop=resource://SelfCheckout.Resources.Images.header_logo_blue.png}"/>
+                <Frame Margin="16" Grid.Row="1" Padding="{OnIdiom Phone='16,8,16,16', Desktop='48,8,48,48'}" WidthRequest="{OnIdiom Phone=300, Desktop=400}" 
+                       VerticalOptions="Center" HorizontalOptions="Center">
                     <StackLayout VerticalOptions="Center">
                         <Label HorizontalTextAlignment="Center" FontSize="Large" Text="{i18n:Translate StaffLogin}"/>
                         <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
@@ -42,7 +52,8 @@
                         </controls:TappedGrid>
                     </StackLayout>
                 </Frame>
-                <Label VerticalOptions="End" Margin="16,0,0,8" TextColor="{StaticResource Gray50}">
+            </Grid>
+            <Label VerticalOptions="End" HorizontalOptions="{OnIdiom Phone=Start, Desktop=End}" Margin="16,0,16,8" TextColor="{StaticResource Gray50}">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="Version"/>
@@ -52,7 +63,7 @@
                     </Label.FormattedText>
                 </Label>
 
-                <controls:TappedGrid VerticalOptions="End" HorizontalOptions="End" Margin="0,0,16,8" TappedCommand="{Binding SettingCommand}">
+                <controls:TappedGrid IsVisible="{OnIdiom Phone=True}" VerticalOptions="End" HorizontalOptions="End" Margin="0,0,16,8" TappedCommand="{Binding SettingCommand}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -60,7 +71,6 @@
                     <Label Grid.Column="0" Text="&#xf013;" VerticalOptions="Center" FontFamily="{StaticResource FontAwesome}" FontSize="24" TextColor="{StaticResource Gray50}"/>
                     <Label Grid.Column="1" Text="{i18n:Translate Setting}" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
                 </controls:TappedGrid>
-            </Grid>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentPage.Content>

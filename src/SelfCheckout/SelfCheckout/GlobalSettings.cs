@@ -2,6 +2,7 @@
 using SelfCheckout.Resources;
 using SelfCheckout.Services.Localize;
 using System.Globalization;
+using System.Threading;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -35,11 +36,16 @@ namespace SelfCheckout
 
         public void InitLanguage()
         {
+            var ci = new CultureInfo(CountryCode);
+            AppResources.Culture = ci;
             if (Device.RuntimePlatform == Device.iOS || Device.RuntimePlatform == Device.Android)
             {
-                CultureInfo ci = new CultureInfo(CountryCode);
-                AppResources.Culture = ci;
                 DependencyService.Get<ILocalize>().SetLocale(ci);
+            }
+            else
+            {
+                Thread.CurrentThread.CurrentCulture = ci;
+                Thread.CurrentThread.CurrentUICulture = ci;
             }
         }
 
@@ -50,8 +56,15 @@ namespace SelfCheckout
                 var code = Preferences.Get("lang_code", "");
                 if (string.IsNullOrEmpty(code))
                 {
-                    CultureInfo ci = DependencyService.Get<ILocalize>().GetCurrentCultureInfo();
-                    code = ci.Name;
+                    if (Device.RuntimePlatform == Device.iOS || Device.RuntimePlatform == Device.Android)
+                    {
+                        CultureInfo ci = DependencyService.Get<ILocalize>().GetCurrentCultureInfo();
+                        code = ci.Name;
+                    }
+                    else
+                    {
+                        code = "en-US";
+                    }
                 }
                 return code;
             }

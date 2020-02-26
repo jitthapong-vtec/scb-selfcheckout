@@ -10,49 +10,53 @@
              xmlns:ctrls="clr-namespace:SelfCheckout.Controls"
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
              xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
-             NavigationPage.HasBackButton="False"
+             NavigationPage.HasNavigationBar="False"
              viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              Visual="Material"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.SettingView">
-    <NavigationPage.TitleView>
-        <views:ActionBarView>
-            <ffimageloadingsvg:SvgCachedImage HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
-            <ctrls:TappedGrid TappedCommand="{Binding BackCommand}" HorizontalOptions="Start">
-                <Label Style="{StaticResource ActionBarLabelIconStyle}" Text="&#xf053;" VerticalOptions="Center" HorizontalOptions="Center"/>
-            </ctrls:TappedGrid>
-        </views:ActionBarView>
-    </NavigationPage.TitleView>
     <ContentPage.Content>
-        <ScrollView BackgroundColor="White">
-            <StackLayout Spacing="0">
-                <StackLayout.Resources>
-                    <Style TargetType="Entry">
-                        <Setter Property="IsReadOnly" Value="True"/>
-                        <Setter Property="FontSize" Value="Small"/>
-                    </Style>
-                </StackLayout.Resources>
-                <Entry Placeholder="API Self-Checkout" Text="{Binding SelfCheckoutApi}" IsReadOnly="False"/>
-                <Entry Placeholder="Module" Text="{Binding AppConfig.Module}"/>
-                <Entry Placeholder="Branch No." Text="{Binding AppConfig.BranchNo}"/>
-                <Entry Placeholder="Sub Branch" Text="{Binding AppConfig.SubBranch}"/>
-                <Entry Placeholder="API Register" Text="{Binding AppConfig.UrlRegisterApi}"/>
-                <Entry Placeholder="API Member" Text="{Binding AppConfig.UrlMemberApi}"/>
-                <Entry Placeholder="API Self-Checkout" Text="{Binding AppConfig.UrlSaleEngineApi}"/>
-                <Entry Placeholder="Web Member" Text="{Binding AppConfig.UrlMemberWeb}"/>
-                <Entry Placeholder="Payment Time out" Keyboard="Numeric" Text="{Binding AppConfig.PaymentTimeout}"/>
-                <Entry Placeholder="Device UID" Text="{Binding DeviceUID}" IsReadOnly="True"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ctrls:ActionBarView Grid.Row="0">
+                <ffimageloadingsvg:SvgCachedImage HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
+                <ctrls:TappedGrid TappedCommand="{Binding BackCommand}" HorizontalOptions="Start" Margin="8">
+                    <Label Style="{StaticResource ActionBarLabelIconStyle}" Text="&#xf053;" VerticalOptions="Center" HorizontalOptions="Center"/>
+                </ctrls:TappedGrid>
+            </ctrls:ActionBarView>
+            <ScrollView BackgroundColor="White" Grid.Row="1">
+                <StackLayout Spacing="0">
+                    <StackLayout.Resources>
+                        <Style TargetType="Entry">
+                            <Setter Property="IsReadOnly" Value="True"/>
+                            <Setter Property="FontSize" Value="Small"/>
+                        </Style>
+                    </StackLayout.Resources>
+                    <Entry Placeholder="API Self-Checkout" Text="{Binding SelfCheckoutApi}" IsReadOnly="False"/>
+                    <Entry Placeholder="Module" Text="{Binding AppConfig.Module}"/>
+                    <Entry Placeholder="Branch No." Text="{Binding AppConfig.BranchNo}"/>
+                    <Entry Placeholder="Sub Branch" Text="{Binding AppConfig.SubBranch}"/>
+                    <Entry Placeholder="API Register" Text="{Binding AppConfig.UrlRegisterApi}"/>
+                    <Entry Placeholder="API Member" Text="{Binding AppConfig.UrlMemberApi}"/>
+                    <Entry Placeholder="API Self-Checkout" Text="{Binding AppConfig.UrlSaleEngineApi}"/>
+                    <Entry Placeholder="Web Member" Text="{Binding AppConfig.UrlMemberWeb}"/>
+                    <Entry Placeholder="Payment Time out" Keyboard="Numeric" Text="{Binding AppConfig.PaymentTimeout}"/>
+                    <Entry Placeholder="Device UID" Text="{Binding DeviceUID}" IsReadOnly="True"/>
 
-                <forms:ZXingBarcodeImageView
+                    <forms:ZXingBarcodeImageView
                                 BarcodeFormat="QR_CODE"
                                 HeightRequest="200"
                                 WidthRequest="200"
                                 BarcodeValue="{Binding DeviceUID}">
-                    <forms:ZXingBarcodeImageView.BarcodeOptions>
-                        <common:EncodingOptions Width="200" Height="200" PureBarcode="True"/>
-                    </forms:ZXingBarcodeImageView.BarcodeOptions>
-                </forms:ZXingBarcodeImageView>
-            </StackLayout>
-        </ScrollView>
+                        <forms:ZXingBarcodeImageView.BarcodeOptions>
+                            <common:EncodingOptions Width="200" Height="200" PureBarcode="True"/>
+                        </forms:ZXingBarcodeImageView.BarcodeOptions>
+                    </forms:ZXingBarcodeImageView>
+                </StackLayout>
+            </ScrollView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

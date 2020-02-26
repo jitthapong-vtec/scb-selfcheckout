@@ -44,6 +44,9 @@ namespace SelfCheckout.Views
                     catch (DensoScannerException ex)
                     {
                         _viewModel.DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+
+                        var shoppingCart = _viewModel.Tabs.Where(t => t.TabId == 3).FirstOrDefault();
+                        Task.Run(() => (shoppingCart.Page.BindingContext as ShoppingCartViewModel).TestAddOrder());
                     }
                 }
             }

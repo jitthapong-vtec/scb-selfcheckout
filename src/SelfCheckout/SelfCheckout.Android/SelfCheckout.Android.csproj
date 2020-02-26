@@ -102,9 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\FontAwesome.ttf" />
-    <AndroidAsset Include="Assets\Montserrat-Bold.ttf" />
-    <AndroidAsset Include="Assets\Montserrat-Regular.ttf" />
-    <AndroidAsset Include="Assets\SourceSansPro-Regular.ttf" />
     <AndroidAsset Include="Assets\KP-Icon-Font.ttf" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />

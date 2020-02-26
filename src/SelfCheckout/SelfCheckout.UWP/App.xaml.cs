@@ -1,7 +1,9 @@
-﻿using System;
+﻿using FFImageLoading.Forms;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -51,6 +53,16 @@ namespace SelfCheckout.UWP
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
+
+                var assembliesToInclude = new List<Assembly>()
+                {
+                    typeof(CachedImage).GetTypeInfo().Assembly,
+                    typeof(FFImageLoading.Forms.Platform.CachedImageRenderer).GetTypeInfo().Assembly,
+                    typeof(Rg.Plugins.Popup.Popup).GetTypeInfo().Assembly
+                };
+
+                FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+                Rg.Plugins.Popup.Popup.Init();
 
                 Xamarin.Forms.Forms.Init(e);
 

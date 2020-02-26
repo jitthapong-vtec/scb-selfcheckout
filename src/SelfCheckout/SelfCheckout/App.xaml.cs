@@ -21,12 +21,11 @@ namespace SelfCheckout
                 "SwipeView_Experimental"
             });
 
-            GlobalSettings.Instance.InitLanguage();
-
             if (Device.RuntimePlatform == Device.UWP)
             {
                 InitNavigation();
             }
+            GlobalSettings.Instance.InitLanguage();
         }
 
         public Task InitNavigation()

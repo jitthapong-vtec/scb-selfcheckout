@@ -12,6 +12,9 @@ namespace SelfCheckout.Services.Localize
     {
         readonly CultureInfo ci = null;
         public const string ResourceId = "SelfCheckout.Resources.AppResources";
+        
+        static readonly Lazy<ResourceManager> ResMgr = new Lazy<ResourceManager>(
+            () => new ResourceManager(ResourceId, IntrospectionExtensions.GetTypeInfo(typeof(TranslateExtension)).Assembly));
 
         public TranslateExtension()
         {
@@ -29,9 +32,7 @@ namespace SelfCheckout.Services.Localize
             if (Text == null)
                 return "";
 
-            ResourceManager temp = new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly);
-
-            var translation = temp.GetString(Text, ci);
+            var translation = ResMgr.Value.GetString(Text, ci);
             if (translation == null)
             {
                 throw new ArgumentException(

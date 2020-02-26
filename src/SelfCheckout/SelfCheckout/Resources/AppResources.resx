@@ -120,6 +120,9 @@
   <data name="All" xml:space="preserve">
     <value>All</value>
   </data>
+  <data name="AllDevice" xml:space="preserve">
+    <value>All Device</value>
+  </data>
   <data name="Amount" xml:space="preserve">
     <value>Amount</value>
   </data>
@@ -134,6 +137,9 @@
   </data>
   <data name="ChangeShoppingCart" xml:space="preserve">
     <value>Change Shopping Cart</value>
+  </data>
+  <data name="CheckerManagementSystem" xml:space="preserve">
+    <value>Checker Management System</value>
   </data>
   <data name="Checkout" xml:space="preserve">
     <value>Checkout</value>
@@ -171,6 +177,9 @@
   <data name="DeviceInfo" xml:space="preserve">
     <value>Device Info</value>
     <comment>No translate</comment>
+  </data>
+  <data name="DeviceStatus" xml:space="preserve">
+    <value>Device status</value>
   </data>
   <data name="Discount" xml:space="preserve">
     <value>Discount</value>
@@ -233,6 +242,9 @@
   <data name="Opps" xml:space="preserve">
     <value>Opps</value>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
   <data name="Orders" xml:space="preserve">
     <value>Orders</value>
   </data>
@@ -241,6 +253,9 @@
   </data>
   <data name="OrderTotal" xml:space="preserve">
     <value>Order Total</value>
+  </data>
+  <data name="Packing" xml:space="preserve">
+    <value>Packing</value>
   </data>
   <data name="PassportNo" xml:space="preserve">
     <value>Passport No.</value>
@@ -277,6 +292,9 @@
   </data>
   <data name="SelectPaymentMethod" xml:space="preserve">
     <value>Select payment method</value>
+  </data>
+  <data name="SessionHistory" xml:space="preserve">
+    <value>Session history</value>
   </data>
   <data name="Setting" xml:space="preserve">
     <value>Setting</value>

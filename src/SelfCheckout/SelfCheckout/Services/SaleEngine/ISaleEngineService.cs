@@ -8,7 +8,7 @@ namespace SelfCheckout.Services.SaleEngine
 {
     public interface ISaleEngineService
     {
-        LoginData LoginData { get;}
+        LoginData LoginData { get; set; }
 
         OrderData OrderData { get; }
 

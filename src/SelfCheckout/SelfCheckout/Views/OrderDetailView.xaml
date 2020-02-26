@@ -6,13 +6,14 @@
              xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:views="clr-namespace:SelfCheckout.Views"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
              NavigationPage.HasBackButton="False"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.OrderDetailView">
     <NavigationPage.TitleView>
-        <views:ActionBarView>
+        <controls:ActionBarView>
             <Label HorizontalOptions="Center" VerticalOptions="Center" Text="{i18n:Translate ItemDetail}" FontAttributes="Bold"/>
-        </views:ActionBarView>
+        </controls:ActionBarView>
     </NavigationPage.TitleView>
     <ContentPage.Content>
         <StackLayout>

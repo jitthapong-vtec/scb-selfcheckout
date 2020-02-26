@@ -30,32 +30,24 @@
         <converter:DecimalFormatConverter x:Key="DecimalFormatConverter"/>
         <converter:TranslateConverter x:Key="TranslateConverter"/>
 
-        <OnPlatform x:Key="MontserratRegular" 
-                        x:TypeArguments="x:String" 
-                        iOS="Montserrat-Regular"
-                        Android="Montserrat-Regular.ttf#Montserrat"/>
-
-        <OnPlatform x:Key="MontserratBold" 
-                        x:TypeArguments="x:String" 
-                        iOS="Montserrat-Bold" 
-                        Android="Montserrat-Bold.ttf#Montserrat"/>
-
-        <OnPlatform x:Key="SourceSansProRegular" 
-                        x:TypeArguments="x:String" 
-                        iOS="SourceSansPro-Regular" 
-                        Android="SourceSansPro-Regular.ttf#Source Sans Pro"/>
-
-        <OnPlatform x:Key="FontAwesome" 
-                        x:TypeArguments="x:String" 
-                        Android="FontAwesome.ttf#Font Awesome 5 Free Solid"
-                        iOS="Font Awesome 5 Free Solid"/>
+        <OnPlatform x:Key="FontAwesome" x:TypeArguments="x:String" >
+            <On Platform="Android" Value="FontAwesome.ttf#Font Awesome 5 Free Solid"/>
+            <On Platform="iOS" Value="Font Awesome 5 Free Solid"/>
+            <On Platform="UWP, WinRT, WinPhone" Value="Assets/Fonts/FontAwesome.ttf#FontAwesome"/>
+        </OnPlatform>
 
         <OnPlatform x:Key="KPIconFont" 
-                        x:TypeArguments="x:String" 
-                        Android="KP-Icon-Font.ttf#KP Icon Font"/>
+                        x:TypeArguments="x:String">
+            <On Platform="Android" Value="KP-Icon-Font.ttf#KP Icon Font"/>
+            <On Platform="UWP, WinRT, WinPhone" Value="Assets/Fonts/KP-Icon-Font.ttf#KP Icon Font"/>
+        </OnPlatform>
 
+        <Style TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="White"/>
+            <Setter Property="HasShadow" Value="True"/>
+        </Style>
+        
         <Style TargetType="Label">
-            <!--<Setter Property="FontFamily" Value="{StaticResource MontserratRegular}"/>-->
             <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
         </Style>
 
