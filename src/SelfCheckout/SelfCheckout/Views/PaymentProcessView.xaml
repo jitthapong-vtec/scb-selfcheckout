@@ -6,6 +6,7 @@
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:views="clr-namespace:SelfCheckout.Views"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.PaymentProcessView">
     <ContentView.Content>
@@ -70,12 +71,13 @@
                             <FormattedString>
                                 <Span Text="&#xf017;" Style="{StaticResource LabelIconStyle}" TextColor="{StaticResource Secondary}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding PaymentCountdownTimer}"/>
+                                <Span Text="{Binding PaymentCountdownTimer}" FontAttributes="Bold"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
                 </StackLayout>
             </StackLayout>
+            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentView.Content>
 </ContentView>

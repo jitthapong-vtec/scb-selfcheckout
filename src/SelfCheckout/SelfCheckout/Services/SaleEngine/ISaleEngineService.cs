@@ -32,6 +32,8 @@ namespace SelfCheckout.Services.SaleEngine
 
         Task<ApiResultData<List<OrderData>>> AddPaymentToOrderAsync(object payload);
 
+        Task<OrderPayment> ActionPaymentToOrderAsync(object payload);
+
         Task<ApiResultData<List<OrderData>>> FinishPaymentOrderAsync(object payload);
 
         Task LoadCurrencyAsync(object payload);

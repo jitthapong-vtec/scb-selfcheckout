@@ -6,6 +6,7 @@ using SelfCheckout.Services.Base;
 using SelfCheckout.ViewModels.Base;
 using SelfCheckout.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -29,6 +30,8 @@ namespace SelfCheckout.ViewModels
         OrderData _orderData;
 
         string _paymentBarCode;
+
+        int _paymentCountdownTimer;
 
         bool _langShowing;
         bool _currencyShowing;
@@ -341,64 +344,67 @@ namespace SelfCheckout.ViewModels
                     branch_no = AppConfig.BranchNo
                 };
                 var walletResult = await SaleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
-                if (walletResult.IsCompleted)
+                if (!walletResult.IsCompleted)
                 {
-                    var wallet = walletResult.Data;
-                    var netAmount = OrderData.BillingAmount.NetAmount.CurrAmt;
-                    var paymentRequestPayload = new
+                    await DialogService.ShowAlertAsync(AppResources.Opps, walletResult.DefaultMessage, AppResources.Close);
+                }
+
+                var wallet = walletResult.Data;
+                var netAmount = OrderData.BillingAmount.NetAmount.CurrAmt;
+                var paymentRequestPayload = new
+                {
+                    OrderGuid = OrderData.Guid,
+                    Payment = new
                     {
-                        OrderGuid = OrderData.Guid,
-                        Payment = new
+                        Guid = "",
+                        LineNo = 0,
+                        PaymentCode = PaymentSelected.MethodCode,
+                        PaymentType = wallet.WalletType,
+                        PaymentIcon = "",
+                        RefNo = PaymentBarcode,
+                        URLService = wallet.WalletagentMaster.Wsurl,
+                        CardHolderName = "",
+                        ApproveCode = "",
+                        BankOfEDC = "",
+                        IssuerID = "",
+                        WalletBarcode = PaymentBarcode,
+                        WalletMerchantID = wallet.WalletagentMaster.MerchantId,
+                        GatewayId = PaymentSelected.GatewayId,
+                        WalletTransID = "",
+                        isDCC = false,
+                        isCheckVoucher = false,
+                        isFixAmount = false,
+                        isNotAllowSMC = false,
+                        isComplete = false,
+                        PaymentAmounts = new
                         {
-                            Guid = "",
-                            LineNo = 0,
-                            PaymentCode = PaymentSelected.MethodCode,
-                            PaymentType = wallet.WalletType,
-                            PaymentIcon = "",
-                            RefNo = PaymentBarcode,
-                            URLService = wallet.WalletagentMaster.Wsurl,
-                            CardHolderName = "",
-                            ApproveCode = "",
-                            BankOfEDC = "",
-                            IssuerID = "",
-                            WalletBarcode = PaymentBarcode,
-                            WalletMerchantID = wallet.WalletagentMaster.MerchantId,
-                            GatewayId = PaymentSelected.GatewayId,
-                            WalletTransID = "",
-                            isDCC = false,
-                            isCheckVoucher = false,
-                            isFixAmount = false,
-                            isNotAllowSMC = false,
-                            isComplete = false,
-                            PaymentAmounts = new
+                            CurrAmt = netAmount,
+                            CurrCode = new
                             {
-                                CurrAmt = netAmount,
-                                CurrCode = new
-                                {
-                                    Code = CurrencySelected.CurrCode,
-                                    Desc = CurrencySelected.CurrDesc
-                                },
-                                CurrRate = CurrencySelected.CurrRate,
-                                BaseCurrCode = new
-                                {
-                                    Code = BaseCurrency.CurrCode,
-                                    Desc = BaseCurrency.CurrDesc
-                                },
-                                BaseCurrRate = 1,
-                                BaseCurrAmt = netAmount
+                                Code = CurrencySelected.CurrCode,
+                                Desc = CurrencySelected.CurrDesc
                             },
-                            Transaction = new
+                            CurrRate = CurrencySelected.CurrRate,
+                            BaseCurrCode = new
                             {
-                                TransactionId = 0,
-                                GatewaySessionKey = "",
-                                TransactionGroup = 2,
-                                TransactionType = 1,
-                                PartnerId = wallet.WalletagentMaster.PartnertypeId,
-                                PartnerType = wallet.WalletagentMaster.PartnertypeId,
-                                LastStatus = 1,
-                                CurrentStatus = 1,
-                                Movements = new[]
-                                {
+                                Code = BaseCurrency.CurrCode,
+                                Desc = BaseCurrency.CurrDesc
+                            },
+                            BaseCurrRate = 1,
+                            BaseCurrAmt = netAmount
+                        },
+                        Transaction = new
+                        {
+                            TransactionId = 0,
+                            GatewaySessionKey = "",
+                            TransactionGroup = 2,
+                            TransactionType = 1,
+                            PartnerId = wallet.WalletagentMaster.PartnertypeId,
+                            PartnerType = wallet.WalletagentMaster.PartnertypeId,
+                            LastStatus = 1,
+                            CurrentStatus = 1,
+                            Movements = new[]
+                            {
                                     new
                                     {
                                         TransactionMovementType = 1,
@@ -407,44 +413,80 @@ namespace SelfCheckout.ViewModels
                                         Status = 1
                                     }
                                 }
-                            },
-                            ChangeAmounts = new
-                            {
-                                CurrAmt = netAmount,
-                                CurrCode = new
-                                {
-                                    Code = CurrencySelected.CurrCode,
-                                    Desc = CurrencySelected.CurrDesc
-                                },
-                                CurrRate = CurrencySelected.CurrRate,
-                                BaseCurrCode = new
-                                {
-                                    Code = BaseCurrency.CurrCode,
-                                    Desc = BaseCurrency.CurrDesc
-                                },
-                                BaseCurrRate = 1,
-                                BaseCurrAmt = netAmount
-                            },
-                            status = ""
                         },
-                        SessionKey = LoginData.SessionKey,
-                    };
+                        ChangeAmounts = new
+                        {
+                            CurrAmt = netAmount,
+                            CurrCode = new
+                            {
+                                Code = CurrencySelected.CurrCode,
+                                Desc = CurrencySelected.CurrDesc
+                            },
+                            CurrRate = CurrencySelected.CurrRate,
+                            BaseCurrCode = new
+                            {
+                                Code = BaseCurrency.CurrCode,
+                                Desc = BaseCurrency.CurrDesc
+                            },
+                            BaseCurrRate = 1,
+                            BaseCurrAmt = netAmount
+                        },
+                        status = ""
+                    },
+                    SessionKey = LoginData.SessionKey,
+                };
 
-                    IsPaymentProcessing = true;
-                    var paymentResult = await SaleEngineService.AddPaymentToOrderAsync(paymentRequestPayload);
-                    if (paymentResult.IsCompleted)
-                    {
-                        await FinishOrderAsync();
-                    }
-                    else
-                    {
-                        await DialogService.ShowAlertAsync(AppResources.Opps, paymentResult.DefaultMessage, AppResources.Close);
-                    }
-                }
-                else
+                await SaleEngineService.AddPaymentToOrderAsync(paymentRequestPayload);
+
+                var tokenSource = new CancellationTokenSource();
+                var ct = tokenSource.Token;
+
+                PaymentCountdownTimer = 10;
+                Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
-                    await DialogService.ShowAlertAsync(AppResources.Opps, walletResult.DefaultMessage, AppResources.Close);
+                    if (--PaymentCountdownTimer == 0)
+                    {
+                        tokenSource.Cancel();
+                        return false;
+                    }
+                    return true;
+                });
+
+                IsPaymentProcessing = true;
+                var paymentSuccess = false;
+                while (true)
+                {
+                    if (ct.IsCancellationRequested)
+                        break;
+
+                    var actionPayload = new
+                    {
+                        OrderGuid = OrderData.Guid,
+                        Rows = SaleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
+                        Action = 3,
+                        Value = "",
+                        currency = "",
+                        SessionKey = LoginData.SessionKey
+                    };
+                    var paymentStatus = await SaleEngineService.ActionPaymentToOrderAsync(actionPayload);
+                    if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
+                    {
+                        paymentSuccess = true;
+                        break;
+                    }
                 }
+
+                if (!paymentSuccess)
+                {
+                    IsPaymentProcessing = false;
+                    PaymentInputShowing = false;
+                    PaymentBarcode = "";
+                }
+                //var finishPayload = new
+                //{
+
+                //};
+                //await SaleEngineService.FinishPaymentOrderAsync(finishPayload);
             }
             catch (Exception ex)
             {
@@ -453,6 +495,7 @@ namespace SelfCheckout.ViewModels
             finally
             {
                 IsBusy = false;
+                IsBeingPaymentProcess = false;
                 IsPaymentProcessing = false;
                 PaymentInputShowing = false;
                 PaymentBarcode = "";
@@ -557,6 +600,16 @@ namespace SelfCheckout.ViewModels
             {
                 _currentView = value;
                 RaisePropertyChanged(() => CurrentView);
+            }
+        }
+
+        public int PaymentCountdownTimer
+        {
+            get => _paymentCountdownTimer;
+            set
+            {
+                _paymentCountdownTimer = value;
+                RaisePropertyChanged(() => PaymentCountdownTimer);
             }
         }
 
