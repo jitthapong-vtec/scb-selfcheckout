@@ -72,6 +72,16 @@ namespace SelfCheckout.Services.SaleEngine
             return result;
         }
 
+        public async Task<ApiResultData<List<OrderData>>> CheckoutPaymentOrder(object payload)
+        {
+            var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/CheckOutPaymentOrder");
+            var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            OrderData = result.Data.FirstOrDefault();
+            return result;
+        }
+
         public async Task<ApiResultData<List<OrderData>>> FinishPaymentOrderAsync(object payload)
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/FinishPaymentOrder");

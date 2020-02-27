@@ -195,17 +195,18 @@ namespace SelfCheckout.ViewModels
             if (IsPaymentProcessing)
                 return;
             PaymentInputShowing = false;
+            IsBeingPaymentProcess = false;
         });
 
-        public ICommand CheckoutCommand => new Command(() =>
+        public ICommand CheckoutCommand => new Command(async () =>
         {
-            if (IsBeingPaymentProcess)
+            if (!IsBeingPaymentProcess)
             {
-                PaymentInputShowing = true;
+                await CheckoutAsync();
             }
             else
             {
-                IsBeingPaymentProcess = true;
+                PaymentInputShowing = true;
             }
         });
 
@@ -299,6 +300,32 @@ namespace SelfCheckout.ViewModels
             catch (Exception ex)
             {
                 await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+            }
+        }
+
+        async Task CheckoutAsync()
+        {
+            try
+            {
+                IsBusy = true;
+
+                var payload = new
+                {
+                    OrderGuid = OrderData.Guid,
+                    SessionKey = LoginData.SessionKey
+                };
+
+                await SaleEngineService.CheckoutPaymentOrder(payload);
+
+                IsBeingPaymentProcess = true;
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
@@ -407,7 +434,7 @@ namespace SelfCheckout.ViewModels
                     var paymentResult = await SaleEngineService.AddPaymentToOrderAsync(paymentRequestPayload);
                     if (paymentResult.IsCompleted)
                     {
-                        //TODO: Show thank you popup and goto order tab
+                        await FinishOrderAsync();
                     }
                     else
                     {
@@ -429,6 +456,37 @@ namespace SelfCheckout.ViewModels
                 IsPaymentProcessing = false;
                 PaymentInputShowing = false;
                 PaymentBarcode = "";
+            }
+        }
+
+        async Task FinishOrderAsync()
+        {
+            try
+            {
+                var payload = new
+                {
+                    SessionKey = LoginData.SessionKey,
+                    OrderGuid = OrderData.Guid,
+                    OrderSignature = new object[]
+                    {
+                        new
+                        {
+                            code = "",
+                            signature = ""
+                        }
+                    }
+                };
+                var result = await SaleEngineService.FinishPaymentOrderAsync(payload);
+                if (result.IsCompleted)
+                {
+                    await DialogService.ShowAlertAsync(AppResources.Payment, "Thank you", AppResources.Close);
+                    var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
+                    TabSelectedCommand.Execute(orderTab);
+                }
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
             }
         }
 

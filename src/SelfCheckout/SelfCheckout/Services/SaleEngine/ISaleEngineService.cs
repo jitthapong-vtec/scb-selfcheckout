@@ -28,6 +28,8 @@ namespace SelfCheckout.Services.SaleEngine
 
         Task<ApiResultData<Wallet>> GetWalletTypeFromBarcodeAsync(object payload);
 
+        Task<ApiResultData<List<OrderData>>> CheckoutPaymentOrder(object payload);
+
         Task<ApiResultData<List<OrderData>>> AddPaymentToOrderAsync(object payload);
 
         Task<ApiResultData<List<OrderData>>> FinishPaymentOrderAsync(object payload);
