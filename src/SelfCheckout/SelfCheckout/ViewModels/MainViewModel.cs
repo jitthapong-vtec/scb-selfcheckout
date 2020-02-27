@@ -476,17 +476,27 @@ namespace SelfCheckout.ViewModels
                     }
                 }
 
-                if (!paymentSuccess)
+                if (paymentSuccess)
                 {
-                    IsPaymentProcessing = false;
-                    PaymentInputShowing = false;
-                    PaymentBarcode = "";
-                }
-                //var finishPayload = new
-                //{
+                    var finishPaymentPayload = new
+                    {
+                        SessionKey = LoginData.SessionKey,
+                        OrderGuid = OrderData.Guid,
+                        OrderSignature = new object[]
+                        {
+                            new
+                            {
+                                code = "",
+                                signature = ""
+                            }
+                        }
+                    };
 
-                //};
-                //await SaleEngineService.FinishPaymentOrderAsync(finishPayload);
+                    await SaleEngineService.FinishPaymentOrderAsync(finishPaymentPayload);
+                    await DialogService.ShowAlertAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.Close);
+                    var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
+                    TabSelectedCommand.Execute(orderTab);
+                }
             }
             catch (Exception ex)
             {
@@ -499,37 +509,6 @@ namespace SelfCheckout.ViewModels
                 IsPaymentProcessing = false;
                 PaymentInputShowing = false;
                 PaymentBarcode = "";
-            }
-        }
-
-        async Task FinishOrderAsync()
-        {
-            try
-            {
-                var payload = new
-                {
-                    SessionKey = LoginData.SessionKey,
-                    OrderGuid = OrderData.Guid,
-                    OrderSignature = new object[]
-                    {
-                        new
-                        {
-                            code = "",
-                            signature = ""
-                        }
-                    }
-                };
-                var result = await SaleEngineService.FinishPaymentOrderAsync(payload);
-                if (result.IsCompleted)
-                {
-                    await DialogService.ShowAlertAsync(AppResources.Payment, "Thank you", AppResources.Close);
-                    var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
-                    TabSelectedCommand.Execute(orderTab);
-                }
-            }
-            catch (Exception ex)
-            {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
             }
         }
 
