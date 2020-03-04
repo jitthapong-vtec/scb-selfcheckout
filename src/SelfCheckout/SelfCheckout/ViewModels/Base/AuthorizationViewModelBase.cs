@@ -1,4 +1,10 @@
-﻿using SelfCheckout.Resources;
+﻿using Prism.Mvvm;
+using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.Validations;
 using System;
 using System.Collections.Generic;
@@ -13,7 +19,7 @@ namespace SelfCheckout.ViewModels.Base
         ValidatableObject<string> _userName;
         ValidatableObject<string> _password;
 
-        public AuthorizationViewModelBase()
+        public AuthorizationViewModelBase(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
         {
             _userName = new ValidatableObject<string>();
             _password = new ValidatableObject<string>();
@@ -30,21 +36,13 @@ namespace SelfCheckout.ViewModels.Base
         public ValidatableObject<string> UserName
         {
             get => _userName;
-            set
-            {
-                _userName = value;
-                RaisePropertyChanged(() => UserName);
-            }
+            set => SetProperty(ref _userName, value);
         }
 
         public ValidatableObject<string> Password
         {
             get => _password;
-            set
-            {
-                _password = value;
-                RaisePropertyChanged(() => Password);
-            }
+            set => SetProperty(ref _password, value);
         }
 
         protected bool ValidateUserName()

@@ -10,7 +10,6 @@
              xmlns:template="clr-namespace:SelfCheckout.Views.Templates"
              xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              ScanCommand="{Binding ScanCommand}"
              NavigationPage.HasNavigationBar="False"
              x:Name="mainView"

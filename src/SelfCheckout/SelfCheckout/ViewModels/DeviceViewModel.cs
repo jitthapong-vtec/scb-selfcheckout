@@ -1,6 +1,10 @@
-﻿using SelfCheckout.Extensions;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
@@ -23,7 +27,7 @@ namespace SelfCheckout.ViewModels
         bool _isAuthorized;
         bool _logoutButtonVisible;
 
-        public DeviceViewModel()
+        public DeviceViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
         {
             Tabs = new ObservableCollection<SimpleSelectedItem>()
             {
@@ -97,11 +101,11 @@ namespace SelfCheckout.ViewModels
         {
             if ((int)item.Arg1 == 2 && !IsAuthorized)
             {
-                var task = new TaskCompletionSource<bool>();
-                await NavigationService.PushModalAsync<AuthorizationViewModel, bool>(null, task);
-                var result = await task.Task;
-                if (!result)
-                    return;
+                DialogService.ShowDialog("AuthorizeDialog", null, (dialogResult) =>
+                {
+                    if (dialogResult.Parameters.GetValue<bool>("IsConfirm"))
+                        IsAuthorized = true;
+                });
             }
 
             var seletedItem = Tabs.Where(t => t.Selected).FirstOrDefault();
@@ -133,41 +137,25 @@ namespace SelfCheckout.ViewModels
         public ObservableCollection<SimpleSelectedItem> Tabs
         {
             get => _tabs;
-            set
-            {
-                _tabs = value;
-                RaisePropertyChanged(() => Tabs);
-            }
+            set => SetProperty(ref _tabs, value);
         }
 
         public ObservableCollection<SimpleSelectedItem> DeviceInfoItems
         {
             get => _deviceInfoItems;
-            set
-            {
-                _deviceInfoItems = value;
-                RaisePropertyChanged(() => DeviceInfoItems);
-            }
+            set => SetProperty(ref _deviceInfoItems, value);
         }
 
         public bool IsAuthorized
         {
             get => _isAuthorized;
-            set
-            {
-                _isAuthorized = value;
-                RaisePropertyChanged(() => IsAuthorized);
-            }
+            set => SetProperty(ref _isAuthorized, value);
         }
 
         public bool LogoutButtonVisible
         {
             get => _logoutButtonVisible;
-            set
-            {
-                _logoutButtonVisible = value;
-                RaisePropertyChanged(() => LogoutButtonVisible);
-            }
+            set => SetProperty(ref _logoutButtonVisible, value);
         }
     }
 }

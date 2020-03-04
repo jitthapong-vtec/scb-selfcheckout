@@ -11,7 +11,6 @@
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
              xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              NavigationPage.HasNavigationBar="False"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              Visual="Material"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.SettingView">

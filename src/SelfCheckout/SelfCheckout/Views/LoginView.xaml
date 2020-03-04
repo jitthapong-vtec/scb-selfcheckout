@@ -14,7 +14,6 @@
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              xmlns:behaviors="clr-namespace:SelfCheckout.Behaviors"
              xmlns:components="clr-namespace:SelfCheckout.Views.Components"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              NavigationPage.HasNavigationBar="False"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.LoginView">

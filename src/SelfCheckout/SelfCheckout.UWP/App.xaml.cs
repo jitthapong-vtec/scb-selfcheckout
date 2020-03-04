@@ -57,12 +57,10 @@ namespace SelfCheckout.UWP
                 var assembliesToInclude = new List<Assembly>()
                 {
                     typeof(CachedImage).GetTypeInfo().Assembly,
-                    typeof(FFImageLoading.Forms.Platform.CachedImageRenderer).GetTypeInfo().Assembly,
-                    typeof(Rg.Plugins.Popup.Popup).GetTypeInfo().Assembly
+                    typeof(FFImageLoading.Forms.Platform.CachedImageRenderer).GetTypeInfo().Assembly
                 };
 
                 FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
-                Rg.Plugins.Popup.Popup.Init();
 
                 Xamarin.Forms.Forms.Init(e);
 

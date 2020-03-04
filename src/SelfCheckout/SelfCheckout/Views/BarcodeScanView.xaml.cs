@@ -1,28 +1,14 @@
-﻿using Rg.Plugins.Popup.Pages;
-using SelfCheckout.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace SelfCheckout.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class BarcodeScanView : PopupPage
+	public partial class BarcodeScanView : ContentView
 	{
 		public BarcodeScanView ()
 		{
 			InitializeComponent ();
 		}
-
-        protected override bool OnBackButtonPressed()
-        {
-            Task.Run(() => ((BarcodeScanViewModel)BindingContext).CancelScan());
-            return base.OnBackButtonPressed();
-        }
     }
 }

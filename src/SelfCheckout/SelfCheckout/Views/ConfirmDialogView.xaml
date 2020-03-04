@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.ConfirmDialogView">
+    <ContentView.Content>
+        <Frame>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Margin="8" Text="{Binding Title}"/>
+                <Label Grid.Row="1" Margin="12" Text="{Binding Message}" VerticalOptions="Center"/>
+                <StackLayout Orientation="Horizontal" Grid.Row="2" HorizontalOptions="FillAndExpand">
+                    <controls:TappedGrid HorizontalOptions="FillAndExpand" TappedCommand="{Binding YesCommand}">
+                        <controls:GradientBackground/>
+                        <Label Text="{Binding YesButtonText}" TextColor="{StaticResource Gray50}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    </controls:TappedGrid>
+                    <controls:TappedGrid HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray200}" TappedCommand="{Binding NoCommand}">
+                        <Label Text="{Binding NoButtonText}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    </controls:TappedGrid>
+                </StackLayout>
+            </Grid>
+        </Frame>
+    </ContentView.Content>
+</ContentView>

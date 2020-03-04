@@ -3,12 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
              xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              NavigationPage.HasNavigationBar="False"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.LandingView">

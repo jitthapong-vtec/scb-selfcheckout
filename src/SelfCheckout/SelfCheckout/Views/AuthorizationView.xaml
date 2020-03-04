@@ -1,38 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<pages:PopupPage
-    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
-    xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
     xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+    xmlns:prism="http://prismlibrary.com"
     xmlns:controls="clr-namespace:SelfCheckout.Controls"
-    xmlns:behaviors="clr-namespace:SelfCheckout.Behaviors"
     xmlns:components="clr-namespace:SelfCheckout.Views.Components"
-    viewModelBase:ViewModelLocator.AutoWireViewModel="True"
     NavigationPage.HasNavigationBar="False"
     mc:Ignorable="d"
-    x:Class="SelfCheckout.Views.AuthorizationView">
-    <ContentPage.Content>
-        <Grid Margin="16">
-            <Frame VerticalOptions="Center">
-                <StackLayout>
-                    <Label Text="{i18n:Translate ForAdmin}" FontSize="Large" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-                    <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
-                    <components:UserAuthenView/>
-                    <StackLayout Orientation="Horizontal">
-                        <controls:TappedGrid HorizontalOptions="FillAndExpand" TappedCommand="{Binding ConfirmCommand}"
+    x:Class="SelfCheckout.Views.AuthorizationView"
+    prism:DialogLayout.RelativeWidthRequest="0.75">
+    <ContentView.Content>
+        <Frame>
+            <StackLayout>
+                <Label Text="{i18n:Translate ForAdmin}" FontSize="Large" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
+                <components:UserAuthenView/>
+                <StackLayout Orientation="Horizontal">
+                    <controls:TappedGrid HorizontalOptions="FillAndExpand" TappedCommand="{Binding ConfirmCommand}"
                                              IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
-                            <controls:GradientBackground/>
-                            <Label Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
-                        </controls:TappedGrid>
-                        <controls:TappedGrid HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray200}" TappedCommand="{Binding CancelCommand}">
-                            <Label Text="{i18n:Translate Cancel}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
-                        </controls:TappedGrid>
-                    </StackLayout>
+                        <controls:GradientBackground/>
+                        <Label Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    </controls:TappedGrid>
+                    <controls:TappedGrid HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray200}" TappedCommand="{Binding CancelCommand}">
+                        <Label Text="{i18n:Translate Cancel}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    </controls:TappedGrid>
                 </StackLayout>
-            </Frame>
-        </Grid>
-    </ContentPage.Content>
-</pages:PopupPage>
+            </StackLayout>
+        </Frame>
+    </ContentView.Content>
+</ContentView>

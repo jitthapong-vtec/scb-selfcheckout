@@ -1,7 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Prism.Navigation;
+using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -16,30 +21,28 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class ShoppingCartViewModel : ViewModelBase
+    public class ShoppingCartViewModel : OrderViewModelBase
     {
         object[] items;
-
-        ObservableCollection<OrderDetail> _orderDetails;
 
         bool _isSelectAllOrder;
         bool _isAnyOrderSelected;
 
-        public ShoppingCartViewModel()
+        public ShoppingCartViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
         {
             items = new object[]
-            {
+               {
                 new
                 {
                     SessionKey = LoginData.SessionKey,
                     ItemCode = "00008211470207673"
                 },
-                new
-                {
-                    SessionKey = LoginData.SessionKey,
-                    ItemCode = "00008190415206226"
-                }
-            };
+                   //new
+                   //{
+                   //    SessionKey = LoginData.SessionKey,
+                   //    ItemCode = "00008190415206226"
+                   //}
+               };
         }
 
         public bool IsSelectAllOrder
@@ -47,34 +50,20 @@ namespace SelfCheckout.ViewModels
             get => _isSelectAllOrder;
             set
             {
-                _isSelectAllOrder = value;
-                RaisePropertyChanged(() => IsSelectAllOrder);
-
-                IsAnyOrderSelected = value;
+                SetProperty(ref _isSelectAllOrder, value, () =>
+                {
+                    IsAnyOrderSelected = value;
+                });
             }
         }
 
         public bool IsAnyOrderSelected
         {
             get => _isAnyOrderSelected;
-            set
-            {
-                _isAnyOrderSelected = value;
-                RaisePropertyChanged(() => IsAnyOrderSelected);
-            }
+            set => SetProperty(ref _isAnyOrderSelected, value);
         }
 
         public bool IsFirstSelect { get; set; } = true;
-
-        public ObservableCollection<OrderDetail> OrderDetails
-        {
-            get => _orderDetails;
-            set
-            {
-                _orderDetails = value;
-                RaisePropertyChanged(() => OrderDetails);
-            }
-        }
 
         public ICommand SelectAllOrderCommand => new Command(() =>
         {
@@ -127,7 +116,7 @@ namespace SelfCheckout.ViewModels
                 var selectedOrders = OrderDetails.Where(o => o.IsSelected).ToArray();
                 if (selectedOrders.Any())
                 {
-                    var result = await DialogService.ShowConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteItem, AppResources.Yes, AppResources.No);
+                    var result = await DialogService.ConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteItem, AppResources.Yes, AppResources.No);
 
                     if (result)
                     {
@@ -182,7 +171,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -244,7 +233,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+                DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
             finally
             {
@@ -265,7 +254,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+                DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
             finally
             {

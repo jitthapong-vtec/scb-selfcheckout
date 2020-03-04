@@ -10,7 +10,6 @@
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.CheckerMainView">
     <ContentPage.Content>

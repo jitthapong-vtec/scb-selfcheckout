@@ -8,7 +8,8 @@
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:component="clr-namespace:SelfCheckout.Views.Components"
              xmlns:views="clr-namespace:SelfCheckout.Views"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.ShoppingCartView">
     <ContentView.Content>

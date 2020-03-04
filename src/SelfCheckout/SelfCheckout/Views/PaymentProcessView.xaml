@@ -69,9 +69,9 @@
                     <Label HorizontalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="&#xf017;" Style="{StaticResource LabelIconStyle}" TextColor="{StaticResource Secondary}"/>
+                                <Span Text="&#xf017;" Style="{StaticResource LabelIconStyle}" FontSize="24" TextColor="{StaticResource Secondary}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding PaymentCountdownTimer}" FontAttributes="Bold"/>
+                                <Span Text="{Binding PaymentCountdownTimer}" FontSize="Large" TextColor="{StaticResource Secondary}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

@@ -1,7 +1,13 @@
-﻿using SelfCheckout.Services.Navigation;
-using SelfCheckout.ViewModels.Base;
+﻿using Prism;
+using Prism.Ioc;
+using SelfCheckout.Services.PimCore;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
+using SelfCheckout.Services.Serializer;
+using SelfCheckout.ViewModels;
+using SelfCheckout.Views;
 using System;
-using System.Globalization;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -9,9 +15,15 @@ using Xamarin.Forms.Xaml;
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace SelfCheckout
 {
-    public partial class App : Application
+    public partial class App
     {
-        public App()
+        public App() : this(null)
+        {
+        }
+
+        public App(IPlatformInitializer initializer) : base(initializer) { }
+
+        protected override async void OnInitialized()
         {
             InitializeComponent();
 
@@ -21,34 +33,38 @@ namespace SelfCheckout
                 "SwipeView_Experimental"
             });
 
-            if (Device.RuntimePlatform == Device.UWP)
-            {
-                InitNavigation();
-            }
             GlobalSettings.Instance.InitLanguage();
+
+            await NavigationService.NavigateAsync("LandingView");
         }
 
-        public Task InitNavigation()
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            var navigationService = ViewModelLocator.Resolve<INavigationService>();
-            return navigationService.InitializeAsync();
-        }
+            containerRegistry.RegisterDialog<DialogView, DialogViewModel>("CommonDialog");
+            containerRegistry.RegisterDialog<ConfirmDialogView, ConfirmDialogViewModel>("ConfirmDialog");
+            containerRegistry.RegisterDialog<AuthorizationView, AuthorizationViewModel>("AuthorizeDialog");
+            containerRegistry.RegisterDialog<CustomerCartConfirmView, CustomerCartConfirmViewModel>("CustomerConfirmDialog");
+            containerRegistry.RegisterDialog<BarcodeScanView, BarcodeScanViewModel>("BarcodeScanDialog");
 
-        protected override async void OnStart()
-        {
-            if (Device.RuntimePlatform != Device.UWP)
-            {
-                await InitNavigation();
-            }
-            base.OnResume();
-        }
+            containerRegistry.Register<ShoppingCartViewModel>();
+            containerRegistry.Register<DeviceViewModel>();
+            containerRegistry.Register<OrderViewModel>();
+            containerRegistry.Register<ProfileViewModel>();
+            containerRegistry.Register<HomeViewModel>();
 
-        protected override void OnSleep()
-        {
-        }
+            containerRegistry.RegisterForNavigation<SettingView, SettingViewModel>();
+            containerRegistry.RegisterForNavigation<LandingView, LandingViewModel>();
+            containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
+            containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
+            containerRegistry.RegisterForNavigation<BorrowView, BorrowViewModel>();
+            containerRegistry.RegisterForNavigation<CheckerMainView, CheckerMainViewModel>();
 
-        protected override void OnResume()
-        {
+
+            containerRegistry.RegisterSingleton<ISerializeService, JsonSerializeService>();
+            containerRegistry.RegisterSingleton<ISaleEngineService, SaleEngineService>();
+            containerRegistry.RegisterSingleton<ISelfCheckoutService, SelfCheckoutService>();
+            containerRegistry.RegisterSingleton<IRegisterService, RegisterService>();
+            containerRegistry.RegisterSingleton<IPimCoreService, PimCoreService>();
         }
     }
 }

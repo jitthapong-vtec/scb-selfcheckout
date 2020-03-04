@@ -1,8 +1,13 @@
-﻿using SelfCheckout.Controls;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Controls;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
 using SelfCheckout.Services.Base;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using SelfCheckout.Views;
 using System;
@@ -43,7 +48,7 @@ namespace SelfCheckout.ViewModels
         bool _paymentSelectionShowing;
         bool _paymentInputShowing;
 
-        public MainViewModel()
+        public MainViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
         {
             Tabs = new ObservableCollection<TabItem>();
             Tabs.Add(new TabItem()
@@ -106,8 +111,10 @@ namespace SelfCheckout.ViewModels
             });
         }
 
-        public override async Task InitializeAsync(object navigationData)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
+            base.OnNavigatedTo(parameters);
+
             await LoadMasterDataAsync();
             await LoadCurrencyAsync();
         }
@@ -175,18 +182,19 @@ namespace SelfCheckout.ViewModels
             await ChangeCurrency();
         });
 
-        public ICommand ScanPaymentCommand => new Command<object>(async (type) =>
+        public ICommand ScanPaymentCommand => new Command<object>((type) =>
         {
             if (Convert.ToInt32(type) == 1)
             {
-                var task = new TaskCompletionSource<string>();
-                await NavigationService.PushModalAsync<BarcodeScanViewModel, string>(null, task);
-                var result = await task.Task;
-                if (!string.IsNullOrEmpty(result))
+                DialogService.ShowDialog("BarcodeScanDialog", null, async (dialogResult) =>
                 {
-                    PaymentBarcode = result;
-                    await PaymentAsync();
-                }
+                    var result = dialogResult.Parameters.GetValue<string>("ScanData");
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        PaymentBarcode = result;
+                        await PaymentAsync();
+                    }
+                });
             }
             else
             {
@@ -284,7 +292,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+                DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
         }
 
@@ -302,7 +310,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+                DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
         }
 
@@ -324,7 +332,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -346,7 +354,7 @@ namespace SelfCheckout.ViewModels
                 var walletResult = await SaleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
                 if (!walletResult.IsCompleted)
                 {
-                    await DialogService.ShowAlertAsync(AppResources.Opps, walletResult.DefaultMessage, AppResources.Close);
+                    DialogService.ShowAlert(AppResources.Opps, walletResult.DefaultMessage, AppResources.Close);
                 }
 
                 var wallet = walletResult.Data;
@@ -441,7 +449,7 @@ namespace SelfCheckout.ViewModels
                 var tokenSource = new CancellationTokenSource();
                 var ct = tokenSource.Token;
 
-                PaymentCountdownTimer = 10;
+                PaymentCountdownTimer = AppConfig.PaymentTimeout;
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
                     if (--PaymentCountdownTimer == 0)
@@ -493,14 +501,14 @@ namespace SelfCheckout.ViewModels
                     };
 
                     await SaleEngineService.FinishPaymentOrderAsync(finishPaymentPayload);
-                    await DialogService.ShowAlertAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.Close);
+                    DialogService.ShowAlert(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.Close);
                     var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
                     TabSelectedCommand.Execute(orderTab);
                 }
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -515,181 +523,109 @@ namespace SelfCheckout.ViewModels
         public ObservableCollection<TabItem> Tabs
         {
             get => _tabs;
-            set
-            {
-                _tabs = value;
-                RaisePropertyChanged(() => Tabs);
-            }
+            set => SetProperty(ref _tabs, value);
         }
 
         public ObservableCollection<Language> Languages
         {
             get => _languages;
-            set
-            {
-                _languages = value;
-                RaisePropertyChanged(() => Languages);
-            }
+            set => SetProperty(ref _languages, value);
         }
 
         public ObservableCollection<Currency> Currencies
         {
             get => _currencies;
-            set
-            {
-                _currencies = value;
-                RaisePropertyChanged(() => Currencies);
-            }
+            set => SetProperty(ref _currencies, value);
         }
 
         public ObservableCollection<Payment> Payments
         {
             get => _payments;
-            set
-            {
-                _payments = value;
-                RaisePropertyChanged(() => Payments);
-            }
+            set => SetProperty(ref _payments, value);
         }
 
         public Payment PaymentSelected
         {
             get => _paymentSelected;
-            set
-            {
-                _paymentSelected = value;
-                RaisePropertyChanged(() => PaymentSelected);
-            }
+            set => SetProperty(ref _paymentSelected, value);
         }
 
         public OrderData OrderData
         {
             get => _orderData;
-            set
-            {
-                _orderData = value;
-                RaisePropertyChanged(() => OrderData);
-            }
+            set => SetProperty(ref _orderData, value);
         }
 
         public ContentView CurrentView
         {
             get => _currentView;
-            set
-            {
-                _currentView = value;
-                RaisePropertyChanged(() => CurrentView);
-            }
+            set => SetProperty(ref _currentView, value);
         }
 
         public int PaymentCountdownTimer
         {
             get => _paymentCountdownTimer;
-            set
-            {
-                _paymentCountdownTimer = value;
-                RaisePropertyChanged(() => PaymentCountdownTimer);
-            }
+            set => SetProperty(ref _paymentCountdownTimer, value);
         }
 
         public string PaymentBarcode
         {
             get => _paymentBarCode;
-            set
-            {
-                _paymentBarCode = value;
-                RaisePropertyChanged(() => PaymentBarcode);
-            }
+            set => SetProperty(ref _paymentBarCode, value);
         }
 
         public bool SummaryShowing
         {
             get => _summaryShowing;
-            set
-            {
-                _summaryShowing = value;
-                RaisePropertyChanged(() => SummaryShowing);
-            }
+            set => SetProperty(ref _summaryShowing, value);
         }
 
         public bool IsOrderSummary
         {
             get => _isSummaryOrder;
-            set
-            {
-                _isSummaryOrder = value;
-                RaisePropertyChanged(() => IsOrderSummary);
-            }
+            set => SetProperty(ref _isSummaryOrder, value);
         }
 
         public bool IsPaymentProcessing
         {
             get => _isPaymentProcessing;
-            set
-            {
-                _isPaymentProcessing = value;
-                RaisePropertyChanged(() => IsPaymentProcessing);
-            }
+            set => SetProperty(ref _isPaymentProcessing, value);
         }
 
         public bool IsBeingPaymentProcess
         {
             get => _isBeingPaymentProcess;
-            set
-            {
-                _isBeingPaymentProcess = value;
-                RaisePropertyChanged(() => IsBeingPaymentProcess);
-            }
+            set => SetProperty(ref _isBeingPaymentProcess, value);
         }
 
         public bool PaymentSelectionShowing
         {
             get => _paymentSelectionShowing;
-            set
-            {
-                _paymentSelectionShowing = value;
-                RaisePropertyChanged(() => PaymentSelectionShowing);
-            }
+            set => SetProperty(ref _paymentSelectionShowing, value);
         }
 
         public bool PaymentInputShowing
         {
             get => _paymentInputShowing;
-            set
-            {
-                _paymentInputShowing = value;
-                RaisePropertyChanged(() => PaymentInputShowing);
-            }
+            set => SetProperty(ref _paymentInputShowing, value);
         }
 
         public bool SummaryVisible
         {
             get => _summaryVisible;
-            set
-            {
-                _summaryVisible = value;
-                RaisePropertyChanged(() => SummaryVisible);
-            }
+            set => SetProperty(ref _summaryVisible, value);
         }
 
         public Language LanguageSelected
         {
             get => _languageSelected;
-            set
-            {
-                _languageSelected = value;
-                RaisePropertyChanged(() => LanguageSelected);
-            }
+            set => SetProperty(ref _languageSelected, value);
         }
 
         public Currency CurrencySelected
         {
             get => _currencySelected;
-            set
-            {
-                _currencySelected = value;
-                RaisePropertyChanged(() => CurrencySelected);
-            }
+            set => SetProperty(ref _currencySelected, value);
         }
 
         public Currency BaseCurrency
@@ -710,11 +646,11 @@ namespace SelfCheckout.ViewModels
             get => _currencyShowing;
             set
             {
-                _currencyShowing = value;
-                RaisePropertyChanged(() => CurrencyShowing);
-
-                if (value)
-                    LangShowing = false;
+                SetProperty(ref _currencyShowing, value, () =>
+                {
+                    if (value)
+                        LangShowing = false;
+                });
             }
         }
 
@@ -723,11 +659,11 @@ namespace SelfCheckout.ViewModels
             get => _langShowing;
             set
             {
-                _langShowing = value;
-                RaisePropertyChanged(() => LangShowing);
-
-                if (value)
-                    CurrencyShowing = false;
+                SetProperty(ref _langShowing, value, () =>
+                {
+                    if (value)
+                        CurrencyShowing = false;
+                });
             }
         }
     }

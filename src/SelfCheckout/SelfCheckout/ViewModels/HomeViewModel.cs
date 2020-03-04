@@ -1,6 +1,11 @@
-﻿using SelfCheckout.Extensions;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Services.PimCore;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -18,19 +23,17 @@ namespace SelfCheckout.ViewModels
 
         ObservableCollection<PimCoreImageAsset> _assets;
 
+        public HomeViewModel(INavigationService navigatinService, IDialogService dialogService, 
+            ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, 
+            IRegisterService registerService, IPimCoreService pimCoreService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        {
+            _pimCoreService = pimCoreService;
+        }
+
         public ObservableCollection<PimCoreImageAsset> Assets
         {
             get => _assets;
-            set
-            {
-                _assets = value;
-                RaisePropertyChanged(() => Assets);
-            }
-        }
-
-        public HomeViewModel(IPimCoreService pimCoreService)
-        {
-            _pimCoreService = pimCoreService;
+            set => SetProperty(ref _assets, value);
         }
 
         public override async Task OnTabSelected(TabItem item)

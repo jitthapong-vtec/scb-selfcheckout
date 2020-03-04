@@ -3,17 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
-             xmlns:magic="clr-namespace:MagicGradients;assembly=MagicGradients"
              NavigationPage.HasNavigationBar="False"
              mc:Ignorable="d"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              x:Class="SelfCheckout.Views.BorrowView">
     <ContentPage.Content>
         <Grid>

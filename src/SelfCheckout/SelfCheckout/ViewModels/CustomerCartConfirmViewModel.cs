@@ -1,48 +1,63 @@
-﻿using SelfCheckout.Models;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Models;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class CustomerCartConfirmViewModel : ViewModelBase
+    public class CustomerCartConfirmViewModel : ViewModelBase, IDialogAware
     {
-        TaskCompletionSource<bool> _task;
-
         Person _person;
 
-        public override Task InitializeAsync<TViewModel, TResult>(object param, TaskCompletionSource<TResult> task)
+        public CustomerCartConfirmViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
         {
-            _task = task as TaskCompletionSource<bool>;
-            Person = param as Person;
-            return base.InitializeAsync<TViewModel, TResult>(param, task);
+        }
+
+        public event Action<IDialogParameters> RequestClose;
+
+        public bool CanCloseDialog()
+        {
+            return true;
+        }
+
+        public void OnDialogClosed()
+        {
+        }
+
+        public void OnDialogOpened(IDialogParameters parameters)
+        {
+            Person = parameters.GetValue<Person>("Person");
         }
 
         public Person Person
         {
             get => _person;
-            set
-            {
-                _person = value;
-                RaisePropertyChanged(() => Person);
-            }
+            set => SetProperty(ref _person, value);
         }
 
-        public ICommand ConfirmCommand => new Command(async () =>
+        public ICommand ConfirmCommand => new Command(() =>
         {
-            await NavigationService.PopModalAsync();
-            _task.SetResult(true);
+            SetResult(true);
         });
 
-        public ICommand CancelCommand => new Command(async () =>
+        public ICommand CancelCommand => new Command(() =>
         {
-            await NavigationService.PopModalAsync();
-            _task.SetResult(false);
+            SetResult(false);
         });
 
+        void SetResult(bool isConfirm)
+        {
+            var parameters = new DialogParameters()
+            {
+                {"IsConfirm", isConfirm }
+            };
+            RequestClose(parameters);
+        }
     }
 }

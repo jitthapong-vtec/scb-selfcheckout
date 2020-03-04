@@ -1,5 +1,10 @@
-﻿using SelfCheckout.Models;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -16,25 +21,7 @@ namespace SelfCheckout.ViewModels
     {
         ObservableCollection<TabItem> _tabs;
 
-        public ObservableCollection<TabItem> Tabs
-        {
-            get => _tabs;
-            set
-            {
-                _tabs = value;
-                RaisePropertyChanged(() => Tabs);
-            }
-        }
-
-        public ICommand TabSelectionCommand => new Command<TabItem>((item) =>
-        {
-            var selectedTab = Tabs.Where(t => t.Selected).FirstOrDefault();
-            selectedTab.Selected = false;
-
-            item.Selected = true;
-        });
-
-        public CheckerMainViewModel()
+        public CheckerMainViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
         {
             Tabs = new ObservableCollection<TabItem>()
             {
@@ -55,6 +42,20 @@ namespace SelfCheckout.ViewModels
             var firstTab = Tabs.FirstOrDefault();
             firstTab.Selected = true;
         }
+
+        public ObservableCollection<TabItem> Tabs
+        {
+            get => _tabs;
+            set => SetProperty(ref _tabs, value);
+        }
+
+        public ICommand TabSelectionCommand => new Command<TabItem>((item) =>
+        {
+            var selectedTab = Tabs.Where(t => t.Selected).FirstOrDefault();
+            selectedTab.Selected = false;
+
+            item.Selected = true;
+        });
 
         public override Task OnTabSelected(TabItem item)
         {

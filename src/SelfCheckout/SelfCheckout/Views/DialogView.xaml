@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.DialogView">
+  <ContentView.Content>
+        <Frame>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Margin="8" Text="{Binding Title}"/>
+                <Label Grid.Row="1" Margin="12" Text="{Binding Message}" VerticalOptions="Center"/>
+                <controls:TappedGrid Grid.Row="2" HorizontalOptions="End" Margin="8" TappedCommand="{Binding OkCommand}">
+                    <controls:GradientBackground/>
+                    <Label Text="{Binding OkButtonText}" TextColor="{StaticResource Gray50}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                </controls:TappedGrid>
+            </Grid>
+        </Frame>
+  </ContentView.Content>
+</ContentView>

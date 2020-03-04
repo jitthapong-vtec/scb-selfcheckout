@@ -1,5 +1,10 @@
-﻿using SelfCheckout.Models;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -11,13 +16,19 @@ namespace SelfCheckout.ViewModels
 {
     public class LoginViewModel : AuthorizationViewModelBase
     {
+        public LoginViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        {
+        }
+
         public ICommand SettingCommand => new Command(async () =>
         {
-            var task = new TaskCompletionSource<bool>();
-            await NavigationService.PushModalAsync<AuthorizationViewModel, bool>(null, task);
-            var result = await task.Task;
-            if (result)
-                await NavigationService.NavigateToAsync<SettingViewModel>();
+            //var task = new TaskCompletionSource<bool>();
+            //await NavigationService.PushModalAsync<AuthorizationViewModel, bool>(null, task);
+            //var result = await task.Task;
+            //if (result)
+            //    await NavigationService.NavigateToAsync<SettingViewModel>();
+
+            await NavigationService.NavigateAsync("SettingView");
         });
 
         public ICommand ConfirmCommand => new Command(async () => await LoginAsync());
@@ -42,9 +53,9 @@ namespace SelfCheckout.ViewModels
                     SaleEngineService.LoginData = result.Data;
 
                     if (Device.Idiom == TargetIdiom.Phone)
-                        await NavigationService.NavigateToAsync<BorrowViewModel>();
+                        await NavigationService.NavigateAsync("BorrowView");
                     else if (Device.Idiom == TargetIdiom.Desktop)
-                        await NavigationService.NavigateToAsync<CheckerMainViewModel>();
+                        await NavigationService.NavigateAsync("CheckerMainView");
                 }
                 catch (Exception ex)
                 {

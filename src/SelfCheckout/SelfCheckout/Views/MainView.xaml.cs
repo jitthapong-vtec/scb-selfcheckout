@@ -1,5 +1,6 @@
 ﻿using SelfCheckout.Controls;
 using SelfCheckout.Exceptions;
+using SelfCheckout.Extensions;
 using SelfCheckout.Resources;
 using SelfCheckout.ViewModels;
 using System;
@@ -43,7 +44,7 @@ namespace SelfCheckout.Views
                     }
                     catch (DensoScannerException ex)
                     {
-                        _viewModel.DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                        _viewModel.DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
 
                         var shoppingCart = _viewModel.Tabs.Where(t => t.TabId == 3).FirstOrDefault();
                         Task.Run(() => (shoppingCart.Page.BindingContext as ShoppingCartViewModel).TestAddOrder());

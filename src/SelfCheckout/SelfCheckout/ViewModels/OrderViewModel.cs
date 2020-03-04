@@ -1,4 +1,11 @@
-﻿using SelfCheckout.Models;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Extensions;
+using SelfCheckout.Models;
+using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -8,18 +15,10 @@ using System.Threading.Tasks;
 
 namespace SelfCheckout.ViewModels
 {
-    public class OrderViewModel : ViewModelBase
+    public class OrderViewModel : OrderViewModelBase
     {
-        ObservableCollection<OrderDetail> _orderDetails;
-
-        public ObservableCollection<OrderDetail> OrderDetails
+        public OrderViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
         {
-            get => _orderDetails;
-            set
-            {
-                _orderDetails = value;
-                RaisePropertyChanged(() => OrderDetails);
-            }
         }
 
         public override async Task OnTabSelected(TabItem item)
@@ -60,16 +59,21 @@ namespace SelfCheckout.ViewModels
                 var result = await SaleEngineService.GetOrderListAsync(payload);
                 if (result.IsCompleted)
                 {
-
+                    var orderDetails = new List<OrderDetail>();
+                    foreach(var orderInvoice in SaleEngineService.OrderData.OrderInvoices)
+                    {
+                        orderDetails.AddRange(orderInvoice.OrderDetails);
+                    }
+                    OrderDetails = orderDetails.ToObservableCollection();
                 }
                 else
                 {
-
+                    DialogService.ShowAlert(AppResources.Opps, result.DefaultMessage);
                 }
             }
             catch (Exception ex)
             {
-
+                DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
         }
     }

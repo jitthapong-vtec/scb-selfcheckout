@@ -1,4 +1,9 @@
-﻿using SelfCheckout.Resources;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.Validations;
 using SelfCheckout.ViewModels.Base;
 using System;
@@ -11,11 +16,13 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class AuthorizationViewModel : AuthorizationViewModelBase
+    public class AuthorizationViewModel : AuthorizationViewModelBase, IDialogAware
     {
-        TaskCompletionSource<bool> _task;
+        public AuthorizationViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        {
+        }
 
-        public ICommand ConfirmCommand => new Command(async () =>
+        public ICommand ConfirmCommand => new Command(() =>
         {
             if (ValidateUserName() && ValidatePassword())
             {
@@ -33,8 +40,11 @@ namespace SelfCheckout.ViewModels
                     //var loginResult = await SaleEngineService.LoginAsync(payload);
                     //if (loginResult.IsCompleted)
                     //{
-                        await NavigationService.PopModalAsync();
-                        _task?.SetResult(true);
+                    var parameters = new DialogParameters()
+                    {
+                        {"IsAuthorized", true }
+                    };
+                    RequestClose(parameters);
                     //}
                     //else
                     //{
@@ -52,17 +62,19 @@ namespace SelfCheckout.ViewModels
             }
         });
 
-        public ICommand CancelCommand => new Command(async () =>
-        {
-            await NavigationService.PopModalAsync();
-            _task?.SetResult(false);
-        });
+        public event Action<IDialogParameters> RequestClose;
 
-        public override Task InitializeAsync<TViewModel, TResult>(object param, TaskCompletionSource<TResult> task)
+        public bool CanCloseDialog()
         {
-            _task = task as TaskCompletionSource<bool>;
+            return true;
+        }
 
-            return base.InitializeAsync<TViewModel, TResult>(param, task);
+        public void OnDialogClosed()
+        {
+        }
+
+        public void OnDialogOpened(IDialogParameters parameters)
+        {
         }
     }
 }
