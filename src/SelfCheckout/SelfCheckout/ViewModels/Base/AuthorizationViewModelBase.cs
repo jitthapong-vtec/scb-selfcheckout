@@ -51,15 +51,7 @@ namespace SelfCheckout.ViewModels.Base
                 try
                 {
                     IsBusy = true;
-                    var payload = new
-                    {
-                        branch_no = SelfCheckoutService.AppConfig.BranchNo,
-                        module_code = SelfCheckoutService.AppConfig.Module,
-                        user_code = UserName.Value,
-                        user_password = Password.Value,
-                        machine_ip = GlobalSettings.Instance.MachineIp
-                    };
-                    var result = await SaleEngineService.LoginAsync(payload);
+                    var result = await SaleEngineService.LoginAsync(UserName.Value, Password.Value);
                     await AuthorizeCallback(result.Data);
                 }
                 catch (Exception ex)

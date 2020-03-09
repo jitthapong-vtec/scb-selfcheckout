@@ -14,7 +14,7 @@ namespace SelfCheckout.Services.SaleEngine
 
         IList<Currency> Currencies { get; }
 
-        Task<ApiResultData<LoginData>> LoginAsync(object payload);
+        Task<ApiResultData<LoginData>> LoginAsync(string username, string password);
 
         Task<ApiResultData<List<OrderData>>> GetOrderAsync(object payload);
 

@@ -148,8 +148,16 @@ namespace SelfCheckout.Services.SaleEngine
             Currencies = result.Data;
         }
 
-        public async Task<ApiResultData<LoginData>> LoginAsync(object payload)
+        public async Task<ApiResultData<LoginData>> LoginAsync(string username, string password)
         {
+            var payload = new
+            {
+                branch_no = _selfCheckoutService.AppConfig.BranchNo,
+                module_code = _selfCheckoutService.AppConfig.Module,
+                user_code = username,
+                user_password = password,
+                machine_ip = GlobalSettings.Instance.MachineIp
+            };
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/Authen/LoginAuthen");
             var result = await PostAsync<object, ApiResultData<LoginData>>(uri.ToString(), payload);
             if (!result.IsCompleted)

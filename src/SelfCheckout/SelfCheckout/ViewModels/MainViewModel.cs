@@ -492,6 +492,10 @@ namespace SelfCheckout.ViewModels
 
                 if (paymentSuccess)
                 {
+                    if(!OrderData.IsFinish)
+                    {
+                        return;
+                    }
                     var finishPaymentPayload = new
                     {
                         SessionKey = _saleEngineService.LoginData.SessionKey,
@@ -507,6 +511,11 @@ namespace SelfCheckout.ViewModels
                     };
 
                     await _saleEngineService.FinishPaymentOrderAsync(finishPaymentPayload);
+
+                    var appConfig = _selfCheckoutService.AppConfig;
+                    var loginResult = await _saleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
+                    _saleEngineService.LoginData = loginResult.Data;
+
                     DialogService.ShowAlert(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.Close);
                     var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
                     TabSelectedCommand.Execute(orderTab);
