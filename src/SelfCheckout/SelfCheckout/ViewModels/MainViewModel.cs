@@ -105,7 +105,7 @@ namespace SelfCheckout.ViewModels
             PageTitle = firstTab.Title;
             CurrentView = firstTab.Page;
 
-            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderRefresh", (s) =>
+            MessagingCenter.Subscribe<ViewModelBase>(this, "OrderRefresh", (s) =>
             {
                 OrderData = _saleEngineService.OrderData;
                 try

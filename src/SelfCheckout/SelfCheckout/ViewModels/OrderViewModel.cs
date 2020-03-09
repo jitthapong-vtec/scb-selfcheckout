@@ -10,7 +10,9 @@ using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
@@ -20,8 +22,37 @@ namespace SelfCheckout.ViewModels
         ISelfCheckoutService _selfCheckoutService;
         IRegisterService _registerService;
 
+        ObservableCollection<SimpleSelectedItem> _tabs;
         ObservableCollection<OrderDetail> _orderDetails;
-        
+
+        public OrderViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService)
+        {
+            _saleEngineService = saleEngineService;
+            _selfCheckoutService = selfCheckoutService;
+            _registerService = registerService;
+
+            Tabs = new ObservableCollection<SimpleSelectedItem>()
+            {
+                new SimpleSelectedItem()
+                {
+                    Text1 = "",
+                    Selected = true,
+                    Arg1 = 1
+                },
+                new SimpleSelectedItem()
+                {
+                    Text1 = "",
+                    Arg1 = 2
+                }
+            };
+        }
+
+        public ObservableCollection<SimpleSelectedItem> Tabs
+        {
+            get => _tabs;
+            set => SetProperty(ref _tabs, value);
+        }
+
         public CustomerData CustomerData
         {
             get => _registerService.CustomerData;
@@ -36,13 +67,6 @@ namespace SelfCheckout.ViewModels
         {
             get => _orderDetails;
             set => SetProperty(ref _orderDetails, value);
-        }
-
-        public OrderViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService)
-        {
-            _saleEngineService = saleEngineService;
-            _selfCheckoutService = selfCheckoutService;
-            _registerService = registerService;
         }
 
         public override async Task OnTabSelected(TabItem item)
@@ -83,12 +107,22 @@ namespace SelfCheckout.ViewModels
                 var result = await _saleEngineService.GetOrderListAsync(payload);
                 if (result.IsCompleted)
                 {
+                    var orderData = _saleEngineService.OrderData;
+                    
+                    var t1 = Tabs.Where(t => (int)t.Arg1 == 1).FirstOrDefault();
+                    var t2 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
+
+                    t1.Text1 = $"{orderData.TotalInvoice}";
+                    t2.Text1 = $"{orderData.BillingQty} {orderData.BillingUnit}";
+
                     var orderDetails = new List<OrderDetail>();
-                    foreach (var orderInvoice in _saleEngineService.OrderData.OrderInvoices)
+                    foreach (var orderInvoice in orderData.OrderInvoices)
                     {
                         orderDetails.AddRange(orderInvoice.OrderDetails);
                     }
                     OrderDetails = orderDetails.ToObservableCollection();
+
+                    MessagingCenter.Send<ViewModelBase>(this, "OrderRefresh");
                 }
                 else
                 {

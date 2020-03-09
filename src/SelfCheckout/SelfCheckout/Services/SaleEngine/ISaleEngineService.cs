@@ -8,9 +8,9 @@ namespace SelfCheckout.Services.SaleEngine
 {
     public interface ISaleEngineService
     {
-        LoginData LoginData { get; set; }
-
         OrderData OrderData { get; }
+
+        LoginData LoginData { get; set; }
 
         IList<Currency> Currencies { get; }
 

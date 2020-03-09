@@ -7,7 +7,6 @@
              xmlns:trigger="clr-namespace:SelfCheckout.Triggers"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
-             xmlns:template="clr-namespace:SelfCheckout.Views.Templates"
              xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              ScanCommand="{Binding ScanCommand}"
@@ -85,7 +84,7 @@
                 </BoxView>
             </ctrls:TappedGrid>
         </DataTemplate>
-        <template:BottomTabTemplateSelector x:Key="BottomTemplateSelector" CommonTapTemplate="{StaticResource CommonTapTemplate}"
+        <views:BottomTabTemplateSelector x:Key="BottomTemplateSelector" CommonTapTemplate="{StaticResource CommonTapTemplate}"
                                             BarcodeTapTemplate="{StaticResource BarcodeTapTemplate}"/>
     </ContentPage.Resources>
     <ContentPage.Content>

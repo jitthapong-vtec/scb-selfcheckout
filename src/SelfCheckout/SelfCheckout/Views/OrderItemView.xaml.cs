@@ -24,6 +24,42 @@ namespace SelfCheckout.Views.Components
         public static readonly BindableProperty CommandParameterProperty =
             BindableProperty.Create("CommandParameter", typeof(object), typeof(OrderItemView), null, BindingMode.OneWay);
 
+        public static readonly BindableProperty IsEnableEntryOrderQtyProperty =
+            BindableProperty.Create("IsEnableEntryOrderQty", typeof(bool), typeof(OrderItemView), true, propertyChanged: IsEnableEntryOrderQtyPropertyChanged);
+
+        public static readonly BindableProperty IsEnableChkOrderProperty =
+            BindableProperty.Create("IsEnableChkOrder", typeof(bool), typeof(OrderItemView), true, propertyChanged: IsEnableChkOrderPropertyChanged);
+
+        private static void IsEnableChkOrderPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            try
+            {
+                (bindable as OrderItemView).chkOrder.IsEnabled = (bool)newValue;
+            }
+            catch { }
+        }
+
+        static void IsEnableEntryOrderQtyPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            try
+            {
+                (bindable as OrderItemView).entryOrderQty.IsEnabled = (bool)newValue;
+            }
+            catch { }
+        }
+
+        public bool IsEnableEntryOrderQty
+        {
+            get => (bool)GetValue(IsEnableEntryOrderQtyProperty);
+            set => SetValue(IsEnableEntryOrderQtyProperty, value);
+        }
+
+        public bool IsEnableChkOrder
+        {
+            get => (bool)GetValue(IsEnableChkOrderProperty);
+            set => SetValue(IsEnableChkOrderProperty, value);
+        }
+
         public ICommand SelectionCommand
         {
             get => (ICommand)GetValue(SelectionCommandProperty);

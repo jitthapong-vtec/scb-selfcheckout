@@ -9,6 +9,7 @@
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:component="clr-namespace:SelfCheckout.Views.Components"
              xmlns:prism="http://prismlibrary.com"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
              prism:ViewModelLocator.AutowireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.OrderView">
@@ -70,13 +71,45 @@
                         <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
                     </StackLayout>
                 </Grid>
+                <StackLayout Grid.Row="2" HeightRequest="56" Orientation="Horizontal" Spacing="0" BindableLayout.ItemsSource="{Binding Tabs}"
+                         BackgroundColor="{StaticResource Gray200}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <controls:TappedGrid HorizontalOptions="FillAndExpand" TappedCommand="{Binding Source={RelativeSource AncestorType={x:Type ContentView}, AncestorLevel=1}, Path=BindingContext.TabSelectedCommand}"
+                                             CommandParameter="{Binding .}">
+                                <Label Text="{Binding Text1}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Selected}" Value="True">
+                                            <Setter Property="TextColor" Value="{StaticResource Primary}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Selected}" Value="False">
+                                            <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <BoxView VerticalOptions="End" HeightRequest="2">
+                                    <BoxView.Triggers>
+                                        <DataTrigger TargetType="BoxView" Binding="{Binding Selected}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource Primary}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="BoxView" Binding="{Binding Selected}" Value="False">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource Gray300}"/>
+                                        </DataTrigger>
+                                    </BoxView.Triggers>
+                                </BoxView>
+                                <BoxView IsVisible="{Binding Selected}" BackgroundColor="{StaticResource Primary}" WidthRequest="8" HeightRequest="8" CornerRadius="4"
+                                         VerticalOptions="Start" HorizontalOptions="End" Margin="2,4"/>
+                            </controls:TappedGrid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
                 <CollectionView Grid.Row="3" ItemsSource="{Binding OrderDetails}">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start" SnapPointsType="MandatorySingle" ItemSpacing="4"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <component:OrderItemView/>
+                            <component:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

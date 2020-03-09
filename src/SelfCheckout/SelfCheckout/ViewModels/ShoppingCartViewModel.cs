@@ -208,7 +208,7 @@ namespace SelfCheckout.ViewModels
         public Task RefreshOrderAsync()
         {
             OrderDetails = _saleEngineService.OrderData?.OrderDetails?.ToObservableCollection();
-            MessagingCenter.Send(this, "OrderRefresh");
+            MessagingCenter.Send<ViewModelBase>(this, "OrderRefresh");
 
             IsSelectAllOrder = false;
             return Task.FromResult(true);

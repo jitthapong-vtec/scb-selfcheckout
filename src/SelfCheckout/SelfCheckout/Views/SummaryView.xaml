@@ -3,8 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
@@ -43,7 +41,7 @@
                 <Label Margin="8,0,8,0" VerticalTextAlignment="Center" HorizontalTextAlignment="End" FontAttributes="Bold" IsVisible="{Binding IsOrderSummary}">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding TotalInvoice}"/>
+                            <Span Text="{Binding OrderData.TotalInvoice}"/>
                             <Span Text=" "/>
                             <Span Text="{i18n:Translate Invoices}"/>
                         </FormattedString>
@@ -84,9 +82,9 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="End" Text="{Binding OrderData.BillingAmount.TotalAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" Style="{StaticResource LabelNumericStyle}"/>
+                        <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="End" Text="{Binding OrderData.TotalBillingAmount.TotalAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" Style="{StaticResource LabelNumericStyle}"/>
                         <Label Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" TextColor="Red" Text="{i18n:Translate Discount}"/>
-                        <Label Grid.Row="1" Grid.Column="1" HorizontalOptions="End" TextColor="Red" Text="{Binding OrderData.BillingAmount.DiscountAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" Style="{StaticResource LabelNumericStyle}"/>
+                        <Label Grid.Row="1" Grid.Column="1" HorizontalOptions="End" TextColor="Red" Text="{Binding OrderData.TotalBillingAmount.DiscountAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" Style="{StaticResource LabelNumericStyle}"/>
                     </Grid>
                 </StackLayout>
                 <BoxView HeightRequest="1" Margin="4" BackgroundColor="{StaticResource Gray200}"/>
@@ -115,9 +113,9 @@
                         <Label Grid.Row="1" Grid.Column="0" HorizontalOptions="End" TextColor="{StaticResource Primary}" FontAttributes="Bold">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{Binding OrderData.BillingAmount.TotalAmount.CurrCode.Code}"/>
+                                    <Span Text="{Binding OrderData.TotalBillingAmount.TotalAmount.CurrCode.Code}"/>
                                     <Span Text=" "/>
-                                    <Span Text="{Binding OrderData.BillingAmount.NetAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}"/>
+                                    <Span Text="{Binding OrderData.TotalBillingAmount.NetAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
