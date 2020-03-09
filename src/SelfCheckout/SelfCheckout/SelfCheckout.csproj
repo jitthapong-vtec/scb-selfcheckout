@@ -26,8 +26,8 @@
   <ItemGroup>
     <PackageReference Include="MagicGradients" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Prism.Unity.Forms" Version="7.2.0.1422" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.0" />
+    <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.1" />
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
@@ -54,6 +54,12 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Views\AuthorizationDialog.xaml.cs">
+      <DependentUpon>AuthorizationDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CustomerCartConfirmDialog.xaml.cs">
+      <DependentUpon>CustomerCartConfirmDialog.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\UserAuthenView.xaml.cs">
       <DependentUpon>UserAuthenView.xaml</DependentUpon>
@@ -86,7 +92,7 @@
     <EmbeddedResource Update="Views\ActivityIndicatorView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\AuthorizationView.xaml">
+    <EmbeddedResource Update="Views\AuthorizationDialog.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\BorrowView.xaml">
@@ -104,7 +110,7 @@
     <EmbeddedResource Update="Views\UserAuthenView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\CustomerCartConfirmView.xaml">
+    <EmbeddedResource Update="Views\CustomerCartConfirmDialog.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\DeviceView.xaml">

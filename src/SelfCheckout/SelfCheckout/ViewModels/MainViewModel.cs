@@ -23,6 +23,9 @@ namespace SelfCheckout.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        ISaleEngineService _saleEngineService;
+        ISelfCheckoutService _selfCheckoutService;
+
         ObservableCollection<TabItem> _tabs;
         ObservableCollection<Language> _languages;
         ObservableCollection<Payment> _payments;
@@ -48,8 +51,11 @@ namespace SelfCheckout.ViewModels
         bool _paymentSelectionShowing;
         bool _paymentInputShowing;
 
-        public MainViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        public MainViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) : base(navigatinService, dialogService)
         {
+            _saleEngineService = saleEngineService;
+            _selfCheckoutService = selfCheckoutService;
+
             Tabs = new ObservableCollection<TabItem>();
             Tabs.Add(new TabItem()
             {
@@ -101,7 +107,7 @@ namespace SelfCheckout.ViewModels
 
             MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderRefresh", (s) =>
             {
-                OrderData = SaleEngineService.OrderData;
+                OrderData = _saleEngineService.OrderData;
                 try
                 {
                     var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
@@ -264,14 +270,14 @@ namespace SelfCheckout.ViewModels
             {
                 var payload = new
                 {
-                    SessionKey = LoginData.SessionKey,
+                    SessionKey = _saleEngineService.LoginData.SessionKey,
                     ActionItemValue = new
                     {
                         Action = "change_currency",
                         Value = CurrencySelected.CurrCode
                     }
                 };
-                await SaleEngineService.ActionListItemToOrderAsync(payload);
+                await _saleEngineService.ActionListItemToOrderAsync(payload);
                 await (CurrentView.BindingContext as ShoppingCartViewModel).RefreshOrderAsync();
             }
             catch { }
@@ -281,14 +287,14 @@ namespace SelfCheckout.ViewModels
         {
             try
             {
-                await SelfCheckoutService.LoadLanguageAsync();
-                await SelfCheckoutService.LoadPaymentAsync();
+                await _selfCheckoutService.LoadLanguageAsync();
+                await _selfCheckoutService.LoadPaymentAsync();
 
-                Languages = SelfCheckoutService.Languages?.ToObservableCollection();
-                Payments = SelfCheckoutService.Payments?.ToObservableCollection();
+                Languages = _selfCheckoutService.Languages?.ToObservableCollection();
+                Payments = _selfCheckoutService.Payments?.ToObservableCollection();
 
-                LanguageSelected = SelfCheckoutService.Languages.FirstOrDefault();
-                PaymentSelected = SelfCheckoutService.Payments.FirstOrDefault();
+                LanguageSelected = _selfCheckoutService.Languages.FirstOrDefault();
+                PaymentSelected = _selfCheckoutService.Payments.FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -302,11 +308,11 @@ namespace SelfCheckout.ViewModels
             {
                 var payload = new
                 {
-                    branch_no = SelfCheckoutService.AppConfig.BranchNo
+                    branch_no = _selfCheckoutService.AppConfig.BranchNo
                 };
-                await SaleEngineService.LoadCurrencyAsync(payload);
-                Currencies = SaleEngineService.Currencies?.ToObservableCollection();
-                CurrencySelected = SaleEngineService.Currencies.Where(c => c.CurrCode == "THB").FirstOrDefault();
+                await _saleEngineService.LoadCurrencyAsync(payload);
+                Currencies = _saleEngineService.Currencies?.ToObservableCollection();
+                CurrencySelected = _saleEngineService.Currencies.Where(c => c.CurrCode == "THB").FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -323,10 +329,10 @@ namespace SelfCheckout.ViewModels
                 var payload = new
                 {
                     OrderGuid = OrderData.Guid,
-                    SessionKey = LoginData.SessionKey
+                    SessionKey = _saleEngineService.LoginData.SessionKey
                 };
 
-                await SaleEngineService.CheckoutPaymentOrder(payload);
+                await _saleEngineService.CheckoutPaymentOrder(payload);
 
                 IsBeingPaymentProcess = true;
             }
@@ -348,10 +354,10 @@ namespace SelfCheckout.ViewModels
                 var walletRequestPayload = new
                 {
                     barcode = PaymentBarcode,
-                    machine_ip = LoginData.UserInfo.MachineEnv.MachineIp,
-                    branch_no = AppConfig.BranchNo
+                    machine_ip = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineIp,
+                    branch_no = _selfCheckoutService.AppConfig.BranchNo
                 };
-                var walletResult = await SaleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
+                var walletResult = await _saleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
                 if (!walletResult.IsCompleted)
                 {
                     DialogService.ShowAlert(AppResources.Opps, walletResult.DefaultMessage, AppResources.Close);
@@ -441,15 +447,15 @@ namespace SelfCheckout.ViewModels
                         },
                         status = ""
                     },
-                    SessionKey = LoginData.SessionKey,
+                    SessionKey = _saleEngineService.LoginData.SessionKey,
                 };
 
-                await SaleEngineService.AddPaymentToOrderAsync(paymentRequestPayload);
+                await _saleEngineService.AddPaymentToOrderAsync(paymentRequestPayload);
 
                 var tokenSource = new CancellationTokenSource();
                 var ct = tokenSource.Token;
 
-                PaymentCountdownTimer = AppConfig.PaymentTimeout;
+                PaymentCountdownTimer = _selfCheckoutService.AppConfig.PaymentTimeout;
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
                     if (--PaymentCountdownTimer == 0)
@@ -470,13 +476,13 @@ namespace SelfCheckout.ViewModels
                     var actionPayload = new
                     {
                         OrderGuid = OrderData.Guid,
-                        Rows = SaleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
+                        Rows = _saleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
                         Action = 3,
                         Value = "",
                         currency = "",
-                        SessionKey = LoginData.SessionKey
+                        SessionKey = _saleEngineService.LoginData.SessionKey
                     };
-                    var paymentStatus = await SaleEngineService.ActionPaymentToOrderAsync(actionPayload);
+                    var paymentStatus = await _saleEngineService.ActionPaymentToOrderAsync(actionPayload);
                     if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
                     {
                         paymentSuccess = true;
@@ -488,7 +494,7 @@ namespace SelfCheckout.ViewModels
                 {
                     var finishPaymentPayload = new
                     {
-                        SessionKey = LoginData.SessionKey,
+                        SessionKey = _saleEngineService.LoginData.SessionKey,
                         OrderGuid = OrderData.Guid,
                         OrderSignature = new object[]
                         {
@@ -500,7 +506,7 @@ namespace SelfCheckout.ViewModels
                         }
                     };
 
-                    await SaleEngineService.FinishPaymentOrderAsync(finishPaymentPayload);
+                    await _saleEngineService.FinishPaymentOrderAsync(finishPaymentPayload);
                     DialogService.ShowAlert(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.Close);
                     var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
                     TabSelectedCommand.Execute(orderTab);

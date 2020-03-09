@@ -1,4 +1,5 @@
-﻿using Prism.Navigation;
+﻿using Prism.Mvvm;
+using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
@@ -11,13 +12,9 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class BarcodeScanViewModel : ViewModelBase, IDialogAware
+    public class BarcodeScanViewModel : BindableBase, IDialogAware
     {
         bool _isScanning;
-
-        public BarcodeScanViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
-        {
-        }
 
         public event Action<IDialogParameters> RequestClose;
 

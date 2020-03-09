@@ -10,15 +10,39 @@ using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SelfCheckout.ViewModels
 {
-    public class OrderViewModel : OrderViewModelBase
+    public class OrderViewModel : ViewModelBase
     {
-        public OrderViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        ISaleEngineService _saleEngineService;
+        ISelfCheckoutService _selfCheckoutService;
+        IRegisterService _registerService;
+
+        ObservableCollection<OrderDetail> _orderDetails;
+        
+        public CustomerData CustomerData
         {
+            get => _registerService.CustomerData;
+        }
+
+        public LoginData LoginData
+        {
+            get => _saleEngineService.LoginData;
+        }
+
+        public ObservableCollection<OrderDetail> OrderDetails
+        {
+            get => _orderDetails;
+            set => SetProperty(ref _orderDetails, value);
+        }
+
+        public OrderViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService)
+        {
+            _saleEngineService = saleEngineService;
+            _selfCheckoutService = selfCheckoutService;
+            _registerService = registerService;
         }
 
         public override async Task OnTabSelected(TabItem item)
@@ -32,14 +56,14 @@ namespace SelfCheckout.ViewModels
             {
                 var payload = new
                 {
-                    SessionKey = LoginData.SessionKey,
+                    SessionKey = _saleEngineService.LoginData.SessionKey,
                     Attributes = new object[]
                     {
                         new
                         {
                             GROUP = "tran_no",
                             CODE = "shopping_card",
-                            valueOfString = CurrentShoppingCart
+                            valueOfString = _selfCheckoutService.CurrentShoppingCart
                         }
                     },
                     paging = new
@@ -56,11 +80,11 @@ namespace SelfCheckout.ViewModels
                     }
                 };
 
-                var result = await SaleEngineService.GetOrderListAsync(payload);
+                var result = await _saleEngineService.GetOrderListAsync(payload);
                 if (result.IsCompleted)
                 {
                     var orderDetails = new List<OrderDetail>();
-                    foreach(var orderInvoice in SaleEngineService.OrderData.OrderInvoices)
+                    foreach (var orderInvoice in _saleEngineService.OrderData.OrderInvoices)
                     {
                         orderDetails.AddRange(orderInvoice.OrderDetails);
                     }

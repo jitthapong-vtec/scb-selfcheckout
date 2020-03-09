@@ -17,13 +17,9 @@ namespace SelfCheckout.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainView : DensoScannerPage
     {
-        MainViewModel _viewModel;
-
         public MainView()
         {
             InitializeComponent();
-
-            _viewModel = BindingContext as MainViewModel;
         }
 
         protected override bool OnBackButtonPressed()
@@ -31,11 +27,12 @@ namespace SelfCheckout.Views
             return true;
         }
 
-        private void TappedGrid_Tapped(object sender, object e)
+        private async void TappedGrid_Tapped(object sender, object e)
         {
-            if (_viewModel.CurrentView is ShoppingCartView)
+            var mainViewModel = (BindingContext as MainViewModel);
+            if (mainViewModel.CurrentView is ShoppingCartView)
             {
-                var shoppingCartViewModel = _viewModel.CurrentView.BindingContext as ShoppingCartViewModel;
+                var shoppingCartViewModel = mainViewModel.CurrentView.BindingContext as ShoppingCartViewModel;
                 if (!shoppingCartViewModel.IsFirstSelect)
                 {
                     try
@@ -44,10 +41,8 @@ namespace SelfCheckout.Views
                     }
                     catch (DensoScannerException ex)
                     {
-                        _viewModel.DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-
-                        var shoppingCart = _viewModel.Tabs.Where(t => t.TabId == 3).FirstOrDefault();
-                        Task.Run(() => (shoppingCart.Page.BindingContext as ShoppingCartViewModel).TestAddOrder());
+                        shoppingCartViewModel?.DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                        await shoppingCartViewModel.TestAddOrder();
                     }
                 }
             }

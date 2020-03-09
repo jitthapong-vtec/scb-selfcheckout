@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace SelfCheckout.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AuthorizationView : ContentView
+    public partial class CustomerCartConfirmDialog : ContentView
     {
-        public AuthorizationView()
+        public CustomerCartConfirmDialog()
         {
             InitializeComponent();
         }

@@ -21,20 +21,30 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class ShoppingCartViewModel : OrderViewModelBase
+    public class ShoppingCartViewModel : ViewModelBase
     {
+        ISaleEngineService _saleEngineService;
+        ISelfCheckoutService _selfCheckoutService;
+        IRegisterService _registerService;
+
+        ObservableCollection<OrderDetail> _orderDetails;
+
         object[] items;
 
         bool _isSelectAllOrder;
         bool _isAnyOrderSelected;
 
-        public ShoppingCartViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        public ShoppingCartViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService)
         {
+            _selfCheckoutService = selfCheckoutService;
+            _saleEngineService = saleEngineService;
+            _registerService = registerService;
+
             items = new object[]
                {
                 new
                 {
-                    SessionKey = LoginData.SessionKey,
+                    SessionKey = _saleEngineService.LoginData.SessionKey,
                     ItemCode = "00008211470207673"
                 },
                    //new
@@ -43,6 +53,22 @@ namespace SelfCheckout.ViewModels
                    //    ItemCode = "00008190415206226"
                    //}
                };
+        }
+
+        public ObservableCollection<OrderDetail> OrderDetails
+        {
+            get => _orderDetails;
+            set => SetProperty(ref _orderDetails, value);
+        }
+
+        public string CurrentShoppingCart
+        {
+            get => _selfCheckoutService.CurrentShoppingCart;
+        }
+
+        public CustomerData CustomerData
+        {
+            get => _registerService.CustomerData;
         }
 
         public bool IsSelectAllOrder
@@ -94,7 +120,7 @@ namespace SelfCheckout.ViewModels
             var qty = order.BillingQuantity.Quantity;
             var payload = new
             {
-                SessionKey = LoginData.SessionKey,
+                SessionKey = _saleEngineService.LoginData.SessionKey,
                 Rows = new string[] { order.Guid },
                 ActionItemValue = new
                 {
@@ -155,18 +181,18 @@ namespace SelfCheckout.ViewModels
                 IsBusy = true;
                 var payload = new
                 {
-                    SessionKey = LoginData.SessionKey,
+                    SessionKey = _saleEngineService.LoginData.SessionKey,
                     Attributes = new object[]
                     {
                         new {
                             GROUP = "tran_no",
                             CODE = "shopping_card",
-                            valueOfString = CurrentShoppingCart
+                            valueOfString = _selfCheckoutService.CurrentShoppingCart
                         }
                     }
                 };
 
-                var result = await SaleEngineService.GetOrderAsync(payload);
+                var result = await _saleEngineService.GetOrderAsync(payload);
                 await RefreshOrderAsync();
             }
             catch (Exception ex)
@@ -181,7 +207,7 @@ namespace SelfCheckout.ViewModels
 
         public Task RefreshOrderAsync()
         {
-            OrderDetails = SaleEngineService.OrderData.OrderDetails?.ToObservableCollection();
+            OrderDetails = _saleEngineService.OrderData?.OrderDetails?.ToObservableCollection();
             MessagingCenter.Send(this, "OrderRefresh");
 
             IsSelectAllOrder = false;
@@ -194,7 +220,7 @@ namespace SelfCheckout.ViewModels
             {
                 var payload = new
                 {
-                    SessionKey = LoginData.SessionKey,
+                    SessionKey = _saleEngineService.LoginData.SessionKey,
                     Rows = orders.Select(o => o.Guid).ToArray(),
                     ActionItemValue = new
                     {
@@ -210,7 +236,7 @@ namespace SelfCheckout.ViewModels
         {
             try
             {
-                await SaleEngineService.ActionListItemToOrderAsync(payload);
+                await _saleEngineService.ActionListItemToOrderAsync(payload);
             }
             catch (Exception ex)
             {
@@ -225,10 +251,10 @@ namespace SelfCheckout.ViewModels
                 IsBusy = true;
                 var payload = new
                 {
-                    SessionKey = LoginData.SessionKey,
+                    SessionKey = _saleEngineService.LoginData.SessionKey,
                     ItemCode = barcode
                 };
-                var result = await SaleEngineService.AddItemToOrderAsync(payload);
+                var result = await _saleEngineService.AddItemToOrderAsync(payload);
                 var success = result.IsCompleted;
             }
             catch (Exception ex)
@@ -249,7 +275,7 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var result = await SaleEngineService.AddItemToOrderAsync(payload);
+                var result = await _saleEngineService.AddItemToOrderAsync(payload);
                 var success = result.IsCompleted;
             }
             catch (Exception ex)

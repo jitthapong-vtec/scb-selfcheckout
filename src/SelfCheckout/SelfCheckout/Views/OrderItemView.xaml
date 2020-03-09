@@ -5,11 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
-             xmlns:behaviors="clr-namespace:SelfCheckout.Behaviors"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.Components.OrderItemView">
     <ContentView.Content>
-        <Frame Margin="4" Padding="0">
+        <!--<Frame Padding="0">-->
             <!--<SwipeView>
                 <SwipeView.RightItems>
                     <SwipeItemView>
@@ -21,7 +20,7 @@
                         </controls:TappedGrid>
                     </SwipeItemView>
                 </SwipeView.RightItems>-->
-                <Grid Padding="8" BackgroundColor="{StaticResource Gray50}">
+                <Grid Margin="8" BackgroundColor="{StaticResource Gray50}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -69,6 +68,6 @@
                     </controls:TappedGrid>
                 </Grid>
             <!--</SwipeView>-->
-        </Frame>
+        <!--</Frame>-->
     </ContentView.Content>
 </ContentView>

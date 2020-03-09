@@ -16,25 +16,26 @@ namespace SelfCheckout.ViewModels
 {
     public class LandingViewModel : ViewModelBase
     {
-        public LandingViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
-        {
-        }
+        ISelfCheckoutService _selfCheckoutService;
+        ISaleEngineService _saleEngineService;
 
-        public override void Initialize(INavigationParameters parameters)
+        public LandingViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) : base(navigatinService, dialogService)
         {
-            base.Initialize(parameters);
+            _selfCheckoutService = selfCheckoutService;
+            _saleEngineService = saleEngineService;
         }
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
+
             try
             {
                 IsBusy = true;
 
-                await SelfCheckoutService.LoadConfigAsync();
+                await _selfCheckoutService.LoadConfigAsync();
 
-                if (SaleEngineService.LoginData == null)
+                if (_saleEngineService.LoginData == null)
                     await NavigationService.NavigateAsync("LoginView");
                 else
                     await NavigationService.NavigateAsync("BorrowView");

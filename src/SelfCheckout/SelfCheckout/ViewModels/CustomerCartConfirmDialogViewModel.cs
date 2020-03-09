@@ -1,23 +1,16 @@
-﻿using Prism.Navigation;
+﻿using Prism.Mvvm;
+using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Models;
-using SelfCheckout.Services.Register;
-using SelfCheckout.Services.SaleEngine;
-using SelfCheckout.Services.SelfCheckout;
-using SelfCheckout.ViewModels.Base;
 using System;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class CustomerCartConfirmViewModel : ViewModelBase, IDialogAware
+    public class CustomerCartConfirmDialogViewModel : BindableBase, IDialogAware
     {
         Person _person;
-
-        public CustomerCartConfirmViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
-        {
-        }
 
         public event Action<IDialogParameters> RequestClose;
 

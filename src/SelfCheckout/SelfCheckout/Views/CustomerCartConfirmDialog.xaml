@@ -8,13 +8,18 @@
     xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
     xmlns:effects="clr-namespace:SelfCheckout.Effects"
     xmlns:prism="http://prismlibrary.com"
+    prism:DialogLayout.RelativeWidthRequest="0.75"
     mc:Ignorable="d"
-    x:Class="SelfCheckout.Views.CustomerCartConfirmView"
-    prism:DialogLayout.RelativeWidthRequest="0.75">
+    x:Class="SelfCheckout.Views.CustomerCartConfirmDialog">
     <ContentView.Content>
-        <Frame VerticalOptions="Center">
-            <StackLayout>
-                <Grid RowSpacing="8" Margin="0,4,0,4">
+        <Frame>
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" RowSpacing="8" Margin="0,4,0,4">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -31,8 +36,8 @@
                     <controls:CustomLabel Grid.Row="2" Grid.Column="0" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate FlightNo}"/>
                     <controls:CustomLabel Grid.Row="2" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.FlightCode}"/>
                 </Grid>
-                <Button HeightRequest="1" BackgroundColor="{StaticResource Gray200}"/>
-                <Grid Margin="0,4,0,0">
+                <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="{StaticResource Gray200}"/>
+                <Grid Grid.Row="2" Margin="0,4,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -53,7 +58,7 @@
                         <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Cancel}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
                     </controls:TappedGrid>
                 </Grid>
-            </StackLayout>
+            </Grid>
         </Frame>
     </ContentView.Content>
 </ContentView>

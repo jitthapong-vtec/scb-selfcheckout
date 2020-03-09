@@ -18,9 +18,6 @@ namespace SelfCheckout.ViewModels.Base
     {
         public INavigationService NavigationService { get; private set; }
         public IDialogService DialogService { get; private set; }
-        public ISaleEngineService SaleEngineService { get; private set; }
-        public ISelfCheckoutService SelfCheckoutService { get; private set; }
-        public IRegisterService RegisterService { get; set; }
 
         string _pageTitle;
         bool _isBusy;
@@ -41,14 +38,10 @@ namespace SelfCheckout.ViewModels.Base
             await NavigationService.GoBackAsync();
         });
 
-        public ViewModelBase(INavigationService navigatinService, IDialogService dialogService,
-            ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService)
+        public ViewModelBase(INavigationService navigatinService, IDialogService dialogService)
         {
             NavigationService = navigatinService;
             DialogService = dialogService;
-            SelfCheckoutService = selfCheckoutService;
-            SaleEngineService = saleEngineService;
-            RegisterService = registerService;
         }
 
         public virtual Task OnTabSelected(TabItem item)
@@ -59,26 +52,6 @@ namespace SelfCheckout.ViewModels.Base
         public virtual Task OnTabDeSelected(TabItem item)
         {
             return Task.FromResult(item);
-        }
-
-        public AppConfig AppConfig
-        {
-            get => SelfCheckoutService.AppConfig;
-        }
-
-        public LoginData LoginData
-        {
-            get => SaleEngineService.LoginData;
-        }
-
-        public CustomerData CustomerData
-        {
-            get => RegisterService.CustomerData;
-        }
-
-        public string CurrentShoppingCart
-        {
-            get => SelfCheckoutService.CurrentShoppingCart;
         }
 
         public string PageTitle
@@ -102,15 +75,15 @@ namespace SelfCheckout.ViewModels.Base
 
         public string Version { get => VersionTracking.CurrentVersion; }
 
-        public virtual async void Initialize(INavigationParameters parameters)
+        public virtual void Initialize(INavigationParameters parameters)
         {
         }
 
-        public virtual async void OnNavigatedFrom(INavigationParameters parameters)
+        public virtual void OnNavigatedFrom(INavigationParameters parameters)
         {
         }
 
-        public virtual async void OnNavigatedTo(INavigationParameters parameters)
+        public virtual void OnNavigatedTo(INavigationParameters parameters)
         {
         }
 

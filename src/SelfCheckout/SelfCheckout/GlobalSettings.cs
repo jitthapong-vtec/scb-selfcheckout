@@ -76,5 +76,7 @@ namespace SelfCheckout
         }
 
         public string PimCoreUrl { get => "https://pim.kingpower.com/"; }
+
+        public string MachineIp { get => "127.0.0.1"; }
     }
 }

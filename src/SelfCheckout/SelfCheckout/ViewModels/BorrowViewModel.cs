@@ -10,6 +10,7 @@ using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -19,10 +20,17 @@ namespace SelfCheckout.ViewModels
 {
     public class BorrowViewModel : ViewModelBase
     {
+        ISelfCheckoutService _selfCheckoutService;
+        ISaleEngineService _saleEngineService;
+        IRegisterService _registerService;
+
         string _inputValue = "3600000711400";
 
-        public BorrowViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        public BorrowViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService)
         {
+            _selfCheckoutService = selfCheckoutService;
+            _saleEngineService = saleEngineService;
+            _registerService = registerService;
         }
 
         public ICommand ScanShoppingCartCommand => new Command(() => ScanShoppingCart());
@@ -55,27 +63,28 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var validateResult = await SelfCheckoutService.ValidateShoppingCartAsync(LoginData.UserInfo.MachineEnv.MachineIp, InputValue);
+                var validateResult = await _selfCheckoutService.ValidateShoppingCartAsync(_saleEngineService.LoginData.UserInfo.MachineEnv.MachineIp, InputValue);
                 if (!validateResult.IsCompleted)
                 {
                     DialogService.ShowAlert(AppResources.Opps, validateResult.DefaultMessage, AppResources.Close);
                     return;
                 }
 
-                SelfCheckoutService.CurrentShoppingCart = InputValue;
+                _selfCheckoutService.CurrentShoppingCart = InputValue;
 
                 var payload = new
                 {
                     shoppingCard = InputValue,
-                    SubBranch = AppConfig.SubBranch,
+                    SubBranch = _selfCheckoutService.AppConfig.SubBranch,
                     isTour = false,
                     isGenPdfPromotion = false,
                     isGenImgShoppingCard = false
                 };
 
-                await RegisterService.GetCustomerAsync(payload);
+                var customersData = await _registerService.GetCustomerAsync(payload);
 
-                if (CustomerData?.Person != null)
+                var customerData = customersData.FirstOrDefault();
+                if (customerData?.Person != null)
                 {
                     //if (!CustomerData.Person.IsActivate)
                     //{
@@ -84,9 +93,9 @@ namespace SelfCheckout.ViewModels
                     //}
                     var parameters = new DialogParameters()
                     {
-                        {"Person", CustomerData.Person }
+                        {"Person", customerData.Person }
                     };
-                    DialogService.ShowDialog("CustomerConfirmDialog", parameters, async (dialogResult) =>
+                    DialogService.ShowDialog("CustomerCartConfirmDialog", parameters, async (dialogResult) =>
                     {
                         var isConfirm = dialogResult.Parameters.GetValue<bool>("IsConfirm");
                         if (isConfirm)
@@ -109,7 +118,8 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var startResult = await SelfCheckoutService.StartSessionAsync(LoginData.UserInfo.UserCode, LoginData.UserInfo.MachineEnv.MachineNo, InputValue);
+                var userInfo = _saleEngineService.LoginData?.UserInfo;
+                var startResult = await _selfCheckoutService.StartSessionAsync(userInfo.UserCode, userInfo.MachineEnv.MachineNo, InputValue);
                 if (!startResult.IsCompleted)
                 {
                     DialogService.ShowAlert(AppResources.Opps, startResult.DefaultMessage, AppResources.Close);

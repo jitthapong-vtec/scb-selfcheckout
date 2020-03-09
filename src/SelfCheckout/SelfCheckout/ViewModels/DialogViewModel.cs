@@ -1,4 +1,5 @@
 ﻿using Prism.Commands;
+using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Services.Register;
@@ -12,15 +13,11 @@ using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class DialogViewModel : ViewModelBase, IDialogAware
+    public class DialogViewModel : BindableBase, IDialogAware
     {
         string _title;
         string _message;
         string _okButtonText;
-
-        public DialogViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
-        {
-        }
 
         public string Title
         {
@@ -53,7 +50,7 @@ namespace SelfCheckout.ViewModels
 
         public ICommand OkCommand => new DelegateCommand(() =>
         {
-            RequestClose(null);
+            RequestClose?.Invoke(null);
         });
 
         public void OnDialogOpened(IDialogParameters parameters)

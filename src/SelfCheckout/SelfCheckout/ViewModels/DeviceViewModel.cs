@@ -23,12 +23,21 @@ namespace SelfCheckout.ViewModels
         List<SimpleSelectedItem> _allDeviceInfoItems;
         ObservableCollection<SimpleSelectedItem> _tabs;
         ObservableCollection<SimpleSelectedItem> _deviceInfoItems;
+        CustomerData _customerData;
+        AppConfig _appConfig;
+        LoginData _loginData;
 
         bool _isAuthorized;
         bool _logoutButtonVisible;
 
-        public DeviceViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        public DeviceViewModel(INavigationService navigatinService, IDialogService dialogService,
+            ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService,
+            IRegisterService registerService) : base(navigatinService, dialogService)
         {
+            _appConfig = selfCheckoutService.AppConfig;
+            _customerData = registerService.CustomerData;
+            _loginData = saleEngineService.LoginData;
+
             Tabs = new ObservableCollection<SimpleSelectedItem>()
             {
                 new SimpleSelectedItem()
@@ -49,7 +58,7 @@ namespace SelfCheckout.ViewModels
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.Name,
-                    Text2 = CustomerData?.Person?.EnglishName,
+                    Text2 = _customerData?.Person?.EnglishName,
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
@@ -61,37 +70,37 @@ namespace SelfCheckout.ViewModels
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.FlightNo,
-                    Text2 = CustomerData?.Person?.FlightCode,
+                    Text2 = _customerData?.Person?.FlightCode,
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.MobileNo,
-                    Text2 = CustomerData?.Person?.ListContact.FirstOrDefault()?.ContactValue,
+                    Text2 = _customerData?.Person?.ListContact.FirstOrDefault()?.ContactValue,
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.Module,
-                    Text2 = AppConfig?.Module,
+                    Text2 = _appConfig?.Module,
                     Arg1 = 2
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.BranchNo,
-                    Text2 = AppConfig?.BranchNo,
+                    Text2 = _appConfig?.BranchNo,
                     Arg1 = 2
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.SubBranch,
-                    Text2 = AppConfig?.SubBranch,
+                    Text2 = _appConfig?.SubBranch,
                     Arg1 = 2
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.MachineNo,
-                    Text2 = "-",
+                    Text2 = _loginData.UserInfo.MachineEnv.MachineNo,
                     Arg1 = 2
                 },
             };
@@ -101,11 +110,10 @@ namespace SelfCheckout.ViewModels
         {
             if ((int)item.Arg1 == 2 && !IsAuthorized)
             {
-                DialogService.ShowDialog("AuthorizeDialog", null, (dialogResult) =>
-                {
-                    if (dialogResult.Parameters.GetValue<bool>("IsConfirm"))
-                        IsAuthorized = true;
-                });
+                var result = await DialogService.ShowDialogAsync("AuthorizeDialog", null);
+                IsAuthorized = result.Parameters.GetValue<bool>("IsAuthorized");
+                if (!IsAuthorized)
+                    return;
             }
 
             var seletedItem = Tabs.Where(t => t.Selected).FirstOrDefault();
@@ -114,6 +122,8 @@ namespace SelfCheckout.ViewModels
             item.Selected = true;
             LogoutButtonVisible = (int)item.Arg1 == 2 ? true : false;
             RefreshDeviceInfo(item.Arg1);
+
+            IsAuthorized = false;
         });
 
         public override Task OnTabSelected(TabItem item)

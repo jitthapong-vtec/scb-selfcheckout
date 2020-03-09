@@ -7,8 +7,6 @@ using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.Services.Serializer;
 using SelfCheckout.ViewModels;
 using SelfCheckout.Views;
-using System;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -35,15 +33,15 @@ namespace SelfCheckout
 
             GlobalSettings.Instance.InitLanguage();
 
-            await NavigationService.NavigateAsync("LandingView");
+            await NavigationService.NavigateAsync("NavigationPage/LandingView");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterDialog<DialogView, DialogViewModel>("CommonDialog");
             containerRegistry.RegisterDialog<ConfirmDialogView, ConfirmDialogViewModel>("ConfirmDialog");
-            containerRegistry.RegisterDialog<AuthorizationView, AuthorizationViewModel>("AuthorizeDialog");
-            containerRegistry.RegisterDialog<CustomerCartConfirmView, CustomerCartConfirmViewModel>("CustomerConfirmDialog");
+            containerRegistry.RegisterDialog<AuthorizationDialog, AuthorizationDialogViewModel>("AuthorizeDialog");
+            containerRegistry.RegisterDialog<CustomerCartConfirmDialog, CustomerCartConfirmDialogViewModel>("CustomerCartConfirmDialog");
             containerRegistry.RegisterDialog<BarcodeScanView, BarcodeScanViewModel>("BarcodeScanDialog");
 
             containerRegistry.Register<ShoppingCartViewModel>();
@@ -52,13 +50,13 @@ namespace SelfCheckout
             containerRegistry.Register<ProfileViewModel>();
             containerRegistry.Register<HomeViewModel>();
 
+            containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<SettingView, SettingViewModel>();
             containerRegistry.RegisterForNavigation<LandingView, LandingViewModel>();
             containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
             containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
             containerRegistry.RegisterForNavigation<BorrowView, BorrowViewModel>();
             containerRegistry.RegisterForNavigation<CheckerMainView, CheckerMainViewModel>();
-
 
             containerRegistry.RegisterSingleton<ISerializeService, JsonSerializeService>();
             containerRegistry.RegisterSingleton<ISaleEngineService, SaleEngineService>();

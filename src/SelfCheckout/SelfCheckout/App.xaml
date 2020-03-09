@@ -1,13 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
-             xmlns:magic="clr-namespace:MagicGradients;assembly=MagicGradients"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-             xmlns:controls="clr-namespace:SelfCheckout.Controls"
-             xmlns:converter="clr-namespace:SelfCheckout.Converters"
-             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             x:Class="SelfCheckout.App">
+<prism:PrismApplication
+    xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SelfCheckout.Controls"
+    xmlns:converter="clr-namespace:SelfCheckout.Converters"
+    x:Class="SelfCheckout.App">
     <Application.Resources>
         <Color x:Key="Primary">#0B56A4</Color>
         <Color x:Key="Secondary">#00ADBB</Color>
@@ -46,6 +44,8 @@
         <Style TargetType="Frame">
             <Setter Property="BackgroundColor" Value="White"/>
             <Setter Property="HasShadow" Value="True"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="4"/>
         </Style>
         
         <Style TargetType="Label">

@@ -21,7 +21,7 @@ namespace SelfCheckout.ViewModels
     {
         ObservableCollection<TabItem> _tabs;
 
-        public CheckerMainViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        public CheckerMainViewModel(INavigationService navigatinService, IDialogService dialogService) : base(navigatinService, dialogService)
         {
             Tabs = new ObservableCollection<TabItem>()
             {

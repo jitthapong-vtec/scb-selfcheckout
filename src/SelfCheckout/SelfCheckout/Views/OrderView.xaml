@@ -71,6 +71,9 @@
                     </StackLayout>
                 </Grid>
                 <CollectionView Grid.Row="3" ItemsSource="{Binding OrderDetails}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start" SnapPointsType="MandatorySingle" ItemSpacing="4"/>
+                    </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <component:OrderItemView/>

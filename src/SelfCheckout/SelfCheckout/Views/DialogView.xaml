@@ -4,6 +4,9 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:effects="clr-namespace:SelfCheckout.Effects"
+             xmlns:prism="http://prismlibrary.com"
+             prism:DialogLayout.RelativeWidthRequest="0.75"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.DialogView">
   <ContentView.Content>
@@ -14,9 +17,11 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Margin="8" Text="{Binding Title}"/>
-                <Label Grid.Row="1" Margin="12" Text="{Binding Message}" VerticalOptions="Center"/>
-                <controls:TappedGrid Grid.Row="2" HorizontalOptions="End" Margin="8" TappedCommand="{Binding OkCommand}">
+                <Label Grid.Row="0" Margin="8" Text="{Binding Title}" FontSize="Large" FontAttributes="Bold"/>
+                <Label Grid.Row="1" Margin="8,4,8,4" Text="{Binding Message}" VerticalOptions="Center"/>
+                <controls:TappedGrid Grid.Row="2" HorizontalOptions="End" WidthRequest="100" Margin="8" 
+                                     effects:RoundCornersEffect.CornerRadius="3"
+                                     TappedCommand="{Binding OkCommand}">
                     <controls:GradientBackground/>
                     <Label Text="{Binding OkButtonText}" TextColor="{StaticResource Gray50}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                 </controls:TappedGrid>

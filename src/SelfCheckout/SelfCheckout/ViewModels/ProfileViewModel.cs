@@ -12,7 +12,7 @@ namespace SelfCheckout.ViewModels
 {
     public class ProfileViewModel : ViewModelBase
     {
-        public ProfileViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        public ProfileViewModel(INavigationService navigatinService, IDialogService dialogService) : base(navigatinService, dialogService)
         {
         }
     }

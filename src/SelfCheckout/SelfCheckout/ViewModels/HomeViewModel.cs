@@ -23,9 +23,7 @@ namespace SelfCheckout.ViewModels
 
         ObservableCollection<PimCoreImageAsset> _assets;
 
-        public HomeViewModel(INavigationService navigatinService, IDialogService dialogService, 
-            ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, 
-            IRegisterService registerService, IPimCoreService pimCoreService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        public HomeViewModel(INavigationService navigatinService, IDialogService dialogService, IPimCoreService pimCoreService) : base(navigatinService, dialogService)
         {
             _pimCoreService = pimCoreService;
         }

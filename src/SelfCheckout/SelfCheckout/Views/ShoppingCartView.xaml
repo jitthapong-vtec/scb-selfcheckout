@@ -4,7 +4,6 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
-             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:component="clr-namespace:SelfCheckout.Views.Components"
              xmlns:views="clr-namespace:SelfCheckout.Views"
