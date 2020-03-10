@@ -7,9 +7,11 @@ namespace SelfCheckout.Effects
     public enum RoundCorners
     {
         None,
+        Left,
         Top,
         TopLeft,
         TopRight,
+        Right,
         Bottom,
         BottomLeft,
         BottomRight

@@ -11,9 +11,10 @@
              xmlns:prism="http://prismlibrary.com"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              prism:ViewModelLocator.AutowireViewModel="True"
+             Visual="Material"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.OrderView">
-  <ContentView.Content>
+    <ContentView.Content>
         <Grid>
             <Grid>
                 <Grid.RowDefinitions>
@@ -71,6 +72,28 @@
                         <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
                     </StackLayout>
                 </Grid>
+                <Grid Grid.Row="1" BackgroundColor="{StaticResource Gray100}">
+                    <Grid Margin="1" BackgroundColor="White">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Filter" VerticalOptions="Start"/>
+                            <controls:TappedGrid Grid.Column="1" TappedCommand="{Binding CustomerFilterTappedCommand}">
+                                <Label Text="All" VerticalOptions="End"/>
+                            </controls:TappedGrid>
+                        </Grid>
+                        <Label Grid.Column="2" VerticalOptions="Center"
+                                   Text="&#xf0d7;" FontSize="24"
+                                   Margin="8" Style="{StaticResource LabelIconStyle}"/>
+                    </Grid>
+                </Grid>
                 <StackLayout Grid.Row="2" HeightRequest="56" Orientation="Horizontal" Spacing="0" BindableLayout.ItemsSource="{Binding Tabs}"
                          BackgroundColor="{StaticResource Gray200}">
                     <BindableLayout.ItemTemplate>
@@ -115,5 +138,5 @@
                 </CollectionView>
             </Grid>
         </Grid>
-  </ContentView.Content>
+    </ContentView.Content>
 </ContentView>

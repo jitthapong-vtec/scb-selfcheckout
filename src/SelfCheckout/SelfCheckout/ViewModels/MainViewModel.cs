@@ -108,6 +108,8 @@ namespace SelfCheckout.ViewModels
             MessagingCenter.Subscribe<ViewModelBase>(this, "OrderRefresh", (s) =>
             {
                 OrderData = _saleEngineService.OrderData;
+                if (IsOrderSummary)
+                    return;
                 try
                 {
                     var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();

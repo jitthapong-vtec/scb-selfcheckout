@@ -7,6 +7,7 @@
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:component="clr-namespace:SelfCheckout.Views.Components"
              xmlns:views="clr-namespace:SelfCheckout.Views"
+             xmlns:effects="clr-namespace:SelfCheckout.Effects"
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              mc:Ignorable="d"
@@ -73,7 +74,7 @@
                             <Grid>
                                 <StackLayout VerticalOptions="Center">
                                     <Image Source="shopping_cart" HorizontalOptions="Center" Aspect="AspectFit"/>
-                                    <Label HorizontalTextAlignment="Center" Text="{i18n:Translate ShoppingCartEmpty}" FontSize="Large"/>
+                                    <Label HorizontalTextAlignment="Center" Text="{i18n:Translate ShoppingCartEmpty}" FontSize="Medium"/>
                                 </StackLayout>
                             </Grid>
                         </CollectionView.EmptyView>
@@ -87,6 +88,25 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </RefreshView>
+            </Grid>
+            <Grid VerticalOptions="Center" HorizontalOptions="End"
+                  Margin="0,0,0,-100"
+                  HeightRequest="48"
+                  effects:RoundCornersEffect.CornerRadius="6"
+                  effects:RoundCornersEffect.RoundCorner="Left">
+                <controls:GradientBackground/>
+                <Grid Margin="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:TappedGrid Grid.Column="0" TappedCommand="{Binding ToggleChangeShoppingCartCommand}">
+                        <Image Source="chk_shopping_cart" HeightRequest="48"/>
+                    </controls:TappedGrid>
+                    <controls:TappedGrid Grid.Column="1" IsVisible="{Binding IsChangeShoppingCartShowing}" TappedCommand="{Binding ChangeShoppingCartCommand}">
+                        <Label HorizontalTextAlignment="Start" VerticalOptions="Center" TextColor="{StaticResource Gray50}" Text="{i18n:Translate ChangeShoppingCart}"/>
+                    </controls:TappedGrid>
+                </Grid>
             </Grid>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>

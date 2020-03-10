@@ -1,4 +1,5 @@
-﻿using Prism.Navigation;
+﻿using Prism.Commands;
+using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
@@ -23,7 +25,7 @@ namespace SelfCheckout.ViewModels
         IRegisterService _registerService;
 
         ObservableCollection<SimpleSelectedItem> _tabs;
-        ObservableCollection<OrderDetail> _orderDetails;
+        ObservableCollection<OrderInvoiceGroup> _orderInvoices;
 
         public OrderViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService)
         {
@@ -47,6 +49,11 @@ namespace SelfCheckout.ViewModels
             };
         }
 
+        public ICommand CustomerFilterTappedCommand => new DelegateCommand(() =>
+        {
+
+        });
+
         public ObservableCollection<SimpleSelectedItem> Tabs
         {
             get => _tabs;
@@ -63,10 +70,10 @@ namespace SelfCheckout.ViewModels
             get => _saleEngineService.LoginData;
         }
 
-        public ObservableCollection<OrderDetail> OrderDetails
+        public ObservableCollection<OrderInvoiceGroup> OrderInvoices
         {
-            get => _orderDetails;
-            set => SetProperty(ref _orderDetails, value);
+            get => _orderInvoices;
+            set => SetProperty(ref _orderInvoices, value);
         }
 
         public override async Task OnTabSelected(TabItem item)
@@ -115,12 +122,15 @@ namespace SelfCheckout.ViewModels
                     t1.Text1 = $"{orderData.TotalInvoice}";
                     t2.Text1 = $"{orderData.BillingQty} {orderData.BillingUnit}";
 
-                    var orderDetails = new List<OrderDetail>();
+                    var orderInvoices = new List<OrderInvoiceGroup>();
                     foreach (var orderInvoice in orderData.OrderInvoices)
                     {
-                        orderDetails.AddRange(orderInvoice.OrderDetails);
+                        orderInvoices.Add(new OrderInvoiceGroup()
+                        {
+                            ViewType = 0
+                        });
                     }
-                    OrderDetails = orderDetails.ToObservableCollection();
+                    OrderInvoices = orderInvoices.ToObservableCollection();
 
                     MessagingCenter.Send<ViewModelBase>(this, "OrderRefresh");
                 }

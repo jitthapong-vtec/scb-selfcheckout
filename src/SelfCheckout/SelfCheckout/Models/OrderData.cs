@@ -421,6 +421,10 @@ namespace SelfCheckout.Models
 
     public class OrderInvoice
     {
+        public OrderInvoice()
+        {
+        }
+
         [JsonProperty("Guid")]
         public string Guid { get; set; }
 
