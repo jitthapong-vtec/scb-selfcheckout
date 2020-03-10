@@ -55,7 +55,7 @@ namespace SelfCheckout.ViewModels
                 var result = await _pimCoreService.GetMediaByLocationAsync(lang.ToLower());
                 if (result.Status == "success")
                 {
-                    Assets = new ObservableCollection<PimCoreImageAsset>();
+                    var assets = new List<PimCoreImageAsset>();
                     foreach (var media in result.Data.ListMedia)
                     {
                         try
@@ -67,11 +67,12 @@ namespace SelfCheckout.ViewModels
                                 asset.DetailTitle = media.Title;
                                 asset.DetailDesc = "";
                                 asset.DetailLink = media.Link;
-                                Assets.Add(asset);
+                                assets.Add(asset);
                             }
                         }
                         catch { }
                     }
+                    Assets = assets.ToObservableCollection();
                 }
             }
             catch { }

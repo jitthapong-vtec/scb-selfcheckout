@@ -16,7 +16,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <CarouselView ItemsSource="{Binding Assets}" x:Name="carouselView">
+                    <CarouselView ItemsSource="{Binding Assets}" IndicatorView="indicatorView">
                         <CarouselView.ItemsLayout>
                             <LinearItemsLayout Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"/>
                         </CarouselView.ItemsLayout>
@@ -39,11 +39,12 @@
                             </DataTemplate>
                         </CarouselView.ItemTemplate>
                     </CarouselView>
-                    <!--<IndicatorView Grid.Row="1" IndicatorColor="{StaticResource Gray100}" 
+                    <IndicatorView Grid.Row="1" x:Name="indicatorView" 
+                                   IndicatorColor="{StaticResource Gray100}" 
                                    SelectedIndicatorColor="{StaticResource Primary}" 
                                    IndicatorSize="10" 
                                    HorizontalOptions="Center"
-                                   ItemsSource="{Binding Assets}"/>-->
+                                   ItemsSource="{Binding Assets}"/>
                 </Grid>
             </Frame>
         </Grid>

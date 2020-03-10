@@ -3,10 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
-             xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:ctrls="clr-namespace:SelfCheckout.Controls"
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
              xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
@@ -43,13 +40,13 @@
                     <Entry Placeholder="API Self-Checkout" Text="{Binding AppConfig.UrlSaleEngineApi}"/>
                     <Entry Placeholder="Web Member" Text="{Binding AppConfig.UrlMemberWeb}"/>
                     <Entry Placeholder="Payment Time out" Keyboard="Numeric" Text="{Binding AppConfig.PaymentTimeout}"/>
-                    <Entry Placeholder="Device UID" Text="{Binding DeviceUID}" IsReadOnly="True"/>
+                    <Entry Placeholder="Device UID" x:Name="entryDeviceUid" Text="{Binding DeviceUID}" IsReadOnly="True"/>
 
                     <forms:ZXingBarcodeImageView
                                 BarcodeFormat="QR_CODE"
                                 HeightRequest="200"
                                 WidthRequest="200"
-                                BarcodeValue="{Binding DeviceUID}">
+                                BarcodeValue="{Binding Source={x:Reference entryDeviceUid}, Path=Text}">
                         <forms:ZXingBarcodeImageView.BarcodeOptions>
                             <common:EncodingOptions Width="200" Height="200" PureBarcode="True"/>
                         </forms:ZXingBarcodeImageView.BarcodeOptions>

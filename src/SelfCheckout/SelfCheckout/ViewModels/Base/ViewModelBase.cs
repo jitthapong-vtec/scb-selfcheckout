@@ -7,6 +7,7 @@ using Xamarin.Essentials;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
+using Prism.Commands;
 
 namespace SelfCheckout.ViewModels.Base
 {
@@ -19,17 +20,7 @@ namespace SelfCheckout.ViewModels.Base
         bool _isBusy;
         bool _isRefreshing;
 
-        public ICommand LogoutCommand => new Command(async () =>
-        {
-            //var result = await DialogService.ShowConfirmAsync(AppResources.Logout, AppResources.ConfirmLogout, AppResources.Yes, AppResources.No);
-            //if (result)
-            //{
-            //    await SaleEngineService.LogoutAsync();
-            //    await NavigationService.InitializeAsync();
-            //}
-        });
-
-        public ICommand BackCommand => new Command(async () =>
+        public ICommand BackCommand => new DelegateCommand(async () =>
         {
             await NavigationService.GoBackAsync();
         });

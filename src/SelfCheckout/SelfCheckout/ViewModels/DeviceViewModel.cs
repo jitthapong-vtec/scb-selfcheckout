@@ -1,4 +1,5 @@
-﻿using Prism.Navigation;
+﻿using Prism.Commands;
+using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
@@ -20,6 +21,8 @@ namespace SelfCheckout.ViewModels
 {
     public class DeviceViewModel : ViewModelBase
     {
+        ISaleEngineService _saleEngineService;
+
         List<SimpleSelectedItem> _allDeviceInfoItems;
         ObservableCollection<SimpleSelectedItem> _tabs;
         ObservableCollection<SimpleSelectedItem> _deviceInfoItems;
@@ -34,6 +37,7 @@ namespace SelfCheckout.ViewModels
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService,
             IRegisterService registerService) : base(navigatinService, dialogService)
         {
+            _saleEngineService = saleEngineService;
             _appConfig = selfCheckoutService.AppConfig;
             _customerData = registerService.CustomerData;
             _loginData = saleEngineService.LoginData;
@@ -106,7 +110,21 @@ namespace SelfCheckout.ViewModels
             };
         }
 
-        public ICommand TabSelectedCommand => new Command<SimpleSelectedItem>(async (item) =>
+        public ICommand LogoutCommand => new DelegateCommand(async () =>
+        {
+            try
+            {
+                var result = await DialogService.ConfirmAsync(AppResources.Logout, AppResources.ConfirmLogout, AppResources.Yes, AppResources.No);
+                if (result)
+                {
+                    await _saleEngineService.LogoutAsync();
+                    MessagingCenter.Send(this, "Logout");
+                }
+            }
+            catch { }
+        });
+
+        public ICommand TabSelectedCommand => new DelegateCommand<SimpleSelectedItem>(async (item) =>
         {
             if ((int)item.Arg1 == 2 && !IsAuthorized)
             {

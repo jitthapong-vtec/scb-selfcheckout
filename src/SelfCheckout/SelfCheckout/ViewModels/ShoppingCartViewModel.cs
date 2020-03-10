@@ -44,11 +44,11 @@ namespace SelfCheckout.ViewModels
                     SessionKey = SaleEngineService.LoginData.SessionKey,
                     ItemCode = "00008211470207673"
                 },
-                   //new
-                   //{
-                   //    SessionKey = LoginData.SessionKey,
-                   //    ItemCode = "00008190415206226"
-                   //}
+                   new
+                   {
+                       SessionKey = SaleEngineService.LoginData.SessionKey,
+                       ItemCode = "00008190415206226"
+                   }
                };
 
             CustomerData = RegisterService.CustomerData;

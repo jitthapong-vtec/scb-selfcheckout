@@ -71,7 +71,7 @@
                 <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshOrderCommand}">
                     <CollectionView ItemsSource="{Binding OrderDetails}">
                         <CollectionView.ItemsLayout>
-                            <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start"/>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
                         </CollectionView.ItemsLayout>
                         <CollectionView.EmptyView>
                             <Grid>

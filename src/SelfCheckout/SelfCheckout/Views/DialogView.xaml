@@ -11,14 +11,14 @@
              x:Class="SelfCheckout.Views.DialogView">
   <ContentView.Content>
         <Frame>
-            <Grid>
+            <Grid Margin="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Margin="8" Text="{Binding Title}" FontSize="Large" FontAttributes="Bold"/>
-                <Label Grid.Row="1" Margin="8,4,8,4" Text="{Binding Message}" VerticalOptions="Center"/>
+                <Label Grid.Row="0" Margin="8,4,8,0" Text="{Binding Title}" FontSize="Large" FontAttributes="Bold"/>
+                <Label Grid.Row="1" Margin="8" Text="{Binding Message}" VerticalOptions="Center"/>
                 <controls:TappedGrid Grid.Row="2" HorizontalOptions="End" WidthRequest="100" Margin="8" 
                                      effects:RoundCornersEffect.CornerRadius="3"
                                      TappedCommand="{Binding OkCommand}">

@@ -9,27 +9,31 @@
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.ConfirmDialogView">
-    <Frame Padding="2">
-        <Grid>
+    <Frame>
+        <Grid Margin="8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Margin="8" Text="{Binding Title}"/>
-            <Label Grid.Row="1" Margin="12" Text="{Binding Message}" VerticalOptions="Center"/>
-            <StackLayout Orientation="Horizontal" Grid.Row="2" HorizontalOptions="FillAndExpand">
-                <controls:TappedGrid HorizontalOptions="FillAndExpand" TappedCommand="{Binding YesCommand}"
+            <Label Grid.Row="0" Margin="8,4,8,0" Text="{Binding Title}" FontSize="Large" FontAttributes="Bold"/>
+            <Label Grid.Row="1" Margin="8" Text="{Binding Message}" VerticalOptions="Center"/>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <controls:TappedGrid Grid.Column="0" TappedCommand="{Binding YesCommand}"
                                      effects:RoundCornersEffect.CornerRadius="3">
                     <controls:GradientBackground/>
-                    <Label Text="{Binding YesButtonText}" TextColor="{StaticResource Gray50}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    <Label Text="{Binding OkButtonText}" TextColor="{StaticResource Gray50}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                 </controls:TappedGrid>
-                <controls:TappedGrid HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray200}" 
+                <controls:TappedGrid Grid.Column="1" BackgroundColor="{StaticResource Gray200}" 
                                      effects:RoundCornersEffect.CornerRadius="3"
                                      TappedCommand="{Binding NoCommand}">
-                    <Label Text="{Binding NoButtonText}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    <Label Text="{Binding CancelButtonText}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                 </controls:TappedGrid>
-            </StackLayout>
+            </Grid>
         </Grid>
     </Frame>
 </ContentView>

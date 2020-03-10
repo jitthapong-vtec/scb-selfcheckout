@@ -105,6 +105,11 @@ namespace SelfCheckout.ViewModels
             PageTitle = firstTab.Title;
             CurrentView = firstTab.Page;
 
+            MessagingCenter.Subscribe<DeviceViewModel>(this, "Logout", async (s) =>
+            {
+                await NavigationService.GoBackToRootAsync();
+            });
+
             MessagingCenter.Subscribe<ViewModelBase>(this, "OrderRefresh", (s) =>
             {
                 OrderData = _saleEngineService.OrderData;
@@ -125,6 +130,14 @@ namespace SelfCheckout.ViewModels
 
             await LoadMasterDataAsync();
             await LoadCurrencyAsync();
+        }
+
+        public override void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            base.OnNavigatedFrom(parameters);
+
+            MessagingCenter.Unsubscribe<DeviceViewModel>(this, "Logout");
+            MessagingCenter.Unsubscribe<ViewModelBase>(this, "OrderRefresh");
         }
 
         public ICommand TabSelectedCommand => new Command<TabItem>(async (item) => await SelectTabAsync(item));

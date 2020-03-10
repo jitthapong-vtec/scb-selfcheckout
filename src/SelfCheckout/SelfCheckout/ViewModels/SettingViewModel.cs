@@ -17,16 +17,26 @@ namespace SelfCheckout.ViewModels
 {
     public class SettingViewModel : ViewModelBase
     {
-        public SettingViewModel(INavigationService navigatinService, IDialogService dialogService) : base(navigatinService, dialogService)
+        ISelfCheckoutService _selfCheckoutService;
+
+        public SettingViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService)
         {
+            _selfCheckoutService = selfCheckoutService;
         }
 
-        public void SaveSettings()
+        public override void OnNavigatedFrom(INavigationParameters parameters)
         {
+            base.OnNavigatedFrom(parameters);
+
             Preferences.Set("self_checkout_api", SelfCheckoutApi);
         }
 
         public string SelfCheckoutApi { get => GlobalSettings.Instance.SelfCheckoutApi; }
+
+        public AppConfig AppConfig
+        {
+            get => _selfCheckoutService.AppConfig;
+        }
 
         public string DeviceUID
         {

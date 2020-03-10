@@ -11,8 +11,8 @@ namespace SelfCheckout.ViewModels
     {
         string _title;
         string _message;
-        string _yesButtonText;
-        string _noButtonText;
+        string _okButtonText;
+        string _cancelButtonText;
 
         public string Title
         {
@@ -26,16 +26,16 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _message, value);
         }
 
-        public string YesButtonText
+        public string OkButtonText
         {
-            get => _yesButtonText;
-            set => SetProperty(ref _yesButtonText, value);
+            get => _okButtonText;
+            set => SetProperty(ref _okButtonText, value);
         }
 
-        public string NoButtonText
+        public string CancelButtonText
         {
-            get => _noButtonText;
-            set => SetProperty(ref _noButtonText, value);
+            get => _cancelButtonText;
+            set => SetProperty(ref _cancelButtonText, value);
         }
 
         public ICommand YesCommand => new DelegateCommand(() =>
@@ -54,7 +54,7 @@ namespace SelfCheckout.ViewModels
         {
             var parameters = new DialogParameters()
             {
-                {"IsConfirm", isConfirm }
+                {"IsConfirmed", isConfirm }
             };
 
             RequestClose(parameters);
@@ -73,7 +73,8 @@ namespace SelfCheckout.ViewModels
         {
             Title = parameters.GetValue<string>("Title");
             Message = parameters.GetValue<string>("Message");
-            YesButtonText = parameters.GetValue<string>("OkButtonText");
+            OkButtonText = parameters.GetValue<string>("OkButtonText");
+            CancelButtonText = parameters.GetValue<string>("CancelButtonText");
         }
     }
 }

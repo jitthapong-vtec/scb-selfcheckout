@@ -22,21 +22,28 @@ namespace SelfCheckout.Extensions
         public static Task<bool> ConfirmAsync(this IDialogService dialogService, string title, string message, string okButtonText, string cancelButtonText)
         {
             var tcs = new TaskCompletionSource<bool>();
-            Task.Run(() =>
-            {
-                var parameters = new DialogParameters
+            var parameters = new DialogParameters
                 {
                     { "Title", title },
                     { "Message", message },
                     { "OkButtonText", okButtonText },
                     { "CancelButtonText", cancelButtonText }
                 };
-                void Callback(IDialogResult result)
+            try
+            {
+                dialogService.ShowDialog("ConfirmDialog", parameters, (result) =>
                 {
-                    tcs.SetResult(result.Parameters.GetValue<bool>("confirmed"));
-                }
-                dialogService.ShowDialog("ConfirmDialog", parameters, Callback);
-            });
+                    if (result.Exception != null)
+                    {
+                        tcs.SetException(result.Exception);
+                    }
+                    tcs.SetResult(result.Parameters.GetValue<bool>("IsConfirmed"));
+                });
+            }
+            catch (Exception ex)
+            {
+                tcs.SetException(ex);
+            }
             return tcs.Task;
         }
 

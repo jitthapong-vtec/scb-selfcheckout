@@ -17,12 +17,10 @@ namespace SelfCheckout.ViewModels
     public class LandingViewModel : ViewModelBase
     {
         ISelfCheckoutService _selfCheckoutService;
-        ISaleEngineService _saleEngineService;
 
-        public LandingViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) : base(navigatinService, dialogService)
+        public LandingViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService)
         {
             _selfCheckoutService = selfCheckoutService;
-            _saleEngineService = saleEngineService;
         }
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
@@ -34,11 +32,7 @@ namespace SelfCheckout.ViewModels
                 IsBusy = true;
 
                 await _selfCheckoutService.LoadConfigAsync();
-
-                if (_saleEngineService.LoginData == null)
-                    await NavigationService.NavigateAsync("LoginView");
-                else
-                    await NavigationService.NavigateAsync("BorrowView");
+                await NavigationService.NavigateAsync("LoginView");
             }
             catch (Exception ex)
             {

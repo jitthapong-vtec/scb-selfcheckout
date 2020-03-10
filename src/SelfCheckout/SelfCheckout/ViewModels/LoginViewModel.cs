@@ -12,7 +12,7 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class LoginViewModel : AuthorizationViewModelBase
+    public class LoginViewModel : AuthorizationViewModelBase, IInitialize, INavigatedAware
     {
         INavigationService _navigationService;
         IDialogService _dialogService;
@@ -27,10 +27,22 @@ namespace SelfCheckout.ViewModels
         {
             _dialogService.ShowDialog("AuthorizeDialog", null, async (result) =>
             {
-                if (result.Parameters.GetValue<bool>("IsAutorized"))
+                if (result.Parameters.GetValue<bool>("IsAuthorized"))
                     await _navigationService.NavigateAsync("SettingView");
             });
         });
+
+        public void Initialize(INavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+        }
 
         protected override async Task AuthorizeCallback(LoginData loginData)
         {
