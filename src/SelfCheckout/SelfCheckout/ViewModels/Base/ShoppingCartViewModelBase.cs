@@ -55,12 +55,7 @@ namespace SelfCheckout.ViewModels.Base
             {
                 IsBusy = true;
 
-                var validateResult = await SelfCheckoutService.ValidateShoppingCartAsync(SaleEngineService.LoginData.UserInfo.MachineEnv.MachineIp, shoppingCart);
-                if (!validateResult.IsCompleted)
-                {
-                    DialogService.ShowAlert(AppResources.Opps, validateResult.DefaultMessage, AppResources.Close);
-                    return;
-                }
+                await SelfCheckoutService.ValidateShoppingCartAsync(SaleEngineService.LoginData.UserInfo.MachineEnv.MachineIp, shoppingCart);
 
                 SelfCheckoutService.CurrentShoppingCart = shoppingCart;
 
@@ -92,13 +87,13 @@ namespace SelfCheckout.ViewModels.Base
                         var isConfirm = dialogResult.Parameters.GetValue<bool>("IsConfirm");
                         if (isConfirm)
                         {
-                            await StartSessionAsync(shoppingCart);
+                            await ValidateShoppingCartCallback(shoppingCart);
                         }
                     });
                 }
                 else
                 {
-                    await StartSessionAsync(shoppingCart);
+                    await ValidateShoppingCartCallback(shoppingCart);
                 }
             }
             catch (Exception ex)
@@ -111,25 +106,12 @@ namespace SelfCheckout.ViewModels.Base
             }
         }
 
-        async Task StartSessionAsync(string shoppingCart)
-        {
-            var userInfo = SaleEngineService.LoginData?.UserInfo;
-            var startResult = await SelfCheckoutService.StartSessionAsync(userInfo.UserCode, userInfo.MachineEnv.MachineNo, shoppingCart);
-            if (!startResult.IsCompleted)
-            {
-                DialogService.ShowAlert(AppResources.Opps, startResult.DefaultMessage, AppResources.Close);
-                return;
-            }
-
-            await StartSessionCallbackAsync();
-        }
-
-        protected virtual Task StartSessionCallbackAsync()
+        protected virtual Task ValidateShoppingCartCallback(string shoppingCart)
         {
             return Task.FromResult(false);
         }
 
-        protected virtual Task ScanShoppingCartCallback(string inputValue)
+        protected virtual Task ScanShoppingCartCallback(string shoppingCart)
         {
             return Task.FromResult(false);
         }

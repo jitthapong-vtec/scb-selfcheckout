@@ -20,12 +20,19 @@ namespace SelfCheckout.ViewModels
     public class HomeViewModel : ViewModelBase
     {
         IPimCoreService _pimCoreService;
+        ISelfCheckoutService _selfCheckoutService;
 
         ObservableCollection<PimCoreImageAsset> _assets;
 
-        public HomeViewModel(INavigationService navigatinService, IDialogService dialogService, IPimCoreService pimCoreService) : base(navigatinService, dialogService)
+        public HomeViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, IPimCoreService pimCoreService) : base(navigatinService, dialogService)
         {
+            _selfCheckoutService = selfCheckoutService;
             _pimCoreService = pimCoreService;
+
+            MessagingCenter.Subscribe<MainViewModel>(this, "LanguageChanged", async (s) =>
+            {
+                await LoadImageAsset();
+            });
         }
 
         public ObservableCollection<PimCoreImageAsset> Assets
@@ -44,7 +51,8 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var result = await _pimCoreService.GetMediaByLocationAsync();
+                var lang = _selfCheckoutService.CurrentLanguage.LangCode;
+                var result = await _pimCoreService.GetMediaByLocationAsync(lang.ToLower());
                 if (result.Status == "success")
                 {
                     Assets = new ObservableCollection<PimCoreImageAsset>();
@@ -56,8 +64,8 @@ namespace SelfCheckout.ViewModels
                             if (assetResult.Status == "success")
                             {
                                 var asset = assetResult.Data;
-                                asset.DetailTitle = "Detail title";
-                                asset.DetailDesc = "Detail desc";
+                                asset.DetailTitle = media.Title;
+                                asset.DetailDesc = "";
                                 asset.DetailLink = media.Link;
                                 Assets.Add(asset);
                             }

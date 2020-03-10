@@ -43,9 +43,28 @@ namespace SelfCheckout.ViewModels
             return Task.FromResult(true);
         }
 
-        protected override async Task StartSessionCallbackAsync()
+        protected override async Task ValidateShoppingCartCallback(string shoppingCart)
         {
-            await NavigationService.NavigateAsync("MainView");
+            try
+            {
+                IsBusy = true;
+                var userInfo = SaleEngineService.LoginData?.UserInfo;
+                var startResult = await SelfCheckoutService.StartSessionAsync(userInfo.UserCode, userInfo.MachineEnv.MachineNo, shoppingCart);
+                if (!startResult.IsCompleted)
+                {
+                    DialogService.ShowAlert(AppResources.Opps, startResult.DefaultMessage, AppResources.Close);
+                    return;
+                }
+                await NavigationService.NavigateAsync("MainView");
+            }
+            catch (Exception ex)
+            {
+                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }

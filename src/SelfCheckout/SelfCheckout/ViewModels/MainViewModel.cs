@@ -494,10 +494,10 @@ namespace SelfCheckout.ViewModels
 
                 if (paymentSuccess)
                 {
-                    if(!OrderData.IsFinish)
-                    {
-                        return;
-                    }
+                    //if(!OrderData.IsFinish)
+                    //{
+                    //    return;
+                    //}
                     var finishPaymentPayload = new
                     {
                         SessionKey = _saleEngineService.LoginData.SessionKey,
@@ -519,6 +519,10 @@ namespace SelfCheckout.ViewModels
                     _saleEngineService.LoginData = loginResult.Data;
 
                     DialogService.ShowAlert(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.Close);
+
+                    var shoppingCartTab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
+                    await (shoppingCartTab?.Page.BindingContext as ShoppingCartViewModel)?.LoadOrderAsync();
+
                     var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
                     TabSelectedCommand.Execute(orderTab);
                 }
@@ -636,7 +640,11 @@ namespace SelfCheckout.ViewModels
         public Language LanguageSelected
         {
             get => _languageSelected;
-            set => SetProperty(ref _languageSelected, value);
+            set => SetProperty(ref _languageSelected, value, () =>
+            {
+                _selfCheckoutService.CurrentLanguage = value;
+                MessagingCenter.Send(this, "LanguageChanged");
+            });
         }
 
         public Currency CurrencySelected

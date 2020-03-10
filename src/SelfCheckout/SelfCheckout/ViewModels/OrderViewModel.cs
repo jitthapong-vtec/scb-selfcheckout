@@ -78,7 +78,24 @@ namespace SelfCheckout.ViewModels
 
         public override async Task OnTabSelected(TabItem item)
         {
-            await LoadOrderListAsync();
+            await LoadSessionDetailAsync();
+            //await LoadOrderListAsync();
+        }
+
+        async Task LoadSessionDetailAsync()
+        {
+            try
+            {
+                var result = await _selfCheckoutService.GetSessionDetialAsync(_selfCheckoutService.CurrentSessionKey);
+            }
+            catch(Exception ex)
+            {
+
+            }
+            finally
+            {
+
+            }
         }
 
         async Task LoadOrderListAsync()
@@ -94,7 +111,7 @@ namespace SelfCheckout.ViewModels
                         {
                             GROUP = "tran_no",
                             CODE = "shopping_card",
-                            valueOfString = _selfCheckoutService.CurrentShoppingCart
+                            valueOfString = "3600000711400"
                         }
                     },
                     paging = new
@@ -112,32 +129,25 @@ namespace SelfCheckout.ViewModels
                 };
 
                 var result = await _saleEngineService.GetOrderListAsync(payload);
-                if (result.IsCompleted)
+                var orderData = _saleEngineService.OrderData;
+
+                var t1 = Tabs.Where(t => (int)t.Arg1 == 1).FirstOrDefault();
+                var t2 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
+
+                t1.Text1 = $"{orderData.TotalInvoice}";
+                t2.Text1 = $"{orderData.BillingQty} {orderData.BillingUnit}";
+
+                var orderInvoices = new List<OrderInvoiceGroup>();
+                foreach (var orderInvoice in orderData.OrderInvoices)
                 {
-                    var orderData = _saleEngineService.OrderData;
-                    
-                    var t1 = Tabs.Where(t => (int)t.Arg1 == 1).FirstOrDefault();
-                    var t2 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
-
-                    t1.Text1 = $"{orderData.TotalInvoice}";
-                    t2.Text1 = $"{orderData.BillingQty} {orderData.BillingUnit}";
-
-                    var orderInvoices = new List<OrderInvoiceGroup>();
-                    foreach (var orderInvoice in orderData.OrderInvoices)
+                    orderInvoices.Add(new OrderInvoiceGroup()
                     {
-                        orderInvoices.Add(new OrderInvoiceGroup()
-                        {
-                            ViewType = 0
-                        });
-                    }
-                    OrderInvoices = orderInvoices.ToObservableCollection();
+                        ViewType = 0
+                    });
+                }
+                OrderInvoices = orderInvoices.ToObservableCollection();
 
-                    MessagingCenter.Send<ViewModelBase>(this, "OrderRefresh");
-                }
-                else
-                {
-                    DialogService.ShowAlert(AppResources.Opps, result.DefaultMessage);
-                }
+                MessagingCenter.Send<ViewModelBase>(this, "OrderRefresh");
             }
             catch (Exception ex)
             {

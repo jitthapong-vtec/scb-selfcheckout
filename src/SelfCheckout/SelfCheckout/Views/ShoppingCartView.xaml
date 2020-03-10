@@ -70,10 +70,13 @@
                 </Grid>
                 <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshOrderCommand}">
                     <CollectionView ItemsSource="{Binding OrderDetails}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start"/>
+                        </CollectionView.ItemsLayout>
                         <CollectionView.EmptyView>
                             <Grid>
                                 <StackLayout VerticalOptions="Center">
-                                    <Image Source="shopping_cart" HorizontalOptions="Center" Aspect="AspectFit"/>
+                                    <Image Source="shopping_cart" WidthRequest="48" HeightRequest="48" HorizontalOptions="Center" Aspect="AspectFit"/>
                                     <Label HorizontalTextAlignment="Center" Text="{i18n:Translate ShoppingCartEmpty}" FontSize="Medium"/>
                                 </StackLayout>
                             </Grid>

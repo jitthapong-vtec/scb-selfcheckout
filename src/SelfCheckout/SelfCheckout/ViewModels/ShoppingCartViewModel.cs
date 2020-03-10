@@ -198,11 +198,27 @@ namespace SelfCheckout.ViewModels
             return base.OnTabDeSelected(item);
         }
 
-        protected override async Task StartSessionCallbackAsync()
+        protected override async Task ValidateShoppingCartCallback(string shoppingCart)
         {
-            CustomerData = RegisterService.CustomerData;
-            CurrentShoppingCart = SelfCheckoutService.CurrentShoppingCart;
-            await LoadOrderAsync();
+            try
+            {
+                IsBusy = true;
+                var headerAttr = SaleEngineService.OrderData.HeaderAttributes.Where(o => o.Code == "order_no").FirstOrDefault();
+                var orderNo = Convert.ToInt32(headerAttr.ValueOfDecimal);
+                var result = await SelfCheckoutService.UpdateSessionAsync(SelfCheckoutService.CurrentSessionKey, orderNo, shoppingCart);
+
+                CustomerData = RegisterService.CustomerData;
+                CurrentShoppingCart = SelfCheckoutService.CurrentShoppingCart;
+                await LoadOrderAsync();
+            }
+            catch (Exception ex)
+            {
+                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         public async Task LoadOrderAsync()

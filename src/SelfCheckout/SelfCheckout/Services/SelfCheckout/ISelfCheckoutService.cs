@@ -14,6 +14,10 @@ namespace SelfCheckout.Services.SelfCheckout
 
         IList<Language> Languages { get; }
 
+        Language CurrentLanguage { get; set; }
+
+        int CurrentSessionKey { get; }
+
         string CurrentShoppingCart { get; set; }
 
         Task LoadConfigAsync();

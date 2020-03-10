@@ -112,25 +112,29 @@ namespace SelfCheckout.Services.SaleEngine
 
         public async Task<ApiResultData<List<OrderData>>> GetOrderListAsync(object payload)
         {
-            //var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrderList");
-            //return await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
+            var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrderList");
+            var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            OrderData = result.Data.FirstOrDefault();
+            return result;
 
-            var apiResultData = new ApiResultData<List<OrderData>>();
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "SelfCheckout.Resources.order_list.json";
+            //var apiResultData = new ApiResultData<List<OrderData>>();
+            //var assembly = Assembly.GetExecutingAssembly();
+            //var resourceName = "SelfCheckout.Resources.order_list.json";
 
-            try
-            {
-                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    string result = await reader.ReadToEndAsync();
-                    apiResultData = JsonConvert.DeserializeObject<ApiResultData<List<OrderData>>>(result);
-                    OrderData = apiResultData.Data.FirstOrDefault();
-                }
-            }
-            catch { }
-            return apiResultData;
+            //try
+            //{
+            //    using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            //    using (StreamReader reader = new StreamReader(stream))
+            //    {
+            //        string result = await reader.ReadToEndAsync();
+            //        apiResultData = JsonConvert.DeserializeObject<ApiResultData<List<OrderData>>>(result);
+            //        OrderData = apiResultData.Data.FirstOrDefault();
+            //    }
+            //}
+            //catch { }
+            //return apiResultData;
         }
 
         public async Task<ApiResultData<Wallet>> GetWalletTypeFromBarcodeAsync(object payload)
