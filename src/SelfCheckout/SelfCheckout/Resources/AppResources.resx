@@ -135,8 +135,8 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="ChangeShoppingCart" xml:space="preserve">
-    <value>Change Shopping Cart</value>
+  <data name="ChangeShoppingCard" xml:space="preserve">
+    <value>Change Shopping Card</value>
   </data>
   <data name="CheckerManagementSystem" xml:space="preserve">
     <value>Checker Management System</value>
@@ -158,6 +158,9 @@
   </data>
   <data name="ConfirmUseCoupon" xml:space="preserve">
     <value>Do you want to use coupon?</value>
+  </data>
+  <data name="ContinueShopping" xml:space="preserve">
+    <value>Continue Shopping</value>
   </data>
   <data name="CountDown" xml:space="preserve">
     <value>Countdown</value>
@@ -227,6 +230,9 @@
   <data name="MyCart" xml:space="preserve">
     <value>My Cart</value>
   </data>
+  <data name="MyOrder" xml:space="preserve">
+    <value>My order</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -284,11 +290,11 @@
   <data name="ScanCoupon" xml:space="preserve">
     <value>Scan Coupon</value>
   </data>
-  <data name="ScanLaserOnShoppingCart" xml:space="preserve">
-    <value>Please scan laser on QR Shopping cart</value>
+  <data name="ScanLaserOnShoppingCard" xml:space="preserve">
+    <value>Please scan laser on QR Shopping card</value>
   </data>
-  <data name="ScanShoppingCart" xml:space="preserve">
-    <value>Please scan shopping cart</value>
+  <data name="ScanShoppingCard" xml:space="preserve">
+    <value>Please scan shopping card</value>
   </data>
   <data name="SelectPaymentMethod" xml:space="preserve">
     <value>Select payment method</value>

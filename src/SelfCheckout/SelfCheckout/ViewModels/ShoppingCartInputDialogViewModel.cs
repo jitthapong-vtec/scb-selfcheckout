@@ -9,19 +9,19 @@ using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class ShoppingCartInputDialogViewModel : BindableBase, IDialogAware
+    public class ShoppingCardInputDialogViewModel : BindableBase, IDialogAware
     {
         public event Action<IDialogParameters> RequestClose;
         string _inputValue;
 
         IDialogService _dialogService;
 
-        public ShoppingCartInputDialogViewModel(IDialogService dialogService)
+        public ShoppingCardInputDialogViewModel(IDialogService dialogService)
         {
             _dialogService = dialogService;
         }
 
-        public ICommand ScanShoppingCartCommand => new DelegateCommand(() =>
+        public ICommand ScanShoppingCardCommand => new DelegateCommand(() =>
          {
              _dialogService.ShowDialog("BarcodeScanDialog", null, (scanResult) =>
              {
@@ -42,11 +42,11 @@ namespace SelfCheckout.ViewModels
              });
          });
 
-        public ICommand ValidateShoppingCartCommand => new DelegateCommand(() =>
+        public ICommand ValidateShoppingCardCommand => new DelegateCommand(() =>
         {
             var parameters = new DialogParameters()
             {
-                { "ShoppingCart", InputValue }
+                { "ShoppingCard", InputValue }
             };
             RequestClose(parameters);
         });

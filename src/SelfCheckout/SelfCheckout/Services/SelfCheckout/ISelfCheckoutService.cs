@@ -18,7 +18,9 @@ namespace SelfCheckout.Services.SelfCheckout
 
         int CurrentSessionKey { get; }
 
-        string CurrentShoppingCart { get; set; }
+        string StartedShoppingCard { get; set; }
+
+        string CurrentShoppingCard { get; set; }
 
         Task LoadConfigAsync();
 
@@ -26,9 +28,9 @@ namespace SelfCheckout.Services.SelfCheckout
 
         Task LoadPaymentAsync();
 
-        Task<ApiResultData<int>> StartSessionAsync(string userId, string machineNo, string shoppingCartNo);
+        Task<ApiResultData<int>> StartSessionAsync(string userId, string machineNo, string shoppingCardNo);
 
-        Task<ApiResultData<bool>> UpdateSessionAsync(int sessionKey, int orderNo, string shoppingCartNo);
+        Task<ApiResultData<bool>> UpdateSessionAsync(int sessionKey, int orderNo, string shoppingCardNo);
 
         Task<ApiResultData<bool>> EndSessionAsync(int sessionKey, string userId, string machineNo);
 
@@ -40,6 +42,6 @@ namespace SelfCheckout.Services.SelfCheckout
 
         Task<ApiResultData<bool>> ValidateMachineAsync(string machineIp);
 
-        Task<ApiResultData<bool>> ValidateShoppingCartAsync(string machineIp, string shoppingCart);
+        Task<ApiResultData<bool>> ValidateShoppingCardAsync(string machineIp, string shoppingCard);
     }
 }

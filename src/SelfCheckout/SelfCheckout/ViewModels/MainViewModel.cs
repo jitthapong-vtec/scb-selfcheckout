@@ -507,10 +507,6 @@ namespace SelfCheckout.ViewModels
 
                 if (paymentSuccess)
                 {
-                    //if(!OrderData.IsFinish)
-                    //{
-                    //    return;
-                    //}
                     var finishPaymentPayload = new
                     {
                         SessionKey = _saleEngineService.LoginData.SessionKey,
@@ -524,20 +520,25 @@ namespace SelfCheckout.ViewModels
                             }
                         }
                     };
-
                     await _saleEngineService.FinishPaymentOrderAsync(finishPaymentPayload);
+
+                    var headerAttr = _saleEngineService.OrderData.HeaderAttributes.Where(o => o.Code == "order_no").FirstOrDefault();
+                    var orderNo = Convert.ToInt32(headerAttr.ValueOfDecimal);
+                    var result = await _selfCheckoutService.UpdateSessionAsync(_selfCheckoutService.CurrentSessionKey, orderNo, _selfCheckoutService.StartedShoppingCard);
 
                     var appConfig = _selfCheckoutService.AppConfig;
                     var loginResult = await _saleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
                     _saleEngineService.LoginData = loginResult.Data;
 
-                    DialogService.ShowAlert(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.Close);
-
                     var shoppingCartTab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
                     await (shoppingCartTab?.Page.BindingContext as ShoppingCartViewModel)?.LoadOrderAsync();
 
-                    var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
-                    TabSelectedCommand.Execute(orderTab);
+                    var isContinueShopping = await DialogService.ConfirmAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.ContinueShopping, AppResources.MyOrder);
+                    if (!isContinueShopping)
+                    {
+                        var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
+                        TabSelectedCommand.Execute(orderTab);
+                    }
                 }
             }
             catch (Exception ex)

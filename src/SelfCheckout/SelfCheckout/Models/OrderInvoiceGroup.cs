@@ -12,7 +12,7 @@ namespace SelfCheckout.Models
         public string PassportNo { get; set; }
         public string PaymentType { get; set; }
         public string CustomerName { get; set; }
-        public string ShoppingCartNo { get; set; }
+        public string ShoppingCardNo { get; set; }
         public decimal TotalNet { get; set; }
     }
 }

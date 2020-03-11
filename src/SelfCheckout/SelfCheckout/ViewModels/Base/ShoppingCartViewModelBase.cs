@@ -26,7 +26,7 @@ namespace SelfCheckout.ViewModels.Base
             RegisterService = registerService;
         }
 
-        protected void ScanShoppingCart()
+        protected void ScanShoppingCard()
         {
             DialogService.ShowDialog("BarcodeScanDialog", null, (scanResult) =>
             {
@@ -44,24 +44,24 @@ namespace SelfCheckout.ViewModels.Base
                     {
                         inputValue = result;
                     }
-                    ScanShoppingCartCallback(inputValue);
+                    ScanShoppingCardCallback(inputValue);
                 }
             });
         }
 
-        protected async Task ValidateShoppingCartAsync(string shoppingCart)
+        protected async Task ValidateShoppingCardAsync(string shoppingCard)
         {
             try
             {
                 IsBusy = true;
 
-                await SelfCheckoutService.ValidateShoppingCartAsync(SaleEngineService.LoginData.UserInfo.MachineEnv.MachineIp, shoppingCart);
+                await SelfCheckoutService.ValidateShoppingCardAsync(SaleEngineService.LoginData.UserInfo.MachineEnv.MachineIp, shoppingCard);
 
-                SelfCheckoutService.CurrentShoppingCart = shoppingCart;
+                SelfCheckoutService.CurrentShoppingCard = shoppingCard;
 
                 var payload = new
                 {
-                    shoppingCard = shoppingCart,
+                    shoppingCard = shoppingCard,
                     SubBranch = SelfCheckoutService.AppConfig.SubBranch,
                     isTour = false,
                     isGenPdfPromotion = false,
@@ -73,27 +73,27 @@ namespace SelfCheckout.ViewModels.Base
                 var customerData = customersData.FirstOrDefault();
                 if (customerData?.Person != null)
                 {
-                    //if (!CustomerData.Person.IsActivate)
-                    //{
-                    //    await DialogService.ShowAlertAsync(AppResources.Opps, $"{CustomerData.Person.NativeName} is not activate!", AppResources.Close);
-                    //    return;
-                    //}
+                    if (!customerData.Person.IsActivate)
+                    {
+                        DialogService.ShowAlert(AppResources.Opps, $"{customerData.Person.NativeName} is not activate!", AppResources.Close);
+                        return;
+                    }
                     var parameters = new DialogParameters()
                     {
                         {"Person", customerData.Person }
                     };
-                    DialogService.ShowDialog("CustomerCartConfirmDialog", parameters, async (dialogResult) =>
+                    DialogService.ShowDialog("CustomerCardConfirmDialog", parameters, async (dialogResult) =>
                     {
                         var isConfirm = dialogResult.Parameters.GetValue<bool>("IsConfirm");
                         if (isConfirm)
                         {
-                            await ValidateShoppingCartCallback(shoppingCart);
+                            await ValidateShoppingCardCallback(shoppingCard);
                         }
                     });
                 }
                 else
                 {
-                    await ValidateShoppingCartCallback(shoppingCart);
+                    await ValidateShoppingCardCallback(shoppingCard);
                 }
             }
             catch (Exception ex)
@@ -106,12 +106,12 @@ namespace SelfCheckout.ViewModels.Base
             }
         }
 
-        protected virtual Task ValidateShoppingCartCallback(string shoppingCart)
+        protected virtual Task ValidateShoppingCardCallback(string shoppingCard)
         {
             return Task.FromResult(false);
         }
 
-        protected virtual Task ScanShoppingCartCallback(string shoppingCart)
+        protected virtual Task ScanShoppingCardCallback(string shoppingCard)
         {
             return Task.FromResult(false);
         }

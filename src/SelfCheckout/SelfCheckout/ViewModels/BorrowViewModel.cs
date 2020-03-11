@@ -27,9 +27,9 @@ namespace SelfCheckout.ViewModels
         {
         }
 
-        public ICommand ScanShoppingCartCommand => new DelegateCommand(() => ScanShoppingCart());
+        public ICommand ScanShoppingCardCommand => new DelegateCommand(() => ScanShoppingCard());
 
-        public ICommand ValidateShoppingCartCommand => new DelegateCommand(async () => await ValidateShoppingCartAsync(InputValue));
+        public ICommand ValidateShoppingCardCommand => new DelegateCommand(async () => await ValidateShoppingCardAsync(InputValue));
 
         public string InputValue
         {
@@ -37,25 +37,25 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _inputValue, value);
         }
 
-        protected override Task ScanShoppingCartCallback(string inputValue)
+        protected override Task ScanShoppingCardCallback(string inputValue)
         {
             InputValue = inputValue;
             return Task.FromResult(true);
         }
 
-        protected override async Task ValidateShoppingCartCallback(string shoppingCart)
+        protected override async Task ValidateShoppingCardCallback(string shoppingCard)
         {
             try
             {
                 IsBusy = true;
                 var userInfo = SaleEngineService.LoginData?.UserInfo;
-                var startResult = await SelfCheckoutService.StartSessionAsync(userInfo.UserCode, userInfo.MachineEnv.MachineNo, shoppingCart);
+                var startResult = await SelfCheckoutService.StartSessionAsync(userInfo.UserCode, userInfo.MachineEnv.MachineNo, shoppingCard);
                 if (!startResult.IsCompleted)
                 {
                     DialogService.ShowAlert(AppResources.Opps, startResult.DefaultMessage, AppResources.Close);
                     return;
                 }
-                await NavigationService.NavigateAsync("MainView");
+                var result = await NavigationService.NavigateAsync("MainView");
             }
             catch (Exception ex)
             {

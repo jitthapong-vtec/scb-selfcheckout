@@ -12,6 +12,7 @@ using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -27,32 +28,16 @@ namespace SelfCheckout.ViewModels
         ObservableCollection<OrderDetail> _orderDetails;
         CustomerData _customerData;
 
-        string _currentShoppingCart;
-
-        object[] items;
+        string _currentShoppingCard;
 
         bool _isSelectAllOrder;
         bool _isAnyOrderSelected;
-        bool _isChangeShoppingCartShowing;
+        bool _isChangeShoppingCardShowing;
 
         public ShoppingCartViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, saleEngineService, selfCheckoutService, registerService)
         {
-            items = new object[]
-               {
-                new
-                {
-                    SessionKey = SaleEngineService.LoginData.SessionKey,
-                    ItemCode = "00008211470207673"
-                },
-                   new
-                   {
-                       SessionKey = SaleEngineService.LoginData.SessionKey,
-                       ItemCode = "00008190415206226"
-                   }
-               };
-
             CustomerData = RegisterService.CustomerData;
-            CurrentShoppingCart = SelfCheckoutService.CurrentShoppingCart;
+            CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
         }
 
         public ObservableCollection<OrderDetail> OrderDetails
@@ -61,10 +46,10 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _orderDetails, value);
         }
 
-        public string CurrentShoppingCart
+        public string CurrentShoppingCard
         {
-            get => _currentShoppingCart;
-            set => SetProperty(ref _currentShoppingCart, value);
+            get => _currentShoppingCard;
+            set => SetProperty(ref _currentShoppingCard, value);
         }
 
         public CustomerData CustomerData
@@ -73,10 +58,10 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _customerData, value);
         }
 
-        public bool IsChangeShoppingCartShowing
+        public bool IsChangeShoppingCardShowing
         {
-            get => _isChangeShoppingCartShowing;
-            set => SetProperty(ref _isChangeShoppingCartShowing, value);
+            get => _isChangeShoppingCardShowing;
+            set => SetProperty(ref _isChangeShoppingCardShowing, value);
         }
 
         public bool IsSelectAllOrder
@@ -99,19 +84,19 @@ namespace SelfCheckout.ViewModels
 
         public bool IsFirstSelect { get; set; } = true;
 
-        public ICommand ToggleChangeShoppingCartCommand => new DelegateCommand(() =>
+        public ICommand ToggleChangeShoppingCardCommand => new DelegateCommand(() =>
         {
-            IsChangeShoppingCartShowing = !IsChangeShoppingCartShowing;
+            IsChangeShoppingCardShowing = !IsChangeShoppingCardShowing;
         });
 
-        public ICommand ChangeShoppingCartCommand => new DelegateCommand(() =>
+        public ICommand ChangeShoppingCardCommand => new DelegateCommand(() =>
         {
-            IsChangeShoppingCartShowing = false;
-            DialogService.ShowDialog("ShoppingCartInputDialog", null, async (dialogResult) =>
+            IsChangeShoppingCardShowing = false;
+            DialogService.ShowDialog("ShoppingCardInputDialog", null, async (dialogResult) =>
             {
-                var shoppingCart = dialogResult.Parameters.GetValue<string>("ShoppingCart");
-                if (!string.IsNullOrEmpty(shoppingCart))
-                    await ValidateShoppingCartAsync(shoppingCart);
+                var shoppingCard = dialogResult.Parameters.GetValue<string>("ShoppingCard");
+                if (!string.IsNullOrEmpty(shoppingCard))
+                    await ValidateShoppingCardAsync(shoppingCard);
             });
         });
 
@@ -198,27 +183,11 @@ namespace SelfCheckout.ViewModels
             return base.OnTabDeSelected(item);
         }
 
-        protected override async Task ValidateShoppingCartCallback(string shoppingCart)
+        protected override async Task ValidateShoppingCardCallback(string shoppingCard)
         {
-            try
-            {
-                IsBusy = true;
-                var headerAttr = SaleEngineService.OrderData.HeaderAttributes.Where(o => o.Code == "order_no").FirstOrDefault();
-                var orderNo = Convert.ToInt32(headerAttr.ValueOfDecimal);
-                var result = await SelfCheckoutService.UpdateSessionAsync(SelfCheckoutService.CurrentSessionKey, orderNo, shoppingCart);
-
-                CustomerData = RegisterService.CustomerData;
-                CurrentShoppingCart = SelfCheckoutService.CurrentShoppingCart;
-                await LoadOrderAsync();
-            }
-            catch (Exception ex)
-            {
-                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            CustomerData = RegisterService.CustomerData;
+            CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
+            await LoadOrderAsync();
         }
 
         public async Task LoadOrderAsync()
@@ -234,7 +203,32 @@ namespace SelfCheckout.ViewModels
                         new {
                             GROUP = "tran_no",
                             CODE = "shopping_card",
-                            valueOfString = SelfCheckoutService.CurrentShoppingCart
+                            valueOfString = SelfCheckoutService.CurrentShoppingCard
+                        }
+                    },
+                    paging = new
+                    {
+                        pageNo = 1,
+                        pageSize = 10
+                    },
+                    filter = new object[]
+                    {
+                        new
+                        {
+                            sign = "string",
+                            element = "order_data",
+                            option = "string",
+                            type = "string",
+                            low = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                            height = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                        }
+                    },
+                    sorting = new object[]
+                    {
+                        new
+                        {
+                            sortBy = "headerkey",
+                            orderBy = "desc"
                         }
                     }
                 };
@@ -317,8 +311,12 @@ namespace SelfCheckout.ViewModels
 
         public async Task TestAddOrder()
         {
-            var random = new Random();
-            var payload = items[random.Next(items.Length)];
+            var payload = new
+            {
+                SessionKey = SaleEngineService.LoginData.SessionKey,
+                ItemCode = "00008211470207673"
+            };
+
             try
             {
                 IsBusy = true;

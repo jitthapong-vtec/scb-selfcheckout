@@ -41,9 +41,9 @@ namespace SelfCheckout
             containerRegistry.RegisterDialog<DialogView, DialogViewModel>("CommonDialog");
             containerRegistry.RegisterDialog<ConfirmDialogView, ConfirmDialogViewModel>("ConfirmDialog");
             containerRegistry.RegisterDialog<AuthorizationDialog, AuthorizationDialogViewModel>("AuthorizeDialog");
-            containerRegistry.RegisterDialog<CustomerCartConfirmDialog, CustomerCartConfirmDialogViewModel>("CustomerCartConfirmDialog");
+            containerRegistry.RegisterDialog<CustomerCartConfirmDialog, CustomerCartConfirmDialogViewModel>("CustomerCardConfirmDialog");
             containerRegistry.RegisterDialog<BarcodeScanView, BarcodeScanViewModel>("BarcodeScanDialog");
-            containerRegistry.RegisterDialog<ShoppingCartInputDialog, ShoppingCartInputDialogViewModel>("ShoppingCartInputDialog");
+            containerRegistry.RegisterDialog<ShoppingCardInputDialog, ShoppingCardInputDialogViewModel>("ShoppingCardInputDialog");
 
             containerRegistry.Register<ShoppingCartViewModel>();
             containerRegistry.Register<DeviceViewModel>();

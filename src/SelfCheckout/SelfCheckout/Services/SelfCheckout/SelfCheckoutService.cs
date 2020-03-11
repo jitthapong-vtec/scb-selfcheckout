@@ -17,7 +17,7 @@ namespace SelfCheckout.Services.SelfCheckout
 
         public int CurrentSessionKey { get; private set; }
 
-        public string CurrentShoppingCart { get; set; }
+        public string CurrentShoppingCard { get; set; }
 
         public AppConfig AppConfig { get; private set; }
 
@@ -26,6 +26,8 @@ namespace SelfCheckout.Services.SelfCheckout
         public IList<Language> Languages { get; private set; }
 
         public Language CurrentLanguage { get; set; }
+
+        public string StartedShoppingCard { get; set; }
 
         public async Task LoadConfigAsync()
         {
@@ -103,13 +105,13 @@ namespace SelfCheckout.Services.SelfCheckout
             return result;
         }
 
-        public async Task<ApiResultData<int>> StartSessionAsync(string userId, string machineNo, string shoppingCartNo)
+        public async Task<ApiResultData<int>> StartSessionAsync(string userId, string machineNo, string shoppingCardNo)
         {
             var payload = new
             {
                 user_id = userId,
                 machine_no = machineNo,
-                shoppingcard_no = shoppingCartNo
+                shoppingcard_no = shoppingCardNo
             };
 
             var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/Start");
@@ -117,16 +119,17 @@ namespace SelfCheckout.Services.SelfCheckout
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             CurrentSessionKey = result.Data;
+            StartedShoppingCard = shoppingCardNo;
             return result;
         }
 
-        public async Task<ApiResultData<bool>> UpdateSessionAsync(int sessionKey, int orderNo, string shoppingCartNo)
+        public async Task<ApiResultData<bool>> UpdateSessionAsync(int sessionKey, int orderNo, string shoppingCardNo)
         {
             var payload = new
             {
                 session_key = sessionKey,
                 order_no = orderNo,
-                shoppingcard_no = shoppingCartNo
+                shoppingcard_no = shoppingCardNo
             };
 
             var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/Update");
@@ -145,9 +148,9 @@ namespace SelfCheckout.Services.SelfCheckout
             return result;
         }
 
-        public async Task<ApiResultData<bool>> ValidateShoppingCartAsync(string machineIp, string shoppingCart)
+        public async Task<ApiResultData<bool>> ValidateShoppingCardAsync(string machineIp, string shoppingCard)
         {
-            var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/ValidateShoppingCard?machine_ip={machineIp}&shopping_card={shoppingCart}");
+            var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/ValidateShoppingCard?machine_ip={machineIp}&shopping_card={shoppingCard}");
             var result = await GetAsync<ApiResultData<bool>>(uri.ToString());
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);

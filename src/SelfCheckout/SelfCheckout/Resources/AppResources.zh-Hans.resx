@@ -126,7 +126,7 @@
   <data name="Cancel" xml:space="preserve">
     <value />
   </data>
-  <data name="ChangeShoppingCart" xml:space="preserve">
+  <data name="ChangeShoppingCard" xml:space="preserve">
     <value />
   </data>
   <data name="Checkout" xml:space="preserve">
@@ -195,7 +195,7 @@
   <data name="Profile" xml:space="preserve">
     <value />
   </data>
-  <data name="ScanShoppingCart" xml:space="preserve">
+  <data name="ScanShoppingCard" xml:space="preserve">
     <value />
   </data>
   <data name="Setting" xml:space="preserve">

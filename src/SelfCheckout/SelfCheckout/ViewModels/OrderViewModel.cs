@@ -70,6 +70,11 @@ namespace SelfCheckout.ViewModels
             get => _saleEngineService.LoginData;
         }
 
+        public string CurrentShoppingCard
+        {
+            get => _selfCheckoutService.CurrentShoppingCard;
+        }
+
         public ObservableCollection<OrderInvoiceGroup> OrderInvoices
         {
             get => _orderInvoices;
@@ -78,8 +83,8 @@ namespace SelfCheckout.ViewModels
 
         public override async Task OnTabSelected(TabItem item)
         {
-            await LoadSessionDetailAsync();
-            //await LoadOrderListAsync();
+            //await LoadSessionDetailAsync();
+            await LoadOrderListAsync();
         }
 
         async Task LoadSessionDetailAsync()
@@ -111,7 +116,7 @@ namespace SelfCheckout.ViewModels
                         {
                             GROUP = "tran_no",
                             CODE = "shopping_card",
-                            valueOfString = "3600000711400"
+                            valueOfString = _selfCheckoutService.StartedShoppingCard
                         }
                     },
                     paging = new

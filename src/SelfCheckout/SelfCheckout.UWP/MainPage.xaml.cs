@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Prism;
+using Prism.Ioc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,7 +23,15 @@ namespace SelfCheckout.UWP
         {
             this.InitializeComponent();
 
-            LoadApplication(new SelfCheckout.App());
+            LoadApplication(new SelfCheckout.App(new UwpInitializer()));
+        }
+    }
+
+    public class UwpInitializer : IPlatformInitializer
+    {
+        public void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            // Register any platform specific implementations
         }
     }
 }

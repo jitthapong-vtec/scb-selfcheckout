@@ -60,7 +60,7 @@
                     <Label Grid.Column="1" HorizontalTextAlignment="End">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding CurrentShoppingCart}"/>
+                                <Span Text="{Binding CurrentShoppingCard}"/>
                                 <Span Text=" : "/>
                                 <Span Text="{Binding CustomerData.Person.NativeName}"/>
                             </FormattedString>
@@ -103,11 +103,11 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <controls:TappedGrid Grid.Column="0" TappedCommand="{Binding ToggleChangeShoppingCartCommand}">
+                    <controls:TappedGrid Grid.Column="0" TappedCommand="{Binding ToggleChangeShoppingCardCommand}">
                         <Image Source="chk_shopping_cart" HeightRequest="48"/>
                     </controls:TappedGrid>
-                    <controls:TappedGrid Grid.Column="1" IsVisible="{Binding IsChangeShoppingCartShowing}" TappedCommand="{Binding ChangeShoppingCartCommand}">
-                        <Label HorizontalTextAlignment="Start" VerticalOptions="Center" TextColor="{StaticResource Gray50}" Text="{i18n:Translate ChangeShoppingCart}"/>
+                    <controls:TappedGrid Grid.Column="1" IsVisible="{Binding IsChangeShoppingCardShowing}" TappedCommand="{Binding ChangeShoppingCardCommand}">
+                        <Label HorizontalTextAlignment="Start" VerticalOptions="Center" TextColor="{StaticResource Gray50}" Text="{i18n:Translate ChangeShoppingCard}"/>
                     </controls:TappedGrid>
                 </Grid>
             </Grid>

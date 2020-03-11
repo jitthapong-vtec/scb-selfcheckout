@@ -28,12 +28,13 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <Entry IsVisible="False" x:Name="entrySessionKey" Text="{Binding LoginData.SessionKey}"/>
                     <Grid Grid.Column="0">
                         <forms:ZXingBarcodeImageView
                             BarcodeFormat="QR_CODE"
                             HeightRequest="150"
                             WidthRequest="150"
-                            BarcodeValue="{Binding LoginData.SessionKey}">
+                            BarcodeValue="{Binding Source={x:Reference entrySessionKey}, Path=Text}">
                             <forms:ZXingBarcodeImageView.BarcodeOptions>
                                 <common:EncodingOptions Width="150" Height="150" PureBarcode="True"/>
                             </forms:ZXingBarcodeImageView.BarcodeOptions>
@@ -46,7 +47,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <StackLayout Grid.Column="0">
-                                <Label FontAttributes="Bold" Text="{Binding CurrentShoppingCart}"/>
+                                <Label FontAttributes="Bold" Text="{Binding CurrentShoppingCard}"/>
                                 <Label Text="{Binding CustomerData.Person.EnglishName}"/>
                             </StackLayout>
                             <Image Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Source="ic_user"/>
@@ -84,9 +85,9 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Text="Filter" VerticalOptions="Start"/>
+                            <Label Text="Filter" VerticalOptions="Center" HorizontalTextAlignment="Start"/>
                             <controls:TappedGrid Grid.Column="1" TappedCommand="{Binding CustomerFilterTappedCommand}">
-                                <Label Text="All" VerticalOptions="End"/>
+                                <Label Text="All" VerticalOptions="Center" HorizontalTextAlignment="End"/>
                             </controls:TappedGrid>
                         </Grid>
                         <Label Grid.Column="2" VerticalOptions="Center"
