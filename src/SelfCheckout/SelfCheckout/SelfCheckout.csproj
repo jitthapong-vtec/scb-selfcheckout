@@ -64,6 +64,9 @@
     <Compile Update="Views\ShoppingCardInputDialog.xaml.cs">
       <DependentUpon>ShoppingCardInputDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\OrderSummaryView.xaml.cs">
+      <DependentUpon>OrderSummaryView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\UserAuthenView.xaml.cs">
       <DependentUpon>UserAuthenView.xaml</DependentUpon>
     </Compile>

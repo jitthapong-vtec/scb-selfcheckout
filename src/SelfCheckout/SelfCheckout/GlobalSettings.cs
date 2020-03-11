@@ -1,5 +1,6 @@
 ﻿using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Device;
 using SelfCheckout.Services.Localize;
 using System.Globalization;
 using System.Threading;
@@ -71,12 +72,16 @@ namespace SelfCheckout
             set => Preferences.Set("lang_code", value);
         }
 
-        public string SelfCheckoutApi {
+        public string SelfCheckoutApi
+        {
             get => Preferences.Get("self_checkout_api", "https://kpservices.kingpower.com/portal/developer/selfcheckoutapi/");
         }
 
         public string PimCoreUrl { get => "https://pim.kingpower.com/"; }
 
-        public string MachineIp { get => "127.0.0.1"; }
+        public string MachineIp
+        {
+            get => "127.0.0.1";//DependencyService.Get<IDeviceInformation>().GetDeviceIp();
+        }
     }
 }

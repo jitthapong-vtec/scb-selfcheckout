@@ -1,4 +1,7 @@
-﻿using Android.Util;
+﻿using Android.Content;
+using Android.Net.Wifi;
+using Android.Text.Format;
+using Android.Util;
 using SelfCheckout.Anddroid.Services;
 using SelfCheckout.Services.Device;
 using Xamarin.Forms;
@@ -14,6 +17,14 @@ namespace SelfCheckout.Anddroid.Services
             var context = Android.App.Application.Context;
             var resolver = context.ContentResolver;
             return Secure.GetString(resolver, Secure.AndroidId);
+        }
+
+        public string GetDeviceIp()
+        {
+            var context = Android.App.Application.Context;
+            WifiManager wm = (WifiManager)context.GetSystemService(Context.WifiService);
+            string ip = Formatter.FormatIpAddress(wm.ConnectionInfo.IpAddress);
+            return ip;
         }
     }
 }

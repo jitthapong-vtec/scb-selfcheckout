@@ -26,6 +26,9 @@ namespace SelfCheckout.ViewModels
 
         ObservableCollection<SimpleSelectedItem> _tabs;
         ObservableCollection<OrderInvoiceGroup> _orderInvoices;
+        OrderData _orderData;
+
+        bool _summaryShowing;
 
         public OrderViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService)
         {
@@ -54,10 +57,21 @@ namespace SelfCheckout.ViewModels
 
         });
 
+        public ICommand ShowSummaryCommand => new Command(() =>
+        {
+            SummaryShowing = !SummaryShowing;
+        });
+
         public ObservableCollection<SimpleSelectedItem> Tabs
         {
             get => _tabs;
             set => SetProperty(ref _tabs, value);
+        }
+
+        public OrderData OrderData
+        {
+            get => _orderData;
+            set => SetProperty(ref _orderData, value);
         }
 
         public CustomerData CustomerData
@@ -81,6 +95,12 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _orderInvoices, value);
         }
 
+        public bool SummaryShowing
+        {
+            get => _summaryShowing;
+            set => SetProperty(ref _summaryShowing, value);
+        }
+
         public override async Task OnTabSelected(TabItem item)
         {
             //await LoadSessionDetailAsync();
@@ -93,7 +113,7 @@ namespace SelfCheckout.ViewModels
             {
                 var result = await _selfCheckoutService.GetSessionDetialAsync(_selfCheckoutService.CurrentSessionKey);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }

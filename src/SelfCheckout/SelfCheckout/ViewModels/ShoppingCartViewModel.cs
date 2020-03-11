@@ -17,6 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -26,6 +27,7 @@ namespace SelfCheckout.ViewModels
     public class ShoppingCartViewModel : ShoppingCartViewModelBase
     {
         ObservableCollection<OrderDetail> _orderDetails;
+
         CustomerData _customerData;
 
         string _currentShoppingCard;
@@ -39,51 +41,6 @@ namespace SelfCheckout.ViewModels
             CustomerData = RegisterService.CustomerData;
             CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
         }
-
-        public ObservableCollection<OrderDetail> OrderDetails
-        {
-            get => _orderDetails;
-            set => SetProperty(ref _orderDetails, value);
-        }
-
-        public string CurrentShoppingCard
-        {
-            get => _currentShoppingCard;
-            set => SetProperty(ref _currentShoppingCard, value);
-        }
-
-        public CustomerData CustomerData
-        {
-            get => _customerData;
-            set => SetProperty(ref _customerData, value);
-        }
-
-        public bool IsChangeShoppingCardShowing
-        {
-            get => _isChangeShoppingCardShowing;
-            set => SetProperty(ref _isChangeShoppingCardShowing, value);
-        }
-
-        public bool IsSelectAllOrder
-        {
-            get => _isSelectAllOrder;
-            set
-            {
-                SetProperty(ref _isSelectAllOrder, value, () =>
-                {
-                    IsAnyOrderSelected = value;
-                });
-            }
-        }
-
-        public bool IsAnyOrderSelected
-        {
-            get => _isAnyOrderSelected;
-            set => SetProperty(ref _isAnyOrderSelected, value);
-        }
-
-        public bool IsFirstSelect { get; set; } = true;
-
         public ICommand ToggleChangeShoppingCardCommand => new DelegateCommand(() =>
         {
             IsChangeShoppingCardShowing = !IsChangeShoppingCardShowing;
@@ -168,11 +125,56 @@ namespace SelfCheckout.ViewModels
             IsRefreshing = false;
         });
 
+        public ObservableCollection<OrderDetail> OrderDetails
+        {
+            get => _orderDetails;
+            set => SetProperty(ref _orderDetails, value);
+        }
+
+        public string CurrentShoppingCard
+        {
+            get => _currentShoppingCard;
+            set => SetProperty(ref _currentShoppingCard, value);
+        }
+
+        public CustomerData CustomerData
+        {
+            get => _customerData;
+            set => SetProperty(ref _customerData, value);
+        }
+
+        public bool IsChangeShoppingCardShowing
+        {
+            get => _isChangeShoppingCardShowing;
+            set => SetProperty(ref _isChangeShoppingCardShowing, value);
+        }
+
+        public bool IsSelectAllOrder
+        {
+            get => _isSelectAllOrder;
+            set
+            {
+                SetProperty(ref _isSelectAllOrder, value, () =>
+                {
+                    IsAnyOrderSelected = value;
+                });
+            }
+        }
+
+        public bool IsAnyOrderSelected
+        {
+            get => _isAnyOrderSelected;
+            set => SetProperty(ref _isAnyOrderSelected, value);
+        }
+
+        public bool IsFirstSelect { get; set; } = true;
+
         public override async Task OnTabSelected(TabItem item)
         {
             if (IsFirstSelect)
             {
                 await LoadOrderAsync();
+
                 IsFirstSelect = false;
             }
         }
