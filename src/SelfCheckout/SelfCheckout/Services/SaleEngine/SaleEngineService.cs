@@ -118,7 +118,8 @@ namespace SelfCheckout.Services.SaleEngine
             var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
-            OrderData = result.Data.FirstOrDefault();
+            //if (result.Data.FirstOrDefault()?.IsFinish == false) // TODO: concern
+                OrderData = result.Data.FirstOrDefault();
             return result;
         }
 
@@ -128,7 +129,6 @@ namespace SelfCheckout.Services.SaleEngine
             var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
-            OrderData = result.Data.FirstOrDefault();
             return result;
 
             //var apiResultData = new ApiResultData<List<OrderData>>();

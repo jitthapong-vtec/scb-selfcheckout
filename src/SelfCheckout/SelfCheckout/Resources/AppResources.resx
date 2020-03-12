@@ -203,6 +203,9 @@
   <data name="Info" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="InvoiceNo" xml:space="preserve">
+    <value>Invoice No.</value>
+  </data>
   <data name="Invoices" xml:space="preserve">
     <value>Invoices</value>
   </data>
@@ -329,6 +332,9 @@
   </data>
   <data name="ThkForOrderTitle" xml:space="preserve">
     <value>Thank you for your order</value>
+  </data>
+  <data name="TotalNet" xml:space="preserve">
+    <value>Total Net</value>
   </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>

@@ -205,7 +205,7 @@ namespace SelfCheckout.ViewModels
                         new {
                             GROUP = "tran_no",
                             CODE = "shopping_card",
-                            valueOfString = SelfCheckoutService.CurrentShoppingCard
+                            valueOfString = CurrentShoppingCard
                         }
                     },
                     paging = new
@@ -235,7 +235,7 @@ namespace SelfCheckout.ViewModels
                     }
                 };
 
-                var result = await SaleEngineService.GetOrderAsync(payload);
+                await SaleEngineService.GetOrderAsync(payload);
                 await RefreshOrderAsync();
             }
             catch (Exception ex)
@@ -251,9 +251,10 @@ namespace SelfCheckout.ViewModels
         public Task RefreshOrderAsync()
         {
             OrderDetails = SaleEngineService.OrderData?.OrderDetails?.ToObservableCollection();
-            MessagingCenter.Send<ViewModelBase>(this, "OrderRefresh");
+            MessagingCenter.Send(this, "OrderRefresh");
 
             IsSelectAllOrder = false;
+            IsAnyOrderSelected = false;
             return Task.FromResult(true);
         }
 

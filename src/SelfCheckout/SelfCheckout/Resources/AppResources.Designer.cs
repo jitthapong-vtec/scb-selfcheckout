@@ -313,6 +313,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invoice No..
+        /// </summary>
+        internal static string InvoiceNo {
+            get {
+                return ResourceManager.GetString("InvoiceNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invoices.
         /// </summary>
         internal static string Invoices {
@@ -687,6 +696,15 @@ namespace SelfCheckout.Resources {
         internal static string ThkForOrderTitle {
             get {
                 return ResourceManager.GetString("ThkForOrderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Net.
+        /// </summary>
+        internal static string TotalNet {
+            get {
+                return ResourceManager.GetString("TotalNet", resourceCulture);
             }
         }
         

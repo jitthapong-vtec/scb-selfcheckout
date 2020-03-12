@@ -36,20 +36,6 @@ namespace SelfCheckout.Models
             get => BillingQuantities[1].Uom;
         }
 
-        public int? TotalInvoice
-        {
-            get
-            {
-                int? totalInvoice = 0;
-                try
-                {
-                    totalInvoice = OrderInvoices?.Count;
-                }
-                catch { }
-                return totalInvoice;
-            }
-        }
-
         [JsonProperty("CustomerDetail")]
         public CustomerDetail CustomerDetail { get; set; }
 

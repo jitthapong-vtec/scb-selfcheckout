@@ -27,6 +27,7 @@
         <converter:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter"/>
         <converter:CurrencyFormatConverter x:Key="CurrencyFormatConverter"/>
         <converter:DecimalFormatConverter x:Key="DecimalFormatConverter"/>
+        <converter:DateTimeFormatConverter x:Key="DateTimeFormatConverter"/>
         <converter:TranslateConverter x:Key="TranslateConverter"/>
 
         <OnPlatform x:Key="FontAwesome" x:TypeArguments="x:String" >

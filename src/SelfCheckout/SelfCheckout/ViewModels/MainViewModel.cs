@@ -109,7 +109,7 @@ namespace SelfCheckout.ViewModels
                 await NavigationService.GoBackToRootAsync();
             });
 
-            MessagingCenter.Subscribe<ViewModelBase>(this, "OrderRefresh", (s) =>
+            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderRefresh", (s) =>
             {
                 OrderData = _saleEngineService.OrderData;
                 try
@@ -200,24 +200,29 @@ namespace SelfCheckout.ViewModels
             PaymentSelected = payment;
         });
 
-        public ICommand ScanPaymentCommand => new Command<object>((type) =>
-        {
-            if (Convert.ToInt32(type) == 1)
+        public ICommand ScanPaymentCommand => new Command<object>(
+            canExecute: (type) =>
             {
-                DialogService.ShowDialog("BarcodeScanDialog", null, async (dialogResult) =>
+                return !IsPaymentProcessing;
+            },
+            execute: (type) => 
+            {
+                if (Convert.ToInt32(type) == 1)
                 {
-                    var result = dialogResult.Parameters.GetValue<string>("ScanData");
-                    if (!string.IsNullOrEmpty(result))
+                    DialogService.ShowDialog("BarcodeScanDialog", null, async (dialogResult) =>
                     {
-                        PaymentBarcode = result;
-                        await PaymentAsync();
-                    }
-                });
-            }
-            else
-            {
-            }
-        });
+                        var result = dialogResult.Parameters.GetValue<string>("ScanData");
+                        if (!string.IsNullOrEmpty(result))
+                        {
+                            PaymentBarcode = result;
+                            await PaymentAsync();
+                        }
+                    });
+                }
+                else
+                {
+                }
+            });
 
         public ICommand CancelPaymentProcessCommand => new Command(() =>
         {
