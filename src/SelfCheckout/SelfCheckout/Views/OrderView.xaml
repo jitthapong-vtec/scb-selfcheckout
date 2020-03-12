@@ -7,7 +7,6 @@
              xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
-             xmlns:component="clr-namespace:SelfCheckout.Views.Components"
              xmlns:prism="http://prismlibrary.com"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:views="clr-namespace:SelfCheckout.Views"
@@ -134,70 +133,12 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.GroupHeaderTemplate>
                         <DataTemplate>
-                            <Grid BackgroundColor="{StaticResource Gray100}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid Grid.Column="0" Padding="8" BackgroundColor="{StaticResource Secondary}">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.Resources>
-                                        <Style TargetType="Label">
-                                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
-                                        </Style>
-                                    </Grid.Resources>
-                                    <Label Grid.Row="0" Text="{i18n:Translate InvoiceNo}"/>
-                                    <BoxView HeightRequest="1" Grid.Row="1" BackgroundColor="{StaticResource Gray50}"/>
-                                    <Label Grid.Row="2" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="{Binding InvoiceNo}"/>
-                                </Grid>
-                                <Grid Grid.Column="1" Padding="0,4,4,0" VerticalOptions="Center">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Row="0" Grid.Column="0" MaxLines="1">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="&#xe905;" FontFamily="{StaticResource KPIconFont}"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding InvoiceDateTime, Converter={StaticResource DateTimeFormatConverter}}"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label Grid.Row="0" Grid.Column="1" MaxLines="1" Text="{Binding ShoppingCardNo}" HorizontalTextAlignment="End"/>
-                                    <Label Grid.Row="1" Grid.Column="0" MaxLines="2">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{i18n:Translate PassportNo}"/>
-                                                <Span Text=" "/>
-                                                <Span Text="{Binding PassportNo}" FontAttributes="Bold"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label Grid.Row="1" Grid.Column="1" MaxLines="2" Text="{Binding CustomerName}" HorizontalTextAlignment="End"/>
-                                    <Label Grid.Row="2" Grid.Column="0" MaxLines="1" Text="{i18n:Translate Payment}"/>
-                                    <Label Grid.Row="2" Grid.Column="1" MaxLines="1" Text="{Binding PaymentType}" HorizontalTextAlignment="End"/>
-                                    <Label Grid.Row="3" Grid.Column="0" MaxLines="1" FontSize="Medium" Text="{i18n:Translate TotalNet}" TextColor="{StaticResource Primary}"/>
-                                    <Label Grid.Row="3" Grid.Column="1" MaxLines="1" FontSize="Medium" Text="{Binding TotalNet, Converter={StaticResource CurrencyFormatConverter}}" TextColor="{StaticResource Primary}" HorizontalTextAlignment="End"/>
-                                </Grid>
-                            </Grid>
+                            <views:OrderInvoiceItemView/>
                         </DataTemplate>
                     </CollectionView.GroupHeaderTemplate>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <component:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
+                            <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

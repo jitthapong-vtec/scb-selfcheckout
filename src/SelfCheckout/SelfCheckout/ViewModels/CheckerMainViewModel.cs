@@ -6,6 +6,7 @@ using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
+using SelfCheckout.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,6 +20,8 @@ namespace SelfCheckout.ViewModels
 {
     public class CheckerMainViewModel : ViewModelBase
     {
+        ContentView _currentView;
+
         ObservableCollection<TabItem> _tabs;
 
         public CheckerMainViewModel(INavigationService navigatinService, IDialogService dialogService) : base(navigatinService, dialogService)
@@ -28,6 +31,7 @@ namespace SelfCheckout.ViewModels
                 new TabItem
                 {
                     TabText = AppResources.Packing,
+                    Page = new CheckerPackingView()
                 },
                 new TabItem
                 {
@@ -41,12 +45,19 @@ namespace SelfCheckout.ViewModels
 
             var firstTab = Tabs.FirstOrDefault();
             firstTab.Selected = true;
+            CurrentView = firstTab.Page;
         }
 
         public ObservableCollection<TabItem> Tabs
         {
             get => _tabs;
             set => SetProperty(ref _tabs, value);
+        }
+
+        public ContentView CurrentView
+        {
+            get => _currentView;
+            set => SetProperty(ref _currentView, value);
         }
 
         public ICommand TabSelectionCommand => new Command<TabItem>((item) =>

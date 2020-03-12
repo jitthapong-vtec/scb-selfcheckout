@@ -7,7 +7,7 @@
        xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
-       x:Class="SelfCheckout.Views.Components.OrderItemView">
+       x:Class="SelfCheckout.Views.OrderItemView">
     <!--<SwipeView>
                 <SwipeView.RightItems>
                     <SwipeItemView>
@@ -65,7 +65,7 @@
                                Unfocused="Entry_Qty_Unfocused" WidthRequest="72" Text="{Binding BillingQuantity.Quantity}" Keyboard="Numeric"/>
                 <Label Grid.Row="5" Grid.Column="1" Text="{Binding BillingAmount.NetAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" VerticalOptions="Center" TextColor="{StaticResource Primary}" Style="{StaticResource LabelNumericStyle}"/>
             </Grid>
-            <controls:TappedGrid Grid.Column="2" Padding="4">
+            <controls:TappedGrid Grid.Column="3" Padding="4">
                 <Label Style="{StaticResource LabelIconStyle}" Text="&#xf054;" FontSize="18" VerticalOptions="Center" HorizontalOptions="Center"/>
             </controls:TappedGrid>
         </Grid>

@@ -80,7 +80,7 @@ namespace SelfCheckout.Services.SelfCheckout
             return result;
         }
 
-        public async Task<ApiResultData<SessionData>> GetSessionDetialAsync(int key)
+        public async Task<ApiResultData<SessionData>> GetSessionDetialAsync(string key)
         {
             var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/SessionDetai?key={key}");
             var result = await GetAsync<ApiResultData<SessionData>>(uri.ToString());

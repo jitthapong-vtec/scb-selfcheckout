@@ -290,6 +290,9 @@
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="ScanCoupon" xml:space="preserve">
     <value>Scan Coupon</value>
   </data>

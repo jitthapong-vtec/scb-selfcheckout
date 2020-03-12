@@ -81,7 +81,11 @@ namespace SelfCheckout
 
         public string MachineIp
         {
-            get => "127.0.0.1";//DependencyService.Get<IDeviceInformation>().GetDeviceIp();
+            get
+            {
+                var ip = DependencyService.Get<IDeviceInformation>().GetDeviceIp();
+                return "127.0.0.1";
+            }
         }
     }
 }

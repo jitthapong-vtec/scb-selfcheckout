@@ -50,6 +50,7 @@ namespace SelfCheckout
             containerRegistry.Register<OrderViewModel>();
             containerRegistry.Register<ProfileViewModel>();
             containerRegistry.Register<HomeViewModel>();
+            containerRegistry.Register<CheckerPackingViewModel>();
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<SettingView, SettingViewModel>();

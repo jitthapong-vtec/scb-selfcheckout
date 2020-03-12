@@ -5,7 +5,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
-             xmlns:component="clr-namespace:SelfCheckout.Views.Components"
              xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              xmlns:prism="http://prismlibrary.com"
@@ -83,7 +82,7 @@
                         </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <component:OrderItemView DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.DeleteOrderCommand}" 
+                                <views:OrderItemView DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.DeleteOrderCommand}" 
                                                          ChangeQtyCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.ChangeQtyCommand}"
                                                          SelectionCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.OrderSelectedCommand}"
                                                          CommandParameter="{Binding .}"/>

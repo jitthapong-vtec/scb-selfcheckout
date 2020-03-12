@@ -34,7 +34,7 @@ namespace SelfCheckout.Services.SelfCheckout
 
         Task<ApiResultData<bool>> EndSessionAsync(int sessionKey, string userId, string machineNo);
 
-        Task<ApiResultData<SessionData>> GetSessionDetialAsync(int key);
+        Task<ApiResultData<SessionData>> GetSessionDetialAsync(string key);
 
         Task<ApiResultData<SessionData>> GetDeviceStatusAsync(string machineNo);
 
