@@ -28,6 +28,7 @@ namespace SelfCheckout.ViewModels
         ObservableCollection<SimpleSelectedItem> _tabs;
         ObservableCollection<OrderInvoiceGroup> _orderInvoices;
 
+        bool _isShowGroup;
         string _currencyCode;
         int _totalInvoice;
         double? _totalQty;
@@ -57,14 +58,36 @@ namespace SelfCheckout.ViewModels
                     Arg1 = 2
                 }
             };
+
+            MessagingCenter.Subscribe<MainViewModel>(this, "CurrencyChanged", async (s) =>
+            {
+                await LoadOrderListAsync();
+            });
         }
+
+        public ICommand TabSelectedCommand => new DelegateCommand<SimpleSelectedItem>((item) =>
+        {
+            var seletedItem = Tabs.Where(t => t.Selected).FirstOrDefault();
+            seletedItem.Selected = false;
+
+            item.Selected = true;
+
+            if((int)item.Arg1 == 1)
+            {
+                IsShowGroup = true;
+            }
+            else
+            {
+                IsShowGroup = false;
+            }
+        });
 
         public ICommand CustomerFilterTappedCommand => new DelegateCommand(() =>
         {
 
         });
 
-        public ICommand ShowSummaryCommand => new Command(() =>
+        public ICommand ShowSummaryCommand => new DelegateCommand(() =>
         {
             SummaryShowing = !SummaryShowing;
         });
@@ -83,6 +106,12 @@ namespace SelfCheckout.ViewModels
         public LoginData LoginData
         {
             get => _saleEngineService.LoginData;
+        }
+
+        public bool IsShowGroup
+        {
+            get => _isShowGroup;
+            set => SetProperty(ref _isShowGroup, value);
         }
 
         public int TotalInvoice
@@ -179,20 +208,20 @@ namespace SelfCheckout.ViewModels
                     paging = new
                     {
                         pageNo = 1,
-                        pageSize = 10
+                        pageSize = 100
                     },
-                    filter = new object[]
-                    {
-                        new
-                        {
-                            sign = "string",
-                            element = "order_data",
-                            option = "string",
-                            type = "string",
-                            low = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
-                            height = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                        }
-                    },
+                    //filter = new object[]
+                    //{
+                    //    new
+                    //    {
+                    //        sign = "string",
+                    //        element = "order_data",
+                    //        option = "string",
+                    //        type = "string",
+                    //        low = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                    //        height = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                    //    }
+                    //},
                     sorting = new object[]
                     {
                         new
@@ -233,7 +262,7 @@ namespace SelfCheckout.ViewModels
                 OrderInvoices = orderInvoiceGroups.ToObservableCollection();
 
                 TotalInvoice = ordersData.Count();
-                CurrencyCode = orderInvoiceGroups.FirstOrDefault().CurrencyCode;
+                CurrencyCode = orderInvoiceGroups.FirstOrDefault()?.CurrencyCode;
                 TotalQty = orderInvoiceGroups.Sum(o => o.TotalQty);
                 SubTotal = orderInvoiceGroups.Sum(o => o.SubTotal);
                 TotalDiscount = orderInvoiceGroups.Sum(o => o.TotalDiscount);

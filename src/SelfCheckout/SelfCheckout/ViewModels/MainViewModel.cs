@@ -422,7 +422,7 @@ namespace SelfCheckout.ViewModels
                     }
                 };
                 await _saleEngineService.ActionListItemToOrderAsync(payload);
-                await (CurrentView.BindingContext as ShoppingCartViewModel).RefreshOrderAsync();
+                MessagingCenter.Send(this, "CurrencyChanged");
             }
             catch { }
         }

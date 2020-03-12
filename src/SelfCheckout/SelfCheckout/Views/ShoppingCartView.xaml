@@ -68,7 +68,7 @@
                     </Label>
                     <Label Grid.Column="2" FontFamily="{StaticResource KPIconFont}" Text="&#xe906;" FontSize="18"/>
                 </Grid>
-                <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshOrderCommand}">
+                <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshOrderCommand}" Margin="0,0,0,32">
                     <CollectionView ItemsSource="{Binding OrderDetails}">
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>

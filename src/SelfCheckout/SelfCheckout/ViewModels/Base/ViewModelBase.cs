@@ -8,6 +8,8 @@ using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
 using Prism.Commands;
+using SelfCheckout.Services.SelfCheckout;
+using SelfCheckout.Services.SaleEngine;
 
 namespace SelfCheckout.ViewModels.Base
 {
@@ -45,6 +47,14 @@ namespace SelfCheckout.ViewModels.Base
         {
             get => _pageTitle;
             set => SetProperty(ref _pageTitle, value);
+        }
+
+        public bool IsShowArticleImage
+        {
+            get
+            {
+                return (App.Current.Container.Resolve(typeof(ISelfCheckoutService)) as ISelfCheckoutService).AppConfig.ShowArticleImage;
+            }
         }
 
         public bool IsRefreshing

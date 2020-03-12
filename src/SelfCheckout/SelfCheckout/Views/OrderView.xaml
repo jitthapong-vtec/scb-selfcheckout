@@ -17,7 +17,7 @@
              x:Class="SelfCheckout.Views.OrderView">
     <ContentView.Content>
         <Grid>
-            <Grid>
+            <Grid RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -128,9 +128,9 @@
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </StackLayout>
-                <CollectionView Grid.Row="3" IsGrouped="True" ItemsSource="{Binding OrderInvoices}">
+                <CollectionView Grid.Row="3" IsGrouped="True" ItemsSource="{Binding OrderInvoices}" Margin="0,0,0,32">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start" SnapPointsType="MandatorySingle" ItemSpacing="4"/>
+                        <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start" SnapPointsType="None"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.GroupHeaderTemplate>
                         <DataTemplate>

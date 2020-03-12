@@ -40,7 +40,13 @@ namespace SelfCheckout.ViewModels
         {
             CustomerData = RegisterService.CustomerData;
             CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
+
+            MessagingCenter.Subscribe<MainViewModel>(this, "CurrencyChanged", async (s) =>
+            {
+                await RefreshOrderAsync();
+            });
         }
+
         public ICommand ToggleChangeShoppingCardCommand => new DelegateCommand(() =>
         {
             IsChangeShoppingCardShowing = !IsChangeShoppingCardShowing;
@@ -211,7 +217,7 @@ namespace SelfCheckout.ViewModels
                     paging = new
                     {
                         pageNo = 1,
-                        pageSize = 10
+                        pageSize = 100
                     },
                     filter = new object[]
                     {

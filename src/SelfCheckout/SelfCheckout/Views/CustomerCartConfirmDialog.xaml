@@ -30,7 +30,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <controls:CustomLabel Grid.Row="0" Grid.Column="0" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate Name}"/>
-                    <controls:CustomLabel Grid.Row="0" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalOptions="End" Text="{Binding Person.EnglishName}" />
+                    <controls:CustomLabel Grid.Row="0" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.EnglishName}" />
                     <controls:CustomLabel Grid.Row="1" Grid.Column="0" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate PassportNo}"/>
                     <controls:CustomLabel Grid.Row="1" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.PassportNo}"/>
                     <controls:CustomLabel Grid.Row="2" Grid.Column="0" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate FlightNo}"/>
