@@ -43,7 +43,7 @@ namespace SelfCheckout.ViewModels
 
             MessagingCenter.Subscribe<MainViewModel>(this, "CurrencyChanged", async (s) =>
             {
-                await GetOrderListAsync(SaleEngineService.LoginData.SessionKey, SelfCheckoutService.StartedShoppingCard);
+                await GetOrderListAsync(SelfCheckoutService.StartedShoppingCard);
             });
         }
 
@@ -73,7 +73,7 @@ namespace SelfCheckout.ViewModels
 
         public override async Task OnTabSelected(TabItem item)
         {
-            await GetOrderListAsync(SaleEngineService.LoginData.SessionKey, SelfCheckoutService.StartedShoppingCard);
+            await GetOrderListAsync(SelfCheckoutService.StartedShoppingCard);
         }
     }
 }

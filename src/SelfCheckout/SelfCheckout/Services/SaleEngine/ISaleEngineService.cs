@@ -40,6 +40,8 @@ namespace SelfCheckout.Services.SaleEngine
 
         Task<ApiResultData<List<OrderData>>> FinishPaymentOrderAsync(object payload);
 
+        Task VoidPaymentAsync(string merchantId, string partnerTransId);
+
         Task LoadCurrencyAsync(object payload);
 
         Task LogoutAsync();

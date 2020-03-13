@@ -205,7 +205,7 @@ namespace SelfCheckout.ViewModels
             {
                 return !IsPaymentProcessing;
             },
-            execute: (type) => 
+            execute: (type) =>
             {
                 if (Convert.ToInt32(type) == 1)
                 {
@@ -654,6 +654,16 @@ namespace SelfCheckout.ViewModels
                     var headerAttr = _saleEngineService.OrderData.HeaderAttributes.Where(o => o.Code == "order_no").FirstOrDefault();
                     var orderNo = Convert.ToInt32(headerAttr.ValueOfDecimal);
                     var result = await _selfCheckoutService.UpdateSessionAsync(_selfCheckoutService.CurrentSessionKey, orderNo, _selfCheckoutService.StartedShoppingCard);
+
+                    try
+                    {
+                        // Test void payment
+                        await _saleEngineService.VoidPaymentAsync(wallet.WalletagentMaster.MerchantId, _saleEngineService.OrderData.PaymentTransaction.PartnerTransId);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
 
                     var appConfig = _selfCheckoutService.AppConfig;
                     var loginResult = await _saleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);

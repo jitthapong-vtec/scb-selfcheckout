@@ -129,13 +129,17 @@ namespace SelfCheckout.ViewModels.Base
             return false;
         }
 
-        protected async Task GetOrderListAsync(string loginSessionKey, string shoppingCard)
+        protected async Task GetOrderListAsync(string shoppingCard)
         {
             try
             {
+                var appConfig = SelfCheckoutService.AppConfig;
+                var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
+                SaleEngineService.LoginData = loginResult.Data;
+
                 var payload = new
                 {
-                    SessionKey = loginSessionKey,
+                    SessionKey = SaleEngineService.LoginData.SessionKey,
                     Attributes = new object[]
                     {
                         new
@@ -172,6 +176,7 @@ namespace SelfCheckout.ViewModels.Base
                     }
                 };
 
+                IsBusy = true;
                 var result = await SaleEngineService.GetOrderListAsync(payload);
                 var ordersData = result.Data;
 
@@ -219,6 +224,10 @@ namespace SelfCheckout.ViewModels.Base
             catch (Exception ex)
             {
                 DialogService.ShowAlert(AppResources.Opps, ex.Message);
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
     }

@@ -185,5 +185,26 @@ namespace SelfCheckout.Services.SaleEngine
             LoginData = null;
             return Task.FromResult(true);
         }
+
+        public async Task VoidPaymentAsync(string merchantId, string partnerTransId)
+        {
+            try
+            {
+                var payload = new object[]
+                {
+                new
+                {
+                    MerchantId = merchantId,
+                    PartnerTransId = partnerTransId
+                }
+                };
+
+                var uri = new UriBuilder("http://kpservices.kingpower.com/KPPaymentGatewayAPI/api/PaymentGateway/Cancel");
+                await PostAsync<object, object>(uri.ToString(), payload);
+            }
+            catch(Exception ex)
+            { 
+            }
+        }
     }
 }

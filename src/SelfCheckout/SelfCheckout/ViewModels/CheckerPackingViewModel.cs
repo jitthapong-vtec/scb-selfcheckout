@@ -32,7 +32,7 @@ namespace SelfCheckout.ViewModels
                 {
                     SessionKey = sessionKey;
 
-                    await GetOrderListAsync(sessionKey, SessionData.ShoppingCard);
+                    await GetOrderListAsync(SessionData.ShoppingCard); //TODO:
                 }
             });
 

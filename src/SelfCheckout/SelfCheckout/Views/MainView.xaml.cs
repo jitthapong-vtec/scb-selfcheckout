@@ -42,7 +42,7 @@ namespace SelfCheckout.Views
                     catch (DensoScannerException ex)
                     {
                         //shoppingCartViewModel?.DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-                        //await shoppingCartViewModel.TestAddOrder();
+                       await shoppingCartViewModel.TestAddOrder();
                     }
                 }
             }
