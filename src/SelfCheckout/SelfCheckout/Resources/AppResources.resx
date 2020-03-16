@@ -187,6 +187,12 @@
   <data name="Discount" xml:space="preserve">
     <value>Discount</value>
   </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="FilterCustomer" xml:space="preserve">
+    <value>Filter Customer</value>
+  </data>
   <data name="FlightNo" xml:space="preserve">
     <value>Flight No.</value>
   </data>

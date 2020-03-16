@@ -1,7 +1,9 @@
 ﻿using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
+using SelfCheckout.Extensions;
 using SelfCheckout.Models;
+using SelfCheckout.Resources;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
@@ -27,12 +29,16 @@ namespace SelfCheckout.ViewModels
             executeMethod:
             async (sessionKey) =>
             {
-                var success = await GetSessionDetailAsync(sessionKey);
-                if (success)
+                try
                 {
+                    await GetSessionDetailAsync(sessionKey);
                     SessionKey = sessionKey;
 
-                    await GetOrderListAsync(SessionData.ShoppingCard); //TODO:
+                    await GetOrderListAsync(SessionData.ShoppingCard);
+                }
+                catch(Exception ex) 
+                {
+                    DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
                 }
             });
 

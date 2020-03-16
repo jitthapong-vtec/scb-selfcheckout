@@ -1,9 +1,12 @@
-﻿using SelfCheckout.Exceptions;
+﻿using Newtonsoft.Json;
+using SelfCheckout.Exceptions;
 using SelfCheckout.Models;
 using SelfCheckout.Services.Base;
 using SelfCheckout.Services.Serializer;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,7 +18,7 @@ namespace SelfCheckout.Services.SelfCheckout
         {
         }
 
-        public int CurrentSessionKey { get; private set; }
+        public string CurrentSessionKey { get; private set; }
 
         public string CurrentShoppingCard { get; set; }
 
@@ -56,7 +59,7 @@ namespace SelfCheckout.Services.SelfCheckout
             Payments = result.Data;
         }
 
-        public async Task<ApiResultData<bool>> EndSessionAsync(int sessionKey, string userId, string machineNo)
+        public async Task<ApiResultData<bool>> EndSessionAsync(string sessionKey, string userId, string machineNo)
         {
             var payload = new
             {
@@ -82,11 +85,27 @@ namespace SelfCheckout.Services.SelfCheckout
 
         public async Task<ApiResultData<SessionData>> GetSessionDetialAsync(string key)
         {
-            var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/SessionDetai?key={key}");
-            var result = await GetAsync<ApiResultData<SessionData>>(uri.ToString());
-            if (!result.IsCompleted)
-                throw new KPApiException(result.DefaultMessage);
-            return result;
+            //var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/SessionDetai?key={key}");
+            //var result = await GetAsync<ApiResultData<SessionData>>(uri.ToString());
+            //if (!result.IsCompleted)
+            //    throw new KPApiException(result.DefaultMessage);
+            //return result;
+
+            var apiResultData = new ApiResultData<SessionData>();
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "SelfCheckout.Resources.sess_detail.json";
+
+            try
+            {
+                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    string result = await reader.ReadToEndAsync();
+                    apiResultData = JsonConvert.DeserializeObject<ApiResultData<SessionData>>(result);
+                }
+            }
+            catch { }
+            return apiResultData;
         }
 
         public async Task<ApiResultData<List<SessionData>>> GetSessionHistory(DateTime? date, int sessionKey, string machineNo)
@@ -118,12 +137,12 @@ namespace SelfCheckout.Services.SelfCheckout
             var result = await PostAsync<object, ApiResultData<int>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
-            CurrentSessionKey = result.Data;
+            CurrentSessionKey = result.Data.ToString();
             StartedShoppingCard = shoppingCardNo;
             return result;
         }
 
-        public async Task<ApiResultData<bool>> UpdateSessionAsync(int sessionKey, int orderNo, string shoppingCardNo)
+        public async Task<ApiResultData<bool>> UpdateSessionAsync(string sessionKey, int orderNo, string shoppingCardNo)
         {
             var payload = new
             {

@@ -21,11 +21,20 @@ namespace SelfCheckout.ViewModels
 {
     public class OrderViewModel : OrderViewModelBase
     {
-        bool _summaryShowing;
+        CustomerOrder _selectedCustomer;
 
-        public OrderViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) 
+        bool _isShowGroup;
+        bool _summaryShowing;
+        bool _filterCustomerShowing;
+
+        public OrderViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService)
             : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
         {
+            SelectedCustomer = new CustomerOrder
+            {
+                CustomerName = AppResources.All
+            };
+
             Tabs = new ObservableCollection<SimpleSelectedItem>()
             {
                 new SimpleSelectedItem()
@@ -43,8 +52,21 @@ namespace SelfCheckout.ViewModels
 
             MessagingCenter.Subscribe<MainViewModel>(this, "CurrencyChanged", async (s) =>
             {
-                await GetOrderListAsync(SelfCheckoutService.StartedShoppingCard);
+                try
+                {
+                    await RefreshOrderAsync();
+                }
+                catch { }
             });
+
+            IsShowGroup = true;
+        }
+
+        private async Task RefreshOrderAsync()
+        {
+            await GetSessionDetailAsync(SelfCheckoutService.CurrentSessionKey);
+            await GetCustomerAsync();
+            await GetOrderListAsync(SelfCheckoutService.CurrentShoppingCard);
         }
 
         public ICommand TabSelectedCommand => new DelegateCommand<SimpleSelectedItem>((item) =>
@@ -52,18 +74,49 @@ namespace SelfCheckout.ViewModels
             var seletedItem = Tabs.Where(t => t.Selected).FirstOrDefault();
             seletedItem.Selected = false;
 
+            if ((int)item.Arg1 == 1)
+                IsShowGroup = true;
+            else
+                IsShowGroup = false;
+
             item.Selected = true;
         });
 
-        public ICommand CustomerFilterTappedCommand => new DelegateCommand(() =>
+        public ICommand CustomerSelectionCommand => new DelegateCommand<CustomerOrder>((customer) =>
         {
+            SelectedCustomer = customer;
 
+            FilterOrder(customer.OrderNo);
+            FilterCustomerShowing = false;
+        });
+
+        public ICommand ShowCustomerSelectionCommand => new DelegateCommand(() =>
+        {
+            FilterCustomerShowing = !FilterCustomerShowing;
         });
 
         public ICommand ShowSummaryCommand => new DelegateCommand(() =>
         {
             SummaryShowing = !SummaryShowing;
         });
+
+        public CustomerOrder SelectedCustomer
+        {
+            get => _selectedCustomer;
+            set => SetProperty(ref _selectedCustomer, value);
+        }
+
+        public bool FilterCustomerShowing
+        {
+            get => _filterCustomerShowing;
+            set => SetProperty(ref _filterCustomerShowing, value);
+        }
+
+        public bool IsShowGroup
+        {
+            get => _isShowGroup;
+            set => SetProperty(ref _isShowGroup, value);
+        }
 
         public bool SummaryShowing
         {
@@ -73,7 +126,7 @@ namespace SelfCheckout.ViewModels
 
         public override async Task OnTabSelected(TabItem item)
         {
-            await GetOrderListAsync(SelfCheckoutService.StartedShoppingCard);
+            await RefreshOrderAsync();
         }
     }
 }

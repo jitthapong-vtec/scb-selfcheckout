@@ -202,10 +202,6 @@ namespace SelfCheckout.ViewModels
         {
             try
             {
-                var appConfig = SelfCheckoutService.AppConfig;
-                var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
-                SaleEngineService.LoginData = loginResult.Data;
-
                 IsBusy = true;
                 var payload = new
                 {

@@ -22,8 +22,12 @@ namespace SelfCheckout.ViewModels.Base
         protected ISelfCheckoutService SelfCheckoutService { get; private set; }
         protected IRegisterService RegisterService { get; private set; }
 
+        List<OrderInvoiceGroup> _allOrderInvoiceGroups;
+
         ObservableCollection<SimpleSelectedItem> _tabs;
         ObservableCollection<OrderInvoiceGroup> _orderInvoices;
+        ObservableCollection<OrderDetail> _orderDetails;
+        ObservableCollection<CustomerOrder> _customers;
         SessionData _sessionData;
 
         string _currencyCode;
@@ -44,6 +48,12 @@ namespace SelfCheckout.ViewModels.Base
         {
             get => _tabs;
             set => SetProperty(ref _tabs, value);
+        }
+
+        public ObservableCollection<CustomerOrder> Customers
+        {
+            get => _customers;
+            set => SetProperty(ref _customers, value);
         }
 
         public CustomerData CustomerData
@@ -109,126 +119,137 @@ namespace SelfCheckout.ViewModels.Base
             set => SetProperty(ref _orderInvoices, value);
         }
 
-        protected async Task<bool> GetSessionDetailAsync(string sessionkey)
+        public ObservableCollection<OrderDetail> OrderDetails
         {
-            try
+            get => _orderDetails;
+            set => SetProperty(ref _orderDetails, value);
+        }
+
+        protected async Task GetSessionDetailAsync(string sessionkey)
+        {
+            var result = await SelfCheckoutService.GetSessionDetialAsync(sessionkey);
+            SessionData = result.Data;
+        }
+
+        protected async Task GetCustomerAsync()
+        {
+            if (SessionData?.SesionDetail?.Any() == false)
+                return;
+            var customers = new List<CustomerOrder>();
+            customers.Add(new CustomerOrder
             {
-                IsBusy = true;
-                var result = await SelfCheckoutService.GetSessionDetialAsync(sessionkey);
-                SessionData = result.Data;
-                return true;
-            }
-            catch (Exception ex)
+                CustomerName = AppResources.All
+            });
+            foreach (var sessionDetail in SessionData.SesionDetail)
             {
-                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                try
+                {
+                    var shoppingCard = sessionDetail.ShoppingCard;
+                    var result = await RegisterService.GetCustomerAsync(shoppingCard);
+                    customers.Add(new CustomerOrder()
+                    {
+                        OrderNo = $"{sessionDetail.OrderNo}",
+                        SessionKey = $"{sessionDetail.SessionDetailKey}",
+                        CustomerName = result.FirstOrDefault()?.Person.EnglishName
+                    });
+                }
+                catch { }
             }
-            finally
-            {
-                IsBusy = false;
-            }
-            return false;
+            Customers = customers.ToObservableCollection();
         }
 
         protected async Task GetOrderListAsync(string shoppingCard)
         {
-            try
-            {
-                var appConfig = SelfCheckoutService.AppConfig;
-                var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
-                SaleEngineService.LoginData = loginResult.Data;
+            var appConfig = SelfCheckoutService.AppConfig;
+            var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
 
-                var payload = new
+            var payload = new
+            {
+                SessionKey = loginResult.Data.SessionKey,
+                Attributes = new object[]
                 {
-                    SessionKey = SaleEngineService.LoginData.SessionKey,
-                    Attributes = new object[]
+                    new
                     {
-                        new
-                        {
-                            GROUP = "tran_no",
-                            CODE = "shopping_card",
-                            valueOfString = shoppingCard
-                        }
-                    },
-                    paging = new
-                    {
-                        pageNo = 1,
-                        pageSize = 100
-                    },
-                    //filter = new object[]
-                    //{
-                    //    new
-                    //    {
-                    //        sign = "string",
-                    //        element = "order_data",
-                    //        option = "string",
-                    //        type = "string",
-                    //        low = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
-                    //        height = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                    //    }
-                    //},
-                    sorting = new object[]
-                    {
-                        new
-                        {
-                            sortBy = "headerkey",
-                            orderBy = "desc"
-                        }
+                        GROUP = "tran_no",
+                        CODE = "shopping_card",
+                        valueOfString = shoppingCard
                     }
+                },
+                paging = new
+                {
+                    pageNo = 1,
+                    pageSize = 100
+                },
+                sorting = new object[]
+                {
+                    new
+                    {
+                        sortBy = "headerkey",
+                        orderBy = "desc"
+                    }
+                }
+            };
+
+            var result = await SaleEngineService.GetOrderListAsync(payload);
+            var ordersData = result.Data;
+
+            _allOrderInvoiceGroups = new List<OrderInvoiceGroup>();
+            var allOrderDetails = new List<OrderDetail>();
+            foreach (var order in ordersData)
+            {
+                var orderInvoice = order.OrderInvoices.FirstOrDefault();
+                var orderDetails = new List<OrderDetail>(orderInvoice.OrderDetails);
+
+                allOrderDetails.AddRange(orderDetails);
+
+                var customerAttr = order.CustomerDetail?.CustomerAttributes;
+                var orderInvoiceGroup = new OrderInvoiceGroup(orderDetails)
+                {
+                    InvoiceNo = "12345",
+                    OrderNo = $"{order.HeaderAttributes.Where(attr => attr.Code == "order_no").Select(o => o.ValueOfDecimal).FirstOrDefault()}",
+                    InvoiceDateTime = orderInvoice.Cashier.MachineDateTime, // TODO: concern
+                    CustomerName = order.CustomerDetail?.CustomerName,
+                    PassportNo = customerAttr?.Where(c => c.Code == "passport_no").FirstOrDefault()?.ValueOfString,
+                    ShoppingCardNo = customerAttr.Where(c => c.Code == "shopping_card").FirstOrDefault()?.ValueOfString,
+                    CurrencyCode = orderInvoice.BillingAmount.NetAmount.CurrCode.Code,
+                    PaymentType = orderInvoice.OrderPayments.FirstOrDefault()?.PaymentType,
+                    TotalQty = orderInvoice.BillingQuantity.Quantity,
+                    SubTotal = orderInvoice.BillingAmount.TotalAmount.CurrAmt,
+                    TotalNet = orderInvoice.BillingAmount.NetAmount.CurrAmt,
+                    TotalDiscount = orderInvoice.BillingAmount.DiscountAmount.CurrAmt
                 };
 
-                IsBusy = true;
-                var result = await SaleEngineService.GetOrderListAsync(payload);
-                var ordersData = result.Data;
-
-                var orderInvoiceGroups = new List<OrderInvoiceGroup>();
-                foreach (var order in ordersData)
-                {
-                    var orderInvoice = order.OrderInvoices.FirstOrDefault();
-                    var orderDetails = new List<OrderDetail>(orderInvoice.OrderDetails);
-
-                    var customerAttr = order.CustomerDetail?.CustomerAttributes;
-                    var orderInvoiceGroup = new OrderInvoiceGroup(orderDetails)
-                    {
-                        InvoiceNo = "12345",
-                        InvoiceDateTime = orderInvoice.Cashier.MachineDateTime, // TODO: concern
-                        CustomerName = order.CustomerDetail?.CustomerName,
-                        PassportNo = customerAttr?.Where(c => c.Code == "passport_no").FirstOrDefault()?.ValueOfString,
-                        ShoppingCardNo = customerAttr.Where(c => c.Code == "shopping_card").FirstOrDefault()?.ValueOfString,
-                        CurrencyCode = orderInvoice.BillingAmount.NetAmount.CurrCode.Code,
-                        PaymentType = orderInvoice.OrderPayments.FirstOrDefault()?.PaymentType,
-                        TotalQty = orderInvoice.BillingQuantity.Quantity,
-                        SubTotal = orderInvoice.BillingAmount.TotalAmount.CurrAmt,
-                        TotalNet = orderInvoice.BillingAmount.NetAmount.CurrAmt,
-                        TotalDiscount = orderInvoice.BillingAmount.DiscountAmount.CurrAmt
-                    };
-
-                    orderInvoiceGroups.Add(orderInvoiceGroup);
-                }
-                OrderInvoices = orderInvoiceGroups.ToObservableCollection();
-
-                TotalInvoice = ordersData.Count();
-                CurrencyCode = orderInvoiceGroups.FirstOrDefault()?.CurrencyCode;
-                TotalQty = orderInvoiceGroups.Sum(o => o.TotalQty);
-                SubTotal = orderInvoiceGroups.Sum(o => o.SubTotal);
-                TotalDiscount = orderInvoiceGroups.Sum(o => o.TotalDiscount);
-                TotalNetAmount = orderInvoiceGroups.Sum(o => o.TotalNet);
-
-                var t1 = Tabs.Where(t => (int)t.Arg1 == 1).FirstOrDefault();
-                var t2 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
-
-                t1.Text1 = $"{TotalInvoice} {AppResources.Invoices}";
-                t2.Text1 = $"{TotalQty} {AppResources.Units}";
-
-                MessagingCenter.Send<ViewModelBase>(this, "OrderRefresh");
+                _allOrderInvoiceGroups.Add(orderInvoiceGroup);
             }
-            catch (Exception ex)
-            {
-                DialogService.ShowAlert(AppResources.Opps, ex.Message);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            OrderInvoices = _allOrderInvoiceGroups.ToObservableCollection();
+            OrderDetails = allOrderDetails.ToObservableCollection();
+
+            CalculateSummary();
+
+            var t2 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
+            t2.Text1 = $"{TotalQty} {AppResources.Units}";
+        }
+
+        protected void FilterOrder(string orderNo)
+        {
+            if (string.IsNullOrEmpty(orderNo))
+                OrderInvoices = _allOrderInvoiceGroups.ToObservableCollection();
+            else
+                OrderInvoices = _allOrderInvoiceGroups.Where(o => o.OrderNo == orderNo).ToList().ToObservableCollection();
+            CalculateSummary();
+        }
+
+        private void CalculateSummary()
+        {
+            TotalInvoice = OrderInvoices.Count();
+            CurrencyCode = OrderInvoices.FirstOrDefault()?.CurrencyCode;
+            TotalQty = OrderInvoices.Sum(o => o.TotalQty);
+            SubTotal = OrderInvoices.Sum(o => o.SubTotal);
+            TotalDiscount = OrderInvoices.Sum(o => o.TotalDiscount);
+            TotalNetAmount = OrderInvoices.Sum(o => o.TotalNet);
+
+            var t1 = Tabs.Where(t => (int)t.Arg1 == 1).FirstOrDefault();
+            t1.Text1 = $"{TotalInvoice} {AppResources.Invoices}";
         }
     }
 }

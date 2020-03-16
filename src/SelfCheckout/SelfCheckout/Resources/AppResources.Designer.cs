@@ -268,6 +268,24 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        internal static string Filter {
+            get {
+                return ResourceManager.GetString("Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter Customer.
+        /// </summary>
+        internal static string FilterCustomer {
+            get {
+                return ResourceManager.GetString("FilterCustomer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flight No..
         /// </summary>
         internal static string FlightNo {

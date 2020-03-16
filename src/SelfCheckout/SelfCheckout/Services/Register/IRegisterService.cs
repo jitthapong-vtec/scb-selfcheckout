@@ -10,6 +10,6 @@ namespace SelfCheckout.Services.Register
     {
         CustomerData CustomerData { get;}
 
-        Task<List<CustomerData>> GetCustomerAsync(object payload);
+        Task<List<CustomerData>> GetCustomerAsync(string shoppingCard);
     }
 }

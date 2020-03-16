@@ -25,8 +25,16 @@ namespace SelfCheckout.Services.Register
 
         public CustomerData CustomerData { get; private set; }
 
-        public async Task<List<CustomerData>> GetCustomerAsync(object payload)
+        public async Task<List<CustomerData>> GetCustomerAsync(string shoppingCard)
         {
+            var payload = new
+            {
+                shoppingCard = shoppingCard,
+                SubBranch = _selfCheckoutService.AppConfig.SubBranch,
+                isTour = false,
+                isGenPdfPromotion = false,
+                isGenImgShoppingCard = false
+            };
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlRegisterApi}api/Register/GetCustomer");
             var response = await PostAsync<object, ApiResultData<List<CustomerData>>>(uri.ToString(), payload);
             if (!response.IsCompleted)

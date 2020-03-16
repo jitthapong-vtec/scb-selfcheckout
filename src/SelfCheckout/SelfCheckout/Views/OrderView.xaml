@@ -85,9 +85,9 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Text="Filter" VerticalOptions="Center" HorizontalTextAlignment="Start"/>
-                            <controls:TappedGrid Grid.Column="1" TappedCommand="{Binding CustomerFilterTappedCommand}">
-                                <Label Text="All" VerticalOptions="Center" HorizontalTextAlignment="End"/>
+                            <Label Text="{i18n:Translate Filter}" VerticalOptions="Center" HorizontalTextAlignment="Start"/>
+                            <controls:TappedGrid Grid.Column="1" TappedCommand="{Binding ShowCustomerSelectionCommand}">
+                                <Label Text="{Binding SelectedCustomer.CustomerName}" VerticalOptions="Center" HorizontalTextAlignment="End"/>
                             </controls:TappedGrid>
                         </Grid>
                         <Label Grid.Column="2" VerticalOptions="Center"
@@ -127,7 +127,7 @@
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </StackLayout>
-                <CollectionView Grid.Row="3" IsGrouped="True" ItemsSource="{Binding OrderInvoices}" Margin="0,0,0,32">
+                <CollectionView IsVisible="{Binding IsShowGroup}" Grid.Row="3" Margin="0,0,0,32" IsGrouped="True" ItemsSource="{Binding OrderInvoices}">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start" SnapPointsType="None"/>
                     </CollectionView.ItemsLayout>
@@ -142,9 +142,20 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+                <CollectionView IsVisible="{Binding IsShowGroup, Converter={StaticResource InverseBooleanConverter}}" Grid.Row="3" Margin="0,0,0,32" ItemsSource="{Binding OrderDetails}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start" SnapPointsType="None"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </Grid>
             <views:OrderSummaryView VerticalOptions="End"/>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
+            <views:CustomerSelectionView IsVisible="{Binding FilterCustomerShowing}"/>
         </Grid>
     </ContentView.Content>
 </ContentView>

@@ -59,16 +59,7 @@ namespace SelfCheckout.ViewModels.Base
 
                 SelfCheckoutService.CurrentShoppingCard = shoppingCard;
 
-                var payload = new
-                {
-                    shoppingCard = shoppingCard,
-                    SubBranch = SelfCheckoutService.AppConfig.SubBranch,
-                    isTour = false,
-                    isGenPdfPromotion = false,
-                    isGenImgShoppingCard = false
-                };
-
-                var customersData = await RegisterService.GetCustomerAsync(payload);
+                var customersData = await RegisterService.GetCustomerAsync(shoppingCard);
 
                 var customerData = customersData.FirstOrDefault();
                 if (customerData?.Person != null)

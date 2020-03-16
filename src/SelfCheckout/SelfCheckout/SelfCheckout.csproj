@@ -21,6 +21,7 @@
     <None Remove="Resources\Images\tab_active.png" />
     <None Remove="Resources\Images\tab_normal.png" />
     <None Remove="Resources\order_list.json" />
+    <None Remove="Resources\sess_detail.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +48,7 @@
     <EmbeddedResource Include="Resources\Images\tab_active.png" />
     <EmbeddedResource Include="Resources\Images\tab_normal.png" />
     <EmbeddedResource Include="Resources\order_list.json" />
+    <EmbeddedResource Include="Resources\sess_detail.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,6 +62,9 @@
     </Compile>
     <Compile Update="Views\CustomerCartConfirmDialog.xaml.cs">
       <DependentUpon>CustomerCartConfirmDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CustomerSelectionView.xaml.cs">
+      <DependentUpon>CustomerSelectionView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\ShoppingCardInputDialog.xaml.cs">
       <DependentUpon>ShoppingCardInputDialog.xaml</DependentUpon>
