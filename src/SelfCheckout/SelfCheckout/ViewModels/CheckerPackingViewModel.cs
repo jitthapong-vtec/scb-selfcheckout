@@ -19,6 +19,8 @@ namespace SelfCheckout.ViewModels
     public class CheckerPackingViewModel : OrderViewModelBase
     {
         string _sessionKey;
+        SessionData _sessionData;
+        CustomerData _customerData;
 
         public CheckerPackingViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
         {
@@ -31,10 +33,12 @@ namespace SelfCheckout.ViewModels
             {
                 try
                 {
-                    await GetSessionDetailAsync(sessionKey);
+                    SessionData = await GetSessionDetailAsync(sessionKey);
+                    CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
                     SessionKey = sessionKey;
 
-                    await GetOrderListAsync(SessionData.ShoppingCard);
+                    await LoadOrderListAsync(SessionData.ShoppingCard);
+
                 }
                 catch(Exception ex) 
                 {
@@ -46,6 +50,18 @@ namespace SelfCheckout.ViewModels
         {
             get => _sessionKey;
             set => SetProperty(ref _sessionKey, value);
+        }
+
+        public SessionData SessionData
+        {
+            get => _sessionData;
+            set => SetProperty(ref _sessionData, value);
+        }
+
+        public CustomerData CustomerData
+        {
+            get => _customerData;
+            set => SetProperty(ref _customerData, value);
         }
 
         public override Task OnTabSelected(TabItem item)

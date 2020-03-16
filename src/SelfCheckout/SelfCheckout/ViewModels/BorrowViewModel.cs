@@ -49,13 +49,8 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = true;
                 var userInfo = SaleEngineService.LoginData?.UserInfo;
-                var startResult = await SelfCheckoutService.StartSessionAsync(userInfo.UserCode, userInfo.MachineEnv.MachineNo, shoppingCard);
-                if (!startResult.IsCompleted)
-                {
-                    DialogService.ShowAlert(AppResources.Opps, startResult.DefaultMessage, AppResources.Close);
-                    return;
-                }
-                var result = await NavigationService.NavigateAsync("MainView");
+                await SelfCheckoutService.StartSessionAsync(userInfo.UserCode, userInfo.MachineEnv.MachineNo, shoppingCard);
+                await NavigationService.NavigateAsync("MainView");
             }
             catch (Exception ex)
             {

@@ -16,7 +16,7 @@ namespace SelfCheckout.Services.SelfCheckout
 
         Language CurrentLanguage { get; set; }
 
-        string CurrentSessionKey { get; }
+        string BorrowSessionKey { get; }
 
         string StartedShoppingCard { get; set; }
 
@@ -28,20 +28,20 @@ namespace SelfCheckout.Services.SelfCheckout
 
         Task LoadPaymentAsync();
 
-        Task<ApiResultData<int>> StartSessionAsync(string userId, string machineNo, string shoppingCardNo);
+        Task<int> StartSessionAsync(string userId, string machineNo, string shoppingCardNo);
 
-        Task<ApiResultData<bool>> UpdateSessionAsync(string sessionKey, int orderNo, string shoppingCardNo);
+        Task<bool> UpdateSessionAsync(string sessionKey, int orderNo, string shoppingCardNo);
 
-        Task<ApiResultData<bool>> EndSessionAsync(string sessionKey, string userId, string machineNo);
+        Task<bool> EndSessionAsync(string sessionKey, string userId, string machineNo);
 
-        Task<ApiResultData<SessionData>> GetSessionDetialAsync(string key);
+        Task<SessionData> GetSessionDetialAsync(string key);
 
-        Task<ApiResultData<SessionData>> GetDeviceStatusAsync(string machineNo);
+        Task<SessionData> GetDeviceStatusAsync(string machineNo);
 
-        Task<ApiResultData<List<SessionData>>> GetSessionHistory(DateTime? date, int sessionKey, string machineNo);
+        Task<List<SessionData>> GetSessionHistory(DateTime? date, int sessionKey, string machineNo);
 
-        Task<ApiResultData<bool>> ValidateMachineAsync(string machineIp);
+        Task<bool> ValidateMachineAsync(string machineIp);
 
-        Task<ApiResultData<bool>> ValidateShoppingCardAsync(string machineIp, string shoppingCard);
+        Task<bool> ValidateShoppingCardAsync(string machineIp, string shoppingCard);
     }
 }

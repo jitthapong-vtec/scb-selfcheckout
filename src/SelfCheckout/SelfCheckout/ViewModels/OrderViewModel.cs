@@ -64,9 +64,9 @@ namespace SelfCheckout.ViewModels
 
         private async Task RefreshOrderAsync()
         {
-            await GetSessionDetailAsync(SelfCheckoutService.CurrentSessionKey);
-            await GetCustomerAsync();
-            await GetOrderListAsync(SelfCheckoutService.CurrentShoppingCard);
+            var sessionData = await GetSessionDetailAsync(SelfCheckoutService.BorrowSessionKey);
+            await LoadCustomerSession(sessionData.SesionDetail);
+            await LoadOrderListAsync(sessionData.ShoppingCard);
         }
 
         public ICommand TabSelectedCommand => new DelegateCommand<SimpleSelectedItem>((item) =>

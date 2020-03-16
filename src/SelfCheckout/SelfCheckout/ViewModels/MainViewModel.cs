@@ -653,7 +653,7 @@ namespace SelfCheckout.ViewModels
 
                     var headerAttr = _saleEngineService.OrderData.HeaderAttributes.Where(o => o.Code == "order_no").FirstOrDefault();
                     var orderNo = Convert.ToInt32(headerAttr.ValueOfDecimal);
-                    var result = await _selfCheckoutService.UpdateSessionAsync(_selfCheckoutService.CurrentSessionKey, orderNo, _selfCheckoutService.StartedShoppingCard);
+                    var result = await _selfCheckoutService.UpdateSessionAsync(_selfCheckoutService.BorrowSessionKey, orderNo, _selfCheckoutService.StartedShoppingCard);
 
                     try
                     {

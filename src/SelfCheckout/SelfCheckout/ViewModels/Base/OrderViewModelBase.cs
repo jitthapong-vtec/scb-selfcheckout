@@ -28,9 +28,9 @@ namespace SelfCheckout.ViewModels.Base
         ObservableCollection<OrderInvoiceGroup> _orderInvoices;
         ObservableCollection<OrderDetail> _orderDetails;
         ObservableCollection<CustomerOrder> _customers;
-        SessionData _sessionData;
 
         string _currencyCode;
+
         int _totalInvoice;
         double? _totalQty;
         double? _subTotal;
@@ -56,20 +56,9 @@ namespace SelfCheckout.ViewModels.Base
             set => SetProperty(ref _customers, value);
         }
 
-        public CustomerData CustomerData
+        public string BorrowSessionKey
         {
-            get => RegisterService.CustomerData;
-        }
-
-        public LoginData LoginData
-        {
-            get => SaleEngineService.LoginData;
-        }
-
-        public SessionData SessionData
-        {
-            get => _sessionData;
-            set => SetProperty(ref _sessionData, value);
+            get => SelfCheckoutService.BorrowSessionKey;
         }
 
         public int TotalInvoice
@@ -125,22 +114,25 @@ namespace SelfCheckout.ViewModels.Base
             set => SetProperty(ref _orderDetails, value);
         }
 
-        protected async Task GetSessionDetailAsync(string sessionkey)
+        protected async Task<SessionData> GetSessionDetailAsync(string sessionkey)
         {
-            var result = await SelfCheckoutService.GetSessionDetialAsync(sessionkey);
-            SessionData = result.Data;
+            return await SelfCheckoutService.GetSessionDetialAsync(sessionkey);
         }
 
-        protected async Task GetCustomerAsync()
+        protected async Task<CustomerData> GetCustomerSessionAsync(string shoppingCard)
         {
-            if (SessionData?.SesionDetail?.Any() == false)
-                return;
+            var customers = await RegisterService.GetCustomerAsync(shoppingCard);
+            return customers.FirstOrDefault();
+        }
+
+        protected async Task LoadCustomerSession(List<SesionDetail> sessionDetails)
+        {
             var customers = new List<CustomerOrder>();
             customers.Add(new CustomerOrder
             {
                 CustomerName = AppResources.All
             });
-            foreach (var sessionDetail in SessionData.SesionDetail)
+            foreach (var sessionDetail in sessionDetails)
             {
                 try
                 {
@@ -158,7 +150,7 @@ namespace SelfCheckout.ViewModels.Base
             Customers = customers.ToObservableCollection();
         }
 
-        protected async Task GetOrderListAsync(string shoppingCard)
+        protected async Task LoadOrderListAsync(string shoppingCard)
         {
             var appConfig = SelfCheckoutService.AppConfig;
             var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);

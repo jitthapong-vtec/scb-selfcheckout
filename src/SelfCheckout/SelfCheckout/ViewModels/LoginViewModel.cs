@@ -47,11 +47,10 @@ namespace SelfCheckout.ViewModels
         protected override async Task AuthorizeCallback(LoginData loginData)
         {
             SaleEngineService.LoginData = loginData;
-            //if (Device.Idiom == TargetIdiom.Phone)
-            //    await _navigationService.NavigateAsync("BorrowView");
-            //else if (Device.Idiom == TargetIdiom.Desktop)
-            //    await _navigationService.NavigateAsync("CheckerMainView");
-            await _navigationService.NavigateAsync("MainView");
+            if (Device.Idiom == TargetIdiom.Phone)
+                await _navigationService.NavigateAsync("BorrowView");
+            else if (Device.Idiom == TargetIdiom.Desktop)
+                await _navigationService.NavigateAsync("CheckerMainView");
         }
     }
 }

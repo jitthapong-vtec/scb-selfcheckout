@@ -124,15 +124,27 @@
                     </CollectionView>
                 </Grid>
 
-                <Grid Grid.Row="0" Grid.Column="1">
-
-                </Grid>
-
-                <StackLayout Grid.Column="1" Grid.Row="1">
-                    <Grid BackgroundColor="{StaticResource Gray100}" Padding="8">
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Grid Grid.Row="0" BackgroundColor="{StaticResource Gray100}" Padding="8">
                         <Label Text="Units" HorizontalTextAlignment="Center"/>
                     </Grid>
-                </StackLayout>
+
+                    <CollectionView Grid.Row="1" ItemsSource="{Binding OrderDetails}" Margin="0,0,0,32">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start" SnapPointsType="None"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
 
                 <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" HorizontalOptions="Center">
                     <Frame BackgroundColor="{StaticResource Primary}">
