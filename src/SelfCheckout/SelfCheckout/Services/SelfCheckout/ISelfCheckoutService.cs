@@ -16,7 +16,7 @@ namespace SelfCheckout.Services.SelfCheckout
 
         Language CurrentLanguage { get; set; }
 
-        string BorrowSessionKey { get; }
+        int BorrowSessionKey { get; }
 
         string StartedShoppingCard { get; set; }
 
@@ -30,9 +30,9 @@ namespace SelfCheckout.Services.SelfCheckout
 
         Task<int> StartSessionAsync(string userId, string machineNo, string shoppingCardNo);
 
-        Task<bool> UpdateSessionAsync(string sessionKey, int orderNo, string shoppingCardNo);
+        Task<bool> UpdateSessionAsync(int sessionKey, int orderNo, string shoppingCardNo);
 
-        Task<bool> EndSessionAsync(string sessionKey, string userId, string machineNo);
+        Task<bool> EndSessionAsync(int sessionKey, string userId, string machineNo);
 
         Task<SessionData> GetSessionDetialAsync(string key);
 

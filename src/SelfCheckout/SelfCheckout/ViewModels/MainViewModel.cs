@@ -501,13 +501,8 @@ namespace SelfCheckout.ViewModels
                     machine_ip = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineIp,
                     branch_no = _selfCheckoutService.AppConfig.BranchNo
                 };
-                var walletResult = await _saleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
-                if (!walletResult.IsCompleted)
-                {
-                    DialogService.ShowAlert(AppResources.Opps, walletResult.DefaultMessage, AppResources.Close);
-                }
+                var wallet = await _saleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
 
-                var wallet = walletResult.Data;
                 var netAmount = OrderData.BillingAmount.NetAmount.CurrAmt;
                 var paymentRequestPayload = new
                 {
@@ -666,8 +661,8 @@ namespace SelfCheckout.ViewModels
                     }
 
                     var appConfig = _selfCheckoutService.AppConfig;
-                    var loginResult = await _saleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
-                    _saleEngineService.LoginData = loginResult.Data;
+                    var loginData = await _saleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
+                    _saleEngineService.LoginData = loginData;
 
                     var shoppingCartTab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
                     await (shoppingCartTab.Page.BindingContext as ShoppingCartViewModel).LoadOrderAsync();

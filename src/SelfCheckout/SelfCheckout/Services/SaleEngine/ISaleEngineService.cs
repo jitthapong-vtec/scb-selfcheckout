@@ -18,27 +18,27 @@ namespace SelfCheckout.Services.SaleEngine
 
         Currency BaseCurrency { get; }
 
-        Task<ApiResultData<LoginData>> LoginAsync(string username, string password);
+        Task<LoginData> LoginAsync(string username, string password);
 
-        Task<ApiResultData<List<OrderData>>> GetOrderAsync(object payload);
+        Task<List<OrderData>> GetOrderAsync(object payload);
 
-        Task<ApiResultData<List<OrderData>>> GetOrderListAsync(object payload);
+        Task<List<OrderData>> GetOrderListAsync(object payload);
 
-        Task<ApiResultData<List<OrderData>>> AddItemToOrderAsync(object payload);
+        Task<List<OrderData>> AddItemToOrderAsync(object payload);
 
-        Task<ApiResultData<List<OrderData>>> ActionItemToOrderAsync(object payload);
+        Task<List<OrderData>> ActionItemToOrderAsync(object payload);
 
-        Task<ApiResultData<List<OrderData>>> ActionListItemToOrderAsync(object payload);
+        Task<List<OrderData>> ActionListItemToOrderAsync(object payload);
 
-        Task<ApiResultData<Wallet>> GetWalletTypeFromBarcodeAsync(object payload);
+        Task<Wallet> GetWalletTypeFromBarcodeAsync(object payload);
 
-        Task<ApiResultData<List<OrderData>>> CheckoutPaymentOrder(object payload);
+        Task<List<OrderData>> CheckoutPaymentOrder(object payload);
 
-        Task<ApiResultData<List<OrderData>>> AddPaymentToOrderAsync(object payload);
+        Task<List<OrderData>> AddPaymentToOrderAsync(object payload);
 
         Task<OrderPayment> ActionPaymentToOrderAsync(object payload);
 
-        Task<ApiResultData<List<OrderData>>> FinishPaymentOrderAsync(object payload);
+        Task<List<OrderData>> FinishPaymentOrderAsync(object payload);
 
         Task VoidPaymentAsync(string merchantId, string partnerTransId);
 

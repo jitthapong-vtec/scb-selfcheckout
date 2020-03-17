@@ -52,7 +52,7 @@ namespace SelfCheckout.ViewModels.Base
                 {
                     IsBusy = true;
                     var result = await SaleEngineService.LoginAsync(UserName.Value, Password.Value);
-                    await AuthorizeCallback(result.Data);
+                    await AuthorizeCallback(result);
                 }
                 catch (Exception ex)
                 {

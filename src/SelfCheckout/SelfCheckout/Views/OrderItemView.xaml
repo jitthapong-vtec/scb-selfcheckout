@@ -19,7 +19,7 @@
                         </controls:TappedGrid>
                     </SwipeItemView>
                 </SwipeView.RightItems>-->
-    <Frame Margin="-4,0,-4,4" Padding="8,4,8,4">
+    <Frame Margin="{OnPlatform Android='-4,0,-4,4', UWP=0}" Padding="{OnPlatform Android='8,4,8,4', UWP=0}">
         <Grid Margin="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>

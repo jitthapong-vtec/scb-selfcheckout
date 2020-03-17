@@ -11,7 +11,6 @@
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:views="clr-namespace:SelfCheckout.Views"
              prism:ViewModelLocator.AutowireViewModel="True"
-             Visual="Material"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.OrderView">
     <ContentView.Content>
@@ -28,7 +27,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Entry IsVisible="False" x:Name="entrySessionKey" Text="{Binding LoginData.SessionKey}"/>
+                    <Entry IsVisible="False" x:Name="entrySessionKey" Text="{Binding BorrowSessionKey}"/>
                     <Grid Grid.Column="0">
                         <forms:ZXingBarcodeImageView
                             BarcodeFormat="QR_CODE"

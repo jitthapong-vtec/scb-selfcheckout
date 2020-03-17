@@ -56,7 +56,7 @@ namespace SelfCheckout.ViewModels.Base
             set => SetProperty(ref _customers, value);
         }
 
-        public string BorrowSessionKey
+        public int BorrowSessionKey
         {
             get => SelfCheckoutService.BorrowSessionKey;
         }
@@ -157,7 +157,7 @@ namespace SelfCheckout.ViewModels.Base
 
             var payload = new
             {
-                SessionKey = loginResult.Data.SessionKey,
+                SessionKey = loginResult.SessionKey,
                 Attributes = new object[]
                 {
                     new
@@ -182,8 +182,7 @@ namespace SelfCheckout.ViewModels.Base
                 }
             };
 
-            var result = await SaleEngineService.GetOrderListAsync(payload);
-            var ordersData = result.Data;
+            var ordersData = await SaleEngineService.GetOrderListAsync(payload);
 
             _allOrderInvoiceGroups = new List<OrderInvoiceGroup>();
             var allOrderDetails = new List<OrderDetail>();
@@ -218,8 +217,11 @@ namespace SelfCheckout.ViewModels.Base
 
             CalculateSummary();
 
-            var t2 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
-            t2.Text1 = $"{TotalQty} {AppResources.Units}";
+            if (Device.Idiom == TargetIdiom.Phone)
+            {
+                var t2 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
+                t2.Text1 = $"{TotalQty} {AppResources.Units}";
+            }
         }
 
         protected void FilterOrder(string orderNo)
@@ -233,6 +235,9 @@ namespace SelfCheckout.ViewModels.Base
 
         private void CalculateSummary()
         {
+            if (Device.Idiom == TargetIdiom.Desktop)
+                return;
+
             TotalInvoice = OrderInvoices.Count();
             CurrencyCode = OrderInvoices.FirstOrDefault()?.CurrencyCode;
             TotalQty = OrderInvoices.Sum(o => o.TotalQty);

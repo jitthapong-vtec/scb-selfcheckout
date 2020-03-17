@@ -27,7 +27,7 @@
                 <BoxView HeightRequest="1" Grid.Row="1" BackgroundColor="{StaticResource Gray50}"/>
                 <Label Grid.Row="2" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="{Binding InvoiceNo}"/>
             </Grid>
-            <Grid Grid.Column="1" Padding="0,4,4,0" VerticalOptions="Center">
+            <Grid Grid.Column="1" Padding="{OnPlatform Android='0,4,4,0', UWP=0}" VerticalOptions="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>

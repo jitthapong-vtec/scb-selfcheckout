@@ -22,6 +22,7 @@ namespace SelfCheckout.ViewModels
     public class OrderViewModel : OrderViewModelBase
     {
         CustomerOrder _selectedCustomer;
+        CustomerData _customerData;
 
         bool _isShowGroup;
         bool _summaryShowing;
@@ -64,9 +65,21 @@ namespace SelfCheckout.ViewModels
 
         private async Task RefreshOrderAsync()
         {
-            var sessionData = await GetSessionDetailAsync(SelfCheckoutService.BorrowSessionKey);
-            await LoadCustomerSession(sessionData.SesionDetail);
-            await LoadOrderListAsync(sessionData.ShoppingCard);
+            try
+            {
+                IsBusy = true;
+                var sessionData = await GetSessionDetailAsync(SelfCheckoutService.BorrowSessionKey.ToString());
+                await LoadCustomerSession(sessionData.SesionDetail);
+                await LoadOrderListAsync(sessionData.ShoppingCard);
+            }
+            catch (Exception ex)
+            {
+                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         public ICommand TabSelectedCommand => new DelegateCommand<SimpleSelectedItem>((item) =>
@@ -106,6 +119,12 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _selectedCustomer, value);
         }
 
+        public CustomerData CustomerData
+        {
+            get => _customerData;
+            set => SetProperty(ref _customerData, value);
+        }
+
         public bool FilterCustomerShowing
         {
             get => _filterCustomerShowing;
@@ -126,6 +145,7 @@ namespace SelfCheckout.ViewModels
 
         public override async Task OnTabSelected(TabItem item)
         {
+            CustomerData = await GetCustomerSessionAsync(CurrentShoppingCard);
             await RefreshOrderAsync();
         }
     }

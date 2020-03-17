@@ -54,11 +54,12 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
+                        <Entry IsVisible="False" Text="{Binding SessionKey}" x:Name="hidenEntry"/>
                         <forms:ZXingBarcodeImageView
                             BarcodeFormat="QR_CODE"
                             HeightRequest="150"
                             WidthRequest="150"
-                            BarcodeValue="{Binding SessionKey}">
+                            BarcodeValue="{Binding Source={x:Reference hidenEntry}, Path=Text}">
                             <forms:ZXingBarcodeImageView.BarcodeOptions>
                                 <common:EncodingOptions Width="150" Height="150" PureBarcode="True"/>
                             </forms:ZXingBarcodeImageView.BarcodeOptions>
@@ -149,6 +150,7 @@
                 <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" HorizontalOptions="Center">
                     <Frame BackgroundColor="{StaticResource Primary}">
                         <controls:TappedGrid
+                            TappedCommand="{Binding SaveSessionCommand}"
                                     Padding="0"
                                     Margin="4"
                                     WidthRequest="100"
@@ -158,6 +160,7 @@
                     </Frame>
                     <Frame BackgroundColor="{StaticResource Brown}">
                         <controls:TappedGrid
+                            TappedCommand="{Binding ClearScreenCommand}"
                                     Padding="0"
                                     Margin="4"
                                     WidthRequest="100"
@@ -167,6 +170,7 @@
                     </Frame>
                 </StackLayout>
             </Grid>
+            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentView.Content>
 </ContentView>

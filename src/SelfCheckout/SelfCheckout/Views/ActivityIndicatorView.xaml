@@ -5,7 +5,7 @@
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              x:Class="SelfCheckout.Views.ActivityIndicatorView">
     <ContentView.Content>
-        <Grid BackgroundColor="#66000000">
+        <Grid BackgroundColor="{OnPlatform Android='#66000000', UWP=Transparent}">
             <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
                 <ActivityIndicator IsRunning="{Binding IsBusy}"/>
                 <controls:CustomLabel UpperCase="True" Margin="8"

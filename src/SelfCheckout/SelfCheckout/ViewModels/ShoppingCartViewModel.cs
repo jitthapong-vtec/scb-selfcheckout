@@ -304,8 +304,7 @@ namespace SelfCheckout.ViewModels
                     SessionKey = SaleEngineService.LoginData.SessionKey,
                     ItemCode = barcode
                 };
-                var result = await SaleEngineService.AddItemToOrderAsync(payload);
-                var success = result.IsCompleted;
+                await SaleEngineService.AddItemToOrderAsync(payload);
             }
             catch (Exception ex)
             {
@@ -329,8 +328,7 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var result = await SaleEngineService.AddItemToOrderAsync(payload);
-                var success = result.IsCompleted;
+                await SaleEngineService.AddItemToOrderAsync(payload);
             }
             catch (Exception ex)
             {

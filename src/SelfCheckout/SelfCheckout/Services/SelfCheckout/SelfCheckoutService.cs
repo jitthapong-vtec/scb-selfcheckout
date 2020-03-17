@@ -18,7 +18,7 @@ namespace SelfCheckout.Services.SelfCheckout
         {
         }
 
-        public string BorrowSessionKey { get; private set; }
+        public int BorrowSessionKey { get; private set; }
 
         public string StartedShoppingCard { get; set; }
 
@@ -59,7 +59,7 @@ namespace SelfCheckout.Services.SelfCheckout
             Payments = result.Data;
         }
 
-        public async Task<bool> EndSessionAsync(string sessionKey, string userId, string machineNo)
+        public async Task<bool> EndSessionAsync(int sessionKey, string userId, string machineNo)
         {
             var payload = new
             {
@@ -85,27 +85,27 @@ namespace SelfCheckout.Services.SelfCheckout
 
         public async Task<SessionData> GetSessionDetialAsync(string key)
         {
-            //var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/SessionDetai?key={key}");
-            //var result = await GetAsync<ApiResultData<SessionData>>(uri.ToString());
-            //if (!result.IsCompleted)
-            //    throw new KPApiException(result.DefaultMessage);
-            //return result;
+            var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/SessionDetai?key={key}");
+            var result = await GetAsync<ApiResultData<SessionData>>(uri.ToString());
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            return result.Data;
 
-            var apiResultData = new ApiResultData<SessionData>();
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "SelfCheckout.Resources.sess_detail.json";
+            //var apiResultData = new ApiResultData<SessionData>();
+            //var assembly = Assembly.GetExecutingAssembly();
+            //var resourceName = "SelfCheckout.Resources.sess_detail.json";
 
-            try
-            {
-                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    string result = await reader.ReadToEndAsync();
-                    apiResultData = JsonConvert.DeserializeObject<ApiResultData<SessionData>>(result);
-                }
-            }
-            catch { }
-            return apiResultData.Data;
+            //try
+            //{
+            //    using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            //    using (StreamReader reader = new StreamReader(stream))
+            //    {
+            //        string result = await reader.ReadToEndAsync();
+            //        apiResultData = JsonConvert.DeserializeObject<ApiResultData<SessionData>>(result);
+            //    }
+            //}
+            //catch { }
+            //return apiResultData.Data;
         }
 
         public async Task<List<SessionData>> GetSessionHistory(DateTime? date, int sessionKey, string machineNo)
@@ -137,12 +137,12 @@ namespace SelfCheckout.Services.SelfCheckout
             var result = await PostAsync<object, ApiResultData<int>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
-            BorrowSessionKey = result.Data.ToString();
+            BorrowSessionKey = result.Data;
             StartedShoppingCard = shoppingCardNo;
             return result.Data;
         }
 
-        public async Task<bool> UpdateSessionAsync(string sessionKey, int orderNo, string shoppingCardNo)
+        public async Task<bool> UpdateSessionAsync(int sessionKey, int orderNo, string shoppingCardNo)
         {
             var payload = new
             {

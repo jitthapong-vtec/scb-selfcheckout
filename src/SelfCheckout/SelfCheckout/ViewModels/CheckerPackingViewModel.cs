@@ -27,24 +27,59 @@ namespace SelfCheckout.ViewModels
         }
 
         public ICommand GetSessionDetailCommand => new DelegateCommand<string>(
-            canExecuteMethod: (sessionKey) => !string.IsNullOrEmpty(sessionKey),
+            canExecuteMethod: (sessionKey) => string.IsNullOrEmpty(sessionKey) == false,
             executeMethod:
             async (sessionKey) =>
             {
                 try
                 {
-                    SessionData = await GetSessionDetailAsync(sessionKey);
+                    IsBusy = true;
+                    SessionData = await GetSessionDetailAsync(sessionKey.ToString());
                     CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
                     SessionKey = sessionKey;
 
                     await LoadOrderListAsync(SessionData.ShoppingCard);
 
                 }
-                catch(Exception ex) 
+                catch (Exception ex)
                 {
                     DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
                 }
+                finally
+                {
+                    IsBusy = false;
+                }
             });
+
+        public ICommand SaveSessionCommand => new DelegateCommand(async () =>
+        {
+            //var result = await DialogService.ConfirmAsync("Save", "Are you sure you want to save this session", "Yes", "No");
+            //if (!result)
+            //    return;
+            try
+            {
+                IsBusy = true;
+                var appSetting = SelfCheckoutService.AppConfig;
+                var machineNo = SaleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
+                await SelfCheckoutService.EndSessionAsync(Convert.ToInt32(SessionKey), appSetting.UserName, machineNo);
+            }
+            catch (Exception ex)
+            {
+                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        });
+
+        public ICommand ClearScreenCommand => new DelegateCommand(() =>
+         {
+             OrderInvoices.Clear();
+             OrderDetails.Clear();
+             SessionData = new SessionData();
+             CustomerData = new CustomerData();
+         });
 
         public string SessionKey
         {
