@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace SelfCheckout.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ConfirmDialogView : ContentView
+    public partial class AlertDialog : ContentView
     {
-        public ConfirmDialogView()
+        public AlertDialog()
         {
             InitializeComponent();
         }

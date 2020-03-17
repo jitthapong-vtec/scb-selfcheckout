@@ -149,12 +149,7 @@ namespace SelfCheckout.ViewModels
             }
             else
             {
-                try
-                {
-                    var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
-                    await (tab.Page.BindingContext as ShoppingCartViewModel).AddOrderAsync(data?.ToString());
-                }
-                catch { }
+                MessagingCenter.Send(this, "ScannerReceived", data?.ToString());
             }
         });
 
@@ -438,7 +433,7 @@ namespace SelfCheckout.ViewModels
                 PaymentSelected = _selfCheckoutService.Payments.FirstOrDefault();
 
                 Languages = _selfCheckoutService.Languages?.ToObservableCollection();
-                LanguageSelected = _selfCheckoutService.Languages.FirstOrDefault();
+                LanguageSelected = _selfCheckoutService.Languages.Where(l => l.LangCode == "EN").FirstOrDefault();
             }
             catch (Exception ex)
             {

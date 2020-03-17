@@ -19,7 +19,7 @@ namespace SelfCheckout.Extensions
             var tcs = new TaskCompletionSource<IDialogResult>();
             try
             {
-                dialogService.ShowDialog("CommonDialog", parameters, (result) =>
+                dialogService.ShowDialog("AlertDialog", parameters, (result) =>
                 {
                     if (result.Exception != null)
                     {

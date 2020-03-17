@@ -60,11 +60,17 @@
     <Compile Update="Views\AuthorizationDialog.xaml.cs">
       <DependentUpon>AuthorizationDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\ConfirmDialog.xaml.cs">
+      <DependentUpon>ConfirmDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\CustomerCartConfirmDialog.xaml.cs">
       <DependentUpon>CustomerCartConfirmDialog.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\CustomerSelectionView.xaml.cs">
       <DependentUpon>CustomerSelectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\AlertDialog.xaml.cs">
+      <DependentUpon>AlertDialog.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\ShoppingCardInputDialog.xaml.cs">
       <DependentUpon>ShoppingCardInputDialog.xaml</DependentUpon>
@@ -115,10 +121,10 @@
     <EmbeddedResource Update="Views\CheckerPackingView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\ConfirmDialogView.xaml">
+    <EmbeddedResource Update="Views\ConfirmDialog.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\DialogView.xaml">
+    <EmbeddedResource Update="Views\AlertDialog.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\OrderInvoiceItemView.xaml">

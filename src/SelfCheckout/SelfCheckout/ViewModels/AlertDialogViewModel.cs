@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class DialogViewModel : BindableBase, IDialogAware, IAutoInitialize
+    public class AlertDialogViewModel : BindableBase, IDialogAware, IAutoInitialize
     {
         string _title;
         string _message;

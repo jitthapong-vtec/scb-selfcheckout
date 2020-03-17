@@ -84,7 +84,7 @@ namespace SelfCheckout.ViewModels.Base
         {
         }
 
-        public void Destroy()
+        public virtual void Destroy()
         {
         }
     }

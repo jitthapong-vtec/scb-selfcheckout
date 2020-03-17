@@ -41,7 +41,15 @@ namespace SelfCheckout.ViewModels
             CustomerData = RegisterService.CustomerData;
             CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
 
-            MessagingCenter.Subscribe<MainViewModel>(this, "CurrencyChanged", async (s) =>
+            MessagingCenter.Subscribe<MainViewModel, string>(this, "ScannerReceived", (sender, barcode) =>
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await AddOrderAsync(barcode);
+                });
+            });
+
+            MessagingCenter.Subscribe<MainViewModel>(this, "CurrencyChanged", async (sender) =>
             {
                 await RefreshOrderAsync();
             });
@@ -198,6 +206,12 @@ namespace SelfCheckout.ViewModels
             await LoadOrderAsync();
         }
 
+        public override void Destroy()
+        {
+            MessagingCenter.Unsubscribe<MainViewModel>(this, "ScannerReceived");
+            MessagingCenter.Unsubscribe<MainViewModel>(this, "CurrencyChanged");
+        }
+
         public async Task LoadOrderAsync()
         {
             try
@@ -309,7 +323,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                //await DialogService.ShowAlert(AppResources.Opps, ex.Message);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
             finally
             {
@@ -329,6 +343,7 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = true;
                 await SaleEngineService.AddItemToOrderAsync(payload);
+                await RefreshOrderAsync();
             }
             catch (Exception ex)
             {
@@ -338,7 +353,6 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = false;
             }
-            await RefreshOrderAsync();
         }
     }
 }

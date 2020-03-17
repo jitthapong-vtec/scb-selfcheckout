@@ -38,8 +38,8 @@ namespace SelfCheckout
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterDialog<DialogView, DialogViewModel>("CommonDialog");
-            containerRegistry.RegisterDialog<ConfirmDialogView, ConfirmDialogViewModel>("ConfirmDialog");
+            containerRegistry.RegisterDialog<AlertDialog, AlertDialogViewModel>("AlertDialog");
+            containerRegistry.RegisterDialog<ConfirmDialog, ConfirmDialogViewModel>("ConfirmDialog");
             containerRegistry.RegisterDialog<AuthorizationDialog, AuthorizationDialogViewModel>("AuthorizeDialog");
             containerRegistry.RegisterDialog<CustomerCartConfirmDialog, CustomerCartConfirmDialogViewModel>("CustomerCardConfirmDialog");
             containerRegistry.RegisterDialog<BarcodeScanView, BarcodeScanViewModel>("BarcodeScanDialog");

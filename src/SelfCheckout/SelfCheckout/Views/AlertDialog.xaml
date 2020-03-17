@@ -8,7 +8,7 @@
              xmlns:prism="http://prismlibrary.com"
              prism:DialogLayout.RelativeWidthRequest="0.75"
              mc:Ignorable="d"
-             x:Class="SelfCheckout.Views.DialogView">
+             x:Class="SelfCheckout.Views.AlertDialog">
   <ContentView.Content>
         <Frame>
             <Grid Margin="8">

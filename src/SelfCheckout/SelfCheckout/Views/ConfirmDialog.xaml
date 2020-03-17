@@ -8,7 +8,7 @@
              prism:DialogLayout.RelativeWidthRequest="0.75"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              mc:Ignorable="d"
-             x:Class="SelfCheckout.Views.ConfirmDialogView">
+             x:Class="SelfCheckout.Views.ConfirmDialog">
     <Frame>
         <Grid Margin="8">
             <Grid.RowDefinitions>
