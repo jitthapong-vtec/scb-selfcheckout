@@ -246,7 +246,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -305,16 +305,16 @@ namespace SelfCheckout.ViewModels
                     ItemCode = barcode
                 };
                 await SaleEngineService.AddItemToOrderAsync(payload);
+                await RefreshOrderAsync();
             }
             catch (Exception ex)
             {
-                DialogService.ShowAlert(AppResources.Opps, ex.Message);
+                //await DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
             finally
             {
                 IsBusy = false;
             }
-            await RefreshOrderAsync();
         }
 
         public async Task TestAddOrder()
@@ -322,7 +322,7 @@ namespace SelfCheckout.ViewModels
             var payload = new
             {
                 SessionKey = SaleEngineService.LoginData.SessionKey,
-                ItemCode = "00008211470207673"
+                ItemCode = "00008215930215710"//"00008211470207673"
             };
 
             try
@@ -332,7 +332,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                DialogService.ShowAlert(AppResources.Opps, ex.Message);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
             finally
             {

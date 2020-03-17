@@ -185,13 +185,10 @@ namespace SelfCheckout.ViewModels.Base
             var ordersData = await SaleEngineService.GetOrderListAsync(payload);
 
             _allOrderInvoiceGroups = new List<OrderInvoiceGroup>();
-            var allOrderDetails = new List<OrderDetail>();
             foreach (var order in ordersData)
             {
                 var orderInvoice = order.OrderInvoices.FirstOrDefault();
                 var orderDetails = new List<OrderDetail>(orderInvoice.OrderDetails);
-
-                allOrderDetails.AddRange(orderDetails);
 
                 var customerAttr = order.CustomerDetail?.CustomerAttributes;
                 var orderInvoiceGroup = new OrderInvoiceGroup(orderDetails)
@@ -212,9 +209,16 @@ namespace SelfCheckout.ViewModels.Base
 
                 _allOrderInvoiceGroups.Add(orderInvoiceGroup);
             }
-            OrderInvoices = _allOrderInvoiceGroups.ToObservableCollection();
-            OrderDetails = allOrderDetails.ToObservableCollection();
 
+            var ordersNo = Customers.Select(c => c.OrderNo).ToList();
+            _allOrderInvoiceGroups = _allOrderInvoiceGroups.Where(o => ordersNo.Contains(o.OrderNo)).ToList();
+            OrderInvoices = _allOrderInvoiceGroups.ToObservableCollection();
+
+            OrderDetails = new ObservableCollection<OrderDetail>();
+            foreach (var order in _allOrderInvoiceGroups)
+            {
+                order.ForEach((orderDetail) => OrderDetails.Add(orderDetail));
+            }
             CalculateSummary();
 
             if (Device.Idiom == TargetIdiom.Phone)

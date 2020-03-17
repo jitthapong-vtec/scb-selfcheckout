@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using Prism.AppModel;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
@@ -13,7 +14,7 @@ using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class DialogViewModel : BindableBase, IDialogAware
+    public class DialogViewModel : BindableBase, IDialogAware, IAutoInitialize
     {
         string _title;
         string _message;

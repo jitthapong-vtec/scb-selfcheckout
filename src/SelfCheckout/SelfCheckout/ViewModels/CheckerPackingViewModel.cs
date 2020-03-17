@@ -35,15 +35,22 @@ namespace SelfCheckout.ViewModels
                 {
                     IsBusy = true;
                     SessionData = await GetSessionDetailAsync(sessionKey.ToString());
-                    CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
                     SessionKey = sessionKey;
+                    //if(SessionData.SessionStatus.SessionCode == "END")
+                    //{
+                    //    DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
+                    //    return;
+                    //}
+                    await LoadCustomerSession(SessionData.SesionDetail);
+
+                    CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
 
                     await LoadOrderListAsync(SessionData.ShoppingCard);
 
                 }
                 catch (Exception ex)
                 {
-                    DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                    await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
                 }
                 finally
                 {
@@ -53,9 +60,9 @@ namespace SelfCheckout.ViewModels
 
         public ICommand SaveSessionCommand => new DelegateCommand(async () =>
         {
-            //var result = await DialogService.ConfirmAsync("Save", "Are you sure you want to save this session", "Yes", "No");
-            //if (!result)
-            //    return;
+            var result = DialogService.ConfirmAsync("Save", "Are you sure you want to save this session", "Yes", "No");
+            if (!result.Result)
+                return;
             try
             {
                 IsBusy = true;
@@ -65,7 +72,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {

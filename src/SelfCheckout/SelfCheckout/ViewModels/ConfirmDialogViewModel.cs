@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using Prism.AppModel;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
@@ -7,7 +8,7 @@ using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class ConfirmDialogViewModel : BindableBase, IDialogAware
+    public class ConfirmDialogViewModel : BindableBase, IDialogAware, IAutoInitialize
     {
         string _title;
         string _message;

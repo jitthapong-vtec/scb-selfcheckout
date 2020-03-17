@@ -9,7 +9,7 @@
              x:Class="SelfCheckout.Views.ProfileView">
   <ContentView.Content>
       <Grid>
-          <Label VerticalOptions="Center" HorizontalOptions="Center" Text="Profile" />
-      </Grid>
+            <WebView Source="{Binding MemberWebUrl}"/>
+        </Grid>
   </ContentView.Content>
 </ContentView>

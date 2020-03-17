@@ -12,8 +12,16 @@ namespace SelfCheckout.ViewModels
 {
     public class ProfileViewModel : ViewModelBase
     {
-        public ProfileViewModel(INavigationService navigatinService, IDialogService dialogService) : base(navigatinService, dialogService)
+        ISelfCheckoutService _selfCheckoutService;
+        string _memberWebUrl;
+
+        public ProfileViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService)
         {
+            _selfCheckoutService = selfCheckoutService;
+        }
+
+        public string MemberWebUrl {
+            get => string.Format(_selfCheckoutService.AppConfig.UrlMemberWeb, _selfCheckoutService.StartedShoppingCard, _selfCheckoutService.AppConfig.SubBranch);
         }
     }
 }

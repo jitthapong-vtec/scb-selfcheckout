@@ -66,7 +66,7 @@ namespace SelfCheckout.ViewModels.Base
                 {
                     if (!customerData.Person.IsActivate)
                     {
-                        DialogService.ShowAlert(AppResources.Opps, $"{customerData.Person.NativeName} is not activate!", AppResources.Close);
+                        await DialogService.ShowAlert(AppResources.Opps, $"{customerData.Person.NativeName} is not activate!", AppResources.Close);
                         return;
                     }
                     var parameters = new DialogParameters()
@@ -89,7 +89,7 @@ namespace SelfCheckout.ViewModels.Base
             }
             catch (Exception ex)
             {
-                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {

@@ -15,6 +15,7 @@
              xmlns:behaviors="clr-namespace:SelfCheckout.Behaviors"
              xmlns:components="clr-namespace:SelfCheckout.Views.Components"
              NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.LoginView">
     <ContentPage.Content>

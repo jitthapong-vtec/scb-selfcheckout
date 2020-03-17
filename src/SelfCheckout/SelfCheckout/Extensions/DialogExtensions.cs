@@ -8,15 +8,32 @@ namespace SelfCheckout.Extensions
 {
     public static class DialogExtensions
     {
-        public static void ShowAlert(this IDialogService dialogService, string title, string message, string okButtonText = "Close")
+        public static Task<IDialogResult> ShowAlert(this IDialogService dialogService, string title, string message, string okButtonText = "Close")
         {
             var parameters = new DialogParameters
             {
                 { "Title", title },
                 { "Message", message },
-                {"OkButtonText", okButtonText }
+                { "OkButtonText", okButtonText }
             };
-            dialogService.ShowDialog("CommonDialog", parameters);
+            var tcs = new TaskCompletionSource<IDialogResult>();
+            try
+            {
+                dialogService.ShowDialog("CommonDialog", parameters, (result) =>
+                {
+                    if (result.Exception != null)
+                    {
+                        tcs.SetException(result.Exception);
+                        return;
+                    }
+                    tcs.SetResult(result);
+                });
+            }
+            catch (Exception ex)
+            {
+                tcs.SetException(ex);
+            }
+            return tcs.Task;
         }
 
         public static Task<bool> ConfirmAsync(this IDialogService dialogService, string title, string message, string okButtonText, string cancelButtonText)

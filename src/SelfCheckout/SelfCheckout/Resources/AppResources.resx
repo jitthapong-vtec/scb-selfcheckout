@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Alert" xml:space="preserve">
+    <value>Alert</value>
+  </data>
   <data name="All" xml:space="preserve">
     <value>All</value>
   </data>
@@ -310,6 +313,9 @@
   </data>
   <data name="SelectPaymentMethod" xml:space="preserve">
     <value>Select payment method</value>
+  </data>
+  <data name="SessionAlreadyFinish" xml:space="preserve">
+    <value>This session already finished.</value>
   </data>
   <data name="SessionHistory" xml:space="preserve">
     <value>Session history</value>

@@ -61,6 +61,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alert.
+        /// </summary>
+        internal static string Alert {
+            get {
+                return ResourceManager.GetString("Alert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         internal static string All {
@@ -633,6 +642,15 @@ namespace SelfCheckout.Resources {
         internal static string SelectPaymentMethod {
             get {
                 return ResourceManager.GetString("SelectPaymentMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This session already finished..
+        /// </summary>
+        internal static string SessionAlreadyFinish {
+            get {
+                return ResourceManager.GetString("SessionAlreadyFinish", resourceCulture);
             }
         }
         

@@ -31,7 +31,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Row="0" Grid.Column="0" VerticalOptions="Center" Padding="8">
+                <Grid Grid.Row="0" Grid.Column="0" VerticalOptions="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -108,7 +108,7 @@
                         <Label Text="Invoices" HorizontalTextAlignment="Center"/>
                     </Grid>
 
-                    <CollectionView Grid.Row="1" IsGrouped="True" ItemsSource="{Binding OrderInvoices}" Margin="0,0,0,32">
+                    <CollectionView Grid.Row="1" IsGrouped="True" ItemsSource="{Binding OrderInvoices}">
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start" SnapPointsType="None"/>
                         </CollectionView.ItemsLayout>
@@ -135,7 +135,7 @@
                         <Label Text="Units" HorizontalTextAlignment="Center"/>
                     </Grid>
 
-                    <CollectionView Grid.Row="1" ItemsSource="{Binding OrderDetails}" Margin="0,0,0,32">
+                    <CollectionView Grid.Row="1" ItemsSource="{Binding OrderDetails}">
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start" SnapPointsType="None"/>
                         </CollectionView.ItemsLayout>

@@ -442,7 +442,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                DialogService.ShowAlert(AppResources.Opps, ex.Message);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
         }
 
@@ -460,7 +460,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                DialogService.ShowAlert(AppResources.Opps, ex.Message);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
         }
 
@@ -482,7 +482,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -677,7 +677,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {
