@@ -19,7 +19,7 @@ namespace SelfCheckout.ViewModels
     {
         ISelfCheckoutService _selfCheckoutService;
 
-        ObservableCollection<SessionData> _devices;
+        ObservableCollection<DeviceStatus> _devices;
 
         public DeviceStatusViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService)
         {
@@ -31,7 +31,7 @@ namespace SelfCheckout.ViewModels
             await GetDeviceStatusAsync(search);
         });
 
-        public ObservableCollection<SessionData> Devices
+        public ObservableCollection<DeviceStatus> Devices
         {
             get => _devices;
             set => SetProperty(ref _devices, value);

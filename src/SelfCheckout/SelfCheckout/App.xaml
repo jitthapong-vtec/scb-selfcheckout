@@ -17,6 +17,8 @@
         <Color x:Key="Gray200">#eeeeee</Color>
         <Color x:Key="Gray300">#e0e0e0</Color>
         <Color x:Key="Brown">#9F8A58</Color>
+        <Color x:Key="Green">#008105</Color>
+        <Color x:Key="RedDark">#B02000</Color>
 
         <converter:TabItemWidthConverter x:Key="TabItemWidthConverter"/>
         <converter:ImageHeightConverter x:Key="ImageHeightConverter"/>

@@ -12,12 +12,16 @@
 
   <ItemGroup>
     <None Remove="Resources\Images\bg.png" />
+    <None Remove="Resources\Images\card_bg.png" />
+    <None Remove="Resources\Images\card_bg.svg" />
     <None Remove="Resources\Images\desktop_bg.png" />
     <None Remove="Resources\Images\header_logo.png" />
     <None Remove="Resources\Images\header_logo.svg" />
     <None Remove="Resources\Images\header_logo_blue.png" />
     <None Remove="Resources\Images\ic_user_share.png" />
     <None Remove="Resources\Images\landing_bg.png" />
+    <None Remove="Resources\Images\shopping_card.png" />
+    <None Remove="Resources\Images\shopping_card_active.png" />
     <None Remove="Resources\Images\tab_active.png" />
     <None Remove="Resources\Images\tab_normal.png" />
     <None Remove="Resources\order_list.json" />
@@ -39,12 +43,16 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\Images\bg.png" />
+    <EmbeddedResource Include="Resources\Images\card_bg.png" />
+    <EmbeddedResource Include="Resources\Images\card_bg.svg" />
     <EmbeddedResource Include="Resources\Images\desktop_bg.png" />
     <EmbeddedResource Include="Resources\Images\header_logo.png" />
     <EmbeddedResource Include="Resources\Images\header_logo.svg" />
     <EmbeddedResource Include="Resources\Images\ic_user_share.png" />
     <EmbeddedResource Include="Resources\Images\landing_bg.png" />
     <EmbeddedResource Include="Resources\Images\header_logo_blue.png" />
+    <EmbeddedResource Include="Resources\Images\shopping_card.png" />
+    <EmbeddedResource Include="Resources\Images\shopping_card_active.png" />
     <EmbeddedResource Include="Resources\Images\tab_active.png" />
     <EmbeddedResource Include="Resources\Images\tab_normal.png" />
     <EmbeddedResource Include="Resources\order_list.json" />
