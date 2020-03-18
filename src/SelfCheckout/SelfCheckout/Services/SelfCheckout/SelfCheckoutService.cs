@@ -74,10 +74,10 @@ namespace SelfCheckout.Services.SelfCheckout
             return result.Data;
         }
 
-        public async Task<SessionData> GetDeviceStatusAsync(string machineNo)
+        public async Task<List<SessionData>> GetDeviceStatusAsync(string machineNo)
         {
             var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/DeviceStatus?machine_no={machineNo}");
-            var result = await GetAsync<ApiResultData<SessionData>>(uri.ToString());
+            var result = await GetAsync<ApiResultData<List<SessionData>>>(uri.ToString());
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             return result.Data;

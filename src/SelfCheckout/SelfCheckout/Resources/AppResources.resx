@@ -254,6 +254,9 @@
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="OccupiredDevice" xml:space="preserve">
+    <value>OccupiredDevice</value>
+  </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
@@ -302,6 +305,12 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="SaveSession" xml:space="preserve">
+    <value>Save Session</value>
+  </data>
+  <data name="SaveSessionConfirm" xml:space="preserve">
+    <value>Do you want to save this session?</value>
+  </data>
   <data name="ScanCoupon" xml:space="preserve">
     <value>Scan Coupon</value>
   </data>
@@ -310,6 +319,9 @@
   </data>
   <data name="ScanShoppingCard" xml:space="preserve">
     <value>Please scan shopping card</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
   </data>
   <data name="SelectPaymentMethod" xml:space="preserve">
     <value>Select payment method</value>

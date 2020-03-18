@@ -51,6 +51,8 @@ namespace SelfCheckout
             containerRegistry.Register<ProfileViewModel>();
             containerRegistry.Register<HomeViewModel>();
             containerRegistry.Register<CheckerPackingViewModel>();
+            containerRegistry.Register<DeviceStatusViewModel>();
+            containerRegistry.Register<SessionHistoryViewModel>();
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<SettingView, SettingViewModel>();

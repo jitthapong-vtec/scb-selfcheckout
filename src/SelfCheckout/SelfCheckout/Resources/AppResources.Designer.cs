@@ -466,6 +466,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OccupiredDevice.
+        /// </summary>
+        internal static string OccupiredDevice {
+            get {
+                return ResourceManager.GetString("OccupiredDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         internal static string Ok {
@@ -610,6 +619,24 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save Session.
+        /// </summary>
+        internal static string SaveSession {
+            get {
+                return ResourceManager.GetString("SaveSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to save this session?.
+        /// </summary>
+        internal static string SaveSessionConfirm {
+            get {
+                return ResourceManager.GetString("SaveSessionConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scan Coupon.
         /// </summary>
         internal static string ScanCoupon {
@@ -633,6 +660,15 @@ namespace SelfCheckout.Resources {
         internal static string ScanShoppingCard {
             get {
                 return ResourceManager.GetString("ScanShoppingCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        internal static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
             }
         }
         

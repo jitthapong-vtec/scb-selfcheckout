@@ -36,7 +36,7 @@ namespace SelfCheckout.Services.SelfCheckout
 
         Task<SessionData> GetSessionDetialAsync(string key);
 
-        Task<SessionData> GetDeviceStatusAsync(string machineNo);
+        Task<List<SessionData>> GetDeviceStatusAsync(string machineNo);
 
         Task<List<SessionData>> GetSessionHistory(DateTime? date, int sessionKey, string machineNo);
 

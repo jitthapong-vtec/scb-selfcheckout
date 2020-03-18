@@ -35,11 +35,13 @@ namespace SelfCheckout.ViewModels
                 },
                 new TabItem
                 {
-                    TabText = AppResources.DeviceStatus
+                    TabText = AppResources.DeviceStatus,
+                    Page = new DeviceStatusView()
                 },
                 new TabItem
                 {
-                    TabText = AppResources.SessionHistory
+                    TabText = AppResources.SessionHistory,
+                    Page = new SessionHistoryView()
                 }
             };
 
@@ -66,6 +68,7 @@ namespace SelfCheckout.ViewModels
             selectedTab.Selected = false;
 
             item.Selected = true;
+            CurrentView = item.Page;
         });
 
         public override Task OnTabSelected(TabItem item)

@@ -60,7 +60,7 @@ namespace SelfCheckout.ViewModels
 
         public ICommand SaveSessionCommand => new DelegateCommand(async () =>
         {
-            var result = DialogService.ConfirmAsync("Save", "Are you sure you want to save this session", "Yes", "No");
+            var result = DialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
             if (!result.Result)
                 return;
             try

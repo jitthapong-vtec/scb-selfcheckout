@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.DeviceStatusView">
+    <ContentView.Content>
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Frame Grid.Row="0" HorizontalOptions="End">
+                        <StackLayout Orientation="Horizontal">
+                            <Entry FontSize="Large" WidthRequest="200" VerticalOptions="Center"/>
+                            <Frame BackgroundColor="{StaticResource Primary}">
+                                <controls:TappedGrid
+                            TappedCommand="{Binding SearchCommand}"
+                                    Padding="0"
+                                    Margin="4"
+                                    WidthRequest="100"
+                                    Style="{StaticResource TappedGridButtonStyle}">
+                                    <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Search}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                </controls:TappedGrid>
+                            </Frame>
+                        </StackLayout>
+                    </Frame>
+                    <Label Grid.Row="1" FontAttributes="Bold">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding TotalOccupireDevice}"/>
+                                <Span Text=" "/>
+                                <Span Text="{i18n:Translate OccupiredDevice}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Grid>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding Devices}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="3" VerticalItemSpacing="4" HorizontalItemSpacing="4"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Margin="4" Padding="2" HasShadow="True" BackgroundColor="White" VerticalOptions="Start">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" Text="{Binding MachineNo}"/>
+                                        <Label Grid.Column="1" Text="{Binding SessionStatus.DisplayStatus}"/>
+                                    </Grid>
+                                    <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="#D3CBCB"/>
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0" WidthRequest="72">
+
+                                        </Grid>
+                                        <BoxView Grid.Column="1" WidthRequest="1" BackgroundColor="#D3CBCB"/>
+                                        <Grid Grid.Column="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Label Grid.Row="0" Text="{Binding ShoppingCard}"/>
+                                            <Label Grid.Row="1" Text="{Binding ShoppingCardName}"/>
+                                            <BoxView Grid.Row="3" HeightRequest="1" BackgroundColor="#D3CBCB"/>
+                                            <Grid Grid.Row="4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Text="Time Use" />
+                                                <Label Grid.Column="1" Text="00:00 Hr"/>
+                                            </Grid>
+                                            <BoxView Grid.Row="5" HeightRequest="1" BackgroundColor="#D3CBCB"/>
+                                            <Grid Grid.Row="6">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Text="Start occupied" />
+                                                <Label Grid.Column="1" Text="None"/>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Grid>
+    </ContentView.Content>
+</ContentView>
