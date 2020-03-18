@@ -216,6 +216,7 @@ namespace SelfCheckout.ViewModels
                 }
                 else
                 {
+                    MessagingCenter.Send<ViewModelBase>(this, "RequestHWScanner");
                 }
             });
 

@@ -41,12 +41,9 @@ namespace SelfCheckout.ViewModels
             CustomerData = RegisterService.CustomerData;
             CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
 
-            MessagingCenter.Subscribe<MainViewModel, string>(this, "ScannerReceived", (sender, barcode) =>
+            MessagingCenter.Subscribe<MainViewModel, string>(this, "ScannerReceived", async(sender, barcode) =>
             {
-                Device.BeginInvokeOnMainThread(async () =>
-                {
-                    await AddOrderAsync(barcode);
-                });
+                await AddOrderAsync(barcode);
             });
 
             MessagingCenter.Subscribe<MainViewModel>(this, "CurrencyChanged", async (sender) =>

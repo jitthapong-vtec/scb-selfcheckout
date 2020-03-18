@@ -13,7 +13,6 @@ namespace SelfCheckout.ViewModels
     public class ProfileViewModel : ViewModelBase
     {
         ISelfCheckoutService _selfCheckoutService;
-        string _memberWebUrl;
 
         public ProfileViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService)
         {

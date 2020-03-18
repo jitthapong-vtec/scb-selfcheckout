@@ -3,6 +3,7 @@ using SelfCheckout.Exceptions;
 using SelfCheckout.Extensions;
 using SelfCheckout.Resources;
 using SelfCheckout.ViewModels;
+using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,23 @@ namespace SelfCheckout.Views
         public MainView()
         {
             InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            MessagingCenter.Subscribe<ViewModelBase>(this, "RequestHWScanner", (sender) =>
+            {
+                FireScanEvent();
+            });
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            MessagingCenter.Unsubscribe<ViewModelBase>(this, "RequestHWScanner");
         }
 
         protected override bool OnBackButtonPressed()
@@ -42,7 +60,7 @@ namespace SelfCheckout.Views
                     catch (DensoScannerException ex)
                     {
                         //shoppingCartViewModel?.DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-                       await shoppingCartViewModel.TestAddOrder();
+                       //await shoppingCartViewModel.TestAddOrder();
                     }
                 }
             }

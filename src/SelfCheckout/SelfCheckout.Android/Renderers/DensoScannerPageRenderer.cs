@@ -59,8 +59,7 @@ namespace SelfCheckout.Droid.Renderers
         public void OnBarcodeDataReceived(BarcodeDataReceivedEvent_ dataReceivedEvent)
         {
             IList<BarcodeDataReceivedEvent_.BarcodeData_> listBarcodeData = dataReceivedEvent.BarcodeData;
-
-            (Element as DensoScannerPage).ScanCommand?.Execute(listBarcodeData.FirstOrDefault().Data);
+            Device.BeginInvokeOnMainThread(() => (Element as DensoScannerPage).ScanCommand?.Execute(listBarcodeData.FirstOrDefault().Data));
         }
 
         public void OnBarcodeManagerCreated(BarcodeManager_ barcodeManager)

@@ -326,6 +326,9 @@
   <data name="Shopping" xml:space="preserve">
     <value>Shopping</value>
   </data>
+  <data name="ShoppingCardNotActivate" xml:space="preserve">
+    <value>This shopping card is not activate!</value>
+  </data>
   <data name="ShoppingCartEmpty" xml:space="preserve">
     <value>Your shopping cart is empty</value>
   </data>

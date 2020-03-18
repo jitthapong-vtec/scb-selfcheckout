@@ -66,7 +66,7 @@ namespace SelfCheckout.ViewModels.Base
                 {
                     if (!customerData.Person.IsActivate)
                     {
-                        await DialogService.ShowAlert(AppResources.Opps, $"{customerData.Person.NativeName} is not activate!", AppResources.Close);
+                        await DialogService.ShowAlert(AppResources.Opps, AppResources.ShoppingCardNotActivate, AppResources.Close);
                         return;
                     }
                     var parameters = new DialogParameters()

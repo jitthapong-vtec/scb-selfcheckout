@@ -682,6 +682,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This shopping card is not activate!.
+        /// </summary>
+        internal static string ShoppingCardNotActivate {
+            get {
+                return ResourceManager.GetString("ShoppingCardNotActivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your shopping cart is empty.
         /// </summary>
         internal static string ShoppingCartEmpty {
