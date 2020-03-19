@@ -36,7 +36,7 @@ namespace SelfCheckout.Controls
                 {
                     AnchorX = 0.48;
                     AnchorY = 0.48;
-                    await this.ScaleTo(0.90, 50, Easing.Linear);
+                    await this.ScaleTo(0.95, 50, Easing.Linear);
                     await Task.Delay(100);
                     await this.ScaleTo(1, 50, Easing.Linear);
                     TappedCommand?.Execute(CommandParameter);

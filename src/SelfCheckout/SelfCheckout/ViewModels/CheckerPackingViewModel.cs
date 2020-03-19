@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
@@ -57,7 +58,7 @@ namespace SelfCheckout.ViewModels
                 }
             });
 
-        public ICommand SaveSessionCommand => new DelegateCommand(async () =>
+        public ICommand SaveSessionCommand => new Command(async() =>
         {
             var result = await DialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
             if (!result)

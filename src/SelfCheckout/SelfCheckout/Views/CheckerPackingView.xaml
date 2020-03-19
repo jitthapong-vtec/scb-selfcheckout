@@ -36,7 +36,9 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Entry Grid.Column="0" FontSize="Medium" x:Name="entrySessionKey" VerticalOptions="Center"/>
+                    <Entry Grid.Column="0" FontSize="Medium" x:Name="entrySessionKey" VerticalOptions="Center"
+                           ReturnCommand="{Binding GetSessionDetailCommand}"
+                           ReturnCommandParameter="{Binding Source={Reference entrySessionKey},Path=Text}"/>
                     <Frame Grid.Column="1" Padding="2" BackgroundColor="{StaticResource Gray200}">
                         <controls:TappedGrid 
                                          HorizontalOptions="Center"
@@ -108,21 +110,23 @@
                         <Label Text="Invoices" HorizontalTextAlignment="Center"/>
                     </Grid>
 
-                    <CollectionView Grid.Row="1" IsGrouped="True" ItemsSource="{Binding OrderInvoices}">
-                        <CollectionView.ItemsLayout>
-                            <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start" SnapPointsType="None"/>
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.GroupHeaderTemplate>
+                    <ListView Grid.Row="1" BackgroundColor="Transparent" ItemsSource="{Binding OrderInvoices}" IsGroupingEnabled="True" 
+                              HasUnevenRows="True" CachingStrategy="RecycleElement">
+                        <ListView.GroupHeaderTemplate>
                             <DataTemplate>
-                                <views:OrderInvoiceItemView/>
+                                <ViewCell>
+                                    <views:OrderInvoiceItemView/>
+                                </ViewCell>
                             </DataTemplate>
-                        </CollectionView.GroupHeaderTemplate>
-                        <CollectionView.ItemTemplate>
+                        </ListView.GroupHeaderTemplate>
+                        <ListView.ItemTemplate>
                             <DataTemplate>
-                                <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
+                                <ViewCell>
+                                    <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
+                                </ViewCell>
                             </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </Grid>
 
                 <Grid Grid.Row="1" Grid.Column="1">
@@ -130,21 +134,21 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    
+
                     <Grid Grid.Row="0" BackgroundColor="{StaticResource Gray100}" Padding="8">
                         <Label Text="Units" HorizontalTextAlignment="Center"/>
                     </Grid>
 
-                    <CollectionView Grid.Row="1" ItemsSource="{Binding OrderDetails}">
-                        <CollectionView.ItemsLayout>
-                            <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start" SnapPointsType="None"/>
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.ItemTemplate>
+                    <ListView Grid.Row="1" BackgroundColor="Transparent" ItemsSource="{Binding OrderDetails}" 
+                              HasUnevenRows="True" CachingStrategy="RecycleElement">
+                        <ListView.ItemTemplate>
                             <DataTemplate>
-                                <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
+                                <ViewCell>
+                                    <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
+                                </ViewCell>
                             </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </Grid>
 
                 <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" HorizontalOptions="Center">
