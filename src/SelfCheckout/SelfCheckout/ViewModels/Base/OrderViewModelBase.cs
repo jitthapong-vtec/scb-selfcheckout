@@ -29,6 +29,8 @@ namespace SelfCheckout.ViewModels.Base
         ObservableCollection<OrderDetail> _orderDetails;
         ObservableCollection<CustomerOrder> _customers;
 
+        SessionData _sessionData;
+
         string _currencyCode;
 
         int _totalInvoice;
@@ -54,6 +56,12 @@ namespace SelfCheckout.ViewModels.Base
         {
             get => _customers;
             set => SetProperty(ref _customers, value);
+        }
+
+        public SessionData SessionData
+        {
+            get => _sessionData;
+            set => SetProperty(ref _sessionData, value);
         }
 
         public int BorrowSessionKey
@@ -114,9 +122,9 @@ namespace SelfCheckout.ViewModels.Base
             set => SetProperty(ref _orderDetails, value);
         }
 
-        protected async Task<SessionData> GetSessionDetailAsync(string sessionkey)
+        protected async Task LoadSessionDetailAsync(string sessionkey)
         {
-            return await SelfCheckoutService.GetSessionDetialAsync(sessionkey);
+            SessionData = await SelfCheckoutService.GetSessionDetialAsync(sessionkey);
         }
 
         protected async Task<CustomerData> GetCustomerSessionAsync(string shoppingCard)
@@ -125,32 +133,33 @@ namespace SelfCheckout.ViewModels.Base
             return customers.FirstOrDefault();
         }
 
-        protected async Task LoadCustomerSession(List<SesionDetail> sessionDetails)
+        protected async Task LoadCustomerSession()
         {
+            var sessionsGroup = SessionData.SesionDetail.GroupBy(s => s.ShoppingCard, (k, g) => new { ShoppingCard = k, SessionDetails = g.ToList()}).ToList();
             var customers = new List<CustomerOrder>();
             customers.Add(new CustomerOrder
             {
                 CustomerName = AppResources.All
             });
-            foreach (var sessionDetail in sessionDetails)
+            foreach (var sessionGroup in sessionsGroup)
             {
                 try
                 {
-                    var shoppingCard = sessionDetail.ShoppingCard;
+                    var shoppingCard = sessionGroup.ShoppingCard;
                     var result = await RegisterService.GetCustomerAsync(shoppingCard);
-                    customers.Add(new CustomerOrder()
+                    var customer = new CustomerOrder()
                     {
-                        OrderNo = $"{sessionDetail.OrderNo}",
-                        SessionKey = $"{sessionDetail.SessionDetailKey}",
                         CustomerName = result.FirstOrDefault()?.Person.EnglishName
-                    });
+                    };
+                    customer.SessionDetails.AddRange(sessionGroup.SessionDetails);
+                    customers.Add(customer);
                 }
                 catch { }
             }
             Customers = customers.ToObservableCollection();
         }
 
-        protected async Task LoadOrderListAsync(string shoppingCard)
+        protected async Task LoadOrderListAsync()
         {
             var appConfig = SelfCheckoutService.AppConfig;
             var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
@@ -164,7 +173,7 @@ namespace SelfCheckout.ViewModels.Base
                     {
                         GROUP = "tran_no",
                         CODE = "shopping_card",
-                        valueOfString = shoppingCard
+                        valueOfString = SessionData.ShoppingCard
                     }
                 },
                 paging = new
@@ -194,7 +203,7 @@ namespace SelfCheckout.ViewModels.Base
                 var orderInvoiceGroup = new OrderInvoiceGroup(orderDetails)
                 {
                     InvoiceNo = "12345",
-                    OrderNo = $"{order.HeaderAttributes.Where(attr => attr.Code == "order_no").Select(o => o.ValueOfDecimal).FirstOrDefault()}",
+                    OrderNo = Convert.ToInt64(order.HeaderAttributes.Where(attr => attr.Code == "order_no").Select(o => o.ValueOfDecimal).FirstOrDefault()),
                     InvoiceDateTime = orderInvoice.Cashier.MachineDateTime, // TODO: concern
                     CustomerName = order.CustomerDetail?.CustomerName,
                     PassportNo = customerAttr?.Where(c => c.Code == "passport_no").FirstOrDefault()?.ValueOfString,
@@ -210,7 +219,12 @@ namespace SelfCheckout.ViewModels.Base
                 _allOrderInvoiceGroups.Add(orderInvoiceGroup);
             }
 
-            var ordersNo = Customers.Select(c => c.OrderNo).ToList();
+            var sessionDetails = new List<SesionDetail>();
+            foreach(var customer in Customers)
+            {
+                sessionDetails.AddRange(customer.SessionDetails);
+            }
+            var ordersNo = sessionDetails.Select(s => s.OrderNo).ToList();
             _allOrderInvoiceGroups = _allOrderInvoiceGroups.Where(o => ordersNo.Contains(o.OrderNo)).ToList();
             OrderInvoices = _allOrderInvoiceGroups.ToObservableCollection();
 
@@ -228,12 +242,13 @@ namespace SelfCheckout.ViewModels.Base
             }
         }
 
-        protected void FilterOrder(string orderNo)
+        protected void FilterOrder(CustomerOrder customer)
         {
-            if (string.IsNullOrEmpty(orderNo))
+            var ordersNo = customer.SessionDetails.Select(c => c.OrderNo).ToList();
+            if (!customer.SessionDetails.Any())
                 OrderInvoices = _allOrderInvoiceGroups.ToObservableCollection();
             else
-                OrderInvoices = _allOrderInvoiceGroups.Where(o => o.OrderNo == orderNo).ToList().ToObservableCollection();
+                OrderInvoices = _allOrderInvoiceGroups.Where(o => ordersNo.Contains(o.OrderNo)).ToList().ToObservableCollection();
             CalculateSummary();
         }
 

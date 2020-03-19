@@ -26,7 +26,11 @@ namespace SelfCheckout.ViewModels
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
+            await ReloadData();
+        }
 
+        private async Task ReloadData()
+        {
             try
             {
                 IsBusy = true;
@@ -37,6 +41,7 @@ namespace SelfCheckout.ViewModels
             catch (Exception ex)
             {
                 await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await ReloadData();
             }
             finally
             {

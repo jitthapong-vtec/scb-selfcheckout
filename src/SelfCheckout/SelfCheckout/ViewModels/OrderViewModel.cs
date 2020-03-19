@@ -68,9 +68,9 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var sessionData = await GetSessionDetailAsync(SelfCheckoutService.BorrowSessionKey.ToString());
-                await LoadCustomerSession(sessionData.SesionDetail);
-                await LoadOrderListAsync(sessionData.ShoppingCard);
+                await LoadSessionDetailAsync(SelfCheckoutService.BorrowSessionKey.ToString());
+                await LoadCustomerSession();
+                await LoadOrderListAsync();
             }
             catch (Exception ex)
             {
@@ -99,7 +99,7 @@ namespace SelfCheckout.ViewModels
         {
             SelectedCustomer = customer;
 
-            FilterOrder(customer.OrderNo);
+            FilterOrder(customer);
             FilterCustomerShowing = false;
         });
 

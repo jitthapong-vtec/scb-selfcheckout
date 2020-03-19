@@ -53,7 +53,7 @@ namespace SelfCheckout.ViewModels
             }
             else if (Device.Idiom == TargetIdiom.Desktop)
             {
-                var result = await _navigationService.NavigateAsync("CheckerMainView");
+                await _navigationService.NavigateAsync("CheckerMainView");
             }
         }
     }

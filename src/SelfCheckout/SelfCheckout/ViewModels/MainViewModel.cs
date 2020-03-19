@@ -598,6 +598,8 @@ namespace SelfCheckout.ViewModels
                         tokenSource.Cancel();
                         return false;
                     }
+                    if (!IsPaymentProcessing)
+                        return false;
                     return true;
                 });
 
@@ -653,7 +655,6 @@ namespace SelfCheckout.ViewModels
                     }
                     catch (Exception ex)
                     {
-
                     }
 
                     var appConfig = _selfCheckoutService.AppConfig;

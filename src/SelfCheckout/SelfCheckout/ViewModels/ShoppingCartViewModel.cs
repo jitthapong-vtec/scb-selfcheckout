@@ -333,7 +333,7 @@ namespace SelfCheckout.ViewModels
             var payload = new
             {
                 SessionKey = SaleEngineService.LoginData.SessionKey,
-                ItemCode = "00008215930215710"//"00008211470207673"
+                ItemCode = "00008211470207673"
             };
 
             try

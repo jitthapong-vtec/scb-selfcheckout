@@ -36,8 +36,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Entry Grid.Column="0" FontSize="Large" x:Name="entrySessionKey" VerticalOptions="Center"/>
-                    <Frame Grid.Column="1" BackgroundColor="{StaticResource Gray200}">
+                    <Entry Grid.Column="0" FontSize="Medium" x:Name="entrySessionKey" VerticalOptions="Center"/>
+                    <Frame Grid.Column="1" Padding="2" BackgroundColor="{StaticResource Gray200}">
                         <controls:TappedGrid 
                                          HorizontalOptions="Center"
                                          WidthRequest="70"
