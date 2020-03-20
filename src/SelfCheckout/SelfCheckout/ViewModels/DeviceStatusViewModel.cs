@@ -9,6 +9,7 @@ using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -21,12 +22,14 @@ namespace SelfCheckout.ViewModels
 
         ObservableCollection<DeviceStatus> _devices;
 
+        int _totalOccupiedDevice;
+
         public DeviceStatusViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService)
         {
             _selfCheckoutService = selfCheckoutService;
         }
 
-        public ICommand SearchCommand => new DelegateCommand<string>(async(search) =>
+        public ICommand SearchCommand => new DelegateCommand<string>(async (search) =>
         {
             await GetDeviceStatusAsync(search);
         });
@@ -37,6 +40,12 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _devices, value);
         }
 
+        public int TotalOccupiedDevice
+        {
+            get => _totalOccupiedDevice;
+            set => SetProperty(ref _totalOccupiedDevice, value);
+        }
+
         async Task GetDeviceStatusAsync(string search = "")
         {
             try
@@ -45,8 +54,10 @@ namespace SelfCheckout.ViewModels
 
                 var devices = await _selfCheckoutService.GetDeviceStatusAsync(search);
                 Devices = devices.ToObservableCollection();
+
+                TotalOccupiedDevice = devices.Where(d => d.IsAvailable == false).Count();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }

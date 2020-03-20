@@ -108,7 +108,7 @@ namespace SelfCheckout.Services.SelfCheckout
             //return apiResultData.Data;
         }
 
-        public async Task<List<SessionData>> GetSessionHistory(DateTime? date, int sessionKey, string machineNo)
+        public async Task<List<DeviceStatus>> GetSessionHistory(DateTime? date, int sessionKey, string machineNo)
         {
             var payload = new
             {
@@ -118,7 +118,7 @@ namespace SelfCheckout.Services.SelfCheckout
             };
 
             var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/SessionHistory");
-            var result = await PostAsync<object, ApiResultData<List<SessionData>>>(uri.ToString(), payload);
+            var result = await PostAsync<object, ApiResultData<List<DeviceStatus>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             return result.Data;

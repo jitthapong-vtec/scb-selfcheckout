@@ -225,6 +225,15 @@ namespace SelfCheckout.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Date/Time.
         /// </summary>
+        internal static string DateSlashTime {
+            get {
+                return ResourceManager.GetString("DateSlashTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date/Time.
+        /// </summary>
         internal static string DateTime {
             get {
                 return ResourceManager.GetString("DateTime", resourceCulture);
@@ -466,11 +475,11 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OccupiredDevice.
+        ///   Looks up a localized string similar to Occupied Device.
         /// </summary>
-        internal static string OccupiredDevice {
+        internal static string OccupiedDevice {
             get {
-                return ResourceManager.GetString("OccupiredDevice", resourceCulture);
+                return ResourceManager.GetString("OccupiedDevice", resourceCulture);
             }
         }
         
@@ -700,6 +709,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Session Key.
+        /// </summary>
+        internal static string SessionKey {
+            get {
+                return ResourceManager.GetString("SessionKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Setting.
         /// </summary>
         internal static string Setting {
@@ -745,6 +763,24 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start occupied.
+        /// </summary>
+        internal static string StartOccupied {
+            get {
+                return ResourceManager.GetString("StartOccupied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        internal static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sub Branch.
         /// </summary>
         internal static string SubBranch {
@@ -786,6 +822,15 @@ namespace SelfCheckout.Resources {
         internal static string ThkForOrderTitle {
             get {
                 return ResourceManager.GetString("ThkForOrderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time Use.
+        /// </summary>
+        internal static string TimeUse {
+            get {
+                return ResourceManager.GetString("TimeUse", resourceCulture);
             }
         }
         

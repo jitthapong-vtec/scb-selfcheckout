@@ -4,12 +4,94 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              prism:ViewModelLocator.AutowireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.SessionHistoryView">
-  <ContentView.Content>
-      <StackLayout>
-          <Label Text="Session History" />
-      </StackLayout>
-  </ContentView.Content>
+    <ContentView.Content>
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Frame CornerRadius="1" BackgroundColor="{StaticResource Green}" Padding="0" HeightRequest="32">
+                        <controls:TappedGrid TappedCommand="{Binding FilterCommand}"
+                                    Padding="0"
+                                    WidthRequest="100"
+                                    Style="{StaticResource TappedGridButtonStyle}">
+                            <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Filter}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                        </controls:TappedGrid>
+                    </Frame>
+                </Grid>
+                <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="{StaticResource Gray500}"/>
+                <StackLayout Grid.Row="2" Orientation="Horizontal">
+
+                </StackLayout>
+                <ListView Grid.Row="3" ItemsSource="{Binding SessionHistories}" HasUnevenRows="True">
+                    <ListView.Header>
+                        <Grid Padding="4" BackgroundColor="{StaticResource Primary}">
+                            <Grid.Resources>
+                                <Style TargetType="Label">
+                                    <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                                    <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=".2*"/>
+                                <ColumnDefinition Width=".2*"/>
+                                <ColumnDefinition Width=".5*"/>
+                                <ColumnDefinition Width=".2*"/>
+                                <ColumnDefinition Width=".2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Text="{i18n:Translate SessionKey}"/>
+                            <Label Grid.Column="1" Text="{i18n:Translate MachineNo}"/>
+                            <Label Grid.Column="2" Text="{i18n:Translate Name}"/>
+                            <Label Grid.Column="3" Text="{i18n:Translate DateSlashTime}"/>
+                            <Label Grid.Column="4" Text="{i18n:Translate Status}"/>
+                        </Grid>
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Margin="0,4,0,4" Padding="4">
+                                    <Grid.Resources>
+                                        <Style TargetType="Label">
+                                            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                                        </Style>
+                                    </Grid.Resources>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".2*"/>
+                                        <ColumnDefinition Width=".2*"/>
+                                        <ColumnDefinition Width=".5*"/>
+                                        <ColumnDefinition Width=".2*"/>
+                                        <ColumnDefinition Width=".2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Text="{Binding SessionKey}"/>
+                                    <Label Grid.Column="1" Text="{Binding MachineNo}"/>
+                                    <Label Grid.Column="2" Text="{Binding ShoppingCardName}"/>
+                                    <Label Grid.Column="3" Text="{Binding SessionDt, Converter={StaticResource DateTimeFormatConverter}}"/>
+                                    <Frame Grid.Column="4" CornerRadius="3" Padding="8,4,8,4" HorizontalOptions="Center">
+                                        <Label Text="{Binding SessionStatus.DisplayStatus}" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
+                                        <Frame.Triggers>
+                                            <DataTrigger TargetType="Frame" Binding="{Binding IsAvailable}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="{StaticResource Green}"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Frame" Binding="{Binding IsAvailable}" Value="False">
+                                                <Setter Property="BackgroundColor" Value="{StaticResource RedDark}"/>
+                                            </DataTrigger>
+                                        </Frame.Triggers>
+                                    </Frame>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Grid>
+    </ContentView.Content>
 </ContentView>

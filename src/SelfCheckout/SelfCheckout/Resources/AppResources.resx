@@ -171,6 +171,9 @@
   <data name="Currency" xml:space="preserve">
     <value>Currency</value>
   </data>
+  <data name="DateSlashTime" xml:space="preserve">
+    <value>Date/Time</value>
+  </data>
   <data name="DateTime" xml:space="preserve">
     <value>Date/Time</value>
   </data>
@@ -254,8 +257,8 @@
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
-  <data name="OccupiredDevice" xml:space="preserve">
-    <value>OccupiredDevice</value>
+  <data name="OccupiedDevice" xml:space="preserve">
+    <value>Occupied Device</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
@@ -332,6 +335,9 @@
   <data name="SessionHistory" xml:space="preserve">
     <value>Session history</value>
   </data>
+  <data name="SessionKey" xml:space="preserve">
+    <value>Session Key</value>
+  </data>
   <data name="Setting" xml:space="preserve">
     <value>Setting</value>
   </data>
@@ -346,6 +352,12 @@
   </data>
   <data name="StaffLogin" xml:space="preserve">
     <value>Staff Login</value>
+  </data>
+  <data name="StartOccupied" xml:space="preserve">
+    <value>Start occupied</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
   </data>
   <data name="SubBranch" xml:space="preserve">
     <value>Sub Branch</value>
@@ -362,6 +374,9 @@
   </data>
   <data name="ThkForOrderTitle" xml:space="preserve">
     <value>Thank you for your order</value>
+  </data>
+  <data name="TimeUse" xml:space="preserve">
+    <value>Time Use</value>
   </data>
   <data name="TotalNet" xml:space="preserve">
     <value>Total Net</value>

@@ -38,7 +38,7 @@ namespace SelfCheckout.Services.SelfCheckout
 
         Task<List<DeviceStatus>> GetDeviceStatusAsync(string machineNo);
 
-        Task<List<SessionData>> GetSessionHistory(DateTime? date, int sessionKey, string machineNo);
+        Task<List<DeviceStatus>> GetSessionHistory(DateTime? date, int sessionKey, string machineNo);
 
         Task<bool> ValidateMachineAsync(string machineIp);
 

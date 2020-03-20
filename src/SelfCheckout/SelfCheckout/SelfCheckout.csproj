@@ -15,6 +15,7 @@
     <None Remove="Resources\Images\card_bg.png" />
     <None Remove="Resources\Images\card_bg.svg" />
     <None Remove="Resources\Images\desktop_bg.png" />
+    <None Remove="Resources\Images\entry_bg.png" />
     <None Remove="Resources\Images\header_logo.png" />
     <None Remove="Resources\Images\header_logo.svg" />
     <None Remove="Resources\Images\header_logo_blue.png" />
@@ -29,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DLToolkit.Forms.Controls.FlowListView" Version="2.0.11" />
     <PackageReference Include="MagicGradients" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
@@ -46,6 +48,7 @@
     <EmbeddedResource Include="Resources\Images\card_bg.png" />
     <EmbeddedResource Include="Resources\Images\card_bg.svg" />
     <EmbeddedResource Include="Resources\Images\desktop_bg.png" />
+    <EmbeddedResource Include="Resources\Images\entry_bg.png" />
     <EmbeddedResource Include="Resources\Images\header_logo.png" />
     <EmbeddedResource Include="Resources\Images\header_logo.svg" />
     <EmbeddedResource Include="Resources\Images\ic_user_share.png" />

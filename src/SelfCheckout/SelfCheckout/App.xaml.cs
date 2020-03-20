@@ -1,4 +1,5 @@
-﻿using Prism;
+﻿using DLToolkit.Forms.Controls;
+using Prism;
 using Prism.Ioc;
 using SelfCheckout.Services.PimCore;
 using SelfCheckout.Services.Register;
@@ -24,6 +25,7 @@ namespace SelfCheckout
         protected override async void OnInitialized()
         {
             InitializeComponent();
+            FlowListView.Init();
 
             Device.SetFlags(new[] {
                 "CarouselView_Experimental",
