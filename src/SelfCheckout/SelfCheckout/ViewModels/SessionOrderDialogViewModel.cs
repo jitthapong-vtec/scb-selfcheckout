@@ -50,11 +50,6 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = true;
                 await LoadSessionDetailAsync(sessionKey);
-                //if(SessionData.SessionStatus.SessionCode == "END")
-                //{
-                //    DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
-                //    return;
-                //}
                 CustomerData = await GetCustomerSessionAsync(shoppingCard);
 
                 await LoadOrderListAsync();

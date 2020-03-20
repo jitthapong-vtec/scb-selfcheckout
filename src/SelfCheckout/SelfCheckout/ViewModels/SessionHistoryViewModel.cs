@@ -89,7 +89,11 @@ namespace SelfCheckout.ViewModels
                 {"SessionKey", sess.SessionKey },
                 {"ShoppingCard", sess.ShoppingCard }
             };
-            DialogService.ShowDialogAsync("SessionOrderDialog", parameters);
+            try
+            {
+                DialogService.ShowDialogAsync("SessionOrderDialog", parameters);
+            }
+            catch { }
         });
 
         public ICommand ChangeFilterTypeCommand => new DelegateCommand<SimpleSelectedItem>((filterType) =>
