@@ -199,6 +199,9 @@
   <data name="FilterCustomer" xml:space="preserve">
     <value>Filter Customer</value>
   </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Finished</value>
+  </data>
   <data name="FlightNo" xml:space="preserve">
     <value>Flight No.</value>
   </data>
@@ -208,6 +211,9 @@
   <data name="General" xml:space="preserve">
     <value>General</value>
     <comment>No translate</comment>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>History</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
@@ -256,6 +262,9 @@
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
+  </data>
+  <data name="Occupied" xml:space="preserve">
+    <value>Occupied</value>
   </data>
   <data name="OccupiedDevice" xml:space="preserve">
     <value>Occupied Device</value>

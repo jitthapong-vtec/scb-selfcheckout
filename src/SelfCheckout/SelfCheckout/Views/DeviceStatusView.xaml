@@ -25,21 +25,21 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" HorizontalOptions="EndAndExpand" WidthRequest="400" HeightRequest="56">
-                        <forms:CachedImage Source="resource://SelfCheckout.Resources.Images.entry_bg.png" Aspect="Fill"/>
+                        <!--<forms:CachedImage Source="resource://SelfCheckout.Resources.Images.entry_bg.png" Aspect="Fill"/>-->
                         <Grid VerticalOptions="Center" Margin="12,0,12,0" ColumnSpacing="4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Entry Grid.Column="0" VerticalOptions="Center"/>
-                            <Frame Grid.Column="1" CornerRadius="1" BackgroundColor="{StaticResource Green}" Padding="0" HeightRequest="32">
-                                <controls:TappedGrid TappedCommand="{Binding SearchCommand}"
-                                    Padding="0"
+                            <Entry x:Name="entrySearch" Grid.Column="0" VerticalOptions="Center"/>
+                            <controls:TappedGrid Grid.Column="1" TappedCommand="{Binding SearchCommand}"
+                                                     CommandParameter="{Binding Source={x:Reference entrySearch}, Path=Text}">
+                                <Frame CornerRadius="1" BackgroundColor="{StaticResource Green}" Padding="0" HeightRequest="32"
                                     WidthRequest="100"
                                     Style="{StaticResource TappedGridButtonStyle}">
                                     <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Search}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-                                </controls:TappedGrid>
-                            </Frame>
+                                </Frame>
+                            </controls:TappedGrid>
                         </Grid>
                     </Grid>
                     <Grid Grid.Row="1" Margin="8,-24,0,0">
@@ -80,10 +80,10 @@
                                         <Frame CornerRadius="3" Grid.Column="1" Padding="8,4,8,4">
                                             <Label VerticalOptions="Center" HorizontalTextAlignment="Center" Text="{Binding SessionStatus.DisplayStatus}" TextColor="{StaticResource Gray50}"/>
                                             <Frame.Triggers>
-                                                <DataTrigger TargetType="Frame" Binding="{Binding IsAvailable}" Value="True">
+                                                <DataTrigger TargetType="Frame" Binding="{Binding SessionStatus.SessionCode}" Value="">
                                                     <Setter Property="BackgroundColor" Value="{StaticResource Green}"/>
                                                 </DataTrigger>
-                                                <DataTrigger TargetType="Frame" Binding="{Binding IsAvailable}" Value="False">
+                                                <DataTrigger TargetType="Frame" Binding="{Binding SessionStatus.SessionCode}" Value="START">
                                                     <Setter Property="BackgroundColor" Value="{StaticResource RedDark}"/>
                                                 </DataTrigger>
                                             </Frame.Triggers>
@@ -99,10 +99,10 @@
                                         <Grid Grid.Column="0" WidthRequest="72" Margin="8,4,8,4">
                                             <forms:CachedImage VerticalOptions="Center">
                                                 <forms:CachedImage.Triggers>
-                                                    <DataTrigger TargetType="forms:CachedImage" Binding="{Binding IsAvailable}" Value="True">
+                                                    <DataTrigger TargetType="forms:CachedImage" Binding="{Binding SessionStatus.SessionCode}" Value="">
                                                         <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.shopping_card.png"/>
                                                     </DataTrigger>
-                                                    <DataTrigger TargetType="forms:CachedImage" Binding="{Binding IsAvailable}" Value="False">
+                                                    <DataTrigger TargetType="forms:CachedImage" Binding="{Binding SessionStatus.SessionCode}" Value="START">
                                                         <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.shopping_card_active.png"/>
                                                     </DataTrigger>
                                                 </forms:CachedImage.Triggers>

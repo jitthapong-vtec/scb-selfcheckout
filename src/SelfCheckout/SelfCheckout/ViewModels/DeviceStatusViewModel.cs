@@ -55,7 +55,7 @@ namespace SelfCheckout.ViewModels
                 var devices = await _selfCheckoutService.GetDeviceStatusAsync(search);
                 Devices = devices.ToObservableCollection();
 
-                TotalOccupiedDevice = devices.Where(d => d.IsAvailable == false).Count();
+                TotalOccupiedDevice = devices.Where(d => d.SessionStatus.SessionCode == "START").Count();
             }
             catch (Exception ex)
             {

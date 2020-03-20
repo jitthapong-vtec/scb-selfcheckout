@@ -10,16 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace SelfCheckout.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SessionHistoryView : ContentView
+    public partial class SessionOrderDialog : ContentView
     {
-        public SessionHistoryView()
+        public SessionOrderDialog()
         {
             InitializeComponent();
-        }
-
-        private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            (sender as ListView).SelectedItem = null;
         }
     }
 }

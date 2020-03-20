@@ -45,10 +45,13 @@
                                              Padding="0"
                                              Margin="0,4,0,0"
                                              Style="{StaticResource TappedGridButtonStyle}"
-                                             TappedCommand="{Binding AuthorizeCommand}"
-                                             effects:RoundCornersEffect.CornerRadius="3">
-                            <controls:GradientBackground/>
-                            <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                             TappedCommand="{Binding AuthorizeCommand}">
+                            <Frame CornerRadius="3" Padding="0">
+                                <Grid>
+                                    <controls:GradientBackground/>
+                                    <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                </Grid>
+                            </Frame>
                         </controls:TappedGrid>
                     </StackLayout>
                 </Frame>

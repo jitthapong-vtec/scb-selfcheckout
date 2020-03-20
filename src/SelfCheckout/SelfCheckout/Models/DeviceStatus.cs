@@ -6,13 +6,11 @@ namespace SelfCheckout.Models
 {
     public class DeviceStatus : SessionData
     {
-        public bool IsAvailable { get => SessionStatus.DisplayStatus == "Available"; }
-
         public string StartOccupied
         {
             get
             {
-                if (!IsAvailable)
+                if (SessionStatus.SessionCode == "START")
                     return SessionDt.ToString("HH:mm");
                 else
                     return "None";
@@ -24,7 +22,7 @@ namespace SelfCheckout.Models
             get
             {
                 var timeUse = new TimeSpan(0, 0, 0);
-                if (!IsAvailable)
+                if (SessionStatus.SessionCode == "START")
                     timeUse = DateTime.Now.Subtract(SessionDt);
                 return timeUse.ToString();
             }
