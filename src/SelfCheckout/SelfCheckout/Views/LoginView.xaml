@@ -57,23 +57,31 @@
                 </Frame>
             </Grid>
             <Label VerticalOptions="End" HorizontalOptions="{OnIdiom Phone=Start, Desktop=End}" Margin="16,0,16,8" TextColor="{StaticResource Gray50}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="Version"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding Version}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Version"/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding Version}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
 
-                <controls:TappedGrid IsVisible="{OnIdiom Phone=True}" VerticalOptions="End" HorizontalOptions="End" Margin="0,0,16,8" TappedCommand="{Binding SettingCommand}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Text="&#xf013;" VerticalOptions="Center" FontFamily="{StaticResource FontAwesome}" FontSize="24" TextColor="{StaticResource Gray50}"/>
-                    <Label Grid.Column="1" Text="{i18n:Translate Setting}" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
-                </controls:TappedGrid>
+            <controls:TappedGrid IsVisible="{OnIdiom Phone=True}" VerticalOptions="End" HorizontalOptions="End" Margin="0,0,16,8" TappedCommand="{Binding SettingCommand}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Text="&#xf013;" VerticalOptions="Center" FontFamily="{StaticResource FontAwesome}" FontSize="24" TextColor="{StaticResource Gray50}"/>
+                <Label Grid.Column="1" Text="{i18n:Translate Setting}" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
+            </controls:TappedGrid>
+
+            <controls:TappedGrid VerticalOptions="End" HorizontalOptions="Center" Margin="0,0,16,8" IsVisible="{OnIdiom Desktop=True}"
+                            TappedCommand="{Binding CheckerSettingCommand}"
+                                    Padding="0"
+                                    WidthRequest="100"
+                                    Style="{StaticResource TappedGridButtonStyle}">
+                <controls:CustomLabel UpperCase="True" Text="Setting" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+            </controls:TappedGrid>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentPage.Content>

@@ -1,4 +1,5 @@
-﻿using Prism.Navigation;
+﻿using Prism.Commands;
+using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Models;
 using SelfCheckout.Services.SaleEngine;
@@ -23,13 +24,18 @@ namespace SelfCheckout.ViewModels
             _dialogService = dialogService;
         }
 
-        public ICommand SettingCommand => new Command(() =>
+        public ICommand SettingCommand => new DelegateCommand(() =>
         {
             _dialogService.ShowDialog("AuthorizeDialog", null, async (result) =>
             {
                 if (result.Parameters.GetValue<bool>("IsAuthorized"))
                     await _navigationService.NavigateAsync("SettingView");
             });
+        });
+
+        public ICommand CheckerSettingCommand => new DelegateCommand(async() =>
+        {
+            await _navigationService.NavigateAsync("CheckerSettingView");
         });
 
         public void Initialize(INavigationParameters parameters)

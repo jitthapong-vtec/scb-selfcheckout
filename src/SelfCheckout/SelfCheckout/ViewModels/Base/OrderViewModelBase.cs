@@ -33,6 +33,7 @@ namespace SelfCheckout.ViewModels.Base
         SessionData _sessionData;
 
         string _currencyCode;
+        string _loginSession;
 
         int _totalInvoice;
         double? _totalQty;
@@ -63,6 +64,12 @@ namespace SelfCheckout.ViewModels.Base
         {
             get => _sessionData;
             set => SetProperty(ref _sessionData, value);
+        }
+
+        public string LoginSession
+        {
+            get => _loginSession;
+            set => SetProperty(ref _loginSession, value);
         }
 
         public long BorrowSessionKey
@@ -136,7 +143,7 @@ namespace SelfCheckout.ViewModels.Base
 
         protected async Task LoadCustomerSession()
         {
-            var sessionsGroup = SessionData.SesionDetail.GroupBy(s => s.ShoppingCard, (k, g) => new { ShoppingCard = k, SessionDetails = g.ToList()}).ToList();
+            var sessionsGroup = SessionData.SesionDetail.GroupBy(s => s.ShoppingCard, (k, g) => new { ShoppingCard = k, SessionDetails = g.ToList() }).ToList();
             var customers = new List<CustomerOrder>();
             customers.Add(new CustomerOrder
             {
@@ -164,6 +171,7 @@ namespace SelfCheckout.ViewModels.Base
         {
             var appConfig = SelfCheckoutService.AppConfig;
             var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
+            LoginSession = loginResult.SessionKey;
 
             var payload = new
             {
@@ -222,7 +230,7 @@ namespace SelfCheckout.ViewModels.Base
             }
 
             var sessionDetails = new List<SesionDetail>();
-            foreach(var customer in Customers)
+            foreach (var customer in Customers)
             {
                 sessionDetails.AddRange(customer.SessionDetails);
             }

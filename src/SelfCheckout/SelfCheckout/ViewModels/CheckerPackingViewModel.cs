@@ -4,6 +4,7 @@ using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Print;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
@@ -69,6 +70,13 @@ namespace SelfCheckout.ViewModels
                 var appSetting = SelfCheckoutService.AppConfig;
                 var machineNo = SaleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
                 //await SelfCheckoutService.EndSessionAsync(Convert.ToInt64(SessionKey), appSetting.UserName, machineNo);
+                //await SaleEngineService.PrintTaxInvoice(new
+                //{
+                //    OrderNo = "49",
+                //    ClaimcheckNo = "",
+                //    SessionKey = LoginSession
+                //});
+                await DependencyService.Get<IPrintService>().PrintBitmapFromUrl("https://kpservices.kingpower.com/portal/developer/SaleEngineAPI/Temp/MPOSDEV-00093_0_Original.png");
             }
             catch (Exception ex)
             {

@@ -199,9 +199,13 @@ namespace SelfCheckout.Services.SaleEngine
             return Task.FromResult(true);
         }
 
-        public Task<string> PrintTaxInvoice(object payload)
+        public async Task<List<FullTaxInvoice>> PrintTaxInvoice(object payload)
         {
-            throw new NotImplementedException();
+            var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/PrintTaxInvoice");
+            var result = await PostAsync<object, ApiResultData<List<FullTaxInvoice>>>(uri.ToString(), payload);
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            return result.Data;
         }
 
         public async Task VoidPaymentAsync(string merchantId, string partnerTransId)

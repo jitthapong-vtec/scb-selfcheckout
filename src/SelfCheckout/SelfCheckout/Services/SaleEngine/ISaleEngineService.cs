@@ -42,7 +42,7 @@ namespace SelfCheckout.Services.SaleEngine
 
         Task<string> GeneratePPQrCode(object payload);
 
-        Task<string> PrintTaxInvoice(object payload);
+        Task<List<FullTaxInvoice>> PrintTaxInvoice(object payload);
 
         Task VoidPaymentAsync(string merchantId, string partnerTransId);
 
