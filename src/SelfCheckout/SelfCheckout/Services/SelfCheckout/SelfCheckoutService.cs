@@ -18,7 +18,7 @@ namespace SelfCheckout.Services.SelfCheckout
         {
         }
 
-        public int BorrowSessionKey { get; private set; }
+        public long BorrowSessionKey { get; private set; }
 
         public string StartedShoppingCard { get; set; }
 
@@ -59,7 +59,7 @@ namespace SelfCheckout.Services.SelfCheckout
             Payments = result.Data;
         }
 
-        public async Task<bool> EndSessionAsync(int sessionKey, string userId, string machineNo)
+        public async Task<bool> EndSessionAsync(long sessionKey, string userId, string machineNo)
         {
             var payload = new
             {
@@ -83,7 +83,7 @@ namespace SelfCheckout.Services.SelfCheckout
             return result.Data;
         }
 
-        public async Task<SessionData> GetSessionDetialAsync(string key)
+        public async Task<SessionData> GetSessionDetialAsync(long key)
         {
             var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/SessionDetai?key={key}");
             var result = await GetAsync<ApiResultData<SessionData>>(uri.ToString());
@@ -108,7 +108,7 @@ namespace SelfCheckout.Services.SelfCheckout
             //return apiResultData.Data;
         }
 
-        public async Task<List<DeviceStatus>> GetSessionHistory(DateTime? date, int sessionKey, string machineNo)
+        public async Task<List<DeviceStatus>> GetSessionHistory(DateTime? date, long sessionKey, string machineNo)
         {
             var payload = new
             {
@@ -124,7 +124,7 @@ namespace SelfCheckout.Services.SelfCheckout
             return result.Data;
         }
 
-        public async Task<int> StartSessionAsync(string userId, string machineNo, string shoppingCardNo)
+        public async Task<long> StartSessionAsync(string userId, string machineNo, string shoppingCardNo)
         {
             var payload = new
             {
@@ -134,7 +134,7 @@ namespace SelfCheckout.Services.SelfCheckout
             };
 
             var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/Start");
-            var result = await PostAsync<object, ApiResultData<int>>(uri.ToString(), payload);
+            var result = await PostAsync<object, ApiResultData<long>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             BorrowSessionKey = result.Data;
@@ -142,7 +142,7 @@ namespace SelfCheckout.Services.SelfCheckout
             return result.Data;
         }
 
-        public async Task<bool> UpdateSessionAsync(int sessionKey, int orderNo, string shoppingCardNo)
+        public async Task<bool> UpdateSessionAsync(long sessionKey, int orderNo, string shoppingCardNo)
         {
             var payload = new
             {

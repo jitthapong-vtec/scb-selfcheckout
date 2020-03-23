@@ -40,6 +40,10 @@ namespace SelfCheckout.Services.SaleEngine
 
         Task<List<OrderData>> FinishPaymentOrderAsync(object payload);
 
+        Task<string> GeneratePPQrCode(object payload);
+
+        Task<string> PrintTaxInvoice(object payload);
+
         Task VoidPaymentAsync(string merchantId, string partnerTransId);
 
         Task LoadCurrencyAsync(object payload);

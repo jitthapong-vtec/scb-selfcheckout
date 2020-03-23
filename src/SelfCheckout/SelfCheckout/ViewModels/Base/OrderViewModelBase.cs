@@ -9,6 +9,7 @@ using SelfCheckout.Services.SelfCheckout;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,7 +65,7 @@ namespace SelfCheckout.ViewModels.Base
             set => SetProperty(ref _sessionData, value);
         }
 
-        public int BorrowSessionKey
+        public long BorrowSessionKey
         {
             get => SelfCheckoutService.BorrowSessionKey;
         }
@@ -122,7 +123,7 @@ namespace SelfCheckout.ViewModels.Base
             set => SetProperty(ref _orderDetails, value);
         }
 
-        protected async Task LoadSessionDetailAsync(string sessionkey)
+        protected async Task LoadSessionDetailAsync(long sessionkey)
         {
             SessionData = await SelfCheckoutService.GetSessionDetialAsync(sessionkey);
         }
@@ -159,7 +160,7 @@ namespace SelfCheckout.ViewModels.Base
             Customers = customers.ToObservableCollection();
         }
 
-        protected async Task LoadOrderListAsync()
+        protected async Task LoadOrderListAsync(object filter = null)
         {
             var appConfig = SelfCheckoutService.AppConfig;
             var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
@@ -176,6 +177,7 @@ namespace SelfCheckout.ViewModels.Base
                         valueOfString = SessionData.ShoppingCard
                     }
                 },
+                filter = filter,
                 paging = new
                 {
                     pageNo = 1,

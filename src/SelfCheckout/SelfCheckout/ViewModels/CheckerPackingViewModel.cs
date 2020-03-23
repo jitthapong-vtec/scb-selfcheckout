@@ -34,7 +34,7 @@ namespace SelfCheckout.ViewModels
                 try
                 {
                     IsBusy = true;
-                    await LoadSessionDetailAsync(sessionKey.ToString());
+                    await LoadSessionDetailAsync(Convert.ToInt64(sessionKey));
                     SessionKey = sessionKey;
                     //if(SessionData.SessionStatus.SessionCode == "END")
                     //{
@@ -63,21 +63,21 @@ namespace SelfCheckout.ViewModels
             var result = await DialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
             if (!result)
                 return;
-            //try
-            //{
-            //    IsBusy = true;
-            //    var appSetting = SelfCheckoutService.AppConfig;
-            //    var machineNo = SaleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
-            //    await SelfCheckoutService.EndSessionAsync(Convert.ToInt32(SessionKey), appSetting.UserName, machineNo);
-            //}
-            //catch (Exception ex)
-            //{
-            //    await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-            //}
-            //finally
-            //{
-            //    IsBusy = false;
-            //}
+            try
+            {
+                IsBusy = true;
+                var appSetting = SelfCheckoutService.AppConfig;
+                var machineNo = SaleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
+                //await SelfCheckoutService.EndSessionAsync(Convert.ToInt64(SessionKey), appSetting.UserName, machineNo);
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         });
 
         public ICommand ClearScreenCommand => new DelegateCommand(() =>

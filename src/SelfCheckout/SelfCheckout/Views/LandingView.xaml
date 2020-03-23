@@ -8,12 +8,16 @@
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.LandingView">
     <ContentPage.Content>
         <Grid>
-            <ffimageloading:CachedImage Aspect="AspectFill" Source="resource://SelfCheckout.Resources.Images.landing_bg.png"/>
-            <controls:ActionBarView>
+            <ffimageloading:CachedImage 
+                    Aspect="AspectFill"
+                    Source="{OnIdiom Phone=resource://SelfCheckout.Resources.Images.landing_bg.png, 
+                    Desktop=resource://SelfCheckout.Resources.Images.desktop_bg.png}"/>
+            <controls:ActionBarView IsVisible="{OnIdiom Phone=True}">
                 <ffimageloadingsvg:SvgCachedImage HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
             </controls:ActionBarView>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>

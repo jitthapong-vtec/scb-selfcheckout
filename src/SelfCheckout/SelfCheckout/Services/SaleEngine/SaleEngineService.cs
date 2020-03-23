@@ -112,6 +112,17 @@ namespace SelfCheckout.Services.SaleEngine
             return result.Data;
         }
 
+        public async Task<string> GeneratePPQrCode(object payload)
+        {
+            var uri = new UriBuilder("https://kpw.vtec-system.com:4455/api/qrcreate");
+            var result = await PostAsync<object, PromptPayQRCode>(uri.ToString(), payload);
+            if(result.Status.Code != 1000)
+            {
+                throw new NotiApiException(result.Status.Description);
+            }
+            return result.Data.QrRawData;
+        }
+
         public async Task<List<OrderData>> GetOrderAsync(object payload)
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrder");
@@ -186,6 +197,11 @@ namespace SelfCheckout.Services.SaleEngine
         {
             LoginData = null;
             return Task.FromResult(true);
+        }
+
+        public Task<string> PrintTaxInvoice(object payload)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task VoidPaymentAsync(string merchantId, string partnerTransId)

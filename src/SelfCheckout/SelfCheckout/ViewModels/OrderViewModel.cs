@@ -68,7 +68,7 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                await LoadSessionDetailAsync(SelfCheckoutService.BorrowSessionKey.ToString());
+                await LoadSessionDetailAsync(SelfCheckoutService.BorrowSessionKey);
                 await LoadCustomerSession();
                 await LoadOrderListAsync();
             }

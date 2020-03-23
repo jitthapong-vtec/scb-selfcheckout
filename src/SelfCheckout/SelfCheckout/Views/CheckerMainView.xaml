@@ -80,9 +80,11 @@
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
                     </StackLayout>
-                    <Frame Grid.Row="1" Padding="8">
-                        <controls:TabViewContainer Content="{Binding CurrentView}"/>
-                    </Frame>
+                    <Grid Grid.Row="1">
+                        <Frame Padding="8">
+                            <controls:TabViewContainer Content="{Binding CurrentView}"/>
+                        </Frame>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

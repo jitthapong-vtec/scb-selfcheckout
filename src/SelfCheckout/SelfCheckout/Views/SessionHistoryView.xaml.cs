@@ -21,5 +21,10 @@ namespace SelfCheckout.Views
         {
             (sender as ListView).SelectedItem = null;
         }
+
+        private void DatePicker_DateSelected(object sender, DateChangedEventArgs e)
+        {
+
+        }
     }
 }

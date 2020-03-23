@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Models;
@@ -9,9 +10,11 @@ using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
@@ -31,6 +34,20 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _customerData, value);
         }
 
+        public ICommand ConfirmCommand => new DelegateCommand(() =>
+        {
+            var dialogParameter = new DialogParameters()
+            {
+                {"IsConfirmed", true }
+            };
+            RequestClose(dialogParameter);
+        });
+
+        public ICommand CancelCommand => new DelegateCommand(() =>
+        {
+            RequestClose(null);
+        });
+
         public bool CanCloseDialog()
         {
             return true;
@@ -43,21 +60,20 @@ namespace SelfCheckout.ViewModels
 
         public async void OnDialogOpened(IDialogParameters parameters)
         {
-            var sessionKey = parameters.GetValue<string>("SessionKey");
+            var sessionKey = parameters.GetValue<long>("SessionKey");
             var shoppingCard = parameters.GetValue<string>("ShoppingCard");
 
             try
             {
                 IsBusy = true;
                 await LoadSessionDetailAsync(sessionKey);
+                await LoadCustomerSession();
+
                 CustomerData = await GetCustomerSessionAsync(shoppingCard);
 
                 await LoadOrderListAsync();
-
             }
-            catch (Exception ex)
-            {
-            }
+            catch { }
             finally
             {
                 IsBusy = false;

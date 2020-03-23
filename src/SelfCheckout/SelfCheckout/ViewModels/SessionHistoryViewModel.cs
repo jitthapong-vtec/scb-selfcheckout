@@ -4,6 +4,7 @@ using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
@@ -19,18 +20,22 @@ namespace SelfCheckout.ViewModels
     public class SessionHistoryViewModel : ViewModelBase
     {
         ISelfCheckoutService _selfCheckoutService;
+        ISaleEngineService _saleEngineService;
 
         List<DeviceStatus> _allSessionHistories;
         ObservableCollection<DeviceStatus> _sessionHistories;
         ObservableCollection<SimpleSelectedItem> _filterTypes;
 
         DateTime? _filterDate;
-        int _filterSessionKey;
+
+        string _filterSessionKey;
         string _filterMachineNo;
 
-        public SessionHistoryViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService)
+        public SessionHistoryViewModel(INavigationService navigatinService, IDialogService dialogService, 
+            ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) : base(navigatinService, dialogService)
         {
             _selfCheckoutService = selfCheckoutService;
+            _saleEngineService = saleEngineService;
 
             FilterTypes = new ObservableCollection<SimpleSelectedItem>() {
                 new SimpleSelectedItem()
@@ -70,7 +75,12 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _filterDate, value);
         }
 
-        public int FilterSessionKey
+        public DateTime MaxDate
+        {
+            get => DateTime.Today;
+        }
+
+        public string FilterSessionKey
         {
             get => _filterSessionKey;
             set => SetProperty(ref _filterSessionKey, value);
@@ -91,7 +101,13 @@ namespace SelfCheckout.ViewModels
             };
             try
             {
-                DialogService.ShowDialogAsync("SessionOrderDialog", parameters);
+                DialogService.ShowDialog("SessionOrderDialog", parameters, async (result) =>
+                {
+                    if(result != null && result.Parameters.GetValue<bool>("IsConfirmed"))
+                    {
+                        await SaveSessionAsync(sess.SessionKey);
+                    }
+                });
             }
             catch { }
         });
@@ -124,14 +140,37 @@ namespace SelfCheckout.ViewModels
         public ICommand FilterCommand => new DelegateCommand(async () =>
         {
             await LoadSessionHistoryAsync();
+            FilterDate = null;
         });
+
+        async Task SaveSessionAsync(long sessionKey)
+        {
+            var result = await DialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
+            if (!result)
+                return;
+            try
+            {
+                IsBusy = true;
+                var appSetting = _selfCheckoutService.AppConfig;
+                var machineNo = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
+                await _selfCheckoutService.EndSessionAsync(sessionKey, appSetting.UserName, machineNo);
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
 
         async Task LoadSessionHistoryAsync()
         {
             try
             {
                 IsBusy = true;
-                _allSessionHistories = await _selfCheckoutService.GetSessionHistory(FilterDate, FilterSessionKey, FilterMachineNo);
+                _allSessionHistories = await _selfCheckoutService.GetSessionHistory(FilterDate, Convert.ToInt64(FilterSessionKey), FilterMachineNo);
                 SessionHistories = _allSessionHistories.ToObservableCollection();
             }
             catch (Exception ex)
