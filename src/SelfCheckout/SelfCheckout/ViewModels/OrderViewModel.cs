@@ -21,6 +21,8 @@ namespace SelfCheckout.ViewModels
 {
     public class OrderViewModel : OrderViewModelBase
     {
+        ObservableCollection<SimpleSelectedItem> _tabs;
+
         CustomerOrder _selectedCustomer;
         CustomerData _customerData;
 
@@ -63,6 +65,12 @@ namespace SelfCheckout.ViewModels
             IsShowGroup = true;
         }
 
+        public ObservableCollection<SimpleSelectedItem> Tabs
+        {
+            get => _tabs;
+            set => SetProperty(ref _tabs, value);
+        }
+
         private async Task RefreshOrderAsync()
         {
             try
@@ -71,6 +79,12 @@ namespace SelfCheckout.ViewModels
                 await LoadSessionDetailAsync(SelfCheckoutService.BorrowSessionKey);
                 await LoadCustomerSession();
                 await LoadOrderListAsync();
+
+                var t2 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
+                t2.Text1 = $"{TotalQty} {AppResources.Units}";
+
+                var t1 = Tabs.Where(t => (int)t.Arg1 == 1).FirstOrDefault();
+                t1.Text1 = $"{TotalInvoice} {AppResources.Invoices}";
             }
             catch (Exception ex)
             {

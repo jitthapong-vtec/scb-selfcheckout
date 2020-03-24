@@ -6,52 +6,57 @@
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              NavigationPage.HasNavigationBar="False"
-             NavigationPage.HasBackButton="False"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.CheckerSettingView">
     <ContentPage.Content>
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <controls:ActionBarView Grid.Row="0">
-                <Grid Padding="48,8,16,8">
-                    <Grid.Resources>
-                        <Style TargetType="Label">
-                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
-                            <Setter Property="VerticalOptions" Value="Center"/>
-                        </Style>
-                    </Grid.Resources>
-                    <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Start">
-                        <ffimageloading:CachedImage 
+            <ffimageloading:CachedImage 
+                    Aspect="AspectFill"
+                    Source="resource://SelfCheckout.Resources.Images.desktop_bg.png"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <controls:ActionBarView Grid.Row="0">
+                    <Grid Padding="48,8,16,8">
+                        <Grid.Resources>
+                            <Style TargetType="Label">
+                                <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                                <Setter Property="VerticalOptions" Value="Center"/>
+                            </Style>
+                        </Grid.Resources>
+                        <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Start">
+                            <ffimageloading:CachedImage 
                             HorizontalOptions="Start"
                             HeightRequest="32"
                             Margin="0,-12,0,0"
                             VerticalOptions="Center"
                             Source="resource://SelfCheckout.Resources.Images.header_logo.png"/>
-                        <BoxView HeightRequest="32" WidthRequest="1" VerticalOptions="Center" BackgroundColor="{StaticResource Gray50}"/>
-                        <Label Text="Setting" VerticalOptions="Center"/>
-                    </StackLayout>
-                </Grid>
-            </controls:ActionBarView>
-            <ScrollView Grid.Row="1" Margin="16">
-                <StackLayout>
-                    <StackLayout Orientation="Horizontal">
-                        <Entry IsReadOnly="True" FontSize="Medium" Text="{Binding Printer.PrinterName}" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
-                        <Frame BackgroundColor="{StaticResource Primary}" VerticalOptions="Center">
-                            <controls:TappedGrid
-                            TappedCommand="{Binding FindPrinterCommand}"
+                            <BoxView HeightRequest="32" WidthRequest="1" VerticalOptions="Center" BackgroundColor="{StaticResource Gray50}"/>
+                            <Label Text="Setting" VerticalOptions="Center"/>
+                        </StackLayout>
+                    </Grid>
+                </controls:ActionBarView>
+                <ScrollView Grid.Row="1" Margin="16" HorizontalOptions="Center" VerticalOptions="Center">
+                    <StackLayout>
+                        <Label Text="Receipt Printer"/>
+                        <StackLayout Orientation="Horizontal">
+                            <Entry IsReadOnly="True" FontSize="Medium" Text="{Binding PrinterName}" WidthRequest="300" VerticalOptions="Center"/>
+                            <Frame BackgroundColor="{StaticResource Primary}" VerticalOptions="Center">
+                                <controls:TappedGrid TappedCommand="{Binding FindPrinterCommand}"
                                     Padding="0"
                                     Margin="4"
                                     WidthRequest="100"
                                     Style="{StaticResource TappedGridButtonStyle}">
-                                <controls:CustomLabel UpperCase="True" Text="Find Printer" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-                            </controls:TappedGrid>
-                        </Frame>
+                                    <controls:CustomLabel UpperCase="True" Text="Find Printer" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                </controls:TappedGrid>
+                            </Frame>
+                        </StackLayout>
                     </StackLayout>
-                </StackLayout>
-            </ScrollView>
+                </ScrollView>
+            </Grid>
+
         </Grid>
     </ContentPage.Content>
 </ContentPage>

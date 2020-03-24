@@ -75,12 +75,15 @@
                 <Label Grid.Column="1" Text="{i18n:Translate Setting}" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
             </controls:TappedGrid>
 
-            <controls:TappedGrid VerticalOptions="End" HorizontalOptions="Center" Margin="0,0,16,8" IsVisible="{OnIdiom Desktop=True}"
+            <controls:TappedGrid VerticalOptions="End" HorizontalOptions="Start" Margin="16,0,16,8" IsVisible="{OnIdiom Desktop=True}"
                             TappedCommand="{Binding CheckerSettingCommand}"
                                     Padding="0"
                                     WidthRequest="100"
                                     Style="{StaticResource TappedGridButtonStyle}">
-                <controls:CustomLabel UpperCase="True" Text="Setting" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="&#xf013;" FontSize="24" TextColor="{StaticResource Gray50}" Style="{StaticResource LabelIconStyle}" VerticalOptions="Center"/>
+                    <controls:CustomLabel UpperCase="True" Text="Setting" TextColor="{StaticResource Gray50}" VerticalOptions="Center"/>
+                </StackLayout>
             </controls:TappedGrid>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>

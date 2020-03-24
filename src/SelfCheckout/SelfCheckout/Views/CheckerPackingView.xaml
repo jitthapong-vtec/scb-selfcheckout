@@ -38,15 +38,15 @@
                     <Entry Grid.Column="0" FontSize="Medium" x:Name="entrySessionKey" VerticalOptions="Center"
                            ReturnCommand="{Binding GetSessionDetailCommand}"
                            ReturnCommandParameter="{Binding Source={Reference entrySessionKey},Path=Text}"/>
-                    <Frame Grid.Column="1" Padding="2" BackgroundColor="{StaticResource Gray200}">
-                        <controls:TappedGrid 
+                    <controls:TappedGrid Grid.Column="1"
                                          HorizontalOptions="Center"
                                          WidthRequest="70"
                                          TappedCommand="{Binding GetSessionDetailCommand}"
                                          CommandParameter="{Binding Source={Reference entrySessionKey}, Path=Text}">
+                        <Frame Padding="2" BackgroundColor="{StaticResource Gray200}">
                             <Label FontFamily="{StaticResource FontAwesome}" HorizontalOptions="Center" VerticalOptions="Center" Text="&#xf00c;" FontSize="24" TextColor="{StaticResource Secondary}"/>
-                        </controls:TappedGrid>
-                    </Frame>
+                        </Frame>
+                    </controls:TappedGrid>
                 </Grid>
                 <Grid Grid.Row="0" Grid.Column="1">
                     <Grid.ColumnDefinitions>
@@ -105,7 +105,15 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" BackgroundColor="{StaticResource Gray100}" Padding="8">
-                        <Label Text="Invoices" HorizontalTextAlignment="Center"/>
+                        <Label HorizontalTextAlignment="Center" TextColor="{StaticResource Primary}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding TotalInvoice}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{i18n:Translate Invoices}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
                     </Grid>
 
                     <ListView Grid.Row="1" BackgroundColor="Transparent" ItemsSource="{Binding OrderInvoices}" IsGroupingEnabled="True" 
@@ -134,7 +142,15 @@
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0" BackgroundColor="{StaticResource Gray100}" Padding="8">
-                        <Label Text="Units" HorizontalTextAlignment="Center"/>
+                        <Label HorizontalTextAlignment="Center" TextColor="{StaticResource Primary}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding TotalQty}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{i18n:Translate Units}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
                     </Grid>
 
                     <ListView Grid.Row="1" BackgroundColor="Transparent" ItemsSource="{Binding OrderDetails}" 
@@ -150,26 +166,29 @@
                 </Grid>
 
                 <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" HorizontalOptions="Center">
-                    <Frame BackgroundColor="{StaticResource Primary}">
-                        <controls:TappedGrid
+                    <controls:TappedGrid
                             TappedCommand="{Binding SaveSessionCommand}"
                                     Padding="0"
                                     Margin="4"
                                     WidthRequest="100"
                                     Style="{StaticResource TappedGridButtonStyle}">
-                            <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Save}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-                        </controls:TappedGrid>
-                    </Frame>
-                    <Frame BackgroundColor="{StaticResource Brown}">
-                        <controls:TappedGrid
+                        <Frame Style="{StaticResource FrameButtonStyle}">
+                            <Grid>
+                                <controls:GradientBackground/>
+                                <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Save}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                            </Grid>
+                        </Frame>
+                    </controls:TappedGrid>
+                    <controls:TappedGrid
                             TappedCommand="{Binding ClearScreenCommand}"
                                     Padding="0"
                                     Margin="4"
                                     WidthRequest="100"
                                     Style="{StaticResource TappedGridButtonStyle}">
+                        <Frame BackgroundColor="{StaticResource Brown}" Style="{StaticResource FrameButtonStyle}">
                             <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Cancel}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-                        </controls:TappedGrid>
-                    </Frame>
+                        </Frame>
+                    </controls:TappedGrid>
                 </StackLayout>
             </Grid>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>

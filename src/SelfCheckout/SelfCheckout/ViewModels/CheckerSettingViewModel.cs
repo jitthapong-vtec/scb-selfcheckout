@@ -15,7 +15,7 @@ namespace SelfCheckout.ViewModels
 {
     public class CheckerSettingViewModel : ViewModelBase
     {
-        Printer _printer;
+        string _printerName;
 
         public CheckerSettingViewModel(INavigationService navigatinService, IDialogService dialogService) : base(navigatinService, dialogService)
         {
@@ -23,15 +23,29 @@ namespace SelfCheckout.ViewModels
 
         public ICommand FindPrinterCommand => new DelegateCommand(async () =>
         {
-            Printer = await DependencyService.Get<IPrintService>().FindAndClaimPrinter();
+            try
+            {
+                var printer = await DependencyService.Get<IPrintService>().FindAndClaimPrinter();
 
-            Preferences.Set("PrinterId", Printer.PrinterDeviceId);
+                PrinterName = printer.PrinterName;
+
+                Preferences.Set("PrinterId", printer.PrinterDeviceId);
+                Preferences.Set("PrinterName", printer.PrinterName);
+            }
+            catch { }
         });
 
-        public Printer Printer
+        public string PrinterName
         {
-            get => _printer;
-            set => SetProperty(ref _printer, value);
+            get => _printerName;
+            set => SetProperty(ref _printerName, value);
+        }
+
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+
+            PrinterName = Preferences.Get("PrinterName", "");
         }
     }
 }

@@ -11,6 +11,7 @@ using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -27,39 +28,46 @@ namespace SelfCheckout.ViewModels
         {
         }
 
-        public ICommand GetSessionDetailCommand => new DelegateCommand<string>(
-            canExecuteMethod: (sessionKey) => string.IsNullOrEmpty(sessionKey) == false,
-            executeMethod:
-            async (sessionKey) =>
+        public ICommand GetSessionDetailCommand => new Command<string>(async (sessionKey) =>
             {
-                try
-                {
-                    IsBusy = true;
-                    await LoadSessionDetailAsync(Convert.ToInt64(sessionKey));
-                    SessionKey = sessionKey;
-                    //if(SessionData.SessionStatus.SessionCode == "END")
-                    //{
-                    //    DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
-                    //    return;
-                    //}
-                    await LoadCustomerSession();
-
-                    CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
-
-                    await LoadOrderListAsync();
-
-                }
-                catch (Exception ex)
-                {
-                    await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-                }
-                finally
-                {
-                    IsBusy = false;
-                }
+                if (string.IsNullOrEmpty(sessionKey))
+                    return;
+                SessionKey = sessionKey;
+                await LoadDataAsync();
             });
 
-        public ICommand SaveSessionCommand => new Command(async() =>
+        private async Task LoadDataAsync()
+        {
+            try
+            {
+                IsBusy = true;
+                await LoadSessionDetailAsync(Convert.ToInt64(SessionKey));
+                if (SessionData.SessionStatus.SessionCode == "END")
+                {
+                    OrderInvoices?.Clear();
+                    OrderDetails?.Clear();
+
+                    await DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
+                    return;
+                }
+                await LoadCustomerSession();
+
+                CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
+
+                await LoadOrderListAsync();
+
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public ICommand SaveSessionCommand => new Command(async () =>
         {
             var result = await DialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
             if (!result)
@@ -69,14 +77,22 @@ namespace SelfCheckout.ViewModels
                 IsBusy = true;
                 var appSetting = SelfCheckoutService.AppConfig;
                 var machineNo = SaleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
-                //await SelfCheckoutService.EndSessionAsync(Convert.ToInt64(SessionKey), appSetting.UserName, machineNo);
-                //await SaleEngineService.PrintTaxInvoice(new
-                //{
-                //    OrderNo = "49",
-                //    ClaimcheckNo = "",
-                //    SessionKey = LoginSession
-                //});
-                await DependencyService.Get<IPrintService>().PrintBitmapFromUrl("https://kpservices.kingpower.com/portal/developer/SaleEngineAPI/Temp/MPOSDEV-00093_0_Original.png");
+                await SelfCheckoutService.EndSessionAsync(Convert.ToInt64(SessionKey), appSetting.UserName, machineNo);
+
+                foreach (var orderInvoice in OrderInvoices)
+                {
+                    var invoices = await SaleEngineService.PrintTaxInvoice(new
+                    {
+                        OrderNo = orderInvoice.OrderNo,
+                        ClaimcheckNo = "",
+                        SessionKey = LoginSession
+                    });
+
+                    var invoiceImgUrl = invoices.FirstOrDefault()?.Data.Original.FirstOrDefault().Value;
+                    await DependencyService.Get<IPrintService>().PrintBitmapFromUrl(invoiceImgUrl);
+                }
+
+                await LoadDataAsync();
             }
             catch (Exception ex)
             {
@@ -90,8 +106,8 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ClearScreenCommand => new DelegateCommand(() =>
          {
-             OrderInvoices.Clear();
-             OrderDetails.Clear();
+             OrderInvoices?.Clear();
+             OrderDetails?.Clear();
              SessionData = new SessionData();
              CustomerData = new CustomerData();
          });

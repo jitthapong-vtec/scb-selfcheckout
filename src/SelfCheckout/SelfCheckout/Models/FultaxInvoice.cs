@@ -38,6 +38,6 @@ namespace SelfCheckout.Models
         public string Type { get; set; }
 
         [JsonProperty("value")]
-        public Uri Value { get; set; }
+        public string Value { get; set; }
     }
 }

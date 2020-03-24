@@ -25,7 +25,6 @@ namespace SelfCheckout.ViewModels.Base
 
         List<OrderInvoiceGroup> _allOrderInvoiceGroups;
 
-        ObservableCollection<SimpleSelectedItem> _tabs;
         ObservableCollection<OrderInvoiceGroup> _orderInvoices;
         ObservableCollection<OrderDetail> _orderDetails;
         ObservableCollection<CustomerOrder> _customers;
@@ -35,7 +34,7 @@ namespace SelfCheckout.ViewModels.Base
         string _currencyCode;
         string _loginSession;
 
-        int _totalInvoice;
+        int? _totalInvoice;
         double? _totalQty;
         double? _subTotal;
         double? _totalDiscount;
@@ -46,12 +45,6 @@ namespace SelfCheckout.ViewModels.Base
             SaleEngineService = saleEngineService;
             SelfCheckoutService = selfCheckoutService;
             RegisterService = registerService;
-        }
-
-        public ObservableCollection<SimpleSelectedItem> Tabs
-        {
-            get => _tabs;
-            set => SetProperty(ref _tabs, value);
         }
 
         public ObservableCollection<CustomerOrder> Customers
@@ -77,7 +70,7 @@ namespace SelfCheckout.ViewModels.Base
             get => SelfCheckoutService.BorrowSessionKey;
         }
 
-        public int TotalInvoice
+        public int? TotalInvoice
         {
             get => _totalInvoice;
             set => SetProperty(ref _totalInvoice, value);
@@ -244,12 +237,6 @@ namespace SelfCheckout.ViewModels.Base
                 order.ForEach((orderDetail) => OrderDetails.Add(orderDetail));
             }
             CalculateSummary();
-
-            if (Device.Idiom == TargetIdiom.Phone)
-            {
-                var t2 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
-                t2.Text1 = $"{TotalQty} {AppResources.Units}";
-            }
         }
 
         protected void FilterOrder(CustomerOrder customer)
@@ -264,18 +251,12 @@ namespace SelfCheckout.ViewModels.Base
 
         private void CalculateSummary()
         {
-            if (Device.Idiom == TargetIdiom.Desktop)
-                return;
-
             TotalInvoice = OrderInvoices.Count();
             CurrencyCode = OrderInvoices.FirstOrDefault()?.CurrencyCode;
             TotalQty = OrderInvoices.Sum(o => o.TotalQty);
             SubTotal = OrderInvoices.Sum(o => o.SubTotal);
             TotalDiscount = OrderInvoices.Sum(o => o.TotalDiscount);
             TotalNetAmount = OrderInvoices.Sum(o => o.TotalNet);
-
-            var t1 = Tabs.Where(t => (int)t.Arg1 == 1).FirstOrDefault();
-            t1.Text1 = $"{TotalInvoice} {AppResources.Invoices}";
         }
     }
 }
