@@ -82,10 +82,11 @@
                         </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <views:OrderItemView DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.DeleteOrderCommand}" 
-                                                         ChangeQtyCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.ChangeQtyCommand}"
-                                                         SelectionCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.OrderSelectedCommand}"
-                                                         CommandParameter="{Binding .}"/>
+                                <views:OrderItemView DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.DeleteOrderCommand}" 
+                                                     ChangeQtyCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.ChangeQtyCommand}"
+                                                     SelectionCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.OrderSelectedCommand}"
+                                                     ShowDetailCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.ShowDetailCommand}"    
+                                                     CommandParameter="{Binding .}"/>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

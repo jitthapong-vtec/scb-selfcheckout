@@ -21,6 +21,9 @@ namespace SelfCheckout.Views
         public static BindableProperty DeleteCommandProperty =
             BindableProperty.Create("DeleteCommand", typeof(ICommand), typeof(OrderItemView), null, BindingMode.OneWay);
 
+        public static BindableProperty ShowDetailCommandProperty =
+            BindableProperty.Create("ShowDetailCommand", typeof(ICommand), typeof(OrderItemView), null, BindingMode.OneWay);
+
         public static readonly BindableProperty CommandParameterProperty =
             BindableProperty.Create("CommandParameter", typeof(object), typeof(OrderItemView), null, BindingMode.OneWay);
 
@@ -78,6 +81,15 @@ namespace SelfCheckout.Views
             }
         }
 
+        public ICommand ShowDetailCommand
+        {
+            get => (ICommand)GetValue(ShowDetailCommandProperty);
+            set
+            {
+                SetValue(ShowDetailCommandProperty, value);
+            }
+        }
+
         public ICommand DeleteCommand
         {
             get => (ICommand)GetValue(DeleteCommandProperty);
@@ -114,6 +126,11 @@ namespace SelfCheckout.Views
         private void Entry_Qty_Unfocused(object sender, FocusEventArgs e)
         {
             ChangeQtyCommand?.Execute(CommandParameter);
+        }
+
+        private void ShowDetail_Tapped(object sender, object e)
+        {
+            ShowDetailCommand?.Execute(CommandParameter);
         }
     }
 }

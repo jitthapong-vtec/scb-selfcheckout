@@ -40,6 +40,7 @@ namespace SelfCheckout.ViewModels
         int _paymentCountdownTimer;
 
         string _paymentBarCode;
+        string _couponCode;
 
         bool _summaryVisible;
         bool _summaryShowing;
@@ -109,11 +110,24 @@ namespace SelfCheckout.ViewModels
                 await NavigationService.GoBackToRootAsync();
             });
 
+            MessagingCenter.Subscribe<ShoppingCartViewModel, OrderDetail>(this, "ShowOrderDetail", async (sender, order) =>
+            {
+                await NavigationService.NavigateAsync("OrderDetailView", new NavigationParameters() { { "OrderDetail", order } });
+            });
+
             MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderRefresh", (s) =>
             {
                 OrderData = _saleEngineService.OrderData;
                 try
                 {
+                    if (CurrentView is ShoppingCartView)
+                    {
+                        if (OrderData.BillingQty > 0)
+                            PageTitle = $"{AppResources.MyCart} ({OrderData.BillingQty})";
+                        else
+                            PageTitle = AppResources.MyCart;
+                    }
+
                     var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
                     tab.BadgeCount = Convert.ToInt32(OrderData.BillingQty);
                 }
@@ -150,6 +164,25 @@ namespace SelfCheckout.ViewModels
             else
             {
                 MessagingCenter.Send(this, "ScannerReceived", data?.ToString());
+            }
+        });
+
+        public ICommand ScanCouponCommand => new Command(() =>
+        {
+            if (!string.IsNullOrEmpty(CouponCode))
+            {
+                CouponCode = "";
+            }
+            else
+            {
+                DialogService.ShowDialog("BarcodeScanDialog", null, (scanResult) =>
+                {
+                    var result = scanResult.Parameters.GetValue<string>("ScanData");
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        CouponCode = result;
+                    }
+                });
             }
         });
 
@@ -322,6 +355,12 @@ namespace SelfCheckout.ViewModels
         {
             get => _summaryVisible;
             set => SetProperty(ref _summaryVisible, value);
+        }
+
+        public string CouponCode
+        {
+            get => _couponCode;
+            set => SetProperty(ref _couponCode, value);
         }
 
         public OrderData OrderData

@@ -41,15 +41,13 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                await LoadSessionDetailAsync(Convert.ToInt64(SessionKey));
-                if (SessionData.SessionStatus.SessionCode == "END")
+                var isAlreadyEnd = await LoadSessionDetailAsync(Convert.ToInt64(SessionKey));
+                if (isAlreadyEnd)
                 {
-                    OrderInvoices?.Clear();
-                    OrderDetails?.Clear();
-
-                    await DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
+                    SessionKey = "";
                     return;
                 }
+                
                 await LoadCustomerSession();
 
                 CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
@@ -69,6 +67,9 @@ namespace SelfCheckout.ViewModels
 
         public ICommand SaveSessionCommand => new Command(async () =>
         {
+            if (SessionData == null)
+                return;
+
             var result = await DialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
             if (!result)
                 return;

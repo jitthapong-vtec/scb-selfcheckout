@@ -41,14 +41,53 @@
                 <StackLayout Orientation="Horizontal">
                     <Grid HorizontalOptions="FillAndExpand">
                         <controls:TappedGrid Margin="8" BackgroundColor="{StaticResource Brown}"
+                                             TappedCommand="{Binding ScanCouponCommand}"
                                      Padding="4" VerticalOptions="Center" 
                                      HorizontalOptions="Start"
                                      Style="{StaticResource TappedGridButtonStyle}"
                                      effects:RoundCornersEffect.CornerRadius="3">
                             <StackLayout Orientation="Horizontal" VerticalOptions="Center" Margin="4">
-                                <Label Text="&#xe901;" TextColor="{StaticResource Gray50}" FontSize="18" FontFamily="{StaticResource KPIconFont}" VerticalOptions="Center"/>
-                                <Label Text="{i18n:Translate ScanCoupon}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                <Label Text="&#xe901;" TextColor="{StaticResource Gray50}" FontSize="18" FontFamily="{StaticResource KPIconFont}" VerticalOptions="Center">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding CouponCode, Converter={StaticResource StringNotNullOrEmptyConverter}}" Value="True">
+                                            <Setter Property="TextColor" Value="{StaticResource Gray500}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding CouponCode, Converter={StaticResource StringNotNullOrEmptyConverter}}" Value="False">
+                                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding CouponCode, Converter={StaticResource StringNotNullOrEmptyConverter}}" Value="True">
+                                            <Setter Property="Text" Value="{Binding CouponCode}"/>
+                                            <Setter Property="TextColor" Value="{StaticResource Gray500}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding CouponCode, Converter={StaticResource StringNotNullOrEmptyConverter}}" Value="False">
+                                            <Setter Property="Text" Value="{i18n:Translate ScanCoupon}"/>
+                                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Text="&#xf057;" Style="{StaticResource LabelIconStyle}" FontSize="24" TextColor="Red" VerticalOptions="Center">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding CouponCode, Converter={StaticResource StringNotNullOrEmptyConverter}}" Value="True">
+                                            <Setter Property="IsVisible" Value="True"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding CouponCode, Converter={StaticResource StringNotNullOrEmptyConverter}}" Value="False">
+                                            <Setter Property="IsVisible" Value="False"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
                             </StackLayout>
+                            <controls:TappedGrid.Triggers>
+                                <DataTrigger TargetType="controls:TappedGrid" Binding="{Binding CouponCode, Converter={StaticResource StringNotNullOrEmptyConverter}}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Gray300}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="controls:TappedGrid" Binding="{Binding CouponCode, Converter={StaticResource StringNotNullOrEmptyConverter}}" Value="False">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Brown}"/>
+                                </DataTrigger>
+                            </controls:TappedGrid.Triggers>
                         </controls:TappedGrid>
                     </Grid>
                     <Grid Margin="8" HorizontalOptions="FillAndExpand">

@@ -65,6 +65,7 @@ namespace SelfCheckout
             containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
             containerRegistry.RegisterForNavigation<BorrowView, BorrowViewModel>();
             containerRegistry.RegisterForNavigation<CheckerMainView, CheckerMainViewModel>();
+            containerRegistry.RegisterForNavigation<OrderDetailView, OrderDetailViewModel>();
 
             containerRegistry.RegisterSingleton<ISerializeService, JsonSerializeService>();
             containerRegistry.RegisterSingleton<ISaleEngineService, SaleEngineService>();

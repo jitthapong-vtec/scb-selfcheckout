@@ -123,9 +123,26 @@ namespace SelfCheckout.ViewModels.Base
             set => SetProperty(ref _orderDetails, value);
         }
 
-        protected async Task LoadSessionDetailAsync(long sessionkey)
+        protected async Task<bool> LoadSessionDetailAsync(long sessionkey)
         {
             SessionData = await SelfCheckoutService.GetSessionDetialAsync(sessionkey);
+
+            if (SessionData.SessionStatus.SessionCode == "END")
+            {
+                Clear();
+
+                await DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
+                return true;
+            }
+            return false;
+        }
+
+        private void Clear()
+        {
+            OrderInvoices?.Clear();
+            OrderDetails?.Clear();
+            TotalInvoice = null;
+            TotalQty = null;
         }
 
         protected async Task<CustomerData> GetCustomerSessionAsync(string shoppingCard)

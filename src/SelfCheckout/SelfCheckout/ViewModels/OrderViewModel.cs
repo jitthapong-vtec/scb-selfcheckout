@@ -76,9 +76,13 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                await LoadSessionDetailAsync(SelfCheckoutService.BorrowSessionKey);
-                await LoadCustomerSession();
-                await LoadOrderListAsync();
+                var isAlreadyEnd = await LoadSessionDetailAsync(SelfCheckoutService.BorrowSessionKey);
+                if (!isAlreadyEnd)
+                {
+
+                    await LoadCustomerSession();
+                    await LoadOrderListAsync();
+                }
 
                 var t2 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
                 t2.Text1 = $"{TotalQty} {AppResources.Units}";

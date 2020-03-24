@@ -41,7 +41,7 @@ namespace SelfCheckout.ViewModels
             CustomerData = RegisterService.CustomerData;
             CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
 
-            MessagingCenter.Subscribe<MainViewModel, string>(this, "ScannerReceived", async(sender, barcode) =>
+            MessagingCenter.Subscribe<MainViewModel, string>(this, "ScannerReceived", async (sender, barcode) =>
             {
                 await AddOrderAsync(barcode);
             });
@@ -127,6 +127,11 @@ namespace SelfCheckout.ViewModels
                     }
                 }
             }
+        });
+
+        public ICommand ShowDetailCommand => new DelegateCommand<OrderDetail>((order) =>
+        {
+            MessagingCenter.Send(this, "ShowOrderDetail", order);
         });
 
         public ICommand RefreshOrderCommand => new DelegateCommand(async () =>
