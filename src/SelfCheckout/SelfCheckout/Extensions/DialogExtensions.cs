@@ -36,7 +36,7 @@ namespace SelfCheckout.Extensions
             return tcs.Task;
         }
 
-        public static Task<bool> ConfirmAsync(this IDialogService dialogService, string title, string message, string okButtonText, string cancelButtonText)
+        public static Task<bool> ConfirmAsync(this IDialogService dialogService, string title, string message, string okButtonText, string cancelButtonText, bool okAsRedButton = false)
         {
             var tcs = new TaskCompletionSource<bool>();
             var parameters = new DialogParameters
@@ -44,7 +44,8 @@ namespace SelfCheckout.Extensions
                     { "Title", title },
                     { "Message", message },
                     { "OkButtonText", okButtonText },
-                    { "CancelButtonText", cancelButtonText }
+                    { "CancelButtonText", cancelButtonText },
+                    { "OkAsRedButton", okAsRedButton }
                 };
             try
             {

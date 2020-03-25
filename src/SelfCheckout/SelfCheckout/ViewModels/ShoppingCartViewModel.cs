@@ -124,7 +124,7 @@ namespace SelfCheckout.ViewModels
                 var selectedOrders = OrderDetails.Where(o => o.IsSelected).ToArray();
                 if (selectedOrders.Any())
                 {
-                    var result = await DialogService.ConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteItem, AppResources.Yes, AppResources.No);
+                    var result = await DialogService.ConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteItem, AppResources.Yes, AppResources.No, true);
 
                     if (result)
                     {

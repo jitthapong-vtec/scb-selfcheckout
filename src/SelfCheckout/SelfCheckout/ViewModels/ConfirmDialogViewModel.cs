@@ -10,6 +10,8 @@ namespace SelfCheckout.ViewModels
 {
     public class ConfirmDialogViewModel : BindableBase, IDialogAware, IAutoInitialize
     {
+        bool __okAsRedButton;
+
         string _title;
         string _message;
         string _okButtonText;
@@ -37,6 +39,11 @@ namespace SelfCheckout.ViewModels
         {
             get => _cancelButtonText;
             set => SetProperty(ref _cancelButtonText, value);
+        }
+
+        public bool OkAsRedButton {
+            get => __okAsRedButton;
+            set => SetProperty(ref __okAsRedButton, value);
         }
 
         public ICommand YesCommand => new DelegateCommand(() =>
@@ -76,6 +83,7 @@ namespace SelfCheckout.ViewModels
             Message = parameters.GetValue<string>("Message");
             OkButtonText = parameters.GetValue<string>("OkButtonText");
             CancelButtonText = parameters.GetValue<string>("CancelButtonText");
+            OkAsRedButton = parameters.GetValue<bool>("OkAsRedButton");
         }
     }
 }

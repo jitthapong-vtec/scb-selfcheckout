@@ -21,6 +21,7 @@
         <Color x:Key="Gray">#848484</Color>
         <Color x:Key="Brown">#9F8A58</Color>
         <Color x:Key="Green">#008105</Color>
+        <Color x:Key="Red">#EB5757</Color>
         <Color x:Key="RedDark">#B02000</Color>
 
         <converter:TabItemWidthConverter x:Key="TabItemWidthConverter"/>

@@ -152,18 +152,16 @@ namespace SelfCheckout.ViewModels
             CurrentView = firstTab.Page;
         }
 
-        public override async void OnNavigatedTo(INavigationParameters parameters)
+        public override async void Initialize(INavigationParameters parameters)
         {
-            base.OnNavigatedTo(parameters);
+            base.Initialize(parameters);
 
             await LoadMasterDataAsync();
             await LoadCurrencyAsync();
         }
 
-        public override void OnNavigatedFrom(INavigationParameters parameters)
+        public override void Destroy()
         {
-            base.OnNavigatedFrom(parameters);
-
             MessagingCenter.Unsubscribe<DeviceViewModel>(this, "Logout");
             MessagingCenter.Unsubscribe<ViewModelBase>(this, "OrderRefresh");
         }
@@ -188,6 +186,10 @@ namespace SelfCheckout.ViewModels
         {
             if (!string.IsNullOrEmpty(CouponCode))
             {
+                var isDeleteCoupon = await DialogService.ConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteCoupon, AppResources.Yes, AppResources.No, true);
+                if (!isDeleteCoupon)
+                    return;
+
                 var payload = new
                 {
                     OrderGuid = "",
@@ -210,6 +212,9 @@ namespace SelfCheckout.ViewModels
             }
             else
             {
+                var isWantToUseCoupon = await DialogService.ConfirmAsync(AppResources.ScanCoupon, AppResources.ConfirmUseCoupon, AppResources.Yes, AppResources.No);
+                if (!isWantToUseCoupon)
+                    return;
                 DialogService.ShowDialog("BarcodeScanDialog", null, async (scanResult) =>
                 {
                     var result = scanResult.Parameters.GetValue<string>("ScanData");
@@ -318,6 +323,13 @@ namespace SelfCheckout.ViewModels
 
         public ICommand CheckoutCommand => new Command(async () =>
         {
+            try
+            {
+                if (!_saleEngineService.OrderData.OrderDetails.Any())
+                    return;
+            }
+            catch { return; }
+
             if (!IsBeingPaymentProcess)
             {
                 await CheckoutAsync();
