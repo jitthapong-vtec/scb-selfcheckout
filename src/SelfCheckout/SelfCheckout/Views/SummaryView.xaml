@@ -138,18 +138,7 @@
                                              TappedCommand="{Binding CheckoutCommand}"
                                              Style="{StaticResource TappedGridButtonStyle}"
                                              effects:RoundCornersEffect.CornerRadius="3">
-                            <Label x:Name="lblCheckoutRef" IsVisible="False"/>
-                            <Label x:Name="lblPayRef" IsVisible="False"/>
-                            <Label TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center">
-                                <Label.Triggers>
-                                    <DataTrigger TargetType="Label" Binding="{Binding IsBeingPaymentProcess}" Value="False">
-                                        <Setter Property="Text" Value="{Binding Source={x:Reference lblCheckoutRef}, Path=Text}"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label" Binding="{Binding IsBeingPaymentProcess}" Value="True">
-                                        <Setter Property="Text" Value="{Binding Source={x:Reference lblPayRef}, Path=Text}"/>
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
+                            <Label Text="{Binding CheckoutButtonText}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
                         </controls:TappedGrid>
                     </Grid>
                 </Grid>

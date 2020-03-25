@@ -26,8 +26,8 @@ namespace SelfCheckout.Views
                 if (string.IsNullOrEmpty(sender.CouponCode))
                     lblScanCoupon.Text = AppResources.ScanCoupon;
 
-                lblPayRef.Text = AppResources.Pay;
-                lblCheckoutRef.Text = AppResources.Checkout;
+                sender.CheckoutButtonText = AppResources.Checkout;
+
                 lblOrderTotal.Text = AppResources.OrderTotal;
                 lblDiscount.Text = AppResources.Discount;
                 lblSelectPaymentMethod.Text = AppResources.SelectPaymentMethod;

@@ -42,6 +42,7 @@ namespace SelfCheckout.ViewModels
 
         string _paymentBarCode;
         string _couponCode;
+        string _checkoutButtonText;
 
         bool _summaryVisible;
         bool _summaryShowing;
@@ -93,7 +94,7 @@ namespace SelfCheckout.ViewModels
             {
                 if (Tabs.Any())
                 {
-                    foreach(var tab in Tabs)
+                    foreach (var tab in Tabs)
                     {
                         (tab.Page.BindingContext as ViewModelBase).Destroy();
                     }
@@ -384,7 +385,13 @@ namespace SelfCheckout.ViewModels
         public bool IsBeingPaymentProcess
         {
             get => _isBeingPaymentProcess;
-            set => SetProperty(ref _isBeingPaymentProcess, value);
+            set => SetProperty(ref _isBeingPaymentProcess, value, () =>
+            {
+                if (value)
+                    CheckoutButtonText = AppResources.Pay;
+                else
+                    CheckoutButtonText = AppResources.Checkout;
+            });
         }
 
         public bool PaymentSelectionShowing
@@ -415,6 +422,12 @@ namespace SelfCheckout.ViewModels
         {
             get => _couponCode;
             set => SetProperty(ref _couponCode, value);
+        }
+
+        public string CheckoutButtonText
+        {
+            get => _checkoutButtonText;
+            set => SetProperty(ref _checkoutButtonText, value);
         }
 
         public OrderData OrderData
