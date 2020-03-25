@@ -57,8 +57,6 @@ namespace SelfCheckout.ViewModels
             _saleEngineService = saleEngineService;
             _selfCheckoutService = selfCheckoutService;
 
-            SetupTab();
-
             MessagingCenter.Subscribe<DeviceViewModel>(this, "Logout", async (s) =>
             {
                 await NavigationService.GoBackToRootAsync();
@@ -89,8 +87,20 @@ namespace SelfCheckout.ViewModels
             });
         }
 
-        private void SetupTab()
+        private void RefreshTab()
         {
+            try
+            {
+                if (Tabs.Any())
+                {
+                    foreach(var tab in Tabs)
+                    {
+                        (tab.Page.BindingContext as ViewModelBase).Destroy();
+                    }
+                }
+            }
+            catch { }
+
             Tabs = new ObservableCollection<TabItem>();
             Tabs.Add(new TabItem()
             {
@@ -177,21 +187,25 @@ namespace SelfCheckout.ViewModels
         {
             if (!string.IsNullOrEmpty(CouponCode))
             {
-                //var actionPayload = new
-                //{
-                //    OrderGuid = _saleEngineService.OrderData.Guid,
-                //    Rows = _saleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
-                //    Action = 7,
-                //    Value = "",
-                //    currency = "",
-                //    SessionKey = _saleEngineService.LoginData.SessionKey
-                //};
-                //var paymentStatus = await _saleEngineService.ActionPaymentToOrderAsync(actionPayload);
-                //if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
-                //{
-                //    CouponCode = "";
-                //}
-                CouponCode = "";
+                var payload = new
+                {
+                    OrderGuid = "",
+                    Rows = new object[] { },
+                    Action = "clear_all_special_discount",
+                    Value = "",
+                    SessionKey = _saleEngineService.LoginData.SessionKey
+                };
+
+                try
+                {
+                    await _saleEngineService.ActionOrderPaymentAsync(payload);
+                    CouponCode = "";
+                    MessagingCenter.Send(this, "OrderRefresh");
+                }
+                catch (Exception ex)
+                {
+                    await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                }
             }
             else
             {
@@ -200,8 +214,6 @@ namespace SelfCheckout.ViewModels
                     var result = scanResult.Parameters.GetValue<string>("ScanData");
                     if (!string.IsNullOrEmpty(result))
                     {
-                        CouponCode = "Test";
-
                         var payload = new
                         {
                             OrderGuid = "",
@@ -214,6 +226,10 @@ namespace SelfCheckout.ViewModels
                         try
                         {
                             await _saleEngineService.ActionOrderPaymentAsync(payload);
+
+                            CouponCode = _saleEngineService.OrderData.TotalBillingAmount.CurrentValueAdjust?.VaDetail?.Code;
+
+                            MessagingCenter.Send(this, "OrderRefresh");
                         }
                         catch (Exception ex)
                         {
@@ -413,7 +429,17 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _languageSelected, value, () =>
             {
                 _selfCheckoutService.CurrentLanguage = value;
+
+                if (value.LangCode == "EN")
+                    GlobalSettings.Instance.CountryCode = "en-US";
+                else if (value.LangCode == "TH")
+                    GlobalSettings.Instance.CountryCode = "th-TH";
+                else if (value.LangCode == "CH")
+                    GlobalSettings.Instance.CountryCode = "zh-Hans";
+                GlobalSettings.Instance.InitLanguage();
+
                 MessagingCenter.Send(this, "LanguageChanged");
+                RefreshTab();
             });
         }
 

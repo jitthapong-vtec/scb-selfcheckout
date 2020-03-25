@@ -28,11 +28,6 @@ namespace SelfCheckout.ViewModels
         {
             _selfCheckoutService = selfCheckoutService;
             _pimCoreService = pimCoreService;
-
-            MessagingCenter.Subscribe<MainViewModel>(this, "LanguageChanged", async (s) =>
-            {
-                await LoadImageAsset();
-            });
         }
 
         public ObservableCollection<PimCoreImageAsset> Assets

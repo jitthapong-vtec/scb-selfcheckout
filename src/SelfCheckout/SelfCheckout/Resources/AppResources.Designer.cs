@@ -169,7 +169,16 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you want to delete item?.
+        ///   Looks up a localized string similar to Do you have to delete coupon?.
+        /// </summary>
+        internal static string ConfirmDeleteCoupon {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteCoupon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you have to delete item?.
         /// </summary>
         internal static string ConfirmDeleteItem {
             get {
@@ -187,7 +196,7 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you want to use coupon?.
+        ///   Looks up a localized string similar to Do you have to use coupon?.
         /// </summary>
         internal static string ConfirmUseCoupon {
             get {
@@ -286,6 +295,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expire on.
+        /// </summary>
+        internal static string ExpireOn {
+            get {
+                return ResourceManager.GetString("ExpireOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter.
         /// </summary>
         internal static string Filter {
@@ -345,6 +363,15 @@ namespace SelfCheckout.Resources {
         internal static string History {
             get {
                 return ResourceManager.GetString("History", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Holder Detail.
+        /// </summary>
+        internal static string HolderDetail {
+            get {
+                return ResourceManager.GetString("HolderDetail", resourceCulture);
             }
         }
         
@@ -444,6 +471,15 @@ namespace SelfCheckout.Resources {
         internal static string Module {
             get {
                 return ResourceManager.GetString("Module", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More Detail.
+        /// </summary>
+        internal static string MoreDetail {
+            get {
+                return ResourceManager.GetString("MoreDetail", resourceCulture);
             }
         }
         
@@ -781,6 +817,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shopping Card.
+        /// </summary>
+        internal static string ShoppingCard {
+            get {
+                return ResourceManager.GetString("ShoppingCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This shopping card is not activate!.
         /// </summary>
         internal static string ShoppingCardNotActivate {
@@ -880,6 +925,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string TotalDiscount {
+            get {
+                return ResourceManager.GetString("TotalDiscount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total Net.
         /// </summary>
         internal static string TotalNet {
@@ -912,6 +966,15 @@ namespace SelfCheckout.Resources {
         internal static string UserName {
             get {
                 return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valid on.
+        /// </summary>
+        internal static string ValidOn {
+            get {
+                return ResourceManager.GetString("ValidOn", resourceCulture);
             }
         }
         

@@ -50,6 +50,11 @@ namespace SelfCheckout.ViewModels
             {
                 await RefreshOrderAsync();
             });
+
+            MessagingCenter.Subscribe<MainViewModel>(this, "OrderRefresh", async (sender) =>
+            {
+                await RefreshOrderAsync();
+            });
         }
 
         public ICommand ToggleChangeShoppingCardCommand => new DelegateCommand(() =>
@@ -210,8 +215,9 @@ namespace SelfCheckout.ViewModels
 
         public override void Destroy()
         {
-            MessagingCenter.Unsubscribe<MainViewModel>(this, "AddItemToOrder");
+            MessagingCenter.Unsubscribe<MainViewModel, string>(this, "AddItemToOrder");
             MessagingCenter.Unsubscribe<MainViewModel>(this, "CurrencyChanged");
+            MessagingCenter.Unsubscribe<MainViewModel>(this, "OrderRefresh");
         }
 
         public async Task LoadOrderAsync()

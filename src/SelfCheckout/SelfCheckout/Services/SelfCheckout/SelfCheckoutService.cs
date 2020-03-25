@@ -6,6 +6,7 @@ using SelfCheckout.Services.Serializer;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,7 +48,9 @@ namespace SelfCheckout.Services.SelfCheckout
             var result = await GetAsync<ApiResultData<IList<Language>>>(uri.ToString());
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
-            Languages = result.Data;
+
+            var filter = new string[] { "EN", "TH", "CH" };
+            Languages = result.Data.Where(l => filter.Contains(l.LangCode)).ToList();
         }
 
         public async Task LoadPaymentAsync()

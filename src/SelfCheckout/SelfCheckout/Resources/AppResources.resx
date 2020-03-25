@@ -154,13 +154,13 @@
     <value>Confirm</value>
   </data>
   <data name="ConfirmDeleteItem" xml:space="preserve">
-    <value>Do you want to delete item?</value>
+    <value>Do you have to delete item?</value>
   </data>
   <data name="ConfirmLogout" xml:space="preserve">
     <value>Are you sure you want to log out?</value>
   </data>
   <data name="ConfirmUseCoupon" xml:space="preserve">
-    <value>Do you want to use coupon?</value>
+    <value>Do you have to use coupon?</value>
   </data>
   <data name="ContinueShopping" xml:space="preserve">
     <value>Continue Shopping</value>
@@ -382,7 +382,7 @@
   </data>
   <data name="System" xml:space="preserve">
     <value>System</value>
-    <comment>No translate</comment>
+    
   </data>
   <data name="ThkForOrderDetail" xml:space="preserve">
     <value>You can see order in "My Order" menu</value>
@@ -407,5 +407,26 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="ConfirmDeleteCoupon" xml:space="preserve">
+    <value>Do you have to delete coupon?</value>
+  </data>
+  <data name="TotalDiscount" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MoreDetail" xml:space="preserve">
+    <value>More Detail</value>
+  </data>
+  <data name="ShoppingCard" xml:space="preserve">
+    <value>Shopping Card</value>
+  </data>
+  <data name="ValidOn" xml:space="preserve">
+    <value>Valid on</value>
+  </data>
+  <data name="ExpireOn" xml:space="preserve">
+    <value>Expire on</value>
+  </data>
+  <data name="HolderDetail" xml:space="preserve">
+    <value>Holder Detail</value>
   </data>
 </root>

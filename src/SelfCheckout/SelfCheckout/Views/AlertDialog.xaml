@@ -5,6 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
+             xmlns:prism="http://prismlibrary.com"
+             prism:DialogLayout.RelativeWidthRequest="{OnIdiom Phone=0.75, Desktop=0.5}"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.AlertDialog">
   <ContentView.Content>

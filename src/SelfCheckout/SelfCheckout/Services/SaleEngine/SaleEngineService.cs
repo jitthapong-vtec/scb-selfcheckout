@@ -70,6 +70,7 @@ namespace SelfCheckout.Services.SaleEngine
             var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
+            OrderData = result.Data.FirstOrDefault();
             return result.Data;
         }
 
