@@ -57,7 +57,7 @@
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
-                                <Label TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                                <Label TextColor="{StaticResource Gray50}" MaxLines="1" LineBreakMode="TailTruncation" VerticalOptions="Center" HorizontalTextAlignment="Center">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding CouponCode, Converter={StaticResource StringNotNullOrEmptyConverter}}" Value="True">
                                             <Setter Property="Text" Value="{Binding CouponCode}"/>

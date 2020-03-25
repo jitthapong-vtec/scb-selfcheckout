@@ -60,7 +60,8 @@ namespace SelfCheckout.Views
                     catch (DensoScannerException ex)
                     {
                         //shoppingCartViewModel?.DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-                       await shoppingCartViewModel.TestAddOrder();
+
+                        MessagingCenter.Send(mainViewModel, "AddItemToOrder", "00008211470207673");
                     }
                 }
             }

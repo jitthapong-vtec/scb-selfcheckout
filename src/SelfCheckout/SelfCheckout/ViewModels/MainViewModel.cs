@@ -1,4 +1,5 @@
-﻿using Prism.Navigation;
+﻿using Newtonsoft.Json;
+using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Controls;
 using SelfCheckout.Extensions;
@@ -56,6 +57,40 @@ namespace SelfCheckout.ViewModels
             _saleEngineService = saleEngineService;
             _selfCheckoutService = selfCheckoutService;
 
+            SetupTab();
+
+            MessagingCenter.Subscribe<DeviceViewModel>(this, "Logout", async (s) =>
+            {
+                await NavigationService.GoBackToRootAsync();
+            });
+
+            MessagingCenter.Subscribe<ShoppingCartViewModel, OrderDetail>(this, "ShowOrderDetail", async (sender, order) =>
+            {
+                await NavigationService.NavigateAsync("OrderDetailView", new NavigationParameters() { { "OrderDetail", order } });
+            });
+
+            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderRefresh", (s) =>
+            {
+                OrderData = _saleEngineService.OrderData;
+                try
+                {
+                    if (CurrentView is ShoppingCartView)
+                    {
+                        if (OrderData.BillingQty > 0)
+                            PageTitle = $"{AppResources.MyCart} ({OrderData.BillingQty})";
+                        else
+                            PageTitle = AppResources.MyCart;
+                    }
+
+                    var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
+                    tab.BadgeCount = Convert.ToInt32(OrderData.BillingQty);
+                }
+                catch { }
+            });
+        }
+
+        private void SetupTab()
+        {
             Tabs = new ObservableCollection<TabItem>();
             Tabs.Add(new TabItem()
             {
@@ -104,35 +139,6 @@ namespace SelfCheckout.ViewModels
             firstTab.Selected = true;
             PageTitle = firstTab.Title;
             CurrentView = firstTab.Page;
-
-            MessagingCenter.Subscribe<DeviceViewModel>(this, "Logout", async (s) =>
-            {
-                await NavigationService.GoBackToRootAsync();
-            });
-
-            MessagingCenter.Subscribe<ShoppingCartViewModel, OrderDetail>(this, "ShowOrderDetail", async (sender, order) =>
-            {
-                await NavigationService.NavigateAsync("OrderDetailView", new NavigationParameters() { { "OrderDetail", order } });
-            });
-
-            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderRefresh", (s) =>
-            {
-                OrderData = _saleEngineService.OrderData;
-                try
-                {
-                    if (CurrentView is ShoppingCartView)
-                    {
-                        if (OrderData.BillingQty > 0)
-                            PageTitle = $"{AppResources.MyCart} ({OrderData.BillingQty})";
-                        else
-                            PageTitle = AppResources.MyCart;
-                    }
-
-                    var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
-                    tab.BadgeCount = Convert.ToInt32(OrderData.BillingQty);
-                }
-                catch { }
-            });
         }
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
@@ -163,24 +169,56 @@ namespace SelfCheckout.ViewModels
             }
             else
             {
-                MessagingCenter.Send(this, "ScannerReceived", data?.ToString());
+                MessagingCenter.Send(this, "AddItemToOrder", data?.ToString());
             }
         });
 
-        public ICommand ScanCouponCommand => new Command(() =>
+        public ICommand ScanCouponCommand => new Command(async () =>
         {
             if (!string.IsNullOrEmpty(CouponCode))
             {
+                //var actionPayload = new
+                //{
+                //    OrderGuid = _saleEngineService.OrderData.Guid,
+                //    Rows = _saleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
+                //    Action = 7,
+                //    Value = "",
+                //    currency = "",
+                //    SessionKey = _saleEngineService.LoginData.SessionKey
+                //};
+                //var paymentStatus = await _saleEngineService.ActionPaymentToOrderAsync(actionPayload);
+                //if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
+                //{
+                //    CouponCode = "";
+                //}
                 CouponCode = "";
             }
             else
             {
-                DialogService.ShowDialog("BarcodeScanDialog", null, (scanResult) =>
+                DialogService.ShowDialog("BarcodeScanDialog", null, async (scanResult) =>
                 {
                     var result = scanResult.Parameters.GetValue<string>("ScanData");
                     if (!string.IsNullOrEmpty(result))
                     {
-                        CouponCode = result;
+                        CouponCode = "Test";
+
+                        var payload = new
+                        {
+                            OrderGuid = "",
+                            Rows = new object[] { },
+                            Action = "add_special_discount_by_qrcode",
+                            Value = result,
+                            SessionKey = _saleEngineService.LoginData.SessionKey
+                        };
+
+                        try
+                        {
+                            await _saleEngineService.ActionOrderPaymentAsync(payload);
+                        }
+                        catch (Exception ex)
+                        {
+                            await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                        }
                     }
                 });
             }
@@ -507,7 +545,7 @@ namespace SelfCheckout.ViewModels
 
                 var payload = new
                 {
-                    OrderGuid = OrderData.Guid,
+                    OrderGuid = _saleEngineService.OrderData.Guid,
                     SessionKey = _saleEngineService.LoginData.SessionKey
                 };
 
@@ -538,10 +576,10 @@ namespace SelfCheckout.ViewModels
                 };
                 var wallet = await _saleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
 
-                var netAmount = OrderData.BillingAmount.NetAmount.CurrAmt;
+                var netAmount = _saleEngineService.OrderData.BillingAmount.NetAmount.CurrAmt;
                 var paymentRequestPayload = new
                 {
-                    OrderGuid = OrderData.Guid,
+                    OrderGuid = _saleEngineService.OrderData.Guid,
                     Payment = new
                     {
                         Guid = "",
@@ -651,7 +689,7 @@ namespace SelfCheckout.ViewModels
 
                     var actionPayload = new
                     {
-                        OrderGuid = OrderData.Guid,
+                        OrderGuid = _saleEngineService.OrderData.Guid,
                         Rows = _saleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
                         Action = 3,
                         Value = "",
@@ -661,6 +699,7 @@ namespace SelfCheckout.ViewModels
                     var paymentStatus = await _saleEngineService.ActionPaymentToOrderAsync(actionPayload);
                     if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
                     {
+                        IsPaymentProcessing = false;
                         paymentSuccess = true;
                         break;
                     }
@@ -671,7 +710,7 @@ namespace SelfCheckout.ViewModels
                     var finishPaymentPayload = new
                     {
                         SessionKey = _saleEngineService.LoginData.SessionKey,
-                        OrderGuid = OrderData.Guid,
+                        OrderGuid = _saleEngineService.OrderData.Guid,
                         OrderSignature = new object[]
                         {
                             new

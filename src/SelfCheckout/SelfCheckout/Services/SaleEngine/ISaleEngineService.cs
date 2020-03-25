@@ -38,6 +38,8 @@ namespace SelfCheckout.Services.SaleEngine
 
         Task<OrderPayment> ActionPaymentToOrderAsync(object payload);
 
+        Task<List<OrderData>> ActionOrderPaymentAsync(object payload);
+
         Task<List<OrderData>> FinishPaymentOrderAsync(object payload);
 
         Task<string> GeneratePPQrCode(object payload);

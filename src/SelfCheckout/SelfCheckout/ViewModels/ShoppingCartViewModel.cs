@@ -41,7 +41,7 @@ namespace SelfCheckout.ViewModels
             CustomerData = RegisterService.CustomerData;
             CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
 
-            MessagingCenter.Subscribe<MainViewModel, string>(this, "ScannerReceived", async (sender, barcode) =>
+            MessagingCenter.Subscribe<MainViewModel, string>(this, "AddItemToOrder", async (sender, barcode) =>
             {
                 await AddOrderAsync(barcode);
             });
@@ -210,7 +210,7 @@ namespace SelfCheckout.ViewModels
 
         public override void Destroy()
         {
-            MessagingCenter.Unsubscribe<MainViewModel>(this, "ScannerReceived");
+            MessagingCenter.Unsubscribe<MainViewModel>(this, "AddItemToOrder");
             MessagingCenter.Unsubscribe<MainViewModel>(this, "CurrencyChanged");
         }
 
@@ -320,30 +320,6 @@ namespace SelfCheckout.ViewModels
                     SessionKey = SaleEngineService.LoginData.SessionKey,
                     ItemCode = barcode
                 };
-                await SaleEngineService.AddItemToOrderAsync(payload);
-                await RefreshOrderAsync();
-            }
-            catch (Exception ex)
-            {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        public async Task TestAddOrder()
-        {
-            var payload = new
-            {
-                SessionKey = SaleEngineService.LoginData.SessionKey,
-                ItemCode = "00008211470207673"
-            };
-
-            try
-            {
-                IsBusy = true;
                 await SaleEngineService.AddItemToOrderAsync(payload);
                 await RefreshOrderAsync();
             }
