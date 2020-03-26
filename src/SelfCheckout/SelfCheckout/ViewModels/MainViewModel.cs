@@ -174,7 +174,7 @@ namespace SelfCheckout.ViewModels
             {
                 PaymentBarcode = data?.ToString();
                 if (!string.IsNullOrEmpty(PaymentBarcode))
-                    await PaymentAsync();
+                    await WalletPaymentAsync();
             }
             else
             {
@@ -282,26 +282,24 @@ namespace SelfCheckout.ViewModels
             PaymentSelectionShowing = !PaymentSelectionShowing;
         });
 
-        public ICommand PaymentSelectionCommand => new Command<Payment>(async(payment) =>
+        public ICommand PaymentSelectionCommand => new Command<Payment>(async (payment) =>
         {
             PaymentSelectionShowing = false;
             PaymentSelected = payment;
 
             if (!payment.IsAlipay)
             {
-                try
+                var result = await DialogService.ShowDialogAsync("PromptPayQrDialog", null);
+                var promptPayResult = result.Parameters.GetValue<PromptPayResult>("PromptPayResult");
+                if (promptPayResult == null)
                 {
-                    var result = await DialogService.ShowDialogAsync("PromptPayQrDialog", null);
-                    var promptPayResult = result.Parameters.GetValue<PromptPayResult>("PromptPayResult");
-                    if(promptPayResult == null)
-                    {
-                        PaymentInputShowing = false;
-                        IsBeingPaymentProcess = false;
-                        PaymentSelected = _selfCheckoutService.Payments.FirstOrDefault();
-                    }
+                    PaymentInputShowing = false;
+                    IsBeingPaymentProcess = false;
+                    PaymentSelected = _selfCheckoutService.Payments.FirstOrDefault();
                 }
-                catch(Exception ex)
-                { 
+                else
+                {
+                    await QRPaymentAsync(promptPayResult);
                 }
             }
         });
@@ -319,7 +317,7 @@ namespace SelfCheckout.ViewModels
                         if (!string.IsNullOrEmpty(result))
                         {
                             PaymentBarcode = result;
-                            await PaymentAsync();
+                            await WalletPaymentAsync();
                         }
                     });
                 }
@@ -630,7 +628,102 @@ namespace SelfCheckout.ViewModels
             }
         }
 
-        async Task PaymentAsync()
+        async Task QRPaymentAsync(PromptPayResult promptPayResult)
+        {
+            try
+            {
+                IsBusy = true;
+
+                var netAmount = _saleEngineService.OrderData.BillingAmount.NetAmount.CurrAmt;
+                var paymentPayload = new
+                {
+                    OrderGuid = _saleEngineService.OrderData.Guid,
+                    Payment = new
+                    {
+                        Guid = "",
+                        LineNo = 0,
+                        PaymentCode = "PROMT",
+                        PaymentType = "VISA",
+                        PaymentIcon = "",
+                        RefNo = promptPayResult.TransactionId,
+                        URLService = "",
+                        CardHolderName = "",
+                        ApproveCode = "",
+                        BankOfEDC = "",
+                        IssuerID = "",
+                        WalletBarcode = "",
+                        WalletMerchantID = "",
+                        WalletTransID = "",
+                        isDCC = false,
+                        isCheckVoucher = false,
+                        isFixAmount = false,
+                        isNotAllowSMC = false,
+                        isComplete = false,
+                        PaymentAmounts = new
+                        {
+                            CurrAmt = netAmount,
+                            CurrCode = new
+                            {
+                                Code = _saleEngineService.CurrencySelected.CurrCode,
+                                Desc = _saleEngineService.CurrencySelected.CurrDesc
+                            },
+                            CurrRate = _saleEngineService.CurrencySelected.CurrRate,
+                            BaseCurrCode = new
+                            {
+                                Code = _saleEngineService.BaseCurrency.CurrCode,
+                                Desc = _saleEngineService.BaseCurrency.CurrDesc
+                            },
+                            BaseCurrRate = 1,
+                            BaseCurrAmt = netAmount
+                        },
+                        Transaction = new
+                        {
+                            TransactionId = 0,
+                            GatewaySessionKey = "",
+                            TransactionGroup = 4,
+                            TransactionType = 1,
+                            PartnerId = 0,
+                            LastStatus = 1,
+                            CurrentStatus = 1,
+                            Movements = new[]
+                            {
+                                    new
+                                    {
+                                        TransactionMovementType = 1,
+                                        Amount = netAmount,
+                                        Currency = new
+                                        {
+                                            Code = _saleEngineService.BaseCurrency.CurrCode,
+                                            Desc = _saleEngineService.BaseCurrency.CurrDesc
+                                        },
+                                        Description = "",
+                                        Status = 1
+                                    }
+                                }
+                        },
+                        status = "SUCCESS", 
+                        PartnerTransID = "", 
+                        PaymentSessionKey = 1
+                    },
+                    SessionKey = _saleEngineService.LoginData.SessionKey,
+                };
+
+                await ConfirmPaymentAsync(paymentPayload);
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
+                IsBeingPaymentProcess = false;
+                IsPaymentProcessing = false;
+                PaymentInputShowing = false;
+            }
+        }
+
+        async Task WalletPaymentAsync()
         {
             try
             {
@@ -644,7 +737,7 @@ namespace SelfCheckout.ViewModels
                 var wallet = await _saleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
 
                 var netAmount = _saleEngineService.OrderData.BillingAmount.NetAmount.CurrAmt;
-                var paymentRequestPayload = new
+                var paymentPayload = new
                 {
                     OrderGuid = _saleEngineService.OrderData.Guid,
                     Payment = new
@@ -729,92 +822,15 @@ namespace SelfCheckout.ViewModels
                     SessionKey = _saleEngineService.LoginData.SessionKey,
                 };
 
-                await _saleEngineService.AddPaymentToOrderAsync(paymentRequestPayload);
+                await ConfirmPaymentAsync(paymentPayload);
 
-                var tokenSource = new CancellationTokenSource();
-                var ct = tokenSource.Token;
-
-                PaymentCountdownTimer = _selfCheckoutService.AppConfig.PaymentTimeout;
-                Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+                try
                 {
-                    if (--PaymentCountdownTimer == 0)
-                    {
-                        tokenSource.Cancel();
-                        return false;
-                    }
-                    if (!IsPaymentProcessing)
-                        return false;
-                    return true;
-                });
-
-                IsPaymentProcessing = true;
-                var paymentSuccess = false;
-                while (true)
-                {
-                    if (ct.IsCancellationRequested)
-                        break;
-
-                    var actionPayload = new
-                    {
-                        OrderGuid = _saleEngineService.OrderData.Guid,
-                        Rows = _saleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
-                        Action = 3,
-                        Value = "",
-                        currency = "",
-                        SessionKey = _saleEngineService.LoginData.SessionKey
-                    };
-                    var paymentStatus = await _saleEngineService.ActionPaymentToOrderAsync(actionPayload);
-                    if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
-                    {
-                        IsPaymentProcessing = false;
-                        paymentSuccess = true;
-                        break;
-                    }
+                    // Test void payment
+                    await _saleEngineService.VoidPaymentAsync(wallet.WalletagentMaster.MerchantId, _saleEngineService.OrderData.PaymentTransaction.PartnerTransId);
                 }
-
-                if (paymentSuccess)
+                catch (Exception ex)
                 {
-                    var finishPaymentPayload = new
-                    {
-                        SessionKey = _saleEngineService.LoginData.SessionKey,
-                        OrderGuid = _saleEngineService.OrderData.Guid,
-                        OrderSignature = new object[]
-                        {
-                            new
-                            {
-                                code = "",
-                                signature = ""
-                            }
-                        }
-                    };
-                    await _saleEngineService.FinishPaymentOrderAsync(finishPaymentPayload);
-
-                    var headerAttr = _saleEngineService.OrderData.HeaderAttributes.Where(o => o.Code == "order_no").FirstOrDefault();
-                    var orderNo = Convert.ToInt32(headerAttr.ValueOfDecimal);
-                    var result = await _selfCheckoutService.UpdateSessionAsync(_selfCheckoutService.BorrowSessionKey, orderNo, _selfCheckoutService.StartedShoppingCard);
-
-                    try
-                    {
-                        // Test void payment
-                        await _saleEngineService.VoidPaymentAsync(wallet.WalletagentMaster.MerchantId, _saleEngineService.OrderData.PaymentTransaction.PartnerTransId);
-                    }
-                    catch (Exception ex)
-                    {
-                    }
-
-                    var appConfig = _selfCheckoutService.AppConfig;
-                    var loginData = await _saleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
-                    _saleEngineService.LoginData = loginData;
-
-                    var shoppingCartTab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
-                    await (shoppingCartTab.Page.BindingContext as ShoppingCartViewModel).LoadOrderAsync();
-
-                    var isContinueShopping = await DialogService.ConfirmAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.ContinueShopping, AppResources.MyOrder);
-                    if (!isContinueShopping)
-                    {
-                        var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
-                        TabSelectedCommand.Execute(orderTab);
-                    }
                 }
             }
             catch (Exception ex)
@@ -828,6 +844,89 @@ namespace SelfCheckout.ViewModels
                 IsPaymentProcessing = false;
                 PaymentInputShowing = false;
                 PaymentBarcode = "";
+            }
+        }
+
+        async Task ConfirmPaymentAsync(object paymentPayload)
+        {
+            await _saleEngineService.AddPaymentToOrderAsync(paymentPayload);
+
+            var tokenSource = new CancellationTokenSource();
+            var ct = tokenSource.Token;
+
+            PaymentCountdownTimer = _selfCheckoutService.AppConfig.PaymentTimeout;
+            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+            {
+                if (--PaymentCountdownTimer == 0)
+                {
+                    tokenSource.Cancel();
+                    return false;
+                }
+                if (!IsPaymentProcessing)
+                    return false;
+                return true;
+            });
+
+            IsPaymentProcessing = true;
+            var paymentSuccess = false;
+            while (true)
+            {
+                if (ct.IsCancellationRequested)
+                    break;
+
+                var actionPayload = new
+                {
+                    OrderGuid = _saleEngineService.OrderData.Guid,
+                    Rows = _saleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
+                    Action = 3,
+                    Value = "",
+                    currency = "",
+                    SessionKey = _saleEngineService.LoginData.SessionKey
+                };
+                var paymentStatus = await _saleEngineService.ActionPaymentToOrderAsync(actionPayload);
+                if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
+                {
+                    IsBeingPaymentProcess = false;
+                    IsPaymentProcessing = false;
+                    paymentSuccess = true;
+                    break;
+                }
+            }
+
+            if (paymentSuccess)
+            {
+                var finishPaymentPayload = new
+                {
+                    SessionKey = _saleEngineService.LoginData.SessionKey,
+                    OrderGuid = _saleEngineService.OrderData.Guid,
+                    OrderSignature = new object[]
+                    {
+                            new
+                            {
+                                code = "",
+                                signature = ""
+                            }
+                    }
+                };
+                await _saleEngineService.FinishPaymentOrderAsync(finishPaymentPayload);
+
+                var headerAttr = _saleEngineService.OrderData.HeaderAttributes.Where(o => o.Code == "order_no").FirstOrDefault();
+                var orderNo = Convert.ToInt32(headerAttr.ValueOfDecimal);
+                var result = await _selfCheckoutService.UpdateSessionAsync(_selfCheckoutService.BorrowSessionKey, orderNo, _selfCheckoutService.CurrentShoppingCard);
+
+                var appConfig = _selfCheckoutService.AppConfig;
+                var loginData = await _saleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
+                _saleEngineService.LoginData = loginData;
+
+                var shoppingCartTab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
+                await (shoppingCartTab.Page.BindingContext as ShoppingCartViewModel).LoadOrderAsync();
+
+                var isContinueShopping = await DialogService.ConfirmAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.ContinueShopping, AppResources.MyOrder);
+                if (!isContinueShopping)
+                {
+                    var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
+                    TabSelectedCommand.Execute(orderTab);
+                }
             }
         }
     }

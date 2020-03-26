@@ -21,8 +21,6 @@ namespace SelfCheckout.Services.SelfCheckout
 
         public long BorrowSessionKey { get; private set; }
 
-        public string StartedShoppingCard { get; set; }
-
         public string CurrentShoppingCard { get; set; }
 
         public AppConfig AppConfig { get; private set; }
@@ -141,7 +139,6 @@ namespace SelfCheckout.Services.SelfCheckout
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             BorrowSessionKey = result.Data;
-            StartedShoppingCard = shoppingCardNo;
             return result.Data;
         }
 

@@ -88,11 +88,7 @@ namespace SelfCheckout.ViewModels
                     await LoadOrderListAsync();
                 }
 
-                var t2 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
-                t2.Text1 = $"{TotalQty} {AppResources.Units}";
-
-                var t1 = Tabs.Where(t => (int)t.Arg1 == 1).FirstOrDefault();
-                t1.Text1 = $"{TotalInvoice} {AppResources.Invoices}";
+                RefreshTab();
             }
             catch (Exception ex)
             {
@@ -102,6 +98,33 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        private void RefreshTab()
+        {
+            var t2 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
+            t2.Text1 = $"{TotalQty} {AppResources.Units}";
+
+            var t1 = Tabs.Where(t => (int)t.Arg1 == 1).FirstOrDefault();
+            t1.Text1 = $"{TotalInvoice} {AppResources.Invoices}";
+        }
+
+        void FilterOrder(CustomerOrder customer)
+        {
+            var ordersNo = customer.SessionDetails.Select(c => c.OrderNo).ToList();
+            if (!customer.SessionDetails.Any())
+                OrderInvoices = _allOrderInvoiceGroups.ToObservableCollection();
+            else
+                OrderInvoices = _allOrderInvoiceGroups.Where(o => ordersNo.Contains(o.OrderNo)).ToList().ToObservableCollection();
+
+            OrderDetails = new ObservableCollection<OrderDetail>();
+            foreach (var order in OrderInvoices)
+            {
+                order.ForEach((orderDetail) => OrderDetails.Add(orderDetail));
+            }
+
+            CalculateSummary();
+            RefreshTab();
         }
 
         public ICommand TabSelectedCommand => new DelegateCommand<SimpleSelectedItem>((item) =>

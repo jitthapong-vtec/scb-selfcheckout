@@ -18,8 +18,6 @@ namespace SelfCheckout.Services.SelfCheckout
 
         long BorrowSessionKey { get; }
 
-        string StartedShoppingCard { get; set; }
-
         string CurrentShoppingCard { get; set; }
 
         Task LoadConfigAsync();

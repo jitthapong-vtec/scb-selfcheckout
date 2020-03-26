@@ -23,7 +23,7 @@ namespace SelfCheckout.ViewModels.Base
         protected ISelfCheckoutService SelfCheckoutService { get; private set; }
         protected IRegisterService RegisterService { get; private set; }
 
-        List<OrderInvoiceGroup> _allOrderInvoiceGroups;
+        protected List<OrderInvoiceGroup> _allOrderInvoiceGroups;
 
         ObservableCollection<OrderInvoiceGroup> _orderInvoices;
         ObservableCollection<OrderDetail> _orderDetails;
@@ -164,6 +164,7 @@ namespace SelfCheckout.ViewModels.Base
                     var result = await RegisterService.GetCustomerAsync(shoppingCard);
                     var customer = new CustomerOrder()
                     {
+                        CustomerShoppingCard = shoppingCard,
                         CustomerName = result.FirstOrDefault()?.Person.EnglishName
                     };
                     customer.SessionDetails.AddRange(sessionGroup.SessionDetails);
@@ -180,25 +181,30 @@ namespace SelfCheckout.ViewModels.Base
             var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
             LoginSession = loginResult.SessionKey;
 
-            var payload = new
+            var ordersData = new List<OrderData>();
+
+            var customers = Customers.Where(c => !string.IsNullOrEmpty(c.CustomerShoppingCard)).ToList();
+            foreach(var customer in customers)
             {
-                SessionKey = loginResult.SessionKey,
-                Attributes = new object[]
+                var payload = new
+                {
+                    SessionKey = loginResult.SessionKey,
+                    Attributes = new object[]
                 {
                     new
                     {
                         GROUP = "tran_no",
                         CODE = "shopping_card",
-                        valueOfString = SessionData.ShoppingCard
+                        valueOfString = customer.CustomerShoppingCard
                     }
                 },
-                filter = filter,
-                paging = new
-                {
-                    pageNo = 1,
-                    pageSize = 100
-                },
-                sorting = new object[]
+                    filter = filter,
+                    paging = new
+                    {
+                        pageNo = 1,
+                        pageSize = 100
+                    },
+                    sorting = new object[]
                 {
                     new
                     {
@@ -206,9 +212,11 @@ namespace SelfCheckout.ViewModels.Base
                         orderBy = "desc"
                     }
                 }
-            };
+                };
 
-            var ordersData = await SaleEngineService.GetOrderListAsync(payload);
+                var result = await SaleEngineService.GetOrderListAsync(payload);
+                ordersData.AddRange(result);
+            }
 
             _allOrderInvoiceGroups = new List<OrderInvoiceGroup>();
             foreach (var order in ordersData)
@@ -219,12 +227,12 @@ namespace SelfCheckout.ViewModels.Base
                 var customerAttr = order.CustomerDetail?.CustomerAttributes;
                 var orderInvoiceGroup = new OrderInvoiceGroup(orderDetails)
                 {
-                    InvoiceNo = "12345",
-                    OrderNo = Convert.ToInt64(order.HeaderAttributes.Where(attr => attr.Code == "order_no").Select(o => o.ValueOfDecimal).FirstOrDefault()),
+                    InvoiceNo = order.OrderInvoices.FirstOrDefault()?.InvoiceNo.ToString(),
+                    OrderNo = Convert.ToInt64(order.HeaderAttributes.Where(attr => attr.Code == "order_no").FirstOrDefault()?.ValueOfDecimal),
                     InvoiceDateTime = orderInvoice.Cashier.MachineDateTime, // TODO: concern
                     CustomerName = order.CustomerDetail?.CustomerName,
                     PassportNo = customerAttr?.Where(c => c.Code == "passport_no").FirstOrDefault()?.ValueOfString,
-                    ShoppingCardNo = customerAttr.Where(c => c.Code == "shopping_card").FirstOrDefault()?.ValueOfString,
+                    ShoppingCardNo = order.HeaderAttributes.Where(attr => attr.Code == "shopping_card").FirstOrDefault()?.ValueOfString,
                     CurrencyCode = orderInvoice.BillingAmount.NetAmount.CurrCode.Code,
                     PaymentType = orderInvoice.OrderPayments.FirstOrDefault()?.PaymentType,
                     TotalQty = orderInvoice.BillingQuantity.Quantity,
@@ -253,17 +261,7 @@ namespace SelfCheckout.ViewModels.Base
             CalculateSummary();
         }
 
-        protected void FilterOrder(CustomerOrder customer)
-        {
-            var ordersNo = customer.SessionDetails.Select(c => c.OrderNo).ToList();
-            if (!customer.SessionDetails.Any())
-                OrderInvoices = _allOrderInvoiceGroups.ToObservableCollection();
-            else
-                OrderInvoices = _allOrderInvoiceGroups.Where(o => ordersNo.Contains(o.OrderNo)).ToList().ToObservableCollection();
-            CalculateSummary();
-        }
-
-        private void CalculateSummary()
+        protected void CalculateSummary()
         {
             TotalInvoice = OrderInvoices.Count();
             CurrencyCode = OrderInvoices.FirstOrDefault()?.CurrencyCode;

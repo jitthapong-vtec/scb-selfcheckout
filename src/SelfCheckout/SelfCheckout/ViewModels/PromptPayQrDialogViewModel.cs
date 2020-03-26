@@ -140,12 +140,14 @@ namespace SelfCheckout.ViewModels
                 var payload = new
                 {
                     qrType = "PP",
+                    invoice = $"{_saleEngineService.LoginData.UserInfo.MachineEnv.MachineNo}{refNo}",
                     amount = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrAmt,
                     ppId = "450439699596861",
                     ppType = "BILLERID",
                     ref1 = refNo,
                     ref2 = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineNo,
-                    ref3 = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineName
+                    ref3 = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineName,
+                    merchantId = "456114188212509"
                 };
                 QRData = await _paymentService.GeneratePPQrCode(payload);
                 IsQrVisible = true;

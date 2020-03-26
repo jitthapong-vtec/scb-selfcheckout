@@ -20,7 +20,7 @@ namespace SelfCheckout.ViewModels
         }
 
         public string MemberWebUrl {
-            get => string.Format(_selfCheckoutService.AppConfig.UrlMemberWeb, _selfCheckoutService.StartedShoppingCard, _selfCheckoutService.AppConfig.SubBranch);
+            get => string.Format(_selfCheckoutService.AppConfig.UrlMemberWeb, _selfCheckoutService.CurrentShoppingCard, _selfCheckoutService.AppConfig.SubBranch);
         }
     }
 }
