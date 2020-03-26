@@ -32,16 +32,6 @@ namespace SelfCheckout.Services.SaleEngine
 
         public Currency CurrencySelected { get; set; }
 
-        public Currency BaseCurrency
-        {
-            get => Currencies.Where(c => c.CurrCode == "THB").FirstOrDefault() ?? new Currency
-            {
-                CurrCode = "THB",
-                CurrDesc = "THB",
-                CurrRate = 1
-            };
-        }
-
         public OrderData OrderData { get; private set; }
 
         public async Task<List<OrderData>> ActionItemToOrderAsync(object payload)

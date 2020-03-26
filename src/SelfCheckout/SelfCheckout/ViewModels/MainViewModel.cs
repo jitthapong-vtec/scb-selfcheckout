@@ -634,7 +634,6 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = true;
 
-                var netAmount = _saleEngineService.OrderData.BillingAmount.NetAmount.CurrAmt;
                 var paymentPayload = new
                 {
                     OrderGuid = _saleEngineService.OrderData.Guid,
@@ -661,20 +660,12 @@ namespace SelfCheckout.ViewModels
                         isComplete = false,
                         PaymentAmounts = new
                         {
-                            CurrAmt = netAmount,
-                            CurrCode = new
-                            {
-                                Code = _saleEngineService.CurrencySelected.CurrCode,
-                                Desc = _saleEngineService.CurrencySelected.CurrDesc
-                            },
-                            CurrRate = _saleEngineService.CurrencySelected.CurrRate,
-                            BaseCurrCode = new
-                            {
-                                Code = _saleEngineService.BaseCurrency.CurrCode,
-                                Desc = _saleEngineService.BaseCurrency.CurrDesc
-                            },
-                            BaseCurrRate = 1,
-                            BaseCurrAmt = netAmount
+                            CurrAmt = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrAmt,
+                            CurrCode = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrCode,
+                            CurrRate = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrRate,
+                            BaseCurrCode = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrCode,
+                            BaseCurrRate = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrRate,
+                            BaseCurrAmt = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrAmt,
                         },
                         Transaction = new
                         {
@@ -687,22 +678,18 @@ namespace SelfCheckout.ViewModels
                             CurrentStatus = 1,
                             Movements = new[]
                             {
-                                    new
-                                    {
-                                        TransactionMovementType = 1,
-                                        Amount = netAmount,
-                                        Currency = new
-                                        {
-                                            Code = _saleEngineService.BaseCurrency.CurrCode,
-                                            Desc = _saleEngineService.BaseCurrency.CurrDesc
-                                        },
-                                        Description = "",
-                                        Status = 1
-                                    }
+                                new
+                                {
+                                    TransactionMovementType = 1,
+                                    Amount = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrAmt,
+                                    Currency = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrCode,
+                                    Description = "",
+                                    Status = 1
                                 }
+                            }
                         },
-                        status = "SUCCESS", 
-                        PartnerTransID = "", 
+                        status = "SUCCESS",
+                        PartnerTransID = "",
                         PaymentSessionKey = 1
                     },
                     SessionKey = _saleEngineService.LoginData.SessionKey,
@@ -736,7 +723,6 @@ namespace SelfCheckout.ViewModels
                 };
                 var wallet = await _saleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
 
-                var netAmount = _saleEngineService.OrderData.BillingAmount.NetAmount.CurrAmt;
                 var paymentPayload = new
                 {
                     OrderGuid = _saleEngineService.OrderData.Guid,
@@ -764,20 +750,12 @@ namespace SelfCheckout.ViewModels
                         isComplete = false,
                         PaymentAmounts = new
                         {
-                            CurrAmt = netAmount,
-                            CurrCode = new
-                            {
-                                Code = _saleEngineService.CurrencySelected.CurrCode,
-                                Desc = _saleEngineService.CurrencySelected.CurrDesc
-                            },
-                            CurrRate = _saleEngineService.CurrencySelected.CurrRate,
-                            BaseCurrCode = new
-                            {
-                                Code = _saleEngineService.BaseCurrency.CurrCode,
-                                Desc = _saleEngineService.BaseCurrency.CurrDesc
-                            },
+                            CurrAmt = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrAmt,
+                            CurrCode = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrCode,
+                            CurrRate = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrRate,
+                            BaseCurrCode = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrCode,
                             BaseCurrRate = 1,
-                            BaseCurrAmt = netAmount
+                            BaseCurrAmt = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrAmt
                         },
                         Transaction = new
                         {
@@ -794,7 +772,7 @@ namespace SelfCheckout.ViewModels
                                     new
                                     {
                                         TransactionMovementType = 1,
-                                        Amount = netAmount,
+                                        Amount = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrAmt,
                                         Description = "",
                                         Status = 1
                                     }
@@ -802,20 +780,12 @@ namespace SelfCheckout.ViewModels
                         },
                         ChangeAmounts = new
                         {
-                            CurrAmt = netAmount,
-                            CurrCode = new
-                            {
-                                Code = _saleEngineService.CurrencySelected.CurrCode,
-                                Desc = _saleEngineService.CurrencySelected.CurrDesc
-                            },
-                            CurrRate = _saleEngineService.CurrencySelected.CurrRate,
-                            BaseCurrCode = new
-                            {
-                                Code = _saleEngineService.BaseCurrency.CurrCode,
-                                Desc = _saleEngineService.BaseCurrency.CurrDesc
-                            },
-                            BaseCurrRate = 1,
-                            BaseCurrAmt = netAmount
+                            CurrAmt = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrAmt,
+                            CurrCode = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrCode,
+                            CurrRate = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrRate,
+                            BaseCurrCode = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrCode,
+                            BaseCurrRate = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrRate,
+                            BaseCurrAmt = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrAmt
                         },
                         status = ""
                     },
@@ -886,8 +856,6 @@ namespace SelfCheckout.ViewModels
                 var paymentStatus = await _saleEngineService.ActionPaymentToOrderAsync(actionPayload);
                 if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
                 {
-                    IsBeingPaymentProcess = false;
-                    IsPaymentProcessing = false;
                     paymentSuccess = true;
                     break;
                 }

@@ -16,8 +16,6 @@ namespace SelfCheckout.Services.SaleEngine
 
         Currency CurrencySelected { get; set; }
 
-        Currency BaseCurrency { get; }
-
         Task<LoginData> LoginAsync(string username, string password);
 
         Task<List<OrderData>> GetOrderAsync(object payload);
