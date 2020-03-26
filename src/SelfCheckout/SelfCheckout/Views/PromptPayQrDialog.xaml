@@ -48,7 +48,7 @@
                         </Label>
                     </StackLayout>
                 </Grid>
-                <controls:TappedGrid TappedCommand="{Binding CancelCommand}" VerticalOptions="Start" HorizontalOptions="End">
+                <controls:TappedGrid TappedCommand="{Binding CancelCommand}" VerticalOptions="Start" HorizontalOptions="End" IsVisible="False">
                     <Label Style="{StaticResource LabelIconStyle}" FontSize="32" HorizontalOptions="Center" VerticalOptions="Center"
                        Text="&#xf057;" TextColor="{StaticResource PrimaryText}"/>
                 </controls:TappedGrid>

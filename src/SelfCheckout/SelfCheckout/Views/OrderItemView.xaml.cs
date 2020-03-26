@@ -46,7 +46,7 @@ namespace SelfCheckout.Views
         {
             try
             {
-                (bindable as OrderItemView).entryOrderQty.IsEnabled = (bool)newValue;
+                (bindable as OrderItemView).entryOrderQty.IsReadOnly = !(bool)newValue;
             }
             catch { }
         }

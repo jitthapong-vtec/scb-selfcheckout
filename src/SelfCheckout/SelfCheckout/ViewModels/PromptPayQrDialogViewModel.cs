@@ -27,6 +27,7 @@ namespace SelfCheckout.ViewModels
         ISaleEngineService _saleEngineService;
         ISelfCheckoutService _selfCheckoutService;
 
+        string _refNo;
         string _qrData;
         string _msg;
         int _countDown;
@@ -42,6 +43,8 @@ namespace SelfCheckout.ViewModels
 
             _tokenSource = new CancellationTokenSource();
             _ct = _tokenSource.Token;
+
+            _refNo = GetRefNo();
         }
 
         public ICommand CancelCommand => new DelegateCommand(() =>
@@ -136,15 +139,14 @@ namespace SelfCheckout.ViewModels
                 IsBusy = true;
                 CountDown = 120;
                 IsCountdownStarted = true;
-                var refNo = GetRefNo();
                 var payload = new
                 {
                     qrType = "PP",
-                    invoice = $"{_saleEngineService.LoginData.UserInfo.MachineEnv.MachineNo}{refNo}",
+                    invoice = $"INV{_saleEngineService.OrderData.ModifiedDate.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture)}",
                     amount = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrAmt,
                     ppId = "450439699596861",
                     ppType = "BILLERID",
-                    ref1 = refNo,
+                    ref1 = _refNo,
                     ref2 = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineNo,
                     ref3 = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineName,
                     merchantId = "456114188212509"
@@ -175,8 +177,7 @@ namespace SelfCheckout.ViewModels
 
             try
             {
-                var refNo = GetRefNo();
-                var result = await _paymentService.InquiryAsync(refNo);
+                var result = await _paymentService.InquiryAsync(_refNo);
                 if (result != null)
                     SetResult(result);
                 else
@@ -190,7 +191,8 @@ namespace SelfCheckout.ViewModels
 
         private string GetRefNo()
         {
-            return _saleEngineService.OrderData.CreateDate.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture);
+            var sessKey = _saleEngineService.LoginData.SessionKey.Replace("-", "").ToUpper();
+            return sessKey.Substring(sessKey.Length - 20, 20);
         }
     }
 }
