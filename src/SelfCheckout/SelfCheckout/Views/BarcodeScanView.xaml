@@ -1,24 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<pages:PopupPage
-    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+<ContentView 
     xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SelfCheckout.Views.BarcodeScanView"
-             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
-             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
-             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
-             xmlns:views="clr-namespace:SelfCheckout.Views"
-             xmlns:controls="clr-namespace:SelfCheckout.Controls"
-             NavigationPage.HasNavigationBar="False"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True">
-    <ContentPage.Content>
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="SelfCheckout.Views.BarcodeScanView"
+    xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+    prism:DialogLayout.RelativeWidthRequest="1"
+    prism:DialogLayout.RelativeHeightRequest="1"
+    xmlns:controls="clr-namespace:SelfCheckout.Controls">
+    <ContentView.Content>
         <Grid>
             <zxing:ZXingScannerView ScanResultCommand="{Binding ScanResultCommand}" IsScanning="{Binding IsScanning}"/>
-            <zxing:ZXingDefaultOverlay BottomText="{i18n:Translate ScanLaserOnShoppingCart}"/>
+            <zxing:ZXingDefaultOverlay BottomText="{i18n:Translate ScanLaserOnShoppingCard}"/>
             <controls:TappedGrid TappedCommand="{Binding CancelCommand}" VerticalOptions="Start" HorizontalOptions="End" Margin="12">
                 <Label Style="{StaticResource LabelIconStyle}" FontSize="32" HorizontalOptions="Center" VerticalOptions="Center"
                        Text="&#xf057;" TextColor="{StaticResource Gray50}"/>
             </controls:TappedGrid>
         </Grid>
-    </ContentPage.Content>
-</pages:PopupPage>
+    </ContentView.Content>
+</ContentView>

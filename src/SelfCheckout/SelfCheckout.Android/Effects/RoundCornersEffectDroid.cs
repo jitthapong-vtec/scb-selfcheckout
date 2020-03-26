@@ -31,6 +31,12 @@ namespace SelfCheckout.Droid.Effects
             catch { }
         }
 
+        //protected override void OnElementPropertyChanged(PropertyChangedEventArgs args)
+        //{
+        //    if (args.PropertyName == RoundCornersEffect.CornerRadiusProperty.PropertyName)
+        //        SetCornerRadius();
+        //}
+
         private void PrepareContainer()
         {
             Container.ClipToOutline = true;
@@ -44,7 +50,7 @@ namespace SelfCheckout.Droid.Effects
             Container.OutlineProvider = new RoundedOutlineProvider(roundCorner, cornerRadius);
         }
 
-        private static float GetDensity() => (float)DeviceDisplay.MainDisplayInfo.Density;
+        private float GetDensity() => (float)DeviceDisplay.MainDisplayInfo.Density;
 
         private class RoundedOutlineProvider : ViewOutlineProvider
         {
@@ -66,8 +72,14 @@ namespace SelfCheckout.Droid.Effects
 
                 switch (_roundCorner)
                 {
+                    case RoundCorners.Left:
+                        right = (int)(view.Width + _radius);
+                        break;
                     case RoundCorners.Top:
                         bottom = (int)(view.Height + _radius);
+                        break;
+                    case RoundCorners.Right:
+                        left = (int)_radius * -1;
                         break;
                     case RoundCorners.Bottom:
                         top = (int)_radius * -1;

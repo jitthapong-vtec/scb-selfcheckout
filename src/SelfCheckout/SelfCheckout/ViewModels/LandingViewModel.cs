@@ -1,4 +1,10 @@
-﻿using SelfCheckout.Resources;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Extensions;
+using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -10,22 +16,32 @@ namespace SelfCheckout.ViewModels
 {
     public class LandingViewModel : ViewModelBase
     {
-        public override async Task InitializeAsync(object navigationData)
+        ISelfCheckoutService _selfCheckoutService;
+
+        public LandingViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService)
+        {
+            _selfCheckoutService = selfCheckoutService;
+        }
+
+        public override async void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+            await ReloadData();
+        }
+
+        private async Task ReloadData()
         {
             try
             {
                 IsBusy = true;
-                
-                await SelfCheckoutService.LoadConfigAsync();
 
-                if (SaleEngineService.LoginData == null)
-                    await NavigationService.NavigateToAsync<LoginViewModel>();
-                else
-                    await NavigationService.NavigateToAsync<BorrowViewModel>();
+                await _selfCheckoutService.LoadConfigAsync();
+                await NavigationService.NavigateAsync("LoginView");
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await ReloadData();
             }
             finally
             {

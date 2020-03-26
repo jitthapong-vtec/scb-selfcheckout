@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Networking.Connectivity;
 using Windows.System.Profile;
 using Xamarin.Forms;
 
@@ -27,6 +28,18 @@ namespace SelfCheckout.UWP.Services
                 return BitConverter.ToString(bytes).Replace("-", "");
             }
             throw new Exception("Can't get device Id");
+        }
+
+        public string GetDeviceIp()
+        {
+            var icp = NetworkInformation.GetInternetConnectionProfile();
+
+            if (icp?.NetworkAdapter == null) return null;
+            var hostname =
+                NetworkInformation.GetHostNames().Where(hn =>
+                            hn.IPInformation?.NetworkAdapter != null && hn.IPInformation.NetworkAdapter.NetworkAdapterId
+                            == icp.NetworkAdapter.NetworkAdapterId).FirstOrDefault();
+            return hostname?.CanonicalName;
         }
     }
 }

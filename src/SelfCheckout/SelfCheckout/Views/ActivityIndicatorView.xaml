@@ -5,11 +5,11 @@
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              x:Class="SelfCheckout.Views.ActivityIndicatorView">
     <ContentView.Content>
-        <Grid BackgroundColor="#66000000">
+        <Grid BackgroundColor="{OnPlatform Android='#66000000', UWP=Transparent}">
             <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
                 <ActivityIndicator IsRunning="{Binding IsBusy}"/>
                 <controls:CustomLabel UpperCase="True" Margin="8"
-                                   TextColor="{StaticResource Gray50}"
+                                   TextColor="{OnIdiom Phone={StaticResource Gray50}, Default={StaticResource Primary}}"
                                    HorizontalTextAlignment="Center" Text="{i18n:Translate Loading}"/>
             </StackLayout>
         </Grid>

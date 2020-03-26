@@ -8,8 +8,8 @@ namespace SelfCheckout.Services.Register
 {
     public interface IRegisterService
     {
-        CustomerData CustomerData { get; }
+        CustomerData CustomerData { get;}
 
-        Task<ApiResultData<List<CustomerData>>> GetCustomerAsync(object payload);
+        Task<List<CustomerData>> GetCustomerAsync(string shoppingCard);
     }
 }

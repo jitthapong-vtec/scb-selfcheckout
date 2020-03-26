@@ -4,11 +4,11 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
-             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
-             xmlns:component="clr-namespace:SelfCheckout.Views.Components"
              xmlns:views="clr-namespace:SelfCheckout.Views"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:effects="clr-namespace:SelfCheckout.Effects"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.ShoppingCartView">
     <ContentView.Content>
@@ -59,7 +59,7 @@
                     <Label Grid.Column="1" HorizontalTextAlignment="End">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding CurrentShoppingCart}"/>
+                                <Span Text="{Binding CurrentShoppingCard}"/>
                                 <Span Text=" : "/>
                                 <Span Text="{Binding CustomerData.Person.NativeName}"/>
                             </FormattedString>
@@ -67,26 +67,49 @@
                     </Label>
                     <Label Grid.Column="2" FontFamily="{StaticResource KPIconFont}" Text="&#xe906;" FontSize="18"/>
                 </Grid>
-                <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshOrderCommand}">
+                <RefreshView Grid.Row="1" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshOrderCommand}" Margin="0,0,0,32">
                     <CollectionView ItemsSource="{Binding OrderDetails}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+                        </CollectionView.ItemsLayout>
                         <CollectionView.EmptyView>
                             <Grid>
                                 <StackLayout VerticalOptions="Center">
-                                    <Image Source="shopping_cart" HorizontalOptions="Center" Aspect="AspectFit"/>
-                                    <Label HorizontalTextAlignment="Center" Text="{i18n:Translate ShoppingCartEmpty}" FontSize="Large"/>
+                                    <Image Source="shopping_cart" WidthRequest="48" HeightRequest="48" HorizontalOptions="Center" Aspect="AspectFit"/>
+                                    <Label HorizontalTextAlignment="Center" Text="{i18n:Translate ShoppingCartEmpty}" FontSize="Medium"/>
                                 </StackLayout>
                             </Grid>
                         </CollectionView.EmptyView>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <component:OrderItemView DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.DeleteOrderCommand}" 
-                                                         ChangeQtyCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.ChangeQtyCommand}"
-                                                         SelectionCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.OrderSelectedCommand}"
-                                                         CommandParameter="{Binding .}"/>
+                                <views:OrderItemView DeleteCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.DeleteOrderCommand}" 
+                                                     ChangeQtyCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.ChangeQtyCommand}"
+                                                     SelectionCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.OrderSelectedCommand}"
+                                                     ShowDetailCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.ShowDetailCommand}"    
+                                                     CommandParameter="{Binding .}"/>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </RefreshView>
+            </Grid>
+            <Grid VerticalOptions="Center" HorizontalOptions="End"
+                  Margin="0,0,0,-100"
+                  HeightRequest="48"
+                  effects:RoundCornersEffect.CornerRadius="6"
+                  effects:RoundCornersEffect.RoundCorner="Left">
+                <controls:GradientBackground/>
+                <Grid Margin="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:TappedGrid Grid.Column="0" TappedCommand="{Binding ToggleChangeShoppingCardCommand}">
+                        <Image Source="chk_shopping_cart" HeightRequest="48"/>
+                    </controls:TappedGrid>
+                    <controls:TappedGrid Grid.Column="1" IsVisible="{Binding IsChangeShoppingCardShowing}" TappedCommand="{Binding ChangeShoppingCardCommand}">
+                        <Label HorizontalTextAlignment="Start" VerticalOptions="Center" TextColor="{StaticResource Gray50}" Text="{i18n:Translate ChangeShoppingCard}"/>
+                    </controls:TappedGrid>
+                </Grid>
             </Grid>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>

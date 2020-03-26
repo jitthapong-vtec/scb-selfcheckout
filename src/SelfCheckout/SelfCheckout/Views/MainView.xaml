@@ -7,10 +7,8 @@
              xmlns:trigger="clr-namespace:SelfCheckout.Triggers"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
-             xmlns:template="clr-namespace:SelfCheckout.Views.Templates"
              xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              ScanCommand="{Binding ScanCommand}"
              NavigationPage.HasNavigationBar="False"
              x:Name="mainView"
@@ -86,7 +84,7 @@
                 </BoxView>
             </ctrls:TappedGrid>
         </DataTemplate>
-        <template:BottomTabTemplateSelector x:Key="BottomTemplateSelector" CommonTapTemplate="{StaticResource CommonTapTemplate}"
+        <views:BottomTabTemplateSelector x:Key="BottomTemplateSelector" CommonTapTemplate="{StaticResource CommonTapTemplate}"
                                             BarcodeTapTemplate="{StaticResource BarcodeTapTemplate}"/>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -127,7 +125,7 @@
                                  BindableLayout.ItemTemplateSelector="{StaticResource BottomTemplateSelector}"/>
                 </Grid>
             </Grid>
-            <Grid IsVisible="{Binding LangShowing}" HeightRequest="300" BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
+            <Grid IsVisible="{Binding LangShowing}" HeightRequest="200" BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -146,7 +144,7 @@
                 </Grid>
                 <views:LanguageSelectionView Grid.Row="1"/>
             </Grid>
-            <Grid IsVisible="{Binding CurrencyShowing}" HeightRequest="300" BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
+            <Grid IsVisible="{Binding CurrencyShowing}" HeightRequest="200" BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>

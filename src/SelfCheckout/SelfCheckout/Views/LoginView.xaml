@@ -14,8 +14,8 @@
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              xmlns:behaviors="clr-namespace:SelfCheckout.Behaviors"
              xmlns:components="clr-namespace:SelfCheckout.Views.Components"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.LoginView">
     <ContentPage.Content>
@@ -45,32 +45,46 @@
                                              Padding="0"
                                              Margin="0,4,0,0"
                                              Style="{StaticResource TappedGridButtonStyle}"
-                                             TappedCommand="{Binding ConfirmCommand}"
-                                             effects:RoundCornersEffect.CornerRadius="3">
-                            <controls:GradientBackground/>
-                            <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                             TappedCommand="{Binding AuthorizeCommand}">
+                            <Frame CornerRadius="3" Padding="0">
+                                <Grid>
+                                    <controls:GradientBackground/>
+                                    <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                </Grid>
+                            </Frame>
                         </controls:TappedGrid>
                     </StackLayout>
                 </Frame>
             </Grid>
             <Label VerticalOptions="End" HorizontalOptions="{OnIdiom Phone=Start, Desktop=End}" Margin="16,0,16,8" TextColor="{StaticResource Gray50}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="Version"/>
-                            <Span Text=" "/>
-                            <Span Text="{Binding Version}"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Version"/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding Version}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
 
-                <controls:TappedGrid IsVisible="{OnIdiom Phone=True}" VerticalOptions="End" HorizontalOptions="End" Margin="0,0,16,8" TappedCommand="{Binding SettingCommand}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Text="&#xf013;" VerticalOptions="Center" FontFamily="{StaticResource FontAwesome}" FontSize="24" TextColor="{StaticResource Gray50}"/>
-                    <Label Grid.Column="1" Text="{i18n:Translate Setting}" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
-                </controls:TappedGrid>
+            <controls:TappedGrid IsVisible="{OnIdiom Phone=True}" VerticalOptions="End" HorizontalOptions="End" Margin="0,0,16,8" TappedCommand="{Binding SettingCommand}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Text="&#xf013;" VerticalOptions="Center" FontFamily="{StaticResource FontAwesome}" FontSize="24" TextColor="{StaticResource Gray50}"/>
+                <Label Grid.Column="1" Text="{i18n:Translate Setting}" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
+            </controls:TappedGrid>
+
+            <controls:TappedGrid VerticalOptions="End" HorizontalOptions="Start" Margin="16,0,16,8" IsVisible="{OnIdiom Desktop=True}"
+                            TappedCommand="{Binding CheckerSettingCommand}"
+                                    Padding="0"
+                                    WidthRequest="100"
+                                    Style="{StaticResource TappedGridButtonStyle}">
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="&#xf013;" FontSize="24" TextColor="{StaticResource Gray50}" Style="{StaticResource LabelIconStyle}" VerticalOptions="Center"/>
+                    <controls:CustomLabel UpperCase="True" Text="Setting" TextColor="{StaticResource Gray50}" VerticalOptions="Center"/>
+                </StackLayout>
+            </controls:TappedGrid>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentPage.Content>

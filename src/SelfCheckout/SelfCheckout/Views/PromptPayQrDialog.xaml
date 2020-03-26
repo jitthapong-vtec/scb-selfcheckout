@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             prism:DialogLayout.RelativeWidthRequest="0.75"
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.PromptPayQrDialog">
+    <ContentView.Content>
+        <Frame>
+            <Grid Margin="16">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate PleaseScanPayment}" FontSize="Large" HorizontalTextAlignment="Center"/>
+                    <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Entry IsVisible="False" Text="{Binding QRData}" x:Name="entryQrData"/>
+                        <Grid>
+                            <forms:ZXingBarcodeImageView
+                        IsVisible="{Binding IsQrVisible}"
+                            BarcodeFormat="QR_CODE"
+                            HeightRequest="200"
+                            WidthRequest="200"
+                            BarcodeValue="{Binding Source={x:Reference entryQrData}, Path=Text}">
+                                <forms:ZXingBarcodeImageView.BarcodeOptions>
+                                    <common:EncodingOptions Width="200" Height="200" PureBarcode="True"/>
+                                </forms:ZXingBarcodeImageView.BarcodeOptions>
+                            </forms:ZXingBarcodeImageView>
+                            <Label Text="{Binding Msg}" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center"/>
+                        </Grid>
+                        <Label HorizontalTextAlignment="Center" x:Name="lblCountdown"/>
+                        <Label HorizontalTextAlignment="Center" IsVisible="{Binding IsCountdownStarted}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf017;" Style="{StaticResource LabelIconStyle}" FontSize="24" TextColor="{StaticResource Secondary}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{Binding CountDown}" FontSize="Large" TextColor="{StaticResource Secondary}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+                </Grid>
+                <controls:TappedGrid TappedCommand="{Binding CancelCommand}" VerticalOptions="Start" HorizontalOptions="End">
+                    <Label Style="{StaticResource LabelIconStyle}" FontSize="32" HorizontalOptions="Center" VerticalOptions="Center"
+                       Text="&#xf057;" TextColor="{StaticResource PrimaryText}"/>
+                </controls:TappedGrid>
+            </Grid>
+        </Frame>
+    </ContentView.Content>
+</ContentView>

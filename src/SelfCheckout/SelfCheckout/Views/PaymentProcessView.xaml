@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:views="clr-namespace:SelfCheckout.Views"
@@ -18,7 +17,7 @@
                             <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
                         </Style>
                     </Grid.Resources>
-                    <Label Text="{i18n:Translate PleaseScanPayment}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                    <Label x:Name="lblScanPayment" HorizontalOptions="Start" VerticalOptions="Center"/>
                     <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding CancelPaymentProcessCommand}"/>
@@ -52,26 +51,26 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Text="{i18n:Translate Payment}" FontSize="Medium"/>
+                    <Label Grid.Column="0" x:Name="lblPayment" FontSize="Medium"/>
                     <Label Grid.Column="1" HorizontalTextAlignment="End" FontSize="Medium">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding OrderData.BillingAmount.TotalAmount.CurrCode.Code}"/>
+                                <Span Text="{Binding OrderData.TotalBillingAmount.TotalAmount.CurrCode.Code}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding OrderData.BillingAmount.NetAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}"/>
+                                <Span Text="{Binding OrderData.TotalBillingAmount.NetAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
                 </Grid>
                 <StackLayout IsVisible="{Binding IsPaymentProcessing}">
                     <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray200}"/>
-                    <Label HorizontalTextAlignment="Center" Text="{i18n:Translate CountDown}"/>
+                    <Label HorizontalTextAlignment="Center" x:Name="lblCountdown"/>
                     <Label HorizontalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="&#xf017;" Style="{StaticResource LabelIconStyle}" TextColor="{StaticResource Secondary}"/>
+                                <Span Text="&#xf017;" Style="{StaticResource LabelIconStyle}" FontSize="24" TextColor="{StaticResource Secondary}"/>
                                 <Span Text=" "/>
-                                <Span Text="{Binding PaymentCountdownTimer}" FontAttributes="Bold"/>
+                                <Span Text="{Binding PaymentCountdownTimer}" FontSize="Large" TextColor="{StaticResource Secondary}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

@@ -5,9 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
              mc:Ignorable="d"
              Visual="Material"
              x:Name="this"
@@ -20,28 +21,39 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackLayout Grid.Row="0" HeightRequest="56" Orientation="Horizontal" BindableLayout.ItemsSource="{Binding Tabs}"
+                <StackLayout Grid.Row="0" HeightRequest="56" Orientation="Horizontal" Spacing="0" BindableLayout.ItemsSource="{Binding Tabs}"
                          BackgroundColor="{StaticResource Gray200}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <controls:TappedGrid HorizontalOptions="FillAndExpand" TappedCommand="{Binding Source={x:Reference this}, Path=BindingContext.TabSelectedCommand}"
                                              CommandParameter="{Binding .}">
-                                <Label Text="{Binding Text1}" VerticalOptions="Center" HorizontalOptions="Center"/>
-                                <BoxView VerticalOptions="End" HeightRequest="4">
+                                <Label Text="{Binding Text1}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Selected}" Value="True">
+                                            <Setter Property="TextColor" Value="{StaticResource Primary}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Selected}" Value="False">
+                                            <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <BoxView VerticalOptions="End" HeightRequest="2">
                                     <BoxView.Triggers>
                                         <DataTrigger TargetType="BoxView" Binding="{Binding Selected}" Value="True">
                                             <Setter Property="BackgroundColor" Value="{StaticResource Primary}"/>
                                         </DataTrigger>
                                         <DataTrigger TargetType="BoxView" Binding="{Binding Selected}" Value="False">
-                                            <Setter Property="BackgroundColor" Value="Transparent"/>
+                                            <Setter Property="BackgroundColor" Value="{StaticResource Gray300}"/>
                                         </DataTrigger>
                                     </BoxView.Triggers>
                                 </BoxView>
+                                <BoxView IsVisible="{Binding Selected}" BackgroundColor="{StaticResource Primary}" WidthRequest="8" HeightRequest="8" CornerRadius="4"
+                                         VerticalOptions="Start" HorizontalOptions="End" Margin="2,4"/>
                             </controls:TappedGrid>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </StackLayout>
-                <Frame Grid.Row="1" Padding="4" Margin="-2,-2,-2,0">
+                <Frame Grid.Row="1" Padding="4" Margin="-4,0,-4,0">
                     <CollectionView ItemsSource="{Binding DeviceInfoItems}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>

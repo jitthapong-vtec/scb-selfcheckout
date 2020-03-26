@@ -1,59 +1,68 @@
-﻿using SelfCheckout.Models;
-using SelfCheckout.Resources;
+﻿using Prism.Commands;
+using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Models;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class LoginViewModel : AuthorizationViewModelBase
+    public class LoginViewModel : AuthorizationViewModelBase, IInitialize, INavigatedAware
     {
-        public ICommand SettingCommand => new Command(async () =>
+        INavigationService _navigationService;
+        IDialogService _dialogService;
+
+        public LoginViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) : base(saleEngineService, selfCheckoutService)
         {
-            var task = new TaskCompletionSource<bool>();
-            await NavigationService.PushModalAsync<AuthorizationViewModel, bool>(null, task);
-            var result = await task.Task;
-            if (result)
-                await NavigationService.NavigateToAsync<SettingViewModel>();
+            _navigationService = navigatinService;
+            _dialogService = dialogService;
+        }
+
+        public string Version { get => VersionTracking.CurrentVersion; }
+
+        public ICommand SettingCommand => new DelegateCommand(() =>
+        {
+            _dialogService.ShowDialog("AuthorizeDialog", null, async (result) =>
+            {
+                if (result.Parameters.GetValue<bool>("IsAuthorized"))
+                    await _navigationService.NavigateAsync("SettingView");
+            });
         });
 
-        public ICommand ConfirmCommand => new Command(async () => await LoginAsync());
-
-        async Task LoginAsync()
+        public ICommand CheckerSettingCommand => new DelegateCommand(async() =>
         {
-            if (ValidateUserName() && ValidatePassword())
+            await _navigationService.NavigateAsync("CheckerSettingView");
+        });
+
+        public void Initialize(INavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+        }
+
+        protected override async Task AuthorizeCallback(LoginData loginData)
+        {
+            SaleEngineService.LoginData = loginData;
+            if (Device.Idiom == TargetIdiom.Phone)
             {
-                try
-                {
-                    IsBusy = true;
-
-                    var payload = new
-                    {
-                        branch_no = AppConfig.BranchNo,
-                        module_code = AppConfig.Module,
-                        user_code = UserName.Value,
-                        user_password = Password.Value,
-                        machine_ip = "127.0.0.1"
-                    };
-                    var result = await SaleEngineService.LoginAsync(payload);
-                    SaleEngineService.LoginData = result.Data;
-
-                    if (Device.Idiom == TargetIdiom.Phone)
-                        await NavigationService.NavigateToAsync<BorrowViewModel>();
-                    else if (Device.Idiom == TargetIdiom.Desktop)
-                        await NavigationService.NavigateToAsync<CheckerMainViewModel>();
-                }
-                catch (Exception ex)
-                {
-                    Password.Errors = new List<string>() { ex.Message };
-                }
-                finally
-                {
-                    IsBusy = false;
-                }
+                await _navigationService.NavigateAsync("BorrowView");
+            }
+            else if (Device.Idiom == TargetIdiom.Desktop)
+            {
+                var result = await _navigationService.NavigateAsync("CheckerMainView");
             }
         }
     }

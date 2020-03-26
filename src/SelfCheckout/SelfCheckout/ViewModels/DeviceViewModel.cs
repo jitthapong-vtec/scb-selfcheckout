@@ -1,6 +1,11 @@
-﻿using SelfCheckout.Extensions;
+﻿using Prism.Commands;
+using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
@@ -16,15 +21,27 @@ namespace SelfCheckout.ViewModels
 {
     public class DeviceViewModel : ViewModelBase
     {
+        ISaleEngineService _saleEngineService;
+
         List<SimpleSelectedItem> _allDeviceInfoItems;
         ObservableCollection<SimpleSelectedItem> _tabs;
         ObservableCollection<SimpleSelectedItem> _deviceInfoItems;
+        CustomerData _customerData;
+        AppConfig _appConfig;
+        LoginData _loginData;
 
         bool _isAuthorized;
         bool _logoutButtonVisible;
 
-        public DeviceViewModel()
+        public DeviceViewModel(INavigationService navigatinService, IDialogService dialogService,
+            ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService,
+            IRegisterService registerService) : base(navigatinService, dialogService)
         {
+            _saleEngineService = saleEngineService;
+            _appConfig = selfCheckoutService.AppConfig;
+            _customerData = registerService.CustomerData;
+            _loginData = saleEngineService.LoginData;
+
             Tabs = new ObservableCollection<SimpleSelectedItem>()
             {
                 new SimpleSelectedItem()
@@ -45,7 +62,7 @@ namespace SelfCheckout.ViewModels
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.Name,
-                    Text2 = CustomerData?.Person?.EnglishName,
+                    Text2 = _customerData?.Person?.EnglishName,
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
@@ -57,50 +74,63 @@ namespace SelfCheckout.ViewModels
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.FlightNo,
-                    Text2 = CustomerData?.Person?.FlightCode,
+                    Text2 = _customerData?.Person?.FlightCode,
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.MobileNo,
-                    Text2 = CustomerData?.Person?.ListContact.FirstOrDefault()?.ContactValue,
+                    Text2 = _customerData?.Person?.ListContact.FirstOrDefault()?.ContactValue,
                     Arg1 = 1
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.Module,
-                    Text2 = AppConfig?.Module,
+                    Text2 = _appConfig?.Module,
                     Arg1 = 2
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.BranchNo,
-                    Text2 = AppConfig?.BranchNo,
+                    Text2 = _appConfig?.BranchNo,
                     Arg1 = 2
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.SubBranch,
-                    Text2 = AppConfig?.SubBranch,
+                    Text2 = _appConfig?.SubBranch,
                     Arg1 = 2
                 },
                 new SimpleSelectedItem()
                 {
                     Text1 = AppResources.MachineNo,
-                    Text2 = "-",
+                    Text2 = _loginData.UserInfo.MachineEnv.MachineNo,
                     Arg1 = 2
                 },
             };
         }
 
-        public ICommand TabSelectedCommand => new Command<SimpleSelectedItem>(async (item) =>
+        public ICommand LogoutCommand => new DelegateCommand(async () =>
+        {
+            try
+            {
+                var result = await DialogService.ConfirmAsync(AppResources.Logout, AppResources.ConfirmLogout, AppResources.Yes, AppResources.No);
+                if (result)
+                {
+                    await _saleEngineService.LogoutAsync();
+                    MessagingCenter.Send(this, "Logout");
+                }
+            }
+            catch { }
+        });
+
+        public ICommand TabSelectedCommand => new DelegateCommand<SimpleSelectedItem>(async (item) =>
         {
             if ((int)item.Arg1 == 2 && !IsAuthorized)
             {
-                var task = new TaskCompletionSource<bool>();
-                await NavigationService.PushModalAsync<AuthorizationViewModel, bool>(null, task);
-                var result = await task.Task;
-                if (!result)
+                var result = await DialogService.ShowDialogAsync("AuthorizeDialog", null);
+                IsAuthorized = result.Parameters.GetValue<bool>("IsAuthorized");
+                if (!IsAuthorized)
                     return;
             }
 
@@ -110,6 +140,8 @@ namespace SelfCheckout.ViewModels
             item.Selected = true;
             LogoutButtonVisible = (int)item.Arg1 == 2 ? true : false;
             RefreshDeviceInfo(item.Arg1);
+
+            IsAuthorized = false;
         });
 
         public override Task OnTabSelected(TabItem item)
@@ -133,41 +165,25 @@ namespace SelfCheckout.ViewModels
         public ObservableCollection<SimpleSelectedItem> Tabs
         {
             get => _tabs;
-            set
-            {
-                _tabs = value;
-                RaisePropertyChanged(() => Tabs);
-            }
+            set => SetProperty(ref _tabs, value);
         }
 
         public ObservableCollection<SimpleSelectedItem> DeviceInfoItems
         {
             get => _deviceInfoItems;
-            set
-            {
-                _deviceInfoItems = value;
-                RaisePropertyChanged(() => DeviceInfoItems);
-            }
+            set => SetProperty(ref _deviceInfoItems, value);
         }
 
         public bool IsAuthorized
         {
             get => _isAuthorized;
-            set
-            {
-                _isAuthorized = value;
-                RaisePropertyChanged(() => IsAuthorized);
-            }
+            set => SetProperty(ref _isAuthorized, value);
         }
 
         public bool LogoutButtonVisible
         {
             get => _logoutButtonVisible;
-            set
-            {
-                _logoutButtonVisible = value;
-                RaisePropertyChanged(() => LogoutButtonVisible);
-            }
+            set => SetProperty(ref _logoutButtonVisible, value);
         }
     }
 }

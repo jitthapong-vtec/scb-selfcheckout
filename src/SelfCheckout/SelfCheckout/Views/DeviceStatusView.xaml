@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:fl="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+             xmlns:views="clr-namespace:SelfCheckout.Views"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.DeviceStatusView">
+    <ContentView.Content>
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" HorizontalOptions="EndAndExpand" WidthRequest="400" HeightRequest="56">
+                        <!--<forms:CachedImage Source="resource://SelfCheckout.Resources.Images.entry_bg.png" Aspect="Fill"/>-->
+                        <Grid VerticalOptions="Center" Margin="12,0,12,0" ColumnSpacing="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Entry x:Name="entrySearch" Grid.Column="0" VerticalOptions="Center"/>
+                            <controls:TappedGrid Grid.Column="1" TappedCommand="{Binding SearchCommand}"
+                                                     CommandParameter="{Binding Source={x:Reference entrySearch}, Path=Text}">
+                                <Frame CornerRadius="1" BackgroundColor="{StaticResource Green}" Padding="0" HeightRequest="32"
+                                    WidthRequest="100"
+                                    Style="{StaticResource TappedGridButtonStyle}">
+                                    <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Search}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                </Frame>
+                            </controls:TappedGrid>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="1" Margin="8,-24,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" FontSize="Large" FontAttributes="Bold">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding TotalOccupiedDevice}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{i18n:Translate OccupiedDevice}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <BoxView Grid.Column="1" BackgroundColor="{StaticResource Gray500}" HeightRequest="1" VerticalOptions="Center" Margin="8,24,0,0"/>
+                    </Grid>
+                </Grid>
+                <fl:FlowListView Grid.Row="1" RowHeight="200" FlowItemsSource="{Binding Devices}" FlowColumnCount="3"
+                                 FlowRowBackgroundColor="White" FlowTappedBackgroundColor="White">
+                    <fl:FlowListView.FlowColumnTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <forms:CachedImage Aspect="Fill" Source="resource://SelfCheckout.Resources.Images.card_bg.png"/>
+                                <Grid Margin="8" VerticalOptions="Center" RowSpacing="1" ColumnSpacing="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" Padding="4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" Text="{Binding MachineNo}"/>
+                                        <Frame CornerRadius="3" Grid.Column="1" Padding="8,4,8,4">
+                                            <Label VerticalOptions="Center" HorizontalTextAlignment="Center" Text="{Binding SessionStatus.DisplayStatus}" TextColor="{StaticResource Gray50}"/>
+                                            <Frame.Triggers>
+                                                <DataTrigger TargetType="Frame" Binding="{Binding SessionStatus.SessionCode}" Value="">
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource Green}"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Frame" Binding="{Binding SessionStatus.SessionCode}" Value="START">
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource RedDark}"/>
+                                                </DataTrigger>
+                                            </Frame.Triggers>
+                                        </Frame>
+                                    </Grid>
+                                    <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="{StaticResource Gray300}"/>
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0" WidthRequest="72" Margin="8,4,8,4">
+                                            <forms:CachedImage VerticalOptions="Center">
+                                                <forms:CachedImage.Triggers>
+                                                    <DataTrigger TargetType="forms:CachedImage" Binding="{Binding SessionStatus.SessionCode}" Value="">
+                                                        <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.shopping_card.png"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="forms:CachedImage" Binding="{Binding SessionStatus.SessionCode}" Value="START">
+                                                        <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.shopping_card_active.png"/>
+                                                    </DataTrigger>
+                                                </forms:CachedImage.Triggers>
+                                            </forms:CachedImage>
+                                        </Grid>
+                                        <BoxView Grid.Column="1" WidthRequest="1" BackgroundColor="{StaticResource Gray300}"/>
+                                        <Grid Grid.Column="2">
+                                            <Grid.Resources>
+                                                <Style TargetType="Label">
+                                                    <Setter Property="Padding" Value="2"/>
+                                                </Style>
+                                            </Grid.Resources>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Label Grid.Row="0" Text="{Binding ShoppingCard}"/>
+                                            <Label Grid.Row="1" Text="{Binding ShoppingCardName}"/>
+                                            <BoxView Grid.Row="2" HeightRequest="1" BackgroundColor="{StaticResource Gray300}"/>
+                                            <Grid Grid.Row="3">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Text="{i18n:Translate TimeUse}" />
+                                                <Label Grid.Column="1" HorizontalTextAlignment="End">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding TimeUse}" TextColor="{StaticResource Secondary}"/>
+                                                            <Span Text=" "/>
+                                                            <Span Text="Hr"/>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </Grid>
+                                            <BoxView Grid.Row="4" HeightRequest="1" BackgroundColor="{StaticResource Gray300}"/>
+                                            <Grid Grid.Row="5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Text="{i18n:Translate StartOccupied}" />
+                                                <Label Grid.Column="1" Text="{Binding StartOccupied}" HorizontalTextAlignment="End"/>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </fl:FlowListView.FlowColumnTemplate>
+                </fl:FlowListView>
+            </Grid>
+            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

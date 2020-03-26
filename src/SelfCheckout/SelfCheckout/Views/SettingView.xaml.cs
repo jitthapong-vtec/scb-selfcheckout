@@ -17,11 +17,5 @@ namespace SelfCheckout.Views
         {
             InitializeComponent();
         }
-
-        protected override bool OnBackButtonPressed()
-        {
-            (BindingContext as SettingViewModel).SaveSettings();
-            return base.OnBackButtonPressed();
-        }
     }
 }

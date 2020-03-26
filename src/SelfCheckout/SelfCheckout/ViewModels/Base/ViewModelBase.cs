@@ -1,53 +1,37 @@
 ﻿using SelfCheckout.Models;
-using SelfCheckout.Services.Dialog;
-using SelfCheckout.Services.Navigation;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Essentials;
-using SelfCheckout.Resources;
-using SelfCheckout.Services.Register;
-using SelfCheckout.Services.SaleEngine;
+using Prism.Mvvm;
+using Prism.Navigation;
+using Prism.Services.Dialogs;
+using Prism.Commands;
 using SelfCheckout.Services.SelfCheckout;
+using SelfCheckout.Services.SaleEngine;
 
 namespace SelfCheckout.ViewModels.Base
 {
-    public abstract class ViewModelBase : ExtendedBindableObject
+    public abstract class ViewModelBase : BindableBase, IInitialize, INavigationAware, IDestructible
     {
-        public readonly ISelfCheckoutService SelfCheckoutService;
-        public readonly ISaleEngineService SaleEngineService;
-        public readonly IDialogService DialogService;
-        public readonly INavigationService NavigationService;
-        public readonly IRegisterService RegisterService;
+        public INavigationService NavigationService { get; private set; }
+        public IDialogService DialogService { get; private set; }
 
         string _pageTitle;
         bool _isBusy;
         bool _isRefreshing;
 
-        public ViewModelBase()
+        public ICommand BackCommand => new DelegateCommand(async () =>
         {
-            SelfCheckoutService = ViewModelLocator.Resolve<ISelfCheckoutService>();
-            SaleEngineService = ViewModelLocator.Resolve<ISaleEngineService>();
-            RegisterService = ViewModelLocator.Resolve<IRegisterService>();
-            DialogService = ViewModelLocator.Resolve<IDialogService>();
-            NavigationService = ViewModelLocator.Resolve<INavigationService>();
+            await NavigationService.GoBackAsync();
+        });
+
+        public ViewModelBase(INavigationService navigatinService, IDialogService dialogService)
+        {
+            NavigationService = navigatinService;
+            DialogService = dialogService;
         }
-
-        public ICommand LogoutCommand => new Command(async () =>
-        {
-            var result = await DialogService.ShowConfirmAsync(AppResources.Logout, AppResources.ConfirmLogout, AppResources.Yes, AppResources.No);
-            if (result)
-            {
-                await SaleEngineService.LogoutAsync();
-                await NavigationService.InitializeAsync();
-            }
-        });
-
-        public ICommand BackCommand => new Command(async () =>
-        {
-            await NavigationService.PopBackAsync();
-        });
 
         public virtual Task OnTabSelected(TabItem item)
         {
@@ -59,83 +43,49 @@ namespace SelfCheckout.ViewModels.Base
             return Task.FromResult(item);
         }
 
-        public AppConfig AppConfig
-        {
-            get => SelfCheckoutService.AppConfig;
-        }
-
-        public LoginData LoginData
-        {
-            get => SaleEngineService.LoginData;
-        }
-
-        public CustomerData CustomerData
-        {
-            get => RegisterService.CustomerData;
-        }
-
-        public string CurrentShoppingCart
-        {
-            get => SelfCheckoutService.CurrentShoppingCart;
-        }
-
         public string PageTitle
         {
             get => _pageTitle;
-            set
+            set => SetProperty(ref _pageTitle, value);
+        }
+
+        public bool IsShowArticleImage
+        {
+            get
             {
-                _pageTitle = value;
-                RaisePropertyChanged(() => PageTitle);
+                return (App.Current.Container.Resolve(typeof(ISelfCheckoutService)) as ISelfCheckoutService).AppConfig.ShowArticleImage;
             }
         }
 
         public bool IsRefreshing
         {
             get => _isRefreshing;
-            set
-            {
-                _isRefreshing = value;
-                RaisePropertyChanged(() => IsRefreshing);
-            }
+            set => SetProperty(ref _isRefreshing, value);
         }
 
         public bool IsBusy
         {
-            get
-            {
-                return _isBusy;
-            }
+            get => _isBusy;
 
-            set
-            {
-                if (_isBusy == value)
-                    return;
-
-                _isBusy = value;
-                RaisePropertyChanged(() => IsBusy);
-            }
+            set => SetProperty(ref _isBusy, value);
         }
 
         public string Version { get => VersionTracking.CurrentVersion; }
 
-        public virtual Task InitializeAsync(object navigationData)
+        public virtual void Initialize(INavigationParameters parameters)
         {
-            return Task.FromResult(false);
         }
 
-        public virtual Task InitializeAsync<TViewModel, TResult>(object param, TaskCompletionSource<TResult> task)
+        public virtual void OnNavigatedFrom(INavigationParameters parameters)
         {
-            return Task.FromResult(false);
         }
 
-        public virtual Task NavigationPushed()
+        public virtual void OnNavigatedTo(INavigationParameters parameters)
         {
-            return Task.FromResult(false);
         }
 
-        public virtual Task NavigationPoped()
+        public virtual void Destroy()
         {
-            return Task.FromResult(false);
         }
     }
 }

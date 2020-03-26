@@ -1,8 +1,14 @@
-﻿using SelfCheckout.Controls;
+﻿using Newtonsoft.Json;
+using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Controls;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
 using SelfCheckout.Services.Base;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using SelfCheckout.Views;
 using System;
@@ -18,10 +24,13 @@ namespace SelfCheckout.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        ISaleEngineService _saleEngineService;
+        ISelfCheckoutService _selfCheckoutService;
+
         ObservableCollection<TabItem> _tabs;
         ObservableCollection<Language> _languages;
-        ObservableCollection<Payment> _payments;
         ObservableCollection<Currency> _currencies;
+        ObservableCollection<Payment> _payments;
 
         ContentView _currentView;
         Language _languageSelected;
@@ -29,22 +38,70 @@ namespace SelfCheckout.ViewModels
         Payment _paymentSelected;
         OrderData _orderData;
 
-        string _paymentBarCode;
-
         int _paymentCountdownTimer;
 
-        bool _langShowing;
-        bool _currencyShowing;
+        string _paymentBarCode;
+        string _couponCode;
+        string _checkoutButtonText;
+
         bool _summaryVisible;
         bool _summaryShowing;
-        bool _isSummaryOrder;
+        bool _langShowing;
+        bool _currencyShowing;
         bool _isBeingPaymentProcess;
         bool _isPaymentProcessing;
         bool _paymentSelectionShowing;
         bool _paymentInputShowing;
 
-        public MainViewModel()
+        public MainViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) : base(navigatinService, dialogService)
         {
+            _saleEngineService = saleEngineService;
+            _selfCheckoutService = selfCheckoutService;
+
+            MessagingCenter.Subscribe<DeviceViewModel>(this, "Logout", async (s) =>
+            {
+                await NavigationService.GoBackToRootAsync();
+            });
+
+            MessagingCenter.Subscribe<ShoppingCartViewModel, OrderDetail>(this, "ShowOrderDetail", async (sender, order) =>
+            {
+                await NavigationService.NavigateAsync("OrderDetailView", new NavigationParameters() { { "OrderDetail", order } });
+            });
+
+            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderRefresh", (s) =>
+            {
+                OrderData = _saleEngineService.OrderData;
+                try
+                {
+                    if (CurrentView is ShoppingCartView)
+                    {
+                        if (OrderData.BillingQty > 0)
+                            PageTitle = $"{AppResources.MyCart} ({OrderData.BillingQty})";
+                        else
+                            PageTitle = AppResources.MyCart;
+                    }
+
+                    var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
+                    tab.BadgeCount = Convert.ToInt32(OrderData.BillingQty);
+                }
+                catch { }
+            });
+        }
+
+        private void RefreshTab()
+        {
+            try
+            {
+                if (Tabs.Any())
+                {
+                    foreach (var tab in Tabs)
+                    {
+                        (tab.Page.BindingContext as ViewModelBase).Destroy();
+                    }
+                }
+            }
+            catch { }
+
             Tabs = new ObservableCollection<TabItem>();
             Tabs.Add(new TabItem()
             {
@@ -93,23 +150,20 @@ namespace SelfCheckout.ViewModels
             firstTab.Selected = true;
             PageTitle = firstTab.Title;
             CurrentView = firstTab.Page;
-
-            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderRefresh", (s) =>
-            {
-                OrderData = SaleEngineService.OrderData;
-                try
-                {
-                    var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
-                    tab.BadgeCount = Convert.ToInt32(OrderData.BillingQty);
-                }
-                catch { }
-            });
         }
 
-        public override async Task InitializeAsync(object navigationData)
+        public override async void Initialize(INavigationParameters parameters)
         {
+            base.Initialize(parameters);
+
             await LoadMasterDataAsync();
             await LoadCurrencyAsync();
+        }
+
+        public override void Destroy()
+        {
+            MessagingCenter.Unsubscribe<DeviceViewModel>(this, "Logout");
+            MessagingCenter.Unsubscribe<ViewModelBase>(this, "OrderRefresh");
         }
 
         public ICommand TabSelectedCommand => new Command<TabItem>(async (item) => await SelectTabAsync(item));
@@ -124,12 +178,71 @@ namespace SelfCheckout.ViewModels
             }
             else
             {
+                MessagingCenter.Send(this, "AddItemToOrder", data?.ToString());
+            }
+        });
+
+        public ICommand ScanCouponCommand => new Command(async () =>
+        {
+            if (!string.IsNullOrEmpty(CouponCode))
+            {
+                var isDeleteCoupon = await DialogService.ConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteCoupon, AppResources.Yes, AppResources.No, true);
+                if (!isDeleteCoupon)
+                    return;
+
+                var payload = new
+                {
+                    OrderGuid = "",
+                    Rows = new object[] { },
+                    Action = "clear_all_special_discount",
+                    Value = "",
+                    SessionKey = _saleEngineService.LoginData.SessionKey
+                };
+
                 try
                 {
-                    var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
-                    await (tab.Page.BindingContext as ShoppingCartViewModel).AddOrderAsync(data?.ToString());
+                    await _saleEngineService.ActionOrderPaymentAsync(payload);
+                    CouponCode = "";
+                    MessagingCenter.Send(this, "OrderRefresh");
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                }
+            }
+            else
+            {
+                var isWantToUseCoupon = await DialogService.ConfirmAsync(AppResources.ScanCoupon, AppResources.ConfirmUseCoupon, AppResources.Yes, AppResources.No);
+                if (!isWantToUseCoupon)
+                    return;
+                DialogService.ShowDialog("BarcodeScanDialog", null, async (scanResult) =>
+                {
+                    var result = scanResult.Parameters.GetValue<string>("ScanData");
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        var payload = new
+                        {
+                            OrderGuid = "",
+                            Rows = new object[] { },
+                            Action = "add_special_discount_by_qrcode",
+                            Value = result,
+                            SessionKey = _saleEngineService.LoginData.SessionKey
+                        };
+
+                        try
+                        {
+                            await _saleEngineService.ActionOrderPaymentAsync(payload);
+
+                            CouponCode = _saleEngineService.OrderData.TotalBillingAmount.CurrentValueAdjust?.VaDetail?.Code;
+
+                            MessagingCenter.Send(this, "OrderRefresh");
+                        }
+                        catch (Exception ex)
+                        {
+                            await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                        }
+                    }
+                });
             }
         });
 
@@ -141,24 +254,6 @@ namespace SelfCheckout.ViewModels
         public ICommand CurrencyTappedCommand => new Command(() =>
         {
             CurrencyShowing = !CurrencyShowing;
-        });
-
-        public ICommand ShowSummaryCommand => new Command(() =>
-        {
-            SummaryShowing = !SummaryShowing;
-            if (SummaryShowing == false)
-                IsBeingPaymentProcess = false;
-        });
-
-        public ICommand PaymentMethodTappedCommand => new Command(() =>
-        {
-            PaymentSelectionShowing = !PaymentSelectionShowing;
-        });
-
-        public ICommand PaymentSelectionCommand => new Command<Payment>((payment) =>
-        {
-            PaymentSelectionShowing = false;
-            PaymentSelected = payment;
         });
 
         public ICommand LanguageSelectionCommand => new Command<Language>((lang) =>
@@ -175,23 +270,64 @@ namespace SelfCheckout.ViewModels
             await ChangeCurrency();
         });
 
-        public ICommand ScanPaymentCommand => new Command<object>(async (type) =>
+        public ICommand ShowSummaryCommand => new Command(() =>
         {
-            if (Convert.ToInt32(type) == 1)
+            SummaryShowing = !SummaryShowing;
+            if (SummaryShowing == false)
+                IsBeingPaymentProcess = false;
+        });
+
+        public ICommand PaymentMethodTappedCommand => new Command(() =>
+        {
+            PaymentSelectionShowing = !PaymentSelectionShowing;
+        });
+
+        public ICommand PaymentSelectionCommand => new Command<Payment>(async(payment) =>
+        {
+            PaymentSelectionShowing = false;
+            PaymentSelected = payment;
+
+            if (!payment.IsAlipay)
             {
-                var task = new TaskCompletionSource<string>();
-                await NavigationService.PushModalAsync<BarcodeScanViewModel, string>(null, task);
-                var result = await task.Task;
-                if (!string.IsNullOrEmpty(result))
+                try
                 {
-                    PaymentBarcode = result;
-                    await PaymentAsync();
+                    var result = await DialogService.ShowDialogAsync("PromptPayQrDialog", null);
+                    var promptPayResult = result.Parameters.GetValue<PromptPayResult>("PromptPayResult");
+                    if(promptPayResult == null)
+                    {
+                        PaymentInputShowing = false;
+                        IsBeingPaymentProcess = false;
+                        PaymentSelected = _selfCheckoutService.Payments.FirstOrDefault();
+                    }
+                }
+                catch(Exception ex)
+                { 
                 }
             }
-            else
-            {
-            }
         });
+
+        public ICommand ScanPaymentCommand => new Command<object>((type) =>
+            {
+                if (IsPaymentProcessing)
+                    return;
+
+                if (Convert.ToInt32(type) == 1)
+                {
+                    DialogService.ShowDialog("BarcodeScanDialog", null, async (dialogResult) =>
+                    {
+                        var result = dialogResult.Parameters.GetValue<string>("ScanData");
+                        if (!string.IsNullOrEmpty(result))
+                        {
+                            PaymentBarcode = result;
+                            await PaymentAsync();
+                        }
+                    });
+                }
+                else
+                {
+                    MessagingCenter.Send<ViewModelBase>(this, "RequestHWScanner");
+                }
+            });
 
         public ICommand CancelPaymentProcessCommand => new Command(() =>
         {
@@ -203,6 +339,13 @@ namespace SelfCheckout.ViewModels
 
         public ICommand CheckoutCommand => new Command(async () =>
         {
+            try
+            {
+                if (!_saleEngineService.OrderData.OrderDetails.Any())
+                    return;
+            }
+            catch { return; }
+
             if (!IsBeingPaymentProcess)
             {
                 await CheckoutAsync();
@@ -213,25 +356,185 @@ namespace SelfCheckout.ViewModels
             }
         });
 
+        public ObservableCollection<TabItem> Tabs
+        {
+            get => _tabs;
+            set => SetProperty(ref _tabs, value);
+        }
+
+        public ObservableCollection<Language> Languages
+        {
+            get => _languages;
+            set => SetProperty(ref _languages, value);
+        }
+
+        public ObservableCollection<Currency> Currencies
+        {
+            get => _currencies;
+            set => SetProperty(ref _currencies, value);
+        }
+
+        public ContentView CurrentView
+        {
+            get => _currentView;
+            set => SetProperty(ref _currentView, value);
+        }
+
+        public ObservableCollection<Payment> Payments
+        {
+            get => _payments;
+            set => SetProperty(ref _payments, value);
+        }
+
+        public Payment PaymentSelected
+        {
+            get => _paymentSelected;
+            set => SetProperty(ref _paymentSelected, value);
+        }
+
+        public int PaymentCountdownTimer
+        {
+            get => _paymentCountdownTimer;
+            set => SetProperty(ref _paymentCountdownTimer, value);
+        }
+
+        public string PaymentBarcode
+        {
+            get => _paymentBarCode;
+            set => SetProperty(ref _paymentBarCode, value);
+        }
+
+        public bool IsPaymentProcessing
+        {
+            get => _isPaymentProcessing;
+            set => SetProperty(ref _isPaymentProcessing, value);
+        }
+
+        public bool IsBeingPaymentProcess
+        {
+            get => _isBeingPaymentProcess;
+            set => SetProperty(ref _isBeingPaymentProcess, value, () =>
+            {
+                if (value)
+                    CheckoutButtonText = AppResources.Pay;
+                else
+                    CheckoutButtonText = AppResources.Checkout;
+            });
+        }
+
+        public bool PaymentSelectionShowing
+        {
+            get => _paymentSelectionShowing;
+            set => SetProperty(ref _paymentSelectionShowing, value);
+        }
+
+        public bool PaymentInputShowing
+        {
+            get => _paymentInputShowing;
+            set => SetProperty(ref _paymentInputShowing, value);
+        }
+
+        public bool SummaryShowing
+        {
+            get => _summaryShowing;
+            set => SetProperty(ref _summaryShowing, value);
+        }
+
+        public bool SummaryVisible
+        {
+            get => _summaryVisible;
+            set => SetProperty(ref _summaryVisible, value);
+        }
+
+        public string CouponCode
+        {
+            get => _couponCode;
+            set => SetProperty(ref _couponCode, value);
+        }
+
+        public string CheckoutButtonText
+        {
+            get => _checkoutButtonText;
+            set => SetProperty(ref _checkoutButtonText, value);
+        }
+
+        public OrderData OrderData
+        {
+            get => _orderData;
+            set => SetProperty(ref _orderData, value);
+        }
+
+        public Language LanguageSelected
+        {
+            get => _languageSelected;
+            set => SetProperty(ref _languageSelected, value, () =>
+            {
+                _selfCheckoutService.CurrentLanguage = value;
+
+                if (value.LangCode == "EN")
+                    GlobalSettings.Instance.CountryCode = "en-US";
+                else if (value.LangCode == "TH")
+                    GlobalSettings.Instance.CountryCode = "th-TH";
+                else if (value.LangCode == "CH")
+                    GlobalSettings.Instance.CountryCode = "zh-Hans";
+                GlobalSettings.Instance.InitLanguage();
+
+                MessagingCenter.Send(this, "LanguageChanged");
+                RefreshTab();
+            });
+        }
+
+        public Currency CurrencySelected
+        {
+            get => _currencySelected;
+            set => SetProperty(ref _currencySelected, value, () =>
+            {
+                _saleEngineService.CurrencySelected = value;
+            });
+        }
+
+        public bool CurrencyShowing
+        {
+            get => _currencyShowing;
+            set
+            {
+                SetProperty(ref _currencyShowing, value, () =>
+                {
+                    if (value)
+                        LangShowing = false;
+                });
+            }
+        }
+
+        public bool LangShowing
+        {
+            get => _langShowing;
+            set
+            {
+                SetProperty(ref _langShowing, value, () =>
+                {
+                    if (value)
+                        CurrencyShowing = false;
+                });
+            }
+        }
+
         Task SelectTabAsync(TabItem item)
         {
-            if (item.Page is ShoppingCartView || item.Page is OrderView)
+            if (item.Page is ShoppingCartView)
             {
                 SummaryVisible = true;
-                if (item.Page is OrderView)
-                {
-                    IsBeingPaymentProcess = false;
-                    IsOrderSummary = true;
-                }
-                else
-                {
-                    IsOrderSummary = false;
-                }
             }
             else
             {
                 SummaryVisible = false;
+
+                if (item.Page is OrderView)
+                {
+                    IsBeingPaymentProcess = false;
+                }
             }
+
             PageTitle = item.Title;
             CurrentView = item.Page;
             item.Selected = true;
@@ -245,26 +548,21 @@ namespace SelfCheckout.ViewModels
             return Task.FromResult(true);
         }
 
-        bool PaymentCountdown()
-        {
-            return false;
-        }
-
         async Task ChangeCurrency()
         {
             try
             {
                 var payload = new
                 {
-                    SessionKey = LoginData.SessionKey,
+                    SessionKey = _saleEngineService.LoginData.SessionKey,
                     ActionItemValue = new
                     {
                         Action = "change_currency",
                         Value = CurrencySelected.CurrCode
                     }
                 };
-                await SaleEngineService.ActionListItemToOrderAsync(payload);
-                await (CurrentView.BindingContext as ShoppingCartViewModel).RefreshOrderAsync();
+                await _saleEngineService.ActionListItemToOrderAsync(payload);
+                MessagingCenter.Send(this, "CurrencyChanged");
             }
             catch { }
         }
@@ -273,18 +571,18 @@ namespace SelfCheckout.ViewModels
         {
             try
             {
-                await SelfCheckoutService.LoadLanguageAsync();
-                await SelfCheckoutService.LoadPaymentAsync();
+                await _selfCheckoutService.LoadLanguageAsync();
+                await _selfCheckoutService.LoadPaymentAsync();
 
-                Languages = SelfCheckoutService.Languages?.ToObservableCollection();
-                Payments = SelfCheckoutService.Payments?.ToObservableCollection();
+                Payments = _selfCheckoutService.Payments?.ToObservableCollection();
+                PaymentSelected = _selfCheckoutService.Payments.FirstOrDefault();
 
-                LanguageSelected = SelfCheckoutService.Languages.FirstOrDefault();
-                PaymentSelected = SelfCheckoutService.Payments.FirstOrDefault();
+                Languages = _selfCheckoutService.Languages?.ToObservableCollection();
+                LanguageSelected = _selfCheckoutService.Languages.Where(l => l.LangCode == "EN").FirstOrDefault();
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
         }
 
@@ -294,15 +592,15 @@ namespace SelfCheckout.ViewModels
             {
                 var payload = new
                 {
-                    branch_no = SelfCheckoutService.AppConfig.BranchNo
+                    branch_no = _selfCheckoutService.AppConfig.BranchNo
                 };
-                await SaleEngineService.LoadCurrencyAsync(payload);
-                Currencies = SaleEngineService.Currencies?.ToObservableCollection();
-                CurrencySelected = SaleEngineService.Currencies.Where(c => c.CurrCode == "THB").FirstOrDefault();
+                await _saleEngineService.LoadCurrencyAsync(payload);
+                Currencies = _saleEngineService.Currencies?.ToObservableCollection();
+                CurrencySelected = Currencies.Where(c => c.CurrCode == "THB").FirstOrDefault();
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
         }
 
@@ -314,17 +612,17 @@ namespace SelfCheckout.ViewModels
 
                 var payload = new
                 {
-                    OrderGuid = OrderData.Guid,
-                    SessionKey = LoginData.SessionKey
+                    OrderGuid = _saleEngineService.OrderData.Guid,
+                    SessionKey = _saleEngineService.LoginData.SessionKey
                 };
 
-                await SaleEngineService.CheckoutPaymentOrder(payload);
+                await _saleEngineService.CheckoutPaymentOrder(payload);
 
                 IsBeingPaymentProcess = true;
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -340,20 +638,15 @@ namespace SelfCheckout.ViewModels
                 var walletRequestPayload = new
                 {
                     barcode = PaymentBarcode,
-                    machine_ip = LoginData.UserInfo.MachineEnv.MachineIp,
-                    branch_no = AppConfig.BranchNo
+                    machine_ip = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineIp,
+                    branch_no = _selfCheckoutService.AppConfig.BranchNo
                 };
-                var walletResult = await SaleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
-                if (!walletResult.IsCompleted)
-                {
-                    await DialogService.ShowAlertAsync(AppResources.Opps, walletResult.DefaultMessage, AppResources.Close);
-                }
+                var wallet = await _saleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
 
-                var wallet = walletResult.Data;
-                var netAmount = OrderData.BillingAmount.NetAmount.CurrAmt;
+                var netAmount = _saleEngineService.OrderData.BillingAmount.NetAmount.CurrAmt;
                 var paymentRequestPayload = new
                 {
-                    OrderGuid = OrderData.Guid,
+                    OrderGuid = _saleEngineService.OrderData.Guid,
                     Payment = new
                     {
                         Guid = "",
@@ -381,14 +674,14 @@ namespace SelfCheckout.ViewModels
                             CurrAmt = netAmount,
                             CurrCode = new
                             {
-                                Code = CurrencySelected.CurrCode,
-                                Desc = CurrencySelected.CurrDesc
+                                Code = _saleEngineService.CurrencySelected.CurrCode,
+                                Desc = _saleEngineService.CurrencySelected.CurrDesc
                             },
-                            CurrRate = CurrencySelected.CurrRate,
+                            CurrRate = _saleEngineService.CurrencySelected.CurrRate,
                             BaseCurrCode = new
                             {
-                                Code = BaseCurrency.CurrCode,
-                                Desc = BaseCurrency.CurrDesc
+                                Code = _saleEngineService.BaseCurrency.CurrCode,
+                                Desc = _saleEngineService.BaseCurrency.CurrDesc
                             },
                             BaseCurrRate = 1,
                             BaseCurrAmt = netAmount
@@ -419,29 +712,29 @@ namespace SelfCheckout.ViewModels
                             CurrAmt = netAmount,
                             CurrCode = new
                             {
-                                Code = CurrencySelected.CurrCode,
-                                Desc = CurrencySelected.CurrDesc
+                                Code = _saleEngineService.CurrencySelected.CurrCode,
+                                Desc = _saleEngineService.CurrencySelected.CurrDesc
                             },
-                            CurrRate = CurrencySelected.CurrRate,
+                            CurrRate = _saleEngineService.CurrencySelected.CurrRate,
                             BaseCurrCode = new
                             {
-                                Code = BaseCurrency.CurrCode,
-                                Desc = BaseCurrency.CurrDesc
+                                Code = _saleEngineService.BaseCurrency.CurrCode,
+                                Desc = _saleEngineService.BaseCurrency.CurrDesc
                             },
                             BaseCurrRate = 1,
                             BaseCurrAmt = netAmount
                         },
                         status = ""
                     },
-                    SessionKey = LoginData.SessionKey,
+                    SessionKey = _saleEngineService.LoginData.SessionKey,
                 };
 
-                await SaleEngineService.AddPaymentToOrderAsync(paymentRequestPayload);
+                await _saleEngineService.AddPaymentToOrderAsync(paymentRequestPayload);
 
                 var tokenSource = new CancellationTokenSource();
                 var ct = tokenSource.Token;
 
-                PaymentCountdownTimer = 10;
+                PaymentCountdownTimer = _selfCheckoutService.AppConfig.PaymentTimeout;
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
                     if (--PaymentCountdownTimer == 0)
@@ -449,6 +742,8 @@ namespace SelfCheckout.ViewModels
                         tokenSource.Cancel();
                         return false;
                     }
+                    if (!IsPaymentProcessing)
+                        return false;
                     return true;
                 });
 
@@ -461,16 +756,17 @@ namespace SelfCheckout.ViewModels
 
                     var actionPayload = new
                     {
-                        OrderGuid = OrderData.Guid,
-                        Rows = SaleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
+                        OrderGuid = _saleEngineService.OrderData.Guid,
+                        Rows = _saleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
                         Action = 3,
                         Value = "",
                         currency = "",
-                        SessionKey = LoginData.SessionKey
+                        SessionKey = _saleEngineService.LoginData.SessionKey
                     };
-                    var paymentStatus = await SaleEngineService.ActionPaymentToOrderAsync(actionPayload);
+                    var paymentStatus = await _saleEngineService.ActionPaymentToOrderAsync(actionPayload);
                     if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
                     {
+                        IsPaymentProcessing = false;
                         paymentSuccess = true;
                         break;
                     }
@@ -480,8 +776,8 @@ namespace SelfCheckout.ViewModels
                 {
                     var finishPaymentPayload = new
                     {
-                        SessionKey = LoginData.SessionKey,
-                        OrderGuid = OrderData.Guid,
+                        SessionKey = _saleEngineService.LoginData.SessionKey,
+                        OrderGuid = _saleEngineService.OrderData.Guid,
                         OrderSignature = new object[]
                         {
                             new
@@ -491,16 +787,39 @@ namespace SelfCheckout.ViewModels
                             }
                         }
                     };
+                    await _saleEngineService.FinishPaymentOrderAsync(finishPaymentPayload);
 
-                    await SaleEngineService.FinishPaymentOrderAsync(finishPaymentPayload);
-                    await DialogService.ShowAlertAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.Close);
-                    var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
-                    TabSelectedCommand.Execute(orderTab);
+                    var headerAttr = _saleEngineService.OrderData.HeaderAttributes.Where(o => o.Code == "order_no").FirstOrDefault();
+                    var orderNo = Convert.ToInt32(headerAttr.ValueOfDecimal);
+                    var result = await _selfCheckoutService.UpdateSessionAsync(_selfCheckoutService.BorrowSessionKey, orderNo, _selfCheckoutService.StartedShoppingCard);
+
+                    try
+                    {
+                        // Test void payment
+                        await _saleEngineService.VoidPaymentAsync(wallet.WalletagentMaster.MerchantId, _saleEngineService.OrderData.PaymentTransaction.PartnerTransId);
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+
+                    var appConfig = _selfCheckoutService.AppConfig;
+                    var loginData = await _saleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
+                    _saleEngineService.LoginData = loginData;
+
+                    var shoppingCartTab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
+                    await (shoppingCartTab.Page.BindingContext as ShoppingCartViewModel).LoadOrderAsync();
+
+                    var isContinueShopping = await DialogService.ConfirmAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.ContinueShopping, AppResources.MyOrder);
+                    if (!isContinueShopping)
+                    {
+                        var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
+                        TabSelectedCommand.Execute(orderTab);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -509,225 +828,6 @@ namespace SelfCheckout.ViewModels
                 IsPaymentProcessing = false;
                 PaymentInputShowing = false;
                 PaymentBarcode = "";
-            }
-        }
-
-        public ObservableCollection<TabItem> Tabs
-        {
-            get => _tabs;
-            set
-            {
-                _tabs = value;
-                RaisePropertyChanged(() => Tabs);
-            }
-        }
-
-        public ObservableCollection<Language> Languages
-        {
-            get => _languages;
-            set
-            {
-                _languages = value;
-                RaisePropertyChanged(() => Languages);
-            }
-        }
-
-        public ObservableCollection<Currency> Currencies
-        {
-            get => _currencies;
-            set
-            {
-                _currencies = value;
-                RaisePropertyChanged(() => Currencies);
-            }
-        }
-
-        public ObservableCollection<Payment> Payments
-        {
-            get => _payments;
-            set
-            {
-                _payments = value;
-                RaisePropertyChanged(() => Payments);
-            }
-        }
-
-        public Payment PaymentSelected
-        {
-            get => _paymentSelected;
-            set
-            {
-                _paymentSelected = value;
-                RaisePropertyChanged(() => PaymentSelected);
-            }
-        }
-
-        public OrderData OrderData
-        {
-            get => _orderData;
-            set
-            {
-                _orderData = value;
-                RaisePropertyChanged(() => OrderData);
-            }
-        }
-
-        public ContentView CurrentView
-        {
-            get => _currentView;
-            set
-            {
-                _currentView = value;
-                RaisePropertyChanged(() => CurrentView);
-            }
-        }
-
-        public int PaymentCountdownTimer
-        {
-            get => _paymentCountdownTimer;
-            set
-            {
-                _paymentCountdownTimer = value;
-                RaisePropertyChanged(() => PaymentCountdownTimer);
-            }
-        }
-
-        public string PaymentBarcode
-        {
-            get => _paymentBarCode;
-            set
-            {
-                _paymentBarCode = value;
-                RaisePropertyChanged(() => PaymentBarcode);
-            }
-        }
-
-        public bool SummaryShowing
-        {
-            get => _summaryShowing;
-            set
-            {
-                _summaryShowing = value;
-                RaisePropertyChanged(() => SummaryShowing);
-            }
-        }
-
-        public bool IsOrderSummary
-        {
-            get => _isSummaryOrder;
-            set
-            {
-                _isSummaryOrder = value;
-                RaisePropertyChanged(() => IsOrderSummary);
-            }
-        }
-
-        public bool IsPaymentProcessing
-        {
-            get => _isPaymentProcessing;
-            set
-            {
-                _isPaymentProcessing = value;
-                RaisePropertyChanged(() => IsPaymentProcessing);
-            }
-        }
-
-        public bool IsBeingPaymentProcess
-        {
-            get => _isBeingPaymentProcess;
-            set
-            {
-                _isBeingPaymentProcess = value;
-                RaisePropertyChanged(() => IsBeingPaymentProcess);
-            }
-        }
-
-        public bool PaymentSelectionShowing
-        {
-            get => _paymentSelectionShowing;
-            set
-            {
-                _paymentSelectionShowing = value;
-                RaisePropertyChanged(() => PaymentSelectionShowing);
-            }
-        }
-
-        public bool PaymentInputShowing
-        {
-            get => _paymentInputShowing;
-            set
-            {
-                _paymentInputShowing = value;
-                RaisePropertyChanged(() => PaymentInputShowing);
-            }
-        }
-
-        public bool SummaryVisible
-        {
-            get => _summaryVisible;
-            set
-            {
-                _summaryVisible = value;
-                RaisePropertyChanged(() => SummaryVisible);
-            }
-        }
-
-        public Language LanguageSelected
-        {
-            get => _languageSelected;
-            set
-            {
-                _languageSelected = value;
-                RaisePropertyChanged(() => LanguageSelected);
-            }
-        }
-
-        public Currency CurrencySelected
-        {
-            get => _currencySelected;
-            set
-            {
-                _currencySelected = value;
-                RaisePropertyChanged(() => CurrencySelected);
-            }
-        }
-
-        public Currency BaseCurrency
-        {
-            get
-            {
-                return Currencies.Where(c => c.CurrCode == "THB").FirstOrDefault() ?? new Currency
-                {
-                    CurrCode = "THB",
-                    CurrDesc = "THB",
-                    CurrRate = 1
-                };
-            }
-        }
-
-        public bool CurrencyShowing
-        {
-            get => _currencyShowing;
-            set
-            {
-                _currencyShowing = value;
-                RaisePropertyChanged(() => CurrencyShowing);
-
-                if (value)
-                    LangShowing = false;
-            }
-        }
-
-        public bool LangShowing
-        {
-            get => _langShowing;
-            set
-            {
-                _langShowing = value;
-                RaisePropertyChanged(() => LangShowing);
-
-                if (value)
-                    CurrencyShowing = false;
             }
         }
     }

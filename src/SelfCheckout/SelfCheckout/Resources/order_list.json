@@ -1,9 +1,9 @@
 {
   "Data": [
     {
-      "Guid": "7dcf13bc-3638-43e6-adad-d7c8896cf657",
-      "CreateDate": "2020-02-18T12:51:00",
-      "ModifiedDate": "2020-02-18T12:53:00",
+      "Guid": "f6ede8fa-8a76-4d52-8238-074ab36adbf6",
+      "CreateDate": "2020-03-11T18:24:00",
+      "ModifiedDate": "2020-03-11T18:25:00",
       "Consolidate": false,
       "HeaderAttributes": [
         {
@@ -20,7 +20,7 @@
           "Group": "tran_no",
           "Code": "shopping_card",
           "Value": null,
-          "ValueOfString": "9898989898989",
+          "ValueOfString": "3600000711400",
           "ValueOfDecimal": null,
           "ValueOfDateTime": null,
           "ValueOfTime": null,
@@ -31,7 +31,7 @@
           "Code": "order_no",
           "Value": null,
           "ValueOfString": null,
-          "ValueOfDecimal": 2,
+          "ValueOfDecimal": 18,
           "ValueOfDateTime": null,
           "ValueOfTime": null,
           "DataType": null
@@ -40,7 +40,7 @@
           "Group": "tran_no",
           "Code": "shop_ref",
           "Value": null,
-          "ValueOfString": "9898989898989",
+          "ValueOfString": "             ",
           "ValueOfDecimal": null,
           "ValueOfDateTime": null,
           "ValueOfTime": null,
@@ -63,7 +63,7 @@
           "UOM": ""
         },
         {
-          "Quantity": 3,
+          "Quantity": 1,
           "UOM": "EA"
         }
       ],
@@ -111,7 +111,7 @@
             "Value": null,
             "ValueOfString": null,
             "ValueOfDecimal": null,
-            "ValueOfDateTime": "2020-02-19T00:00:00",
+            "ValueOfDateTime": "2020-03-12T00:00:00",
             "ValueOfTime": null,
             "DataType": null
           },
@@ -149,7 +149,7 @@
             "Group": "tran_no",
             "Code": "shopping_card",
             "Value": null,
-            "ValueOfString": "9898989898989",
+            "ValueOfString": "3600000711400",
             "ValueOfDecimal": null,
             "ValueOfDateTime": null,
             "ValueOfTime": null,
@@ -159,7 +159,7 @@
             "Group": "tran_no",
             "Code": "passport_no",
             "Value": null,
-            "ValueOfString": "AXXX45A55995",
+            "ValueOfString": "AAYU4989",
             "ValueOfDecimal": null,
             "ValueOfDateTime": null,
             "ValueOfTime": null,
@@ -179,11 +179,11 @@
       },
       "OrderDetails": [
         {
-          "Guid": "7ae2c358-08cf-46b4-9155-b53d82e693f4",
+          "Guid": "479e0c0c-bfd0-4bf3-864d-43a645cf5551",
           "LineNo": 1,
           "BarCode": null,
           "BillingQuantity": {
-            "Quantity": 2,
+            "Quantity": 1,
             "UOM": "EA"
           },
           "BillingAmount": {
@@ -193,15 +193,15 @@
                 "Desc": "THAI BAHT"
               },
               "CurrRate": 1,
-              "CurrAmt": 21800,
-              "CurrAmtForCal": 21800,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 1,
               "BaseCurrCode": {
                 "Code": "THB",
                 "Desc": "THAI BAHT"
               },
               "BaseCurrRate": 1,
-              "BaseCurrAmt": 21800,
-              "BaseCurrAmtForCal": 21800
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 1
             },
             "DiscountAmount": {
               "CurrCode": {
@@ -227,15 +227,15 @@
                 "Desc": "THAI BAHT"
               },
               "CurrRate": 1,
-              "CurrAmt": 1426.17,
-              "CurrAmtForCal": 1426.17,
+              "CurrAmt": 0.07,
+              "CurrAmtForCal": 0.07,
               "BaseCurrCode": {
                 "Code": "THB",
                 "Desc": "THAI BAHT"
               },
               "BaseCurrRate": 1,
-              "BaseCurrAmt": 1426.17,
-              "BaseCurrAmtForCal": 1426.17
+              "BaseCurrAmt": 0.07,
+              "BaseCurrAmtForCal": 0.07
             },
             "NetAmount": {
               "CurrCode": {
@@ -243,15 +243,15 @@
                 "Desc": "THAI BAHT"
               },
               "CurrRate": 1,
-              "CurrAmt": 21800,
-              "CurrAmtForCal": 21800,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 1,
               "BaseCurrCode": {
                 "Code": "THB",
                 "Desc": "THAI BAHT"
               },
               "BaseCurrRate": 1,
-              "BaseCurrAmt": 21800,
-              "BaseCurrAmtForCal": 21800
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 1
             }
           },
           "Promotion": {
@@ -305,8 +305,8 @@
               "Desc": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT"
             },
             "Detail": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT",
-            "BaseUnitPrice": 10900,
-            "UnitPrice": 10900,
+            "BaseUnitPrice": 1,
+            "UnitPrice": 1,
             "Brand": {
               "Code": "JAB",
               "Desc": "JAB"
@@ -331,175 +331,13 @@
             ]
           },
           "Seller": {
-            "MachineNo": "QATEST1   ",
-            "MachineTaxNo": "QATEST1        ",
+            "MachineNo": "MPOSDEV   ",
+            "MachineTaxNo": "C01005000200359",
             "EmployeeNo": "K",
             "IPNo": null,
-            "MachineDateTime": "2020-02-18T12:53:00"
+            "MachineDateTime": "2020-03-11T18:25:00"
           },
           "lineItemDatabase": 1,
-          "DetailAttributes": null
-        },
-        {
-          "Guid": "e58b6739-8f76-4f1d-a8b5-670269f59120",
-          "LineNo": 2,
-          "BarCode": null,
-          "BillingQuantity": {
-            "Quantity": 1,
-            "UOM": "EA"
-          },
-          "BillingAmount": {
-            "TotalAmount": {
-              "CurrCode": {
-                "Code": "THB",
-                "Desc": "THAI BAHT"
-              },
-              "CurrRate": 1,
-              "CurrAmt": 11990,
-              "CurrAmtForCal": 11990,
-              "BaseCurrCode": {
-                "Code": "THB",
-                "Desc": "THAI BAHT"
-              },
-              "BaseCurrRate": 1,
-              "BaseCurrAmt": 11990,
-              "BaseCurrAmtForCal": 11990
-            },
-            "DiscountAmount": {
-              "CurrCode": {
-                "Code": "THB",
-                "Desc": "THAI BAHT"
-              },
-              "CurrRate": 1,
-              "CurrAmt": 0,
-              "CurrAmtForCal": 0,
-              "BaseCurrCode": {
-                "Code": "THB",
-                "Desc": "THAI BAHT"
-              },
-              "BaseCurrRate": 1,
-              "BaseCurrAmt": 0,
-              "BaseCurrAmtForCal": 0
-            },
-            "ValueAdjusts": [],
-            "PercentDiscount": 0,
-            "VATAmount": {
-              "CurrCode": {
-                "Code": "THB",
-                "Desc": "THAI BAHT"
-              },
-              "CurrRate": 1,
-              "CurrAmt": 784.39,
-              "CurrAmtForCal": 784.39,
-              "BaseCurrCode": {
-                "Code": "THB",
-                "Desc": "THAI BAHT"
-              },
-              "BaseCurrRate": 1,
-              "BaseCurrAmt": 784.39,
-              "BaseCurrAmtForCal": 784.39
-            },
-            "NetAmount": {
-              "CurrCode": {
-                "Code": "THB",
-                "Desc": "THAI BAHT"
-              },
-              "CurrRate": 1,
-              "CurrAmt": 11990,
-              "CurrAmtForCal": 11990,
-              "BaseCurrCode": {
-                "Code": "THB",
-                "Desc": "THAI BAHT"
-              },
-              "BaseCurrRate": 1,
-              "BaseCurrAmt": 11990,
-              "BaseCurrAmtForCal": 11990
-            }
-          },
-          "Promotion": {
-            "Code": "          ",
-            "Desc": "          "
-          },
-          "SubOrderType": {
-            "Code": "T ",
-            "Desc": "TAKE                "
-          },
-          "IsFreeze": false,
-          "IsLockDiscount": false,
-          "IsConsolidate": false,
-          "IsExtConsolidate": false,
-          "IsCancel": false,
-          "IsBinManagement": false,
-          "IsBasket": true,
-          "ItemDetail": {
-            "MC": [
-              {
-                "Code": "351",
-                "Desc": "Local Electronics"
-              },
-              {
-                "Code": "351002",
-                "Desc": "Accessories"
-              },
-              {
-                "Code": "351002B02",
-                "Desc": "Headphone"
-              }
-            ],
-            "Cate": {
-              "Code": "351",
-              "Desc": "Local Electronics"
-            },
-            "Section": {
-              "Code": "351002",
-              "Desc": "Accessories"
-            },
-            "SubSection": {
-              "Code": "351002B02",
-              "Desc": "Headphone"
-            },
-            "ItemType": {
-              "Code": null,
-              "Desc": null
-            },
-            "Item": {
-              "Code": "000000000008190415",
-              "Desc": "SON GLD WI-1000X/IN-EAR NECK/NC/NFC&BT/E"
-            },
-            "Detail": "SON GLD WI-1000X/IN-EAR NECK/NC/NFC&BT/E",
-            "BaseUnitPrice": 11990,
-            "UnitPrice": 11990,
-            "Brand": {
-              "Code": "SON",
-              "Desc": "SON"
-            },
-            "MaxPercentDiscount": 0,
-            "VAT": {
-              "Code": "1",
-              "Desc": "VAT 7 %                                           "
-            },
-            "VATRate": 7,
-            "ItemAttributes": [
-              {
-                "Group": null,
-                "Code": "collect_status",
-                "Value": null,
-                "ValueOfString": "T",
-                "ValueOfDecimal": null,
-                "ValueOfDateTime": null,
-                "ValueOfTime": null,
-                "DataType": null
-              }
-            ]
-          },
-          "Seller": {
-            "MachineNo": "QATEST1   ",
-            "MachineTaxNo": "QATEST1        ",
-            "EmployeeNo": "K",
-            "IPNo": null,
-            "MachineDateTime": "2020-02-18T12:53:00"
-          },
-          "lineItemDatabase": 2,
           "DetailAttributes": null
         }
       ],
@@ -578,15 +416,15 @@
             "Desc": "THAI BAHT"
           },
           "CurrRate": 1,
-          "CurrAmt": 33790,
-          "CurrAmtForCal": 33790,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
           "BaseCurrCode": {
             "Code": "THB",
             "Desc": "THAI BAHT"
           },
           "BaseCurrRate": 1,
-          "BaseCurrAmt": 33790,
-          "BaseCurrAmtForCal": 33790
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
         },
         "DiscountAmount": {
           "CurrCode": {
@@ -612,15 +450,15 @@
             "Desc": "THAI BAHT"
           },
           "CurrRate": 1,
-          "CurrAmt": 2210.56,
-          "CurrAmtForCal": 2210.56,
+          "CurrAmt": 0.07,
+          "CurrAmtForCal": 0.07,
           "BaseCurrCode": {
             "Code": "THB",
             "Desc": "THAI BAHT"
           },
           "BaseCurrRate": 1,
-          "BaseCurrAmt": 2210.56,
-          "BaseCurrAmtForCal": 2210.56
+          "BaseCurrAmt": 0.07,
+          "BaseCurrAmtForCal": 0.07
         },
         "NetAmount": {
           "CurrCode": {
@@ -628,15 +466,15 @@
             "Desc": "THAI BAHT"
           },
           "CurrRate": 1,
-          "CurrAmt": 33790,
-          "CurrAmtForCal": 33790,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
           "BaseCurrCode": {
             "Code": "THB",
             "Desc": "THAI BAHT"
           },
           "BaseCurrRate": 1,
-          "BaseCurrAmt": 33790,
-          "BaseCurrAmtForCal": 33790
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
         }
       },
       "TotalBillingAmount": {
@@ -680,15 +518,15 @@
             "Desc": "THAI BAHT"
           },
           "CurrRate": 1,
-          "CurrAmt": 0,
-          "CurrAmtForCal": 0,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
           "BaseCurrCode": {
             "Code": "THB",
             "Desc": "THAI BAHT"
           },
           "BaseCurrRate": 1,
-          "BaseCurrAmt": 0,
-          "BaseCurrAmtForCal": 0
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
         },
         "TotalNetPay": {
           "CurrCode": {
@@ -696,15 +534,15 @@
             "Desc": "THAI BAHT"
           },
           "CurrRate": 1,
-          "CurrAmt": 33790,
-          "CurrAmtForCal": 33790,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
           "BaseCurrCode": {
             "Code": "THB",
             "Desc": "THAI BAHT"
           },
           "BaseCurrRate": 1,
-          "BaseCurrAmt": 33790,
-          "BaseCurrAmtForCal": 33790
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
         },
         "TotalAmount": {
           "CurrCode": {
@@ -712,15 +550,15 @@
             "Desc": "THAI BAHT"
           },
           "CurrRate": 1,
-          "CurrAmt": 33790,
-          "CurrAmtForCal": 33790,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
           "BaseCurrCode": {
             "Code": "THB",
             "Desc": "THAI BAHT"
           },
           "BaseCurrRate": 1,
-          "BaseCurrAmt": 33790,
-          "BaseCurrAmtForCal": 33790
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
         },
         "DiscountAmount": {
           "CurrCode": {
@@ -746,15 +584,15 @@
             "Desc": "THAI BAHT"
           },
           "CurrRate": 1,
-          "CurrAmt": 2210.56,
-          "CurrAmtForCal": 2210.56,
+          "CurrAmt": 0.07,
+          "CurrAmtForCal": 0.07,
           "BaseCurrCode": {
             "Code": "THB",
             "Desc": "THAI BAHT"
           },
           "BaseCurrRate": 1,
-          "BaseCurrAmt": 2210.56,
-          "BaseCurrAmtForCal": 2210.56
+          "BaseCurrAmt": 0.07,
+          "BaseCurrAmtForCal": 0.07
         },
         "NetAmount": {
           "CurrCode": {
@@ -762,15 +600,15 @@
             "Desc": "THAI BAHT"
           },
           "CurrRate": 1,
-          "CurrAmt": 33790,
-          "CurrAmtForCal": 33790,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
           "BaseCurrCode": {
             "Code": "THB",
             "Desc": "THAI BAHT"
           },
           "BaseCurrRate": 1,
-          "BaseCurrAmt": 33790,
-          "BaseCurrAmtForCal": 33790
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
         }
       },
       "RemainingAmount": {
@@ -780,15 +618,15 @@
             "Desc": "THAI BAHT"
           },
           "CurrRate": 1,
-          "CurrAmt": 33790,
-          "CurrAmtForCal": 33790,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
           "BaseCurrCode": {
             "Code": "THB",
             "Desc": "THAI BAHT"
           },
           "BaseCurrRate": 1,
-          "BaseCurrAmt": 33790,
-          "BaseCurrAmtForCal": 33790
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
         },
         "DiscountAmount": {
           "CurrCode": {
@@ -830,15 +668,15 @@
             "Desc": "THAI BAHT"
           },
           "CurrRate": 1,
-          "CurrAmt": 33790,
-          "CurrAmtForCal": 33790,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
           "BaseCurrCode": {
             "Code": "THB",
             "Desc": "THAI BAHT"
           },
           "BaseCurrRate": 1,
-          "BaseCurrAmt": 33790,
-          "BaseCurrAmtForCal": 33790
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
         }
       },
       "ChangeAmount": {
@@ -862,18 +700,18 @@
       },
       "OrderInvoices": [
         {
-          "Guid": "9791d69e-319e-4515-b3bc-9845ffc4a605",
+          "Guid": "be012853-4ae4-4604-aaf4-c1f1c6c040ed",
           "InvoiceNo": "1",
           "TaxInvoiceType": {
             "Code": "N",
             "Desc": null
           },
           "TaxInvoiceNo": null,
-          "TaxAbbNo": "00151     ",
-          "ClaimcheckNo": "00151     ",
+          "TaxAbbNo": "00067     ",
+          "ClaimcheckNo": "00067     ",
           "RunningNo": null,
-          "RecNo": "143297",
-          "PackingNo": "M000143297",
+          "RecNo": "143313",
+          "PackingNo": "M000143313",
           "PickupCode": "",
           "HangingNo": "",
           "SubOrderType": {
@@ -882,11 +720,11 @@
           },
           "Amount": null,
           "Cashier": {
-            "MachineNo": "QATEST1",
-            "MachineTaxNo": "QATEST1        ",
+            "MachineNo": "MPOSDEV",
+            "MachineTaxNo": "C01005000200359",
             "EmployeeNo": "K",
-            "IPNo": "QATEST1",
-            "MachineDateTime": "2020-02-18T12:53:00"
+            "IPNo": "MPOSDEV",
+            "MachineDateTime": "2020-03-11T18:25:00"
           },
           "StepInvoice": null,
           "RunnerBy": null,
@@ -899,7 +737,7 @@
           "TruckBy": null,
           "TruckDateTime": "0001-01-01T00:00:00",
           "BillingQuantity": {
-            "Quantity": 3,
+            "Quantity": 1,
             "UOM": "EA"
           },
           "BillingAmount": {
@@ -909,14 +747,14 @@
                 "Desc": "THAI BAHT"
               },
               "CurrRate": 1,
-              "CurrAmt": 33790,
+              "CurrAmt": 1,
               "CurrAmtForCal": 0,
               "BaseCurrCode": {
                 "Code": "THB",
                 "Desc": "THAI BAHT"
               },
               "BaseCurrRate": 1,
-              "BaseCurrAmt": 33790,
+              "BaseCurrAmt": 1,
               "BaseCurrAmtForCal": 0
             },
             "DiscountAmount": {
@@ -943,14 +781,14 @@
                 "Desc": "THAI BAHT"
               },
               "CurrRate": 1,
-              "CurrAmt": 2210.56,
+              "CurrAmt": 0.07,
               "CurrAmtForCal": 0,
               "BaseCurrCode": {
                 "Code": "THB",
                 "Desc": "THAI BAHT"
               },
               "BaseCurrRate": 1,
-              "BaseCurrAmt": 2210.56,
+              "BaseCurrAmt": 0.07,
               "BaseCurrAmtForCal": 0
             },
             "NetAmount": {
@@ -959,14 +797,14 @@
                 "Desc": "THAI BAHT"
               },
               "CurrRate": 1,
-              "CurrAmt": 33790,
+              "CurrAmt": 1,
               "CurrAmtForCal": 0,
               "BaseCurrCode": {
                 "Code": "THB",
                 "Desc": "THAI BAHT"
               },
               "BaseCurrRate": 1,
-              "BaseCurrAmt": 33790,
+              "BaseCurrAmt": 1,
               "BaseCurrAmtForCal": 0
             }
           },
@@ -974,11 +812,11 @@
           "IssuedDetail": "",
           "OrderDetails": [
             {
-              "Guid": "7ae2c358-08cf-46b4-9155-b53d82e693f4",
+              "Guid": "479e0c0c-bfd0-4bf3-864d-43a645cf5551",
               "LineNo": 1,
               "BarCode": null,
               "BillingQuantity": {
-                "Quantity": 2,
+                "Quantity": 1,
                 "UOM": "EA"
               },
               "BillingAmount": {
@@ -988,15 +826,15 @@
                     "Desc": "THAI BAHT"
                   },
                   "CurrRate": 1,
-                  "CurrAmt": 21800,
-                  "CurrAmtForCal": 21800,
+                  "CurrAmt": 1,
+                  "CurrAmtForCal": 1,
                   "BaseCurrCode": {
                     "Code": "THB",
                     "Desc": "THAI BAHT"
                   },
                   "BaseCurrRate": 1,
-                  "BaseCurrAmt": 21800,
-                  "BaseCurrAmtForCal": 21800
+                  "BaseCurrAmt": 1,
+                  "BaseCurrAmtForCal": 1
                 },
                 "DiscountAmount": {
                   "CurrCode": {
@@ -1022,15 +860,15 @@
                     "Desc": "THAI BAHT"
                   },
                   "CurrRate": 1,
-                  "CurrAmt": 1426.17,
-                  "CurrAmtForCal": 1426.17,
+                  "CurrAmt": 0.07,
+                  "CurrAmtForCal": 0.07,
                   "BaseCurrCode": {
                     "Code": "THB",
                     "Desc": "THAI BAHT"
                   },
                   "BaseCurrRate": 1,
-                  "BaseCurrAmt": 1426.17,
-                  "BaseCurrAmtForCal": 1426.17
+                  "BaseCurrAmt": 0.07,
+                  "BaseCurrAmtForCal": 0.07
                 },
                 "NetAmount": {
                   "CurrCode": {
@@ -1038,15 +876,15 @@
                     "Desc": "THAI BAHT"
                   },
                   "CurrRate": 1,
-                  "CurrAmt": 21800,
-                  "CurrAmtForCal": 21800,
+                  "CurrAmt": 1,
+                  "CurrAmtForCal": 1,
                   "BaseCurrCode": {
                     "Code": "THB",
                     "Desc": "THAI BAHT"
                   },
                   "BaseCurrRate": 1,
-                  "BaseCurrAmt": 21800,
-                  "BaseCurrAmtForCal": 21800
+                  "BaseCurrAmt": 1,
+                  "BaseCurrAmtForCal": 1
                 }
               },
               "Promotion": {
@@ -1100,8 +938,8 @@
                   "Desc": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT"
                 },
                 "Detail": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT",
-                "BaseUnitPrice": 10900,
-                "UnitPrice": 10900,
+                "BaseUnitPrice": 1,
+                "UnitPrice": 1,
                 "Brand": {
                   "Code": "JAB",
                   "Desc": "JAB"
@@ -1126,188 +964,26 @@
                 ]
               },
               "Seller": {
-                "MachineNo": "QATEST1   ",
-                "MachineTaxNo": "QATEST1        ",
+                "MachineNo": "MPOSDEV   ",
+                "MachineTaxNo": "C01005000200359",
                 "EmployeeNo": "K",
                 "IPNo": null,
-                "MachineDateTime": "2020-02-18T12:53:00"
+                "MachineDateTime": "2020-03-11T18:25:00"
               },
               "lineItemDatabase": 1,
-              "DetailAttributes": null
-            },
-            {
-              "Guid": "e58b6739-8f76-4f1d-a8b5-670269f59120",
-              "LineNo": 2,
-              "BarCode": null,
-              "BillingQuantity": {
-                "Quantity": 1,
-                "UOM": "EA"
-              },
-              "BillingAmount": {
-                "TotalAmount": {
-                  "CurrCode": {
-                    "Code": "THB",
-                    "Desc": "THAI BAHT"
-                  },
-                  "CurrRate": 1,
-                  "CurrAmt": 11990,
-                  "CurrAmtForCal": 11990,
-                  "BaseCurrCode": {
-                    "Code": "THB",
-                    "Desc": "THAI BAHT"
-                  },
-                  "BaseCurrRate": 1,
-                  "BaseCurrAmt": 11990,
-                  "BaseCurrAmtForCal": 11990
-                },
-                "DiscountAmount": {
-                  "CurrCode": {
-                    "Code": "THB",
-                    "Desc": "THAI BAHT"
-                  },
-                  "CurrRate": 1,
-                  "CurrAmt": 0,
-                  "CurrAmtForCal": 0,
-                  "BaseCurrCode": {
-                    "Code": "THB",
-                    "Desc": "THAI BAHT"
-                  },
-                  "BaseCurrRate": 1,
-                  "BaseCurrAmt": 0,
-                  "BaseCurrAmtForCal": 0
-                },
-                "ValueAdjusts": [],
-                "PercentDiscount": 0,
-                "VATAmount": {
-                  "CurrCode": {
-                    "Code": "THB",
-                    "Desc": "THAI BAHT"
-                  },
-                  "CurrRate": 1,
-                  "CurrAmt": 784.39,
-                  "CurrAmtForCal": 784.39,
-                  "BaseCurrCode": {
-                    "Code": "THB",
-                    "Desc": "THAI BAHT"
-                  },
-                  "BaseCurrRate": 1,
-                  "BaseCurrAmt": 784.39,
-                  "BaseCurrAmtForCal": 784.39
-                },
-                "NetAmount": {
-                  "CurrCode": {
-                    "Code": "THB",
-                    "Desc": "THAI BAHT"
-                  },
-                  "CurrRate": 1,
-                  "CurrAmt": 11990,
-                  "CurrAmtForCal": 11990,
-                  "BaseCurrCode": {
-                    "Code": "THB",
-                    "Desc": "THAI BAHT"
-                  },
-                  "BaseCurrRate": 1,
-                  "BaseCurrAmt": 11990,
-                  "BaseCurrAmtForCal": 11990
-                }
-              },
-              "Promotion": {
-                "Code": "          ",
-                "Desc": "          "
-              },
-              "SubOrderType": {
-                "Code": "T ",
-                "Desc": "TAKE                "
-              },
-              "IsFreeze": false,
-              "IsLockDiscount": false,
-              "IsConsolidate": false,
-              "IsExtConsolidate": false,
-              "IsCancel": false,
-              "IsBinManagement": false,
-              "IsBasket": true,
-              "ItemDetail": {
-                "MC": [
-                  {
-                    "Code": "351",
-                    "Desc": "Local Electronics"
-                  },
-                  {
-                    "Code": "351002",
-                    "Desc": "Accessories"
-                  },
-                  {
-                    "Code": "351002B02",
-                    "Desc": "Headphone"
-                  }
-                ],
-                "Cate": {
-                  "Code": "351",
-                  "Desc": "Local Electronics"
-                },
-                "Section": {
-                  "Code": "351002",
-                  "Desc": "Accessories"
-                },
-                "SubSection": {
-                  "Code": "351002B02",
-                  "Desc": "Headphone"
-                },
-                "ItemType": {
-                  "Code": null,
-                  "Desc": null
-                },
-                "Item": {
-                  "Code": "000000000008190415",
-                  "Desc": "SON GLD WI-1000X/IN-EAR NECK/NC/NFC&BT/E"
-                },
-                "Detail": "SON GLD WI-1000X/IN-EAR NECK/NC/NFC&BT/E",
-                "BaseUnitPrice": 11990,
-                "UnitPrice": 11990,
-                "Brand": {
-                  "Code": "SON",
-                  "Desc": "SON"
-                },
-                "MaxPercentDiscount": 0,
-                "VAT": {
-                  "Code": "1",
-                  "Desc": "VAT 7 %                                           "
-                },
-                "VATRate": 7,
-                "ItemAttributes": [
-                  {
-                    "Group": null,
-                    "Code": "collect_status",
-                    "Value": null,
-                    "ValueOfString": "T",
-                    "ValueOfDecimal": null,
-                    "ValueOfDateTime": null,
-                    "ValueOfTime": null,
-                    "DataType": null
-                  }
-                ]
-              },
-              "Seller": {
-                "MachineNo": "QATEST1   ",
-                "MachineTaxNo": "QATEST1        ",
-                "EmployeeNo": "K",
-                "IPNo": null,
-                "MachineDateTime": "2020-02-18T12:53:00"
-              },
-              "lineItemDatabase": 2,
               "DetailAttributes": null
             }
           ],
           "OrderPayments": [
             {
-              "Guid": "31147c4c-f9c3-4888-8a77-e59330813458",
+              "Guid": "047c1f09-5cd5-44de-97f9-d8a99b4d97df",
               "LineNo": 1,
               "PaymentIcon": null,
               "GatewayId": 0,
-              "PaymentCode": "***       ",
-              "PaymentType": "CASH",
+              "PaymentCode": "ALI       ",
+              "PaymentType": "ALI     ",
               "RefNo": null,
-              "CardHolderName": "",
+              "CardHolderName": "288119070592897202",
               "ApproveCode": null,
               "BankOfEDC": null,
               "IssuerID": null,
@@ -1337,7 +1013,7 @@
                   "Desc": "THAI BAHT"
                 },
                 "BaseCurrRate": 1,
-                "BaseCurrAmt": 33790,
+                "BaseCurrAmt": 1,
                 "BaseCurrAmtForCal": 0
               },
               "Transaction": null,
@@ -1353,16 +1029,16 @@
       ],
       "OrderPayments": [
         {
-          "Guid": "6d087add-bfdf-46ca-826b-c731bc2b8bc8",
+          "Guid": "d2d46432-fe0e-40ec-8938-f4d6a051bb23",
           "LineNo": 1,
           "PaymentIcon": null,
           "GatewayId": 0,
-          "PaymentCode": "***       ",
-          "PaymentType": "CASH    ",
+          "PaymentCode": "ALI       ",
+          "PaymentType": "ALI     ",
           "RefNo": null,
-          "CardHolderName": "",
+          "CardHolderName": "288119070592897202",
           "ApproveCode": null,
-          "BankOfEDC": "",
+          "BankOfEDC": "ALISCB",
           "IssuerID": null,
           "AliBarcode": null,
           "AliMerchantID": null,
@@ -1383,45 +1059,45 @@
               "Desc": "THB"
             },
             "CurrRate": 1,
-            "CurrAmt": 33790,
+            "CurrAmt": 1,
             "CurrAmtForCal": 0,
             "BaseCurrCode": {
               "Code": "THB",
               "Desc": "THAI BAHT"
             },
             "BaseCurrRate": 1,
-            "BaseCurrAmt": 33790,
+            "BaseCurrAmt": 1,
             "BaseCurrAmtForCal": 0
           },
           "Transaction": {
-            "TransactionId": 18618,
-            "TransactionGroup": 1,
+            "TransactionId": 18670,
+            "TransactionGroup": 2,
             "TransactionType": 1,
             "PartnerGroup": null,
             "PartnerType": 0,
-            "PartnerId": 0,
-            "GatewaySessionKey": null,
-            "GatewayBuyerId": " - ",
-            "GatewayBarcode": " - ",
+            "PartnerId": 9,
+            "GatewaySessionKey": 628,
+            "GatewayBuyerId": "mer***@alitest.*",
+            "GatewayBarcode": "288119070592897202",
             "Cashier": {
-              "MachineNo": "QATEST1",
-              "MachineTaxNo": "QATEST1",
+              "MachineNo": "MPOSDEV",
+              "MachineTaxNo": "C01005000200359",
               "EmployeeNo": "K",
-              "IPNo": "00000000-0000-0000-8a6e-5476f5b2212e",
-              "MachineDateTime": "2020-02-18T12:53:00"
+              "IPNo": "127.0.0.1",
+              "MachineDateTime": "2020-03-11T18:25:00"
             },
-            "MerchantId": null,
-            "PartnerTransId": " - ",
-            "LastStatus": 1,
-            "CurrentStatus": 2,
-            "CreateDateTime": "2020-02-18T12:53:00",
-            "ModifiedDateTime": "2020-02-18T12:53:00",
-            "PrintSlip": false,
-            "PrintSlipText": "",
+            "MerchantId": "9990001_89990001",
+            "PartnerTransId": "40-MPOSDEV-0000000005701",
+            "LastStatus": 6,
+            "CurrentStatus": 6,
+            "CreateDateTime": "2020-03-11T18:25:00",
+            "ModifiedDateTime": "2020-03-11T18:25:00",
+            "PrintSlip": true,
+            "PrintSlipText": "\u001b!!\u0001  ALIPAY INVOICE\r\n\r\n\u001b!\u0001                       PLS KEEP \r\n--------------------------------\r\nMERCHANT.NAME : KING POWER\r\nKPG POS.NO : MPOSDEV\r\nREF.NO : 3600000711400-18\r\nDATE : 11/03/2020\r\nTIME : 18:16:42\r\nTRANS.TYPE : QR-PAY\r\n--------------------------------\r\nCHANNEL : ALIPAY / SCB\r\nACCOUNT : mer***@alitest.*\r\nAMOUNT (THB) : \u001b!!1.00\r\n\u001b!\u0001AMOUNT (RMB) : 0.22\r\nRATE : 4.504100\r\nNO. : 40-MPOSDEV-0000000005701\r\nBARCODE : 288119070592897202\r\n--------------------------------\r\nOPERATOR : MPOSDEV\r\n--------------------------------",
             "Movements": [
               {
                 "TransactionMovementType": 1,
-                "Amount": 33790,
+                "Amount": 1,
                 "Currency": {
                   "Code": "BAHT ",
                   "Desc": "THAI BAHT                                         "
@@ -1429,26 +1105,47 @@
                 "CurrencyRate": 1,
                 "Description": null,
                 "Status": 1,
-                "DateTime": "2020-02-18T12:53:00"
+                "DateTime": "2020-03-11T18:25:00"
               },
               {
                 "TransactionMovementType": 2,
-                "Amount": 33790,
+                "Amount": 1,
                 "Currency": {
                   "Code": "BAHT ",
                   "Desc": "THAI BAHT                                         "
                 },
                 "CurrencyRate": 1,
                 "Description": null,
-                "Status": 2,
-                "DateTime": "2020-02-18T12:53:00"
+                "Status": 6,
+                "DateTime": "2020-03-11T18:25:00"
+              },
+              {
+                "TransactionMovementType": 1,
+                "Amount": 0,
+                "Currency": null,
+                "CurrencyRate": 0,
+                "Description": null,
+                "Status": 6,
+                "DateTime": "2020-03-11T18:25:00"
+              },
+              {
+                "TransactionMovementType": 2,
+                "Amount": 1,
+                "Currency": {
+                  "Code": "BAHT ",
+                  "Desc": "THAI BAHT                                         "
+                },
+                "CurrencyRate": 1,
+                "Description": null,
+                "Status": 6,
+                "DateTime": "2020-03-11T18:25:00"
               }
             ],
             "BillingAmount": null
           },
           "isVoucher": false,
           "isSubsidize": false,
-          "status": "PAID",
+          "status": "SUCCESS",
           "PaymentSessionKey": 0,
           "PartnerTransID": null,
           "listVoucher": null
@@ -1457,17 +1154,17 @@
       "OrderPaymentsHistory": [],
       "Voucher": [],
       "PaymentSession": {
-        "SessionId": 19544,
-        "PaidGuid": "898196a7-8a82-40a1-9028-e9fc2b29ffd0",
+        "SessionId": 19606,
+        "PaidGuid": "0a6454de-36a0-4d30-8f62-a3e0c748b731",
         "LastStatus": null,
         "CurrentStatus": 1,
-        "CreateDateTime": "2020-02-18T12:53:00",
+        "CreateDateTime": "2020-03-11T18:24:00",
         "ModifiedDateTime": null,
         "Movements": [
           {
             "Description": "Open",
             "Status": 1,
-            "DateTime": "2020-02-18T12:53:00"
+            "DateTime": "2020-03-11T18:24:00"
           }
         ]
       },
@@ -1482,11 +1179,11 @@
         "GatewayBuyerId": null,
         "GatewayBarcode": null,
         "Cashier": {
-          "MachineNo": "QATEST1   ",
-          "MachineTaxNo": "QATEST1        ",
+          "MachineNo": "MPOSDEV   ",
+          "MachineTaxNo": "C01005000200359",
           "EmployeeNo": "K         ",
           "IPNo": null,
-          "MachineDateTime": "2020-02-18T12:53:00"
+          "MachineDateTime": "2020-03-11T18:25:00"
         },
         "MerchantId": null,
         "PartnerTransId": null,
@@ -1504,14 +1201,14 @@
               "Desc": "THAI BAHT"
             },
             "CurrRate": 1,
-            "CurrAmt": 33790,
+            "CurrAmt": 1,
             "CurrAmtForCal": 0,
             "BaseCurrCode": {
               "Code": "THB",
               "Desc": "THAI BAHT"
             },
             "BaseCurrRate": 1,
-            "BaseCurrAmt": 33790,
+            "BaseCurrAmt": 1,
             "BaseCurrAmtForCal": 0
           },
           "DiscountAmount": {
@@ -1538,14 +1235,14 @@
               "Desc": "THAI BAHT"
             },
             "CurrRate": 1,
-            "CurrAmt": 2210.56,
+            "CurrAmt": 0.07,
             "CurrAmtForCal": 0,
             "BaseCurrCode": {
               "Code": "THB",
               "Desc": "THAI BAHT"
             },
             "BaseCurrRate": 1,
-            "BaseCurrAmt": 2210.56,
+            "BaseCurrAmt": 0.07,
             "BaseCurrAmtForCal": 0
           },
           "NetAmount": {
@@ -1554,14 +1251,14 @@
               "Desc": "THAI BAHT"
             },
             "CurrRate": 1,
-            "CurrAmt": 33790,
+            "CurrAmt": 1,
             "CurrAmtForCal": 0,
             "BaseCurrCode": {
               "Code": "THB",
               "Desc": "THAI BAHT"
             },
             "BaseCurrRate": 1,
-            "BaseCurrAmt": 33790,
+            "BaseCurrAmt": 1,
             "BaseCurrAmtForCal": 0
           }
         }
@@ -1569,7 +1266,3835 @@
       "isRequireSignature": false,
       "OrderSignatures": [],
       "isRefund": false,
-      "isFinish": false,
+      "isFinish": true,
+      "isChange": false,
+      "isExtConsolidate": false,
+      "isNotAllowSMC": false,
+      "isBirthday": false,
+      "UseBirthday": false,
+      "isCheckOut": true,
+      "listSubsidize": null,
+      "GWPDetails": []
+    },
+    {
+      "Guid": "55585537-79db-4e1d-aebe-874fe67a7363",
+      "CreateDate": "2020-03-11T18:15:00",
+      "ModifiedDate": "2020-03-11T18:16:00",
+      "Consolidate": false,
+      "HeaderAttributes": [
+        {
+          "Group": "location",
+          "Code": "branch_no",
+          "Value": null,
+          "ValueOfString": "40",
+          "ValueOfDecimal": null,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        },
+        {
+          "Group": "tran_no",
+          "Code": "shopping_card",
+          "Value": null,
+          "ValueOfString": "3600000711400",
+          "ValueOfDecimal": null,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        },
+        {
+          "Group": "tran_no",
+          "Code": "order_no",
+          "Value": null,
+          "ValueOfString": null,
+          "ValueOfDecimal": 17,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        },
+        {
+          "Group": "tran_no",
+          "Code": "shop_ref",
+          "Value": null,
+          "ValueOfString": "             ",
+          "ValueOfDecimal": null,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        },
+        {
+          "Group": "property",
+          "Code": "status",
+          "Value": null,
+          "ValueOfString": "E",
+          "ValueOfDecimal": null,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        }
+      ],
+      "BillingQuantities": [
+        {
+          "Quantity": 0,
+          "UOM": ""
+        },
+        {
+          "Quantity": 1,
+          "UOM": "EA"
+        }
+      ],
+      "CustomerDetail": {
+        "CustomerType": {
+          "Code": "FIT",
+          "Desc": "FREE INDEPENDENCE TOUR"
+        },
+        "CustomerName": "METINEE AUTTHAMETASIT_TEST",
+        "Nationality": {
+          "Code": "THA",
+          "Desc": "THAILAND"
+        },
+        "CommissionGroup": {
+          "Group": {
+            "Code": "",
+            "Desc": ""
+          },
+          "Source": null
+        },
+        "CustomerAttributes": [
+          {
+            "Group": "flight",
+            "Code": "airline_code",
+            "Value": null,
+            "ValueOfString": "OP",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "flight_code",
+            "Value": null,
+            "ValueOfString": "000",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "flight_date",
+            "Value": null,
+            "ValueOfString": null,
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": "2020-03-12T00:00:00",
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "flight_time",
+            "Value": null,
+            "ValueOfString": "00:00",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": "00:00:00",
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "arrdep_airport_code",
+            "Value": null,
+            "ValueOfString": "DDC",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "dest_airport_code",
+            "Value": null,
+            "ValueOfString": "DDC",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "tran_no",
+            "Code": "shopping_card",
+            "Value": null,
+            "ValueOfString": "3600000711400",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "tran_no",
+            "Code": "passport_no",
+            "Value": null,
+            "ValueOfString": "AAYU4989",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "tran_no",
+            "Code": "member_id",
+            "Value": null,
+            "ValueOfString": "",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          }
+        ]
+      },
+      "OrderDetails": [
+        {
+          "Guid": "7369bfa8-f9bf-4370-bc6d-df9a05dcd608",
+          "LineNo": 1,
+          "BarCode": null,
+          "BillingQuantity": {
+            "Quantity": 1,
+            "UOM": "EA"
+          },
+          "BillingAmount": {
+            "TotalAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 1,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 1
+            },
+            "DiscountAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 0,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 0,
+              "BaseCurrAmtForCal": 0
+            },
+            "ValueAdjusts": [],
+            "PercentDiscount": 0,
+            "VATAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 0.07,
+              "CurrAmtForCal": 0.07,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 0.07,
+              "BaseCurrAmtForCal": 0.07
+            },
+            "NetAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 1,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 1
+            }
+          },
+          "Promotion": {
+            "Code": "          ",
+            "Desc": "          "
+          },
+          "SubOrderType": {
+            "Code": "T ",
+            "Desc": "TAKE                "
+          },
+          "IsFreeze": false,
+          "IsLockDiscount": false,
+          "IsConsolidate": false,
+          "IsExtConsolidate": false,
+          "IsCancel": false,
+          "IsBinManagement": false,
+          "IsBasket": true,
+          "ItemDetail": {
+            "MC": [
+              {
+                "Code": "351",
+                "Desc": "Local Electronics"
+              },
+              {
+                "Code": "351002",
+                "Desc": "Accessories"
+              },
+              {
+                "Code": "351002B07",
+                "Desc": "Bluetooth"
+              }
+            ],
+            "Cate": {
+              "Code": "351",
+              "Desc": "Local Electronics"
+            },
+            "Section": {
+              "Code": "351002",
+              "Desc": "Accessories"
+            },
+            "SubSection": {
+              "Code": "351002B07",
+              "Desc": "Bluetooth"
+            },
+            "ItemType": {
+              "Code": null,
+              "Desc": null
+            },
+            "Item": {
+              "Code": "000000000008211470",
+              "Desc": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT"
+            },
+            "Detail": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT",
+            "BaseUnitPrice": 1,
+            "UnitPrice": 1,
+            "Brand": {
+              "Code": "JAB",
+              "Desc": "JAB"
+            },
+            "MaxPercentDiscount": 0,
+            "VAT": {
+              "Code": "1",
+              "Desc": "VAT 7 %                                           "
+            },
+            "VATRate": 7,
+            "ItemAttributes": [
+              {
+                "Group": null,
+                "Code": "collect_status",
+                "Value": null,
+                "ValueOfString": "T",
+                "ValueOfDecimal": null,
+                "ValueOfDateTime": null,
+                "ValueOfTime": null,
+                "DataType": null
+              }
+            ]
+          },
+          "Seller": {
+            "MachineNo": "MPOSDEV   ",
+            "MachineTaxNo": "C01005000200359",
+            "EmployeeNo": "K",
+            "IPNo": null,
+            "MachineDateTime": "2020-03-11T18:16:00"
+          },
+          "lineItemDatabase": 1,
+          "DetailAttributes": null
+        }
+      ],
+      "BillingAmount": {
+        "TotalAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "DiscountAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "ValueAdjusts": null,
+        "PercentDiscount": 0,
+        "VATAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "NetAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        }
+      },
+      "BasketBillingAmount": {
+        "TotalAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        },
+        "DiscountAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "ValueAdjusts": null,
+        "PercentDiscount": 0,
+        "VATAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0.07,
+          "CurrAmtForCal": 0.07,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0.07,
+          "BaseCurrAmtForCal": 0.07
+        },
+        "NetAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        }
+      },
+      "TotalBillingAmount": {
+        "DiscountSpecial": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "PercentDiscountSpecial": 0,
+        "CurrentValueAdjust": null,
+        "TotalSubsidize": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "TotalPaid": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        },
+        "TotalNetPay": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        },
+        "TotalAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        },
+        "DiscountAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "ValueAdjusts": [],
+        "PercentDiscount": 0,
+        "VATAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0.07,
+          "CurrAmtForCal": 0.07,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0.07,
+          "BaseCurrAmtForCal": 0.07
+        },
+        "NetAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        }
+      },
+      "RemainingAmount": {
+        "TotalAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "DiscountAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "ValueAdjusts": null,
+        "PercentDiscount": 0,
+        "VATAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "NetAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        }
+      },
+      "ChangeAmount": {
+        "totalChange": 0,
+        "totalLocalChange": 0,
+        "totalamount": 0,
+        "CurrCode": {
+          "Code": "THB",
+          "Desc": "THAI BAHT"
+        },
+        "CurrRate": 1,
+        "CurrAmt": 0,
+        "CurrAmtForCal": 0,
+        "BaseCurrCode": {
+          "Code": "THB",
+          "Desc": "THAI BAHT"
+        },
+        "BaseCurrRate": 1,
+        "BaseCurrAmt": 0,
+        "BaseCurrAmtForCal": 0
+      },
+      "OrderInvoices": [
+        {
+          "Guid": "fb70683f-c30c-49c2-87f9-3ca123a1b4eb",
+          "InvoiceNo": "1",
+          "TaxInvoiceType": {
+            "Code": "N",
+            "Desc": null
+          },
+          "TaxInvoiceNo": null,
+          "TaxAbbNo": "00066     ",
+          "ClaimcheckNo": "00066     ",
+          "RunningNo": null,
+          "RecNo": "143312",
+          "PackingNo": "M000143312",
+          "PickupCode": "",
+          "HangingNo": "",
+          "SubOrderType": {
+            "Code": "T ",
+            "Desc": "T "
+          },
+          "Amount": null,
+          "Cashier": {
+            "MachineNo": "MPOSDEV",
+            "MachineTaxNo": "C01005000200359",
+            "EmployeeNo": "K",
+            "IPNo": "MPOSDEV",
+            "MachineDateTime": "2020-03-11T18:16:00"
+          },
+          "StepInvoice": null,
+          "RunnerBy": null,
+          "RunnerDateTime": "0001-01-01T00:00:00",
+          "Box": null,
+          "BoxBy": null,
+          "BoxDateTime": "0001-01-01T00:00:00",
+          "Trip": null,
+          "Truck": null,
+          "TruckBy": null,
+          "TruckDateTime": "0001-01-01T00:00:00",
+          "BillingQuantity": {
+            "Quantity": 1,
+            "UOM": "EA"
+          },
+          "BillingAmount": {
+            "TotalAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 0
+            },
+            "DiscountAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 0,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 0,
+              "BaseCurrAmtForCal": 0
+            },
+            "ValueAdjusts": null,
+            "PercentDiscount": 0,
+            "VATAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 0.07,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 0.07,
+              "BaseCurrAmtForCal": 0
+            },
+            "NetAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 0
+            }
+          },
+          "IssuedType": "",
+          "IssuedDetail": "",
+          "OrderDetails": [
+            {
+              "Guid": "7369bfa8-f9bf-4370-bc6d-df9a05dcd608",
+              "LineNo": 1,
+              "BarCode": null,
+              "BillingQuantity": {
+                "Quantity": 1,
+                "UOM": "EA"
+              },
+              "BillingAmount": {
+                "TotalAmount": {
+                  "CurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "CurrRate": 1,
+                  "CurrAmt": 1,
+                  "CurrAmtForCal": 1,
+                  "BaseCurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "BaseCurrRate": 1,
+                  "BaseCurrAmt": 1,
+                  "BaseCurrAmtForCal": 1
+                },
+                "DiscountAmount": {
+                  "CurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "CurrRate": 1,
+                  "CurrAmt": 0,
+                  "CurrAmtForCal": 0,
+                  "BaseCurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "BaseCurrRate": 1,
+                  "BaseCurrAmt": 0,
+                  "BaseCurrAmtForCal": 0
+                },
+                "ValueAdjusts": [],
+                "PercentDiscount": 0,
+                "VATAmount": {
+                  "CurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "CurrRate": 1,
+                  "CurrAmt": 0.07,
+                  "CurrAmtForCal": 0.07,
+                  "BaseCurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "BaseCurrRate": 1,
+                  "BaseCurrAmt": 0.07,
+                  "BaseCurrAmtForCal": 0.07
+                },
+                "NetAmount": {
+                  "CurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "CurrRate": 1,
+                  "CurrAmt": 1,
+                  "CurrAmtForCal": 1,
+                  "BaseCurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "BaseCurrRate": 1,
+                  "BaseCurrAmt": 1,
+                  "BaseCurrAmtForCal": 1
+                }
+              },
+              "Promotion": {
+                "Code": "          ",
+                "Desc": "          "
+              },
+              "SubOrderType": {
+                "Code": "T ",
+                "Desc": "TAKE                "
+              },
+              "IsFreeze": false,
+              "IsLockDiscount": false,
+              "IsConsolidate": false,
+              "IsExtConsolidate": false,
+              "IsCancel": false,
+              "IsBinManagement": false,
+              "IsBasket": true,
+              "ItemDetail": {
+                "MC": [
+                  {
+                    "Code": "351",
+                    "Desc": "Local Electronics"
+                  },
+                  {
+                    "Code": "351002",
+                    "Desc": "Accessories"
+                  },
+                  {
+                    "Code": "351002B07",
+                    "Desc": "Bluetooth"
+                  }
+                ],
+                "Cate": {
+                  "Code": "351",
+                  "Desc": "Local Electronics"
+                },
+                "Section": {
+                  "Code": "351002",
+                  "Desc": "Accessories"
+                },
+                "SubSection": {
+                  "Code": "351002B07",
+                  "Desc": "Bluetooth"
+                },
+                "ItemType": {
+                  "Code": null,
+                  "Desc": null
+                },
+                "Item": {
+                  "Code": "000000000008211470",
+                  "Desc": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT"
+                },
+                "Detail": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT",
+                "BaseUnitPrice": 1,
+                "UnitPrice": 1,
+                "Brand": {
+                  "Code": "JAB",
+                  "Desc": "JAB"
+                },
+                "MaxPercentDiscount": 0,
+                "VAT": {
+                  "Code": "1",
+                  "Desc": "VAT 7 %                                           "
+                },
+                "VATRate": 7,
+                "ItemAttributes": [
+                  {
+                    "Group": null,
+                    "Code": "collect_status",
+                    "Value": null,
+                    "ValueOfString": "T",
+                    "ValueOfDecimal": null,
+                    "ValueOfDateTime": null,
+                    "ValueOfTime": null,
+                    "DataType": null
+                  }
+                ]
+              },
+              "Seller": {
+                "MachineNo": "MPOSDEV   ",
+                "MachineTaxNo": "C01005000200359",
+                "EmployeeNo": "K",
+                "IPNo": null,
+                "MachineDateTime": "2020-03-11T18:16:00"
+              },
+              "lineItemDatabase": 1,
+              "DetailAttributes": null
+            }
+          ],
+          "OrderPayments": [
+            {
+              "Guid": "112f62f3-f569-4cc9-b2f4-08cdfc1b4b93",
+              "LineNo": 1,
+              "PaymentIcon": null,
+              "GatewayId": 0,
+              "PaymentCode": "ALI       ",
+              "PaymentType": "ALI     ",
+              "RefNo": null,
+              "CardHolderName": "284501716984436476",
+              "ApproveCode": null,
+              "BankOfEDC": null,
+              "IssuerID": null,
+              "AliBarcode": null,
+              "AliMerchantID": null,
+              "AliTransID": null,
+              "AlipayCancel": false,
+              "WalletBarcode": null,
+              "WalletMerchantID": null,
+              "WalletTransID": null,
+              "isDCC": false,
+              "isCheckVoucher": false,
+              "isFixAmount": false,
+              "isNotAllowSMC": false,
+              "isComplese": null,
+              "URLService": null,
+              "PaymentAmounts": {
+                "CurrCode": {
+                  "Code": null,
+                  "Desc": null
+                },
+                "CurrRate": 0,
+                "CurrAmt": 0,
+                "CurrAmtForCal": 0,
+                "BaseCurrCode": {
+                  "Code": "THB",
+                  "Desc": "THAI BAHT"
+                },
+                "BaseCurrRate": 1,
+                "BaseCurrAmt": 1,
+                "BaseCurrAmtForCal": 0
+              },
+              "Transaction": null,
+              "isVoucher": false,
+              "isSubsidize": false,
+              "status": null,
+              "PaymentSessionKey": 0,
+              "PartnerTransID": null,
+              "listVoucher": null
+            }
+          ]
+        }
+      ],
+      "OrderPayments": [
+        {
+          "Guid": "208287a6-f49a-425c-8761-b025f835d274",
+          "LineNo": 1,
+          "PaymentIcon": null,
+          "GatewayId": 0,
+          "PaymentCode": "ALI       ",
+          "PaymentType": "ALI     ",
+          "RefNo": null,
+          "CardHolderName": "284501716984436476",
+          "ApproveCode": null,
+          "BankOfEDC": "ALISCB",
+          "IssuerID": null,
+          "AliBarcode": null,
+          "AliMerchantID": null,
+          "AliTransID": null,
+          "AlipayCancel": false,
+          "WalletBarcode": null,
+          "WalletMerchantID": null,
+          "WalletTransID": null,
+          "isDCC": false,
+          "isCheckVoucher": false,
+          "isFixAmount": false,
+          "isNotAllowSMC": false,
+          "isComplese": null,
+          "URLService": null,
+          "PaymentAmounts": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THB"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 1,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 1,
+            "BaseCurrAmtForCal": 0
+          },
+          "Transaction": {
+            "TransactionId": 18669,
+            "TransactionGroup": 2,
+            "TransactionType": 1,
+            "PartnerGroup": null,
+            "PartnerType": 0,
+            "PartnerId": 9,
+            "GatewaySessionKey": 627,
+            "GatewayBuyerId": "mer***@alitest.*",
+            "GatewayBarcode": "284501716984436476",
+            "Cashier": {
+              "MachineNo": "MPOSDEV",
+              "MachineTaxNo": "C01005000200359",
+              "EmployeeNo": "K",
+              "IPNo": "127.0.0.1",
+              "MachineDateTime": "2020-03-11T18:16:00"
+            },
+            "MerchantId": "9990001_89990001",
+            "PartnerTransId": "40-MPOSDEV-0000000005601",
+            "LastStatus": 6,
+            "CurrentStatus": 6,
+            "CreateDateTime": "2020-03-11T18:16:00",
+            "ModifiedDateTime": "2020-03-11T18:16:00",
+            "PrintSlip": true,
+            "PrintSlipText": "\u001b!!\u0001  ALIPAY INVOICE\r\n\r\n\u001b!\u0001                       PLS KEEP \r\n--------------------------------\r\nMERCHANT.NAME : KING POWER\r\nKPG POS.NO : MPOSDEV\r\nREF.NO : 3600000711400-17\r\nDATE : 11/03/2020\r\nTIME : 18:07:55\r\nTRANS.TYPE : QR-PAY\r\n--------------------------------\r\nCHANNEL : ALIPAY / SCB\r\nACCOUNT : mer***@alitest.*\r\nAMOUNT (THB) : \u001b!!1.00\r\n\u001b!\u0001AMOUNT (RMB) : 0.22\r\nRATE : 4.504100\r\nNO. : 40-MPOSDEV-0000000005601\r\nBARCODE : 284501716984436476\r\n--------------------------------\r\nOPERATOR : MPOSDEV\r\n--------------------------------",
+            "Movements": [
+              {
+                "TransactionMovementType": 1,
+                "Amount": 1,
+                "Currency": {
+                  "Code": "BAHT ",
+                  "Desc": "THAI BAHT                                         "
+                },
+                "CurrencyRate": 1,
+                "Description": null,
+                "Status": 1,
+                "DateTime": "2020-03-11T18:16:00"
+              },
+              {
+                "TransactionMovementType": 2,
+                "Amount": 1,
+                "Currency": {
+                  "Code": "BAHT ",
+                  "Desc": "THAI BAHT                                         "
+                },
+                "CurrencyRate": 1,
+                "Description": null,
+                "Status": 6,
+                "DateTime": "2020-03-11T18:16:00"
+              },
+              {
+                "TransactionMovementType": 1,
+                "Amount": 0,
+                "Currency": null,
+                "CurrencyRate": 0,
+                "Description": null,
+                "Status": 6,
+                "DateTime": "2020-03-11T18:16:00"
+              },
+              {
+                "TransactionMovementType": 2,
+                "Amount": 1,
+                "Currency": {
+                  "Code": "BAHT ",
+                  "Desc": "THAI BAHT                                         "
+                },
+                "CurrencyRate": 1,
+                "Description": null,
+                "Status": 6,
+                "DateTime": "2020-03-11T18:16:00"
+              }
+            ],
+            "BillingAmount": null
+          },
+          "isVoucher": false,
+          "isSubsidize": false,
+          "status": "SUCCESS",
+          "PaymentSessionKey": 0,
+          "PartnerTransID": null,
+          "listVoucher": null
+        }
+      ],
+      "OrderPaymentsHistory": [],
+      "Voucher": [],
+      "PaymentSession": {
+        "SessionId": 19605,
+        "PaidGuid": "931a24ac-7098-4633-a3ed-dd7aa88b7b4b",
+        "LastStatus": null,
+        "CurrentStatus": 1,
+        "CreateDateTime": "2020-03-11T18:16:00",
+        "ModifiedDateTime": null,
+        "Movements": [
+          {
+            "Description": "Open",
+            "Status": 1,
+            "DateTime": "2020-03-11T18:16:00"
+          }
+        ]
+      },
+      "PaymentTransaction": {
+        "TransactionId": null,
+        "TransactionGroup": null,
+        "TransactionType": null,
+        "PartnerGroup": null,
+        "PartnerType": null,
+        "PartnerId": 0,
+        "GatewaySessionKey": null,
+        "GatewayBuyerId": null,
+        "GatewayBarcode": null,
+        "Cashier": {
+          "MachineNo": "MPOSDEV   ",
+          "MachineTaxNo": "C01005000200359",
+          "EmployeeNo": "K         ",
+          "IPNo": null,
+          "MachineDateTime": "2020-03-11T18:16:00"
+        },
+        "MerchantId": null,
+        "PartnerTransId": null,
+        "LastStatus": null,
+        "CurrentStatus": 0,
+        "CreateDateTime": "0001-01-01T00:00:00",
+        "ModifiedDateTime": null,
+        "PrintSlip": false,
+        "PrintSlipText": null,
+        "Movements": null,
+        "BillingAmount": {
+          "TotalAmount": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 1,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 1,
+            "BaseCurrAmtForCal": 0
+          },
+          "DiscountAmount": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 0,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 0,
+            "BaseCurrAmtForCal": 0
+          },
+          "ValueAdjusts": null,
+          "PercentDiscount": 0,
+          "VATAmount": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 0.07,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 0.07,
+            "BaseCurrAmtForCal": 0
+          },
+          "NetAmount": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 1,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 1,
+            "BaseCurrAmtForCal": 0
+          }
+        }
+      },
+      "isRequireSignature": false,
+      "OrderSignatures": [],
+      "isRefund": false,
+      "isFinish": true,
+      "isChange": false,
+      "isExtConsolidate": false,
+      "isNotAllowSMC": false,
+      "isBirthday": false,
+      "UseBirthday": false,
+      "isCheckOut": true,
+      "listSubsidize": null,
+      "GWPDetails": []
+    },
+    {
+      "Guid": "b91b048f-c47a-4786-9bf1-6ba5572a97b9",
+      "CreateDate": "2020-03-11T17:30:00",
+      "ModifiedDate": "2020-03-11T17:36:00",
+      "Consolidate": false,
+      "HeaderAttributes": [
+        {
+          "Group": "location",
+          "Code": "branch_no",
+          "Value": null,
+          "ValueOfString": "40",
+          "ValueOfDecimal": null,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        },
+        {
+          "Group": "tran_no",
+          "Code": "shopping_card",
+          "Value": null,
+          "ValueOfString": "3600000711400",
+          "ValueOfDecimal": null,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        },
+        {
+          "Group": "tran_no",
+          "Code": "order_no",
+          "Value": null,
+          "ValueOfString": null,
+          "ValueOfDecimal": 16,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        },
+        {
+          "Group": "tran_no",
+          "Code": "shop_ref",
+          "Value": null,
+          "ValueOfString": "             ",
+          "ValueOfDecimal": null,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        },
+        {
+          "Group": "property",
+          "Code": "status",
+          "Value": null,
+          "ValueOfString": "E",
+          "ValueOfDecimal": null,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        }
+      ],
+      "BillingQuantities": [
+        {
+          "Quantity": 0,
+          "UOM": ""
+        },
+        {
+          "Quantity": 1,
+          "UOM": "EA"
+        }
+      ],
+      "CustomerDetail": {
+        "CustomerType": {
+          "Code": "FIT",
+          "Desc": "FREE INDEPENDENCE TOUR"
+        },
+        "CustomerName": "METINEE AUTTHAMETASIT_TEST",
+        "Nationality": {
+          "Code": "THA",
+          "Desc": "THAILAND"
+        },
+        "CommissionGroup": {
+          "Group": {
+            "Code": "",
+            "Desc": ""
+          },
+          "Source": null
+        },
+        "CustomerAttributes": [
+          {
+            "Group": "flight",
+            "Code": "airline_code",
+            "Value": null,
+            "ValueOfString": "OP",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "flight_code",
+            "Value": null,
+            "ValueOfString": "000",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "flight_date",
+            "Value": null,
+            "ValueOfString": null,
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": "2020-03-12T00:00:00",
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "flight_time",
+            "Value": null,
+            "ValueOfString": "00:00",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": "00:00:00",
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "arrdep_airport_code",
+            "Value": null,
+            "ValueOfString": "DDC",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "dest_airport_code",
+            "Value": null,
+            "ValueOfString": "DDC",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "tran_no",
+            "Code": "shopping_card",
+            "Value": null,
+            "ValueOfString": "3600000711400",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "tran_no",
+            "Code": "passport_no",
+            "Value": null,
+            "ValueOfString": "AAYU4989",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "tran_no",
+            "Code": "member_id",
+            "Value": null,
+            "ValueOfString": "",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          }
+        ]
+      },
+      "OrderDetails": [
+        {
+          "Guid": "a4879949-534d-455d-bf70-de0ed2a0d1bc",
+          "LineNo": 1,
+          "BarCode": null,
+          "BillingQuantity": {
+            "Quantity": 1,
+            "UOM": "EA"
+          },
+          "BillingAmount": {
+            "TotalAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 1,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 1
+            },
+            "DiscountAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 0,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 0,
+              "BaseCurrAmtForCal": 0
+            },
+            "ValueAdjusts": [],
+            "PercentDiscount": 0,
+            "VATAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 0.07,
+              "CurrAmtForCal": 0.07,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 0.07,
+              "BaseCurrAmtForCal": 0.07
+            },
+            "NetAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 1,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 1
+            }
+          },
+          "Promotion": {
+            "Code": "          ",
+            "Desc": "          "
+          },
+          "SubOrderType": {
+            "Code": "T ",
+            "Desc": "TAKE                "
+          },
+          "IsFreeze": false,
+          "IsLockDiscount": false,
+          "IsConsolidate": false,
+          "IsExtConsolidate": false,
+          "IsCancel": false,
+          "IsBinManagement": false,
+          "IsBasket": true,
+          "ItemDetail": {
+            "MC": [
+              {
+                "Code": "351",
+                "Desc": "Local Electronics"
+              },
+              {
+                "Code": "351002",
+                "Desc": "Accessories"
+              },
+              {
+                "Code": "351002B07",
+                "Desc": "Bluetooth"
+              }
+            ],
+            "Cate": {
+              "Code": "351",
+              "Desc": "Local Electronics"
+            },
+            "Section": {
+              "Code": "351002",
+              "Desc": "Accessories"
+            },
+            "SubSection": {
+              "Code": "351002B07",
+              "Desc": "Bluetooth"
+            },
+            "ItemType": {
+              "Code": null,
+              "Desc": null
+            },
+            "Item": {
+              "Code": "000000000008211470",
+              "Desc": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT"
+            },
+            "Detail": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT",
+            "BaseUnitPrice": 1,
+            "UnitPrice": 1,
+            "Brand": {
+              "Code": "JAB",
+              "Desc": "JAB"
+            },
+            "MaxPercentDiscount": 0,
+            "VAT": {
+              "Code": "1",
+              "Desc": "VAT 7 %                                           "
+            },
+            "VATRate": 7,
+            "ItemAttributes": [
+              {
+                "Group": null,
+                "Code": "collect_status",
+                "Value": null,
+                "ValueOfString": "T",
+                "ValueOfDecimal": null,
+                "ValueOfDateTime": null,
+                "ValueOfTime": null,
+                "DataType": null
+              }
+            ]
+          },
+          "Seller": {
+            "MachineNo": "MPOSDEV   ",
+            "MachineTaxNo": "C01005000200359",
+            "EmployeeNo": "K",
+            "IPNo": null,
+            "MachineDateTime": "2020-03-11T17:36:00"
+          },
+          "lineItemDatabase": 1,
+          "DetailAttributes": null
+        }
+      ],
+      "BillingAmount": {
+        "TotalAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "DiscountAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "ValueAdjusts": null,
+        "PercentDiscount": 0,
+        "VATAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "NetAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        }
+      },
+      "BasketBillingAmount": {
+        "TotalAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        },
+        "DiscountAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "ValueAdjusts": null,
+        "PercentDiscount": 0,
+        "VATAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0.07,
+          "CurrAmtForCal": 0.07,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0.07,
+          "BaseCurrAmtForCal": 0.07
+        },
+        "NetAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        }
+      },
+      "TotalBillingAmount": {
+        "DiscountSpecial": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "PercentDiscountSpecial": 0,
+        "CurrentValueAdjust": null,
+        "TotalSubsidize": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "TotalPaid": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        },
+        "TotalNetPay": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        },
+        "TotalAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        },
+        "DiscountAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "ValueAdjusts": [],
+        "PercentDiscount": 0,
+        "VATAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0.07,
+          "CurrAmtForCal": 0.07,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0.07,
+          "BaseCurrAmtForCal": 0.07
+        },
+        "NetAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        }
+      },
+      "RemainingAmount": {
+        "TotalAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "DiscountAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "ValueAdjusts": null,
+        "PercentDiscount": 0,
+        "VATAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "NetAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        }
+      },
+      "ChangeAmount": {
+        "totalChange": 0,
+        "totalLocalChange": 0,
+        "totalamount": 0,
+        "CurrCode": {
+          "Code": "THB",
+          "Desc": "THAI BAHT"
+        },
+        "CurrRate": 1,
+        "CurrAmt": 0,
+        "CurrAmtForCal": 0,
+        "BaseCurrCode": {
+          "Code": "THB",
+          "Desc": "THAI BAHT"
+        },
+        "BaseCurrRate": 1,
+        "BaseCurrAmt": 0,
+        "BaseCurrAmtForCal": 0
+      },
+      "OrderInvoices": [
+        {
+          "Guid": "d212cc02-d2bf-4c9d-b000-4fb1229af2fd",
+          "InvoiceNo": "1",
+          "TaxInvoiceType": {
+            "Code": "N",
+            "Desc": null
+          },
+          "TaxInvoiceNo": null,
+          "TaxAbbNo": "00065     ",
+          "ClaimcheckNo": "00065     ",
+          "RunningNo": null,
+          "RecNo": "143311",
+          "PackingNo": "M000143311",
+          "PickupCode": "",
+          "HangingNo": "",
+          "SubOrderType": {
+            "Code": "T ",
+            "Desc": "T "
+          },
+          "Amount": null,
+          "Cashier": {
+            "MachineNo": "MPOSDEV",
+            "MachineTaxNo": "C01005000200359",
+            "EmployeeNo": "K",
+            "IPNo": "MPOSDEV",
+            "MachineDateTime": "2020-03-11T17:36:00"
+          },
+          "StepInvoice": null,
+          "RunnerBy": null,
+          "RunnerDateTime": "0001-01-01T00:00:00",
+          "Box": null,
+          "BoxBy": null,
+          "BoxDateTime": "0001-01-01T00:00:00",
+          "Trip": null,
+          "Truck": null,
+          "TruckBy": null,
+          "TruckDateTime": "0001-01-01T00:00:00",
+          "BillingQuantity": {
+            "Quantity": 1,
+            "UOM": "EA"
+          },
+          "BillingAmount": {
+            "TotalAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 0
+            },
+            "DiscountAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 0,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 0,
+              "BaseCurrAmtForCal": 0
+            },
+            "ValueAdjusts": null,
+            "PercentDiscount": 0,
+            "VATAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 0.07,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 0.07,
+              "BaseCurrAmtForCal": 0
+            },
+            "NetAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 0
+            }
+          },
+          "IssuedType": "",
+          "IssuedDetail": "",
+          "OrderDetails": [
+            {
+              "Guid": "a4879949-534d-455d-bf70-de0ed2a0d1bc",
+              "LineNo": 1,
+              "BarCode": null,
+              "BillingQuantity": {
+                "Quantity": 1,
+                "UOM": "EA"
+              },
+              "BillingAmount": {
+                "TotalAmount": {
+                  "CurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "CurrRate": 1,
+                  "CurrAmt": 1,
+                  "CurrAmtForCal": 1,
+                  "BaseCurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "BaseCurrRate": 1,
+                  "BaseCurrAmt": 1,
+                  "BaseCurrAmtForCal": 1
+                },
+                "DiscountAmount": {
+                  "CurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "CurrRate": 1,
+                  "CurrAmt": 0,
+                  "CurrAmtForCal": 0,
+                  "BaseCurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "BaseCurrRate": 1,
+                  "BaseCurrAmt": 0,
+                  "BaseCurrAmtForCal": 0
+                },
+                "ValueAdjusts": [],
+                "PercentDiscount": 0,
+                "VATAmount": {
+                  "CurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "CurrRate": 1,
+                  "CurrAmt": 0.07,
+                  "CurrAmtForCal": 0.07,
+                  "BaseCurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "BaseCurrRate": 1,
+                  "BaseCurrAmt": 0.07,
+                  "BaseCurrAmtForCal": 0.07
+                },
+                "NetAmount": {
+                  "CurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "CurrRate": 1,
+                  "CurrAmt": 1,
+                  "CurrAmtForCal": 1,
+                  "BaseCurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "BaseCurrRate": 1,
+                  "BaseCurrAmt": 1,
+                  "BaseCurrAmtForCal": 1
+                }
+              },
+              "Promotion": {
+                "Code": "          ",
+                "Desc": "          "
+              },
+              "SubOrderType": {
+                "Code": "T ",
+                "Desc": "TAKE                "
+              },
+              "IsFreeze": false,
+              "IsLockDiscount": false,
+              "IsConsolidate": false,
+              "IsExtConsolidate": false,
+              "IsCancel": false,
+              "IsBinManagement": false,
+              "IsBasket": true,
+              "ItemDetail": {
+                "MC": [
+                  {
+                    "Code": "351",
+                    "Desc": "Local Electronics"
+                  },
+                  {
+                    "Code": "351002",
+                    "Desc": "Accessories"
+                  },
+                  {
+                    "Code": "351002B07",
+                    "Desc": "Bluetooth"
+                  }
+                ],
+                "Cate": {
+                  "Code": "351",
+                  "Desc": "Local Electronics"
+                },
+                "Section": {
+                  "Code": "351002",
+                  "Desc": "Accessories"
+                },
+                "SubSection": {
+                  "Code": "351002B07",
+                  "Desc": "Bluetooth"
+                },
+                "ItemType": {
+                  "Code": null,
+                  "Desc": null
+                },
+                "Item": {
+                  "Code": "000000000008211470",
+                  "Desc": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT"
+                },
+                "Detail": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT",
+                "BaseUnitPrice": 1,
+                "UnitPrice": 1,
+                "Brand": {
+                  "Code": "JAB",
+                  "Desc": "JAB"
+                },
+                "MaxPercentDiscount": 0,
+                "VAT": {
+                  "Code": "1",
+                  "Desc": "VAT 7 %                                           "
+                },
+                "VATRate": 7,
+                "ItemAttributes": [
+                  {
+                    "Group": null,
+                    "Code": "collect_status",
+                    "Value": null,
+                    "ValueOfString": "T",
+                    "ValueOfDecimal": null,
+                    "ValueOfDateTime": null,
+                    "ValueOfTime": null,
+                    "DataType": null
+                  }
+                ]
+              },
+              "Seller": {
+                "MachineNo": "MPOSDEV   ",
+                "MachineTaxNo": "C01005000200359",
+                "EmployeeNo": "K",
+                "IPNo": null,
+                "MachineDateTime": "2020-03-11T17:36:00"
+              },
+              "lineItemDatabase": 1,
+              "DetailAttributes": null
+            }
+          ],
+          "OrderPayments": [
+            {
+              "Guid": "5c5c57a5-26af-4d92-bc4d-b631bf9e3e6f",
+              "LineNo": 1,
+              "PaymentIcon": null,
+              "GatewayId": 0,
+              "PaymentCode": "ALI       ",
+              "PaymentType": "ALI     ",
+              "RefNo": null,
+              "CardHolderName": "288114730597897778",
+              "ApproveCode": null,
+              "BankOfEDC": null,
+              "IssuerID": null,
+              "AliBarcode": null,
+              "AliMerchantID": null,
+              "AliTransID": null,
+              "AlipayCancel": false,
+              "WalletBarcode": null,
+              "WalletMerchantID": null,
+              "WalletTransID": null,
+              "isDCC": false,
+              "isCheckVoucher": false,
+              "isFixAmount": false,
+              "isNotAllowSMC": false,
+              "isComplese": null,
+              "URLService": null,
+              "PaymentAmounts": {
+                "CurrCode": {
+                  "Code": null,
+                  "Desc": null
+                },
+                "CurrRate": 0,
+                "CurrAmt": 0,
+                "CurrAmtForCal": 0,
+                "BaseCurrCode": {
+                  "Code": "THB",
+                  "Desc": "THAI BAHT"
+                },
+                "BaseCurrRate": 1,
+                "BaseCurrAmt": 1,
+                "BaseCurrAmtForCal": 0
+              },
+              "Transaction": null,
+              "isVoucher": false,
+              "isSubsidize": false,
+              "status": null,
+              "PaymentSessionKey": 0,
+              "PartnerTransID": null,
+              "listVoucher": null
+            }
+          ]
+        }
+      ],
+      "OrderPayments": [
+        {
+          "Guid": "f11dea86-7c13-4fbc-9273-c6f5e0a32f95",
+          "LineNo": 1,
+          "PaymentIcon": null,
+          "GatewayId": 0,
+          "PaymentCode": "ALI       ",
+          "PaymentType": "ALI     ",
+          "RefNo": null,
+          "CardHolderName": "288114730597897778",
+          "ApproveCode": null,
+          "BankOfEDC": "ALISCB",
+          "IssuerID": null,
+          "AliBarcode": null,
+          "AliMerchantID": null,
+          "AliTransID": null,
+          "AlipayCancel": false,
+          "WalletBarcode": null,
+          "WalletMerchantID": null,
+          "WalletTransID": null,
+          "isDCC": false,
+          "isCheckVoucher": false,
+          "isFixAmount": false,
+          "isNotAllowSMC": false,
+          "isComplese": null,
+          "URLService": null,
+          "PaymentAmounts": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THB"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 1,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 1,
+            "BaseCurrAmtForCal": 0
+          },
+          "Transaction": {
+            "TransactionId": 18668,
+            "TransactionGroup": 2,
+            "TransactionType": 1,
+            "PartnerGroup": null,
+            "PartnerType": 0,
+            "PartnerId": 9,
+            "GatewaySessionKey": 626,
+            "GatewayBuyerId": "mer***@alitest.*",
+            "GatewayBarcode": "288114730597897778",
+            "Cashier": {
+              "MachineNo": "MPOSDEV",
+              "MachineTaxNo": "C01005000200359",
+              "EmployeeNo": "K",
+              "IPNo": "127.0.0.1",
+              "MachineDateTime": "2020-03-11T17:35:00"
+            },
+            "MerchantId": "9990001_89990001",
+            "PartnerTransId": "40-MPOSDEV-0000000005501",
+            "LastStatus": 6,
+            "CurrentStatus": 6,
+            "CreateDateTime": "2020-03-11T17:35:00",
+            "ModifiedDateTime": "2020-03-11T17:35:00",
+            "PrintSlip": true,
+            "PrintSlipText": "\u001b!!\u0001  ALIPAY INVOICE\r\n\r\n\u001b!\u0001                       PLS KEEP \r\n--------------------------------\r\nMERCHANT.NAME : KING POWER\r\nKPG POS.NO : MPOSDEV\r\nREF.NO : 3600000711400-16\r\nDATE : 11/03/2020\r\nTIME : 17:27:25\r\nTRANS.TYPE : QR-PAY\r\n--------------------------------\r\nCHANNEL : ALIPAY / SCB\r\nACCOUNT : mer***@alitest.*\r\nAMOUNT (THB) : \u001b!!1.00\r\n\u001b!\u0001AMOUNT (RMB) : 0.22\r\nRATE : 4.504100\r\nNO. : 40-MPOSDEV-0000000005501\r\nBARCODE : 288114730597897778\r\n--------------------------------\r\nOPERATOR : MPOSDEV\r\n--------------------------------",
+            "Movements": [
+              {
+                "TransactionMovementType": 1,
+                "Amount": 1,
+                "Currency": {
+                  "Code": "BAHT ",
+                  "Desc": "THAI BAHT                                         "
+                },
+                "CurrencyRate": 1,
+                "Description": null,
+                "Status": 1,
+                "DateTime": "2020-03-11T17:35:00"
+              },
+              {
+                "TransactionMovementType": 2,
+                "Amount": 1,
+                "Currency": {
+                  "Code": "BAHT ",
+                  "Desc": "THAI BAHT                                         "
+                },
+                "CurrencyRate": 1,
+                "Description": null,
+                "Status": 6,
+                "DateTime": "2020-03-11T17:35:00"
+              },
+              {
+                "TransactionMovementType": 1,
+                "Amount": 0,
+                "Currency": null,
+                "CurrencyRate": 0,
+                "Description": null,
+                "Status": 6,
+                "DateTime": "2020-03-11T17:35:00"
+              },
+              {
+                "TransactionMovementType": 2,
+                "Amount": 1,
+                "Currency": {
+                  "Code": "BAHT ",
+                  "Desc": "THAI BAHT                                         "
+                },
+                "CurrencyRate": 1,
+                "Description": null,
+                "Status": 6,
+                "DateTime": "2020-03-11T17:35:00"
+              }
+            ],
+            "BillingAmount": null
+          },
+          "isVoucher": false,
+          "isSubsidize": false,
+          "status": "SUCCESS",
+          "PaymentSessionKey": 0,
+          "PartnerTransID": null,
+          "listVoucher": null
+        }
+      ],
+      "OrderPaymentsHistory": [],
+      "Voucher": [],
+      "PaymentSession": {
+        "SessionId": 19604,
+        "PaidGuid": "0157abf1-2179-49d6-813c-66e077fd14d8",
+        "LastStatus": null,
+        "CurrentStatus": 1,
+        "CreateDateTime": "2020-03-11T17:35:00",
+        "ModifiedDateTime": null,
+        "Movements": [
+          {
+            "Description": "Open",
+            "Status": 1,
+            "DateTime": "2020-03-11T17:35:00"
+          }
+        ]
+      },
+      "PaymentTransaction": {
+        "TransactionId": null,
+        "TransactionGroup": null,
+        "TransactionType": null,
+        "PartnerGroup": null,
+        "PartnerType": null,
+        "PartnerId": 0,
+        "GatewaySessionKey": null,
+        "GatewayBuyerId": null,
+        "GatewayBarcode": null,
+        "Cashier": {
+          "MachineNo": "MPOSDEV   ",
+          "MachineTaxNo": "C01005000200359",
+          "EmployeeNo": "K         ",
+          "IPNo": null,
+          "MachineDateTime": "2020-03-11T17:36:00"
+        },
+        "MerchantId": null,
+        "PartnerTransId": null,
+        "LastStatus": null,
+        "CurrentStatus": 0,
+        "CreateDateTime": "0001-01-01T00:00:00",
+        "ModifiedDateTime": null,
+        "PrintSlip": false,
+        "PrintSlipText": null,
+        "Movements": null,
+        "BillingAmount": {
+          "TotalAmount": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 1,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 1,
+            "BaseCurrAmtForCal": 0
+          },
+          "DiscountAmount": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 0,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 0,
+            "BaseCurrAmtForCal": 0
+          },
+          "ValueAdjusts": null,
+          "PercentDiscount": 0,
+          "VATAmount": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 0.07,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 0.07,
+            "BaseCurrAmtForCal": 0
+          },
+          "NetAmount": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 1,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 1,
+            "BaseCurrAmtForCal": 0
+          }
+        }
+      },
+      "isRequireSignature": false,
+      "OrderSignatures": [],
+      "isRefund": false,
+      "isFinish": true,
+      "isChange": false,
+      "isExtConsolidate": false,
+      "isNotAllowSMC": false,
+      "isBirthday": false,
+      "UseBirthday": false,
+      "isCheckOut": true,
+      "listSubsidize": null,
+      "GWPDetails": []
+    },
+    {
+      "Guid": "ef34188d-9bd3-467d-a6c9-c06d828f5498",
+      "CreateDate": "2020-03-11T10:17:00",
+      "ModifiedDate": "2020-03-11T17:07:00",
+      "Consolidate": false,
+      "HeaderAttributes": [
+        {
+          "Group": "location",
+          "Code": "branch_no",
+          "Value": null,
+          "ValueOfString": "40",
+          "ValueOfDecimal": null,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        },
+        {
+          "Group": "tran_no",
+          "Code": "shopping_card",
+          "Value": null,
+          "ValueOfString": "3600000711400",
+          "ValueOfDecimal": null,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        },
+        {
+          "Group": "tran_no",
+          "Code": "order_no",
+          "Value": null,
+          "ValueOfString": null,
+          "ValueOfDecimal": 15,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        },
+        {
+          "Group": "tran_no",
+          "Code": "shop_ref",
+          "Value": null,
+          "ValueOfString": "3600000711400",
+          "ValueOfDecimal": null,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        },
+        {
+          "Group": "property",
+          "Code": "status",
+          "Value": null,
+          "ValueOfString": "E",
+          "ValueOfDecimal": null,
+          "ValueOfDateTime": null,
+          "ValueOfTime": null,
+          "DataType": null
+        }
+      ],
+      "BillingQuantities": [
+        {
+          "Quantity": 0,
+          "UOM": ""
+        },
+        {
+          "Quantity": 1,
+          "UOM": "EA"
+        }
+      ],
+      "CustomerDetail": {
+        "CustomerType": {
+          "Code": "FIT",
+          "Desc": "FREE INDEPENDENCE TOUR"
+        },
+        "CustomerName": "METINEE AUTTHAMETASIT_TEST",
+        "Nationality": {
+          "Code": "THA",
+          "Desc": "THAILAND"
+        },
+        "CommissionGroup": {
+          "Group": {
+            "Code": "",
+            "Desc": ""
+          },
+          "Source": null
+        },
+        "CustomerAttributes": [
+          {
+            "Group": "flight",
+            "Code": "airline_code",
+            "Value": null,
+            "ValueOfString": "OP",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "flight_code",
+            "Value": null,
+            "ValueOfString": "000",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "flight_date",
+            "Value": null,
+            "ValueOfString": null,
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": "2020-03-12T00:00:00",
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "flight_time",
+            "Value": null,
+            "ValueOfString": "00:00",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": "00:00:00",
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "arrdep_airport_code",
+            "Value": null,
+            "ValueOfString": "DDC",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "flight",
+            "Code": "dest_airport_code",
+            "Value": null,
+            "ValueOfString": "DDC",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "tran_no",
+            "Code": "shopping_card",
+            "Value": null,
+            "ValueOfString": "3600000711400",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "tran_no",
+            "Code": "passport_no",
+            "Value": null,
+            "ValueOfString": "AAYU4989",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          },
+          {
+            "Group": "tran_no",
+            "Code": "member_id",
+            "Value": null,
+            "ValueOfString": "",
+            "ValueOfDecimal": null,
+            "ValueOfDateTime": null,
+            "ValueOfTime": null,
+            "DataType": null
+          }
+        ]
+      },
+      "OrderDetails": [
+        {
+          "Guid": "1a2687a0-a240-420a-9669-17e8d85d58bf",
+          "LineNo": 1,
+          "BarCode": null,
+          "BillingQuantity": {
+            "Quantity": 1,
+            "UOM": "EA"
+          },
+          "BillingAmount": {
+            "TotalAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 1,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 1
+            },
+            "DiscountAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 0,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 0,
+              "BaseCurrAmtForCal": 0
+            },
+            "ValueAdjusts": [],
+            "PercentDiscount": 0,
+            "VATAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 0.07,
+              "CurrAmtForCal": 0.07,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 0.07,
+              "BaseCurrAmtForCal": 0.07
+            },
+            "NetAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 1,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 1
+            }
+          },
+          "Promotion": {
+            "Code": "          ",
+            "Desc": "          "
+          },
+          "SubOrderType": {
+            "Code": "T ",
+            "Desc": "TAKE                "
+          },
+          "IsFreeze": false,
+          "IsLockDiscount": false,
+          "IsConsolidate": false,
+          "IsExtConsolidate": false,
+          "IsCancel": false,
+          "IsBinManagement": false,
+          "IsBasket": true,
+          "ItemDetail": {
+            "MC": [
+              {
+                "Code": "351",
+                "Desc": "Local Electronics"
+              },
+              {
+                "Code": "351002",
+                "Desc": "Accessories"
+              },
+              {
+                "Code": "351002B07",
+                "Desc": "Bluetooth"
+              }
+            ],
+            "Cate": {
+              "Code": "351",
+              "Desc": "Local Electronics"
+            },
+            "Section": {
+              "Code": "351002",
+              "Desc": "Accessories"
+            },
+            "SubSection": {
+              "Code": "351002B07",
+              "Desc": "Bluetooth"
+            },
+            "ItemType": {
+              "Code": null,
+              "Desc": null
+            },
+            "Item": {
+              "Code": "000000000008211470",
+              "Desc": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT"
+            },
+            "Detail": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT",
+            "BaseUnitPrice": 1,
+            "UnitPrice": 1,
+            "Brand": {
+              "Code": "JAB",
+              "Desc": "JAB"
+            },
+            "MaxPercentDiscount": 0,
+            "VAT": {
+              "Code": "1",
+              "Desc": "VAT 7 %                                           "
+            },
+            "VATRate": 7,
+            "ItemAttributes": [
+              {
+                "Group": null,
+                "Code": "collect_status",
+                "Value": null,
+                "ValueOfString": "T",
+                "ValueOfDecimal": null,
+                "ValueOfDateTime": null,
+                "ValueOfTime": null,
+                "DataType": null
+              }
+            ]
+          },
+          "Seller": {
+            "MachineNo": "MPOSDEV   ",
+            "MachineTaxNo": "C01005000200359",
+            "EmployeeNo": "K",
+            "IPNo": null,
+            "MachineDateTime": "2020-03-11T17:07:00"
+          },
+          "lineItemDatabase": 1,
+          "DetailAttributes": null
+        }
+      ],
+      "BillingAmount": {
+        "TotalAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "DiscountAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "ValueAdjusts": null,
+        "PercentDiscount": 0,
+        "VATAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "NetAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        }
+      },
+      "BasketBillingAmount": {
+        "TotalAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        },
+        "DiscountAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "ValueAdjusts": null,
+        "PercentDiscount": 0,
+        "VATAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0.07,
+          "CurrAmtForCal": 0.07,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0.07,
+          "BaseCurrAmtForCal": 0.07
+        },
+        "NetAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        }
+      },
+      "TotalBillingAmount": {
+        "DiscountSpecial": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "PercentDiscountSpecial": 0,
+        "CurrentValueAdjust": null,
+        "TotalSubsidize": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "TotalPaid": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        },
+        "TotalNetPay": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        },
+        "TotalAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        },
+        "DiscountAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "ValueAdjusts": [],
+        "PercentDiscount": 0,
+        "VATAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0.07,
+          "CurrAmtForCal": 0.07,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0.07,
+          "BaseCurrAmtForCal": 0.07
+        },
+        "NetAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 1,
+          "CurrAmtForCal": 1,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 1,
+          "BaseCurrAmtForCal": 1
+        }
+      },
+      "RemainingAmount": {
+        "TotalAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "DiscountAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "ValueAdjusts": null,
+        "PercentDiscount": 0,
+        "VATAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        },
+        "NetAmount": {
+          "CurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "CurrRate": 1,
+          "CurrAmt": 0,
+          "CurrAmtForCal": 0,
+          "BaseCurrCode": {
+            "Code": "THB",
+            "Desc": "THAI BAHT"
+          },
+          "BaseCurrRate": 1,
+          "BaseCurrAmt": 0,
+          "BaseCurrAmtForCal": 0
+        }
+      },
+      "ChangeAmount": {
+        "totalChange": 0,
+        "totalLocalChange": 0,
+        "totalamount": 0,
+        "CurrCode": {
+          "Code": "THB",
+          "Desc": "THAI BAHT"
+        },
+        "CurrRate": 1,
+        "CurrAmt": 0,
+        "CurrAmtForCal": 0,
+        "BaseCurrCode": {
+          "Code": "THB",
+          "Desc": "THAI BAHT"
+        },
+        "BaseCurrRate": 1,
+        "BaseCurrAmt": 0,
+        "BaseCurrAmtForCal": 0
+      },
+      "OrderInvoices": [
+        {
+          "Guid": "d266c961-aae0-4330-accd-2f01e65c72df",
+          "InvoiceNo": "1",
+          "TaxInvoiceType": {
+            "Code": "N",
+            "Desc": null
+          },
+          "TaxInvoiceNo": null,
+          "TaxAbbNo": "00064     ",
+          "ClaimcheckNo": "00064     ",
+          "RunningNo": null,
+          "RecNo": "143310",
+          "PackingNo": "M000143310",
+          "PickupCode": "",
+          "HangingNo": "",
+          "SubOrderType": {
+            "Code": "T ",
+            "Desc": "T "
+          },
+          "Amount": null,
+          "Cashier": {
+            "MachineNo": "MPOSDEV",
+            "MachineTaxNo": "C01005000200359",
+            "EmployeeNo": "K",
+            "IPNo": "MPOSDEV",
+            "MachineDateTime": "2020-03-11T17:07:00"
+          },
+          "StepInvoice": null,
+          "RunnerBy": null,
+          "RunnerDateTime": "0001-01-01T00:00:00",
+          "Box": null,
+          "BoxBy": null,
+          "BoxDateTime": "0001-01-01T00:00:00",
+          "Trip": null,
+          "Truck": null,
+          "TruckBy": null,
+          "TruckDateTime": "0001-01-01T00:00:00",
+          "BillingQuantity": {
+            "Quantity": 1,
+            "UOM": "EA"
+          },
+          "BillingAmount": {
+            "TotalAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 0
+            },
+            "DiscountAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 0,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 0,
+              "BaseCurrAmtForCal": 0
+            },
+            "ValueAdjusts": null,
+            "PercentDiscount": 0,
+            "VATAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 0.07,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 0.07,
+              "BaseCurrAmtForCal": 0
+            },
+            "NetAmount": {
+              "CurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "CurrRate": 1,
+              "CurrAmt": 1,
+              "CurrAmtForCal": 0,
+              "BaseCurrCode": {
+                "Code": "THB",
+                "Desc": "THAI BAHT"
+              },
+              "BaseCurrRate": 1,
+              "BaseCurrAmt": 1,
+              "BaseCurrAmtForCal": 0
+            }
+          },
+          "IssuedType": "",
+          "IssuedDetail": "",
+          "OrderDetails": [
+            {
+              "Guid": "1a2687a0-a240-420a-9669-17e8d85d58bf",
+              "LineNo": 1,
+              "BarCode": null,
+              "BillingQuantity": {
+                "Quantity": 1,
+                "UOM": "EA"
+              },
+              "BillingAmount": {
+                "TotalAmount": {
+                  "CurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "CurrRate": 1,
+                  "CurrAmt": 1,
+                  "CurrAmtForCal": 1,
+                  "BaseCurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "BaseCurrRate": 1,
+                  "BaseCurrAmt": 1,
+                  "BaseCurrAmtForCal": 1
+                },
+                "DiscountAmount": {
+                  "CurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "CurrRate": 1,
+                  "CurrAmt": 0,
+                  "CurrAmtForCal": 0,
+                  "BaseCurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "BaseCurrRate": 1,
+                  "BaseCurrAmt": 0,
+                  "BaseCurrAmtForCal": 0
+                },
+                "ValueAdjusts": [],
+                "PercentDiscount": 0,
+                "VATAmount": {
+                  "CurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "CurrRate": 1,
+                  "CurrAmt": 0.07,
+                  "CurrAmtForCal": 0.07,
+                  "BaseCurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "BaseCurrRate": 1,
+                  "BaseCurrAmt": 0.07,
+                  "BaseCurrAmtForCal": 0.07
+                },
+                "NetAmount": {
+                  "CurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "CurrRate": 1,
+                  "CurrAmt": 1,
+                  "CurrAmtForCal": 1,
+                  "BaseCurrCode": {
+                    "Code": "THB",
+                    "Desc": "THAI BAHT"
+                  },
+                  "BaseCurrRate": 1,
+                  "BaseCurrAmt": 1,
+                  "BaseCurrAmtForCal": 1
+                }
+              },
+              "Promotion": {
+                "Code": "          ",
+                "Desc": "          "
+              },
+              "SubOrderType": {
+                "Code": "T ",
+                "Desc": "TAKE                "
+              },
+              "IsFreeze": false,
+              "IsLockDiscount": false,
+              "IsConsolidate": false,
+              "IsExtConsolidate": false,
+              "IsCancel": false,
+              "IsBinManagement": false,
+              "IsBasket": true,
+              "ItemDetail": {
+                "MC": [
+                  {
+                    "Code": "351",
+                    "Desc": "Local Electronics"
+                  },
+                  {
+                    "Code": "351002",
+                    "Desc": "Accessories"
+                  },
+                  {
+                    "Code": "351002B07",
+                    "Desc": "Bluetooth"
+                  }
+                ],
+                "Cate": {
+                  "Code": "351",
+                  "Desc": "Local Electronics"
+                },
+                "Section": {
+                  "Code": "351002",
+                  "Desc": "Accessories"
+                },
+                "SubSection": {
+                  "Code": "351002B07",
+                  "Desc": "Bluetooth"
+                },
+                "ItemType": {
+                  "Code": null,
+                  "Desc": null
+                },
+                "Item": {
+                  "Code": "000000000008211470",
+                  "Desc": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT"
+                },
+                "Detail": "JAB GLD BEIGE ELITE 85H/ANC/OVER-EAR/BT",
+                "BaseUnitPrice": 1,
+                "UnitPrice": 1,
+                "Brand": {
+                  "Code": "JAB",
+                  "Desc": "JAB"
+                },
+                "MaxPercentDiscount": 0,
+                "VAT": {
+                  "Code": "1",
+                  "Desc": "VAT 7 %                                           "
+                },
+                "VATRate": 7,
+                "ItemAttributes": [
+                  {
+                    "Group": null,
+                    "Code": "collect_status",
+                    "Value": null,
+                    "ValueOfString": "T",
+                    "ValueOfDecimal": null,
+                    "ValueOfDateTime": null,
+                    "ValueOfTime": null,
+                    "DataType": null
+                  }
+                ]
+              },
+              "Seller": {
+                "MachineNo": "MPOSDEV   ",
+                "MachineTaxNo": "C01005000200359",
+                "EmployeeNo": "K",
+                "IPNo": null,
+                "MachineDateTime": "2020-03-11T17:07:00"
+              },
+              "lineItemDatabase": 1,
+              "DetailAttributes": null
+            }
+          ],
+          "OrderPayments": [
+            {
+              "Guid": "b264613e-2f2b-4936-9b86-a32ec55dd9cf",
+              "LineNo": 1,
+              "PaymentIcon": null,
+              "GatewayId": 0,
+              "PaymentCode": "ALI       ",
+              "PaymentType": "ALI     ",
+              "RefNo": null,
+              "CardHolderName": "289153961536991691",
+              "ApproveCode": null,
+              "BankOfEDC": null,
+              "IssuerID": null,
+              "AliBarcode": null,
+              "AliMerchantID": null,
+              "AliTransID": null,
+              "AlipayCancel": false,
+              "WalletBarcode": null,
+              "WalletMerchantID": null,
+              "WalletTransID": null,
+              "isDCC": false,
+              "isCheckVoucher": false,
+              "isFixAmount": false,
+              "isNotAllowSMC": false,
+              "isComplese": null,
+              "URLService": null,
+              "PaymentAmounts": {
+                "CurrCode": {
+                  "Code": null,
+                  "Desc": null
+                },
+                "CurrRate": 0,
+                "CurrAmt": 0,
+                "CurrAmtForCal": 0,
+                "BaseCurrCode": {
+                  "Code": "THB",
+                  "Desc": "THAI BAHT"
+                },
+                "BaseCurrRate": 1,
+                "BaseCurrAmt": 1,
+                "BaseCurrAmtForCal": 0
+              },
+              "Transaction": null,
+              "isVoucher": false,
+              "isSubsidize": false,
+              "status": null,
+              "PaymentSessionKey": 0,
+              "PartnerTransID": null,
+              "listVoucher": null
+            }
+          ]
+        }
+      ],
+      "OrderPayments": [
+        {
+          "Guid": "6a220d7d-7885-4633-b21c-b6834eedb660",
+          "LineNo": 1,
+          "PaymentIcon": null,
+          "GatewayId": 0,
+          "PaymentCode": "ALI       ",
+          "PaymentType": "ALI     ",
+          "RefNo": null,
+          "CardHolderName": "289153961536991691",
+          "ApproveCode": null,
+          "BankOfEDC": "ALISCB",
+          "IssuerID": null,
+          "AliBarcode": null,
+          "AliMerchantID": null,
+          "AliTransID": null,
+          "AlipayCancel": false,
+          "WalletBarcode": null,
+          "WalletMerchantID": null,
+          "WalletTransID": null,
+          "isDCC": false,
+          "isCheckVoucher": false,
+          "isFixAmount": false,
+          "isNotAllowSMC": false,
+          "isComplese": null,
+          "URLService": null,
+          "PaymentAmounts": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THB"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 1,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 1,
+            "BaseCurrAmtForCal": 0
+          },
+          "Transaction": {
+            "TransactionId": 18667,
+            "TransactionGroup": 2,
+            "TransactionType": 1,
+            "PartnerGroup": null,
+            "PartnerType": 0,
+            "PartnerId": 9,
+            "GatewaySessionKey": 625,
+            "GatewayBuyerId": "mer***@alitest.*",
+            "GatewayBarcode": "289153961536991691",
+            "Cashier": {
+              "MachineNo": "MPOSDEV",
+              "MachineTaxNo": "C01005000200359",
+              "EmployeeNo": "K",
+              "IPNo": "127.0.0.1",
+              "MachineDateTime": "2020-03-11T17:07:00"
+            },
+            "MerchantId": "9990001_89990001",
+            "PartnerTransId": "40-MPOSDEV-0000000005401",
+            "LastStatus": 6,
+            "CurrentStatus": 6,
+            "CreateDateTime": "2020-03-11T17:07:00",
+            "ModifiedDateTime": "2020-03-11T17:07:00",
+            "PrintSlip": true,
+            "PrintSlipText": "\u001b!!\u0001  ALIPAY INVOICE\r\n\r\n\u001b!\u0001                       PLS KEEP \r\n--------------------------------\r\nMERCHANT.NAME : KING POWER\r\nKPG POS.NO : MPOSDEV\r\nREF.NO : 3600000711400-15\r\nDATE : 11/03/2020\r\nTIME : 16:58:41\r\nTRANS.TYPE : QR-PAY\r\n--------------------------------\r\nCHANNEL : ALIPAY / SCB\r\nACCOUNT : mer***@alitest.*\r\nAMOUNT (THB) : \u001b!!1.00\r\n\u001b!\u0001AMOUNT (RMB) : 0.22\r\nRATE : 4.504100\r\nNO. : 40-MPOSDEV-0000000005401\r\nBARCODE : 289153961536991691\r\n--------------------------------\r\nOPERATOR : MPOSDEV\r\n--------------------------------",
+            "Movements": [
+              {
+                "TransactionMovementType": 1,
+                "Amount": 1,
+                "Currency": {
+                  "Code": "BAHT ",
+                  "Desc": "THAI BAHT                                         "
+                },
+                "CurrencyRate": 1,
+                "Description": null,
+                "Status": 1,
+                "DateTime": "2020-03-11T17:07:00"
+              },
+              {
+                "TransactionMovementType": 2,
+                "Amount": 1,
+                "Currency": {
+                  "Code": "BAHT ",
+                  "Desc": "THAI BAHT                                         "
+                },
+                "CurrencyRate": 1,
+                "Description": null,
+                "Status": 6,
+                "DateTime": "2020-03-11T17:07:00"
+              },
+              {
+                "TransactionMovementType": 1,
+                "Amount": 0,
+                "Currency": null,
+                "CurrencyRate": 0,
+                "Description": null,
+                "Status": 6,
+                "DateTime": "2020-03-11T17:07:00"
+              },
+              {
+                "TransactionMovementType": 2,
+                "Amount": 1,
+                "Currency": {
+                  "Code": "BAHT ",
+                  "Desc": "THAI BAHT                                         "
+                },
+                "CurrencyRate": 1,
+                "Description": null,
+                "Status": 6,
+                "DateTime": "2020-03-11T17:07:00"
+              }
+            ],
+            "BillingAmount": null
+          },
+          "isVoucher": false,
+          "isSubsidize": false,
+          "status": "SUCCESS",
+          "PaymentSessionKey": 0,
+          "PartnerTransID": null,
+          "listVoucher": null
+        }
+      ],
+      "OrderPaymentsHistory": [],
+      "Voucher": [],
+      "PaymentSession": {
+        "SessionId": 19603,
+        "PaidGuid": "beecc0f1-b296-4c63-a4ea-db50a7736404",
+        "LastStatus": null,
+        "CurrentStatus": 1,
+        "CreateDateTime": "2020-03-11T17:06:00",
+        "ModifiedDateTime": null,
+        "Movements": [
+          {
+            "Description": "Open",
+            "Status": 1,
+            "DateTime": "2020-03-11T17:06:00"
+          }
+        ]
+      },
+      "PaymentTransaction": {
+        "TransactionId": null,
+        "TransactionGroup": null,
+        "TransactionType": null,
+        "PartnerGroup": null,
+        "PartnerType": null,
+        "PartnerId": 0,
+        "GatewaySessionKey": null,
+        "GatewayBuyerId": null,
+        "GatewayBarcode": null,
+        "Cashier": {
+          "MachineNo": "MPOSDEV   ",
+          "MachineTaxNo": "C01005000200359",
+          "EmployeeNo": "K         ",
+          "IPNo": null,
+          "MachineDateTime": "2020-03-11T17:07:00"
+        },
+        "MerchantId": null,
+        "PartnerTransId": null,
+        "LastStatus": null,
+        "CurrentStatus": 0,
+        "CreateDateTime": "0001-01-01T00:00:00",
+        "ModifiedDateTime": null,
+        "PrintSlip": false,
+        "PrintSlipText": null,
+        "Movements": null,
+        "BillingAmount": {
+          "TotalAmount": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 1,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 1,
+            "BaseCurrAmtForCal": 0
+          },
+          "DiscountAmount": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 0,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 0,
+            "BaseCurrAmtForCal": 0
+          },
+          "ValueAdjusts": null,
+          "PercentDiscount": 0,
+          "VATAmount": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 0.07,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 0.07,
+            "BaseCurrAmtForCal": 0
+          },
+          "NetAmount": {
+            "CurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "CurrRate": 1,
+            "CurrAmt": 1,
+            "CurrAmtForCal": 0,
+            "BaseCurrCode": {
+              "Code": "THB",
+              "Desc": "THAI BAHT"
+            },
+            "BaseCurrRate": 1,
+            "BaseCurrAmt": 1,
+            "BaseCurrAmtForCal": 0
+          }
+        }
+      },
+      "isRequireSignature": false,
+      "OrderSignatures": [],
+      "isRefund": false,
+      "isFinish": true,
       "isChange": false,
       "isExtConsolidate": false,
       "isNotAllowSMC": false,
@@ -1580,7 +5105,7 @@
       "GWPDetails": []
     }
   ],
-  "totalCount": 1,
+  "totalCount": 4,
   "isCompleted": true,
   "listOfProcessTracking": null,
   "Tracking": {

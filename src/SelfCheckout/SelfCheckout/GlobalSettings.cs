@@ -1,5 +1,6 @@
 ﻿using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Device;
 using SelfCheckout.Services.Localize;
 using System.Globalization;
 using System.Threading;
@@ -49,32 +50,22 @@ namespace SelfCheckout
             }
         }
 
-        public string CountryCode
-        {
-            get
-            {
-                var code = Preferences.Get("lang_code", "");
-                if (string.IsNullOrEmpty(code))
-                {
-                    if (Device.RuntimePlatform == Device.iOS || Device.RuntimePlatform == Device.Android)
-                    {
-                        CultureInfo ci = DependencyService.Get<ILocalize>().GetCurrentCultureInfo();
-                        code = ci.Name;
-                    }
-                    else
-                    {
-                        code = "en-US";
-                    }
-                }
-                return code;
-            }
-            set => Preferences.Set("lang_code", value);
-        }
+        public string CountryCode { get; set; } = "en-US";
 
-        public string SelfCheckoutApi {
+        public string SelfCheckoutApi
+        {
             get => Preferences.Get("self_checkout_api", "https://kpservices.kingpower.com/portal/developer/selfcheckoutapi/");
         }
 
         public string PimCoreUrl { get => "https://pim.kingpower.com/"; }
+
+        public string MachineIp
+        {
+            get
+            {
+                var ip = DependencyService.Get<IDeviceInformation>().GetDeviceIp();
+                return "127.0.0.1";
+            }
+        }
     }
 }

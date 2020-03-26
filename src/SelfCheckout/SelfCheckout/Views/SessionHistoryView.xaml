@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             xmlns:views="clr-namespace:SelfCheckout.Views"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.SessionHistoryView">
+    <ContentView.Content>
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0" Orientation="Horizontal" Padding="8,0,8,0" HeightRequest="56">
+                    <Label VerticalOptions="Center" VerticalTextAlignment="Center" Text="{i18n:Translate History}" FontSize="Medium" FontAttributes="Bold"/>
+                    <DatePicker VerticalOptions="Center" Date="{Binding FilterDate}" MaximumDate="{Binding MaxDate}"
+                                DateSelected="DatePicker_DateSelected" />
+                    <Entry WidthRequest="200" VerticalOptions="Center" Placeholder="{i18n:Translate SessionKey}" Text="{Binding FilterSessionKey}"/>
+                    <Entry WidthRequest="200" VerticalOptions="Center" Placeholder="{i18n:Translate MachineNo}" Text="{Binding FilterMachineNo}"/>
+                    <controls:TappedGrid VerticalOptions="Center" TappedCommand="{Binding FilterCommand}"
+                                    Padding="0"
+                                    Style="{StaticResource TappedGridButtonStyle}">
+                        <Frame CornerRadius="1" BackgroundColor="{StaticResource Green}" Margin="0" Padding="0" HeightRequest="32" WidthRequest="100" VerticalOptions="Center">
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <Label VerticalOptions="Center" Style="{StaticResource LabelIconStyle}" TextColor="{StaticResource Gray50}" Text="&#xf0b0;" FontSize="24"/>
+                                <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Filter}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                            </StackLayout>
+                        </Frame>
+                    </controls:TappedGrid>
+                </StackLayout>
+                <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="{StaticResource Gray500}"/>
+                <Grid  Grid.Row="2">
+                    <StackLayout Orientation="Horizontal" Padding="8,0,8,0" BindableLayout.ItemsSource="{Binding FilterTypes}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <controls:TappedGrid TappedCommand="{Binding Source={RelativeSource AncestorType={x:Type StackLayout},AncestorLevel=1}, Path=BindingContext.ChangeFilterTypeCommand}"
+                                                     CommandParameter="{Binding .}">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image Aspect="AspectFit" Source="Assets/ic_check_normal.png" HeightRequest="24" HorizontalOptions="Center" VerticalOptions="Center">
+                                            <Image.Triggers>
+                                                <DataTrigger TargetType="Image" Binding="{Binding Selected}" Value="True">
+                                                    <Setter Property="Source" Value="Assets/ic_check_active.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Image" Binding="{Binding Selected}" Value="False">
+                                                    <Setter Property="Source" Value="Assets/ic_check_normal.png"/>
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                        <Label VerticalOptions="Center" Text="{Binding Text1}" Margin="0,0,12,0"/>
+                                    </StackLayout>
+                                </controls:TappedGrid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </Grid>
+                <Grid Grid.Row="3" Padding="4" HeightRequest="48" BackgroundColor="{StaticResource Primary}">
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="VerticalTextAlignment" Value="Center"/>
+                            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".2*"/>
+                        <ColumnDefinition Width=".2*"/>
+                        <ColumnDefinition Width=".5*"/>
+                        <ColumnDefinition Width=".2*"/>
+                        <ColumnDefinition Width=".2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Text="{i18n:Translate SessionKey}"/>
+                    <Label Grid.Column="1" Text="{i18n:Translate MachineNo}"/>
+                    <Label Grid.Column="2" Text="{i18n:Translate Name}"/>
+                    <Label Grid.Column="3" Text="{i18n:Translate DateSlashTime}"/>
+                    <Label Grid.Column="4" Text="{i18n:Translate Status}"/>
+                </Grid>
+                <ListView Grid.Row="4" ItemsSource="{Binding SessionHistories}" HasUnevenRows="True" ItemSelected="ListView_ItemSelected">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Margin="0,4,0,4" Padding="4">
+                                    <Grid.Resources>
+                                        <Style TargetType="Label">
+                                            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                                        </Style>
+                                    </Grid.Resources>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".2*"/>
+                                        <ColumnDefinition Width=".2*"/>
+                                        <ColumnDefinition Width=".5*"/>
+                                        <ColumnDefinition Width=".2*"/>
+                                        <ColumnDefinition Width=".2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Text="{Binding SessionKey}"/>
+                                    <Label Grid.Column="1" Text="{Binding MachineNo}"/>
+                                    <Label Grid.Column="2" Text="{Binding ShoppingCardName}"/>
+                                    <Label Grid.Column="3" Text="{Binding SessionDt, Converter={StaticResource DateTimeFormatConverter}}"/>
+                                    <controls:TappedGrid Grid.Column="4" VerticalOptions="Center" 
+                                                         TappedCommand="{Binding Source={RelativeSource AncestorType={x:Type ListView},AncestorLevel=1}, Path=BindingContext.ShowOrderDetailCommand}"
+                                                         CommandParameter="{Binding .}"
+                                        Padding="0"
+                                        Style="{StaticResource TappedGridButtonStyle}">
+                                        <Frame CornerRadius="3" Padding="8,4,8,4" HorizontalOptions="Center">
+                                            <Label Text="{Binding SessionStatus.SessionName}" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
+                                            <Frame.Triggers>
+                                                <DataTrigger TargetType="Frame" Binding="{Binding SessionStatus.SessionCode}" Value="END">
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource Gray500}"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Frame" Binding="{Binding SessionStatus.SessionCode}" Value="START">
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource RedDark}"/>
+                                                </DataTrigger>
+                                            </Frame.Triggers>
+                                        </Frame>
+                                    </controls:TappedGrid>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

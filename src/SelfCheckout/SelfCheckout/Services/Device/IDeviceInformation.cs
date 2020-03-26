@@ -7,5 +7,7 @@ namespace SelfCheckout.Services.Device
     public interface IDeviceInformation
     {
         string GetDeviceCode();
+
+        string GetDeviceIp();
     }
 }

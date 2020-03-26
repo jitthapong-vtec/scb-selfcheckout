@@ -1,6 +1,13 @@
-﻿using SelfCheckout.Models;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Extensions;
+using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
+using SelfCheckout.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,16 +21,46 @@ namespace SelfCheckout.ViewModels
 {
     public class CheckerMainViewModel : ViewModelBase
     {
+        ContentView _currentView;
+
         ObservableCollection<TabItem> _tabs;
+
+        public CheckerMainViewModel(INavigationService navigatinService, IDialogService dialogService) : base(navigatinService, dialogService)
+        {
+            Tabs = new ObservableCollection<TabItem>()
+            {
+                new TabItem
+                {
+                    TabText = AppResources.Packing,
+                    Page = new CheckerPackingView()
+                },
+                new TabItem
+                {
+                    TabText = AppResources.DeviceStatus,
+                    Page = new DeviceStatusView()
+                },
+                new TabItem
+                {
+                    TabText = AppResources.SessionHistory,
+                    Page = new SessionHistoryView()
+                }
+            };
+
+            var firstTab = Tabs.FirstOrDefault();
+            firstTab.Selected = true;
+            CurrentView = firstTab.Page;
+        }
 
         public ObservableCollection<TabItem> Tabs
         {
             get => _tabs;
-            set
-            {
-                _tabs = value;
-                RaisePropertyChanged(() => Tabs);
-            }
+            set => SetProperty(ref _tabs, value);
+        }
+
+        public ContentView CurrentView
+        {
+            get => _currentView;
+            set => SetProperty(ref _currentView, value);
         }
 
         public ICommand TabSelectionCommand => new Command<TabItem>((item) =>
@@ -32,29 +69,8 @@ namespace SelfCheckout.ViewModels
             selectedTab.Selected = false;
 
             item.Selected = true;
+            CurrentView = item.Page;
         });
-
-        public CheckerMainViewModel()
-        {
-            Tabs = new ObservableCollection<TabItem>()
-            {
-                new TabItem
-                {
-                    TabText = AppResources.Packing,
-                },
-                new TabItem
-                {
-                    TabText = AppResources.DeviceStatus
-                },
-                new TabItem
-                {
-                    TabText = AppResources.SessionHistory
-                }
-            };
-
-            var firstTab = Tabs.FirstOrDefault();
-            firstTab.Selected = true;
-        }
 
         public override Task OnTabSelected(TabItem item)
         {

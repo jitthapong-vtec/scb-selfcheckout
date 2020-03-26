@@ -7,12 +7,15 @@
              xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
-             viewModelBase:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:views="clr-namespace:SelfCheckout.Views"
+             prism:ViewModelLocator.AutowireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.OrderView">
-  <ContentView.Content>
+    <ContentView.Content>
         <Grid>
-            <Grid>
+            <Grid RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -24,12 +27,13 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <Entry IsVisible="False" x:Name="entrySessionKey" Text="{Binding BorrowSessionKey}"/>
                     <Grid Grid.Column="0">
                         <forms:ZXingBarcodeImageView
                             BarcodeFormat="QR_CODE"
                             HeightRequest="150"
                             WidthRequest="150"
-                            BarcodeValue="{Binding LoginData.SessionKey}">
+                            BarcodeValue="{Binding Source={x:Reference entrySessionKey}, Path=Text}">
                             <forms:ZXingBarcodeImageView.BarcodeOptions>
                                 <common:EncodingOptions Width="150" Height="150" PureBarcode="True"/>
                             </forms:ZXingBarcodeImageView.BarcodeOptions>
@@ -42,7 +46,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <StackLayout Grid.Column="0">
-                                <Label FontAttributes="Bold" Text="{Binding CurrentShoppingCart}"/>
+                                <Label FontAttributes="Bold" Text="{Binding CurrentShoppingCard}"/>
                                 <Label Text="{Binding CustomerData.Person.EnglishName}"/>
                             </StackLayout>
                             <Image Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Source="ic_user"/>
@@ -68,7 +72,89 @@
                         <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
                     </StackLayout>
                 </Grid>
+                <Grid Grid.Row="1" BackgroundColor="{StaticResource Gray100}">
+                    <Grid Margin="1" BackgroundColor="White">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{i18n:Translate Filter}" VerticalOptions="Center" HorizontalTextAlignment="Start"/>
+                            <controls:TappedGrid Grid.Column="1" TappedCommand="{Binding ShowCustomerSelectionCommand}">
+                                <Label Text="{Binding SelectedCustomer.CustomerName}" VerticalOptions="Center" HorizontalTextAlignment="End"/>
+                            </controls:TappedGrid>
+                        </Grid>
+                        <Label Grid.Column="2" VerticalOptions="Center"
+                                   Text="&#xf0d7;" FontSize="24"
+                                   Margin="8" Style="{StaticResource LabelIconStyle}"/>
+                    </Grid>
+                </Grid>
+                <StackLayout Grid.Row="2" HeightRequest="56" Orientation="Horizontal" Spacing="0" BindableLayout.ItemsSource="{Binding Tabs}"
+                         BackgroundColor="{StaticResource Gray200}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <controls:TappedGrid HorizontalOptions="FillAndExpand" TappedCommand="{Binding Source={RelativeSource AncestorType={x:Type ContentView}, AncestorLevel=1}, Path=BindingContext.TabSelectedCommand}"
+                                             CommandParameter="{Binding .}">
+                                <Label Text="{Binding Text1}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Selected}" Value="True">
+                                            <Setter Property="TextColor" Value="{StaticResource Primary}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Selected}" Value="False">
+                                            <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <BoxView VerticalOptions="End" HeightRequest="2">
+                                    <BoxView.Triggers>
+                                        <DataTrigger TargetType="BoxView" Binding="{Binding Selected}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource Primary}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="BoxView" Binding="{Binding Selected}" Value="False">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource Gray300}"/>
+                                        </DataTrigger>
+                                    </BoxView.Triggers>
+                                </BoxView>
+                                <BoxView IsVisible="{Binding Selected}" BackgroundColor="{StaticResource Primary}" WidthRequest="8" HeightRequest="8" CornerRadius="4"
+                                         VerticalOptions="Start" HorizontalOptions="End" Margin="2,4"/>
+                            </controls:TappedGrid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+                <CollectionView IsVisible="{Binding IsShowGroup}" Grid.Row="3" Margin="0,0,0,32" IsGrouped="True" ItemsSource="{Binding OrderInvoices}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start" SnapPointsType="None"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <views:OrderInvoiceItemView/>
+                        </DataTemplate>
+                    </CollectionView.GroupHeaderTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <CollectionView IsVisible="{Binding IsShowGroup, Converter={StaticResource InverseBooleanConverter}}" Grid.Row="3" Margin="0,0,0,32" ItemsSource="{Binding OrderDetails}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Start" SnapPointsType="None"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </Grid>
+            <views:OrderSummaryView VerticalOptions="End"/>
+            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
+            <views:CustomerSelectionView IsVisible="{Binding FilterCustomerShowing}"/>
         </Grid>
-  </ContentView.Content>
+    </ContentView.Content>
 </ContentView>

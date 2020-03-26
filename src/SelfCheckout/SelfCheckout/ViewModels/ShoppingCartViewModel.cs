@@ -1,82 +1,79 @@
 ﻿using Newtonsoft.Json;
+using Prism.Commands;
+using Prism.Navigation;
+using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class ShoppingCartViewModel : ViewModelBase
+    public class ShoppingCartViewModel : ShoppingCartViewModelBase
     {
-        object[] items;
-
         ObservableCollection<OrderDetail> _orderDetails;
+
+        CustomerData _customerData;
+
+        string _currentShoppingCard;
 
         bool _isSelectAllOrder;
         bool _isAnyOrderSelected;
+        bool _isChangeShoppingCardShowing;
 
-        public ShoppingCartViewModel()
+        public ShoppingCartViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, saleEngineService, selfCheckoutService, registerService)
         {
-            items = new object[]
+            CustomerData = RegisterService.CustomerData;
+            CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
+
+            MessagingCenter.Subscribe<MainViewModel, string>(this, "AddItemToOrder", async (sender, barcode) =>
             {
-                new
-                {
-                    SessionKey = LoginData.SessionKey,
-                    ItemCode = "00008211470207673"
-                },
-                new
-                {
-                    SessionKey = LoginData.SessionKey,
-                    ItemCode = "00008190415206226"
-                }
-            };
+                await AddOrderAsync(barcode);
+            });
+
+            MessagingCenter.Subscribe<MainViewModel>(this, "CurrencyChanged", async (sender) =>
+            {
+                await RefreshOrderAsync();
+            });
+
+            MessagingCenter.Subscribe<MainViewModel>(this, "OrderRefresh", async (sender) =>
+            {
+                await RefreshOrderAsync();
+            });
         }
 
-        public bool IsSelectAllOrder
+        public ICommand ToggleChangeShoppingCardCommand => new DelegateCommand(() =>
         {
-            get => _isSelectAllOrder;
-            set
-            {
-                _isSelectAllOrder = value;
-                RaisePropertyChanged(() => IsSelectAllOrder);
+            IsChangeShoppingCardShowing = !IsChangeShoppingCardShowing;
+        });
 
-                IsAnyOrderSelected = value;
-            }
-        }
-
-        public bool IsAnyOrderSelected
+        public ICommand ChangeShoppingCardCommand => new DelegateCommand(() =>
         {
-            get => _isAnyOrderSelected;
-            set
+            IsChangeShoppingCardShowing = false;
+            DialogService.ShowDialog("ShoppingCardInputDialog", null, async (dialogResult) =>
             {
-                _isAnyOrderSelected = value;
-                RaisePropertyChanged(() => IsAnyOrderSelected);
-            }
-        }
+                var shoppingCard = dialogResult.Parameters.GetValue<string>("ShoppingCard");
+                if (!string.IsNullOrEmpty(shoppingCard))
+                    await ValidateShoppingCardAsync(shoppingCard);
+            });
+        });
 
-        public bool IsFirstSelect { get; set; } = true;
-
-        public ObservableCollection<OrderDetail> OrderDetails
-        {
-            get => _orderDetails;
-            set
-            {
-                _orderDetails = value;
-                RaisePropertyChanged(() => OrderDetails);
-            }
-        }
-
-        public ICommand SelectAllOrderCommand => new Command(() =>
+        public ICommand SelectAllOrderCommand => new DelegateCommand(() =>
         {
             if (OrderDetails == null)
                 return;
@@ -87,7 +84,7 @@ namespace SelfCheckout.ViewModels
             }
         });
 
-        public ICommand OrderSelectedCommand => new Command<OrderDetail>((order) =>
+        public ICommand OrderSelectedCommand => new DelegateCommand<OrderDetail>((order) =>
         {
             order.IsSelected = !order.IsSelected;
 
@@ -100,12 +97,12 @@ namespace SelfCheckout.ViewModels
             catch { }
         });
 
-        public ICommand ChangeQtyCommand => new Command<OrderDetail>(async (order) =>
+        public ICommand ChangeQtyCommand => new DelegateCommand<OrderDetail>(async (order) =>
         {
             var qty = order.BillingQuantity.Quantity;
             var payload = new
             {
-                SessionKey = LoginData.SessionKey,
+                SessionKey = SaleEngineService.LoginData.SessionKey,
                 Rows = new string[] { order.Guid },
                 ActionItemValue = new
                 {
@@ -116,7 +113,7 @@ namespace SelfCheckout.ViewModels
             await SetActionToOrder(payload);
         });
 
-        public ICommand DeleteOrderCommand => new Command<OrderDetail>(async (order) =>
+        public ICommand DeleteOrderCommand => new DelegateCommand<OrderDetail>(async (order) =>
         {
             if (order != null)
             {
@@ -127,7 +124,7 @@ namespace SelfCheckout.ViewModels
                 var selectedOrders = OrderDetails.Where(o => o.IsSelected).ToArray();
                 if (selectedOrders.Any())
                 {
-                    var result = await DialogService.ShowConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteItem, AppResources.Yes, AppResources.No);
+                    var result = await DialogService.ConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteItem, AppResources.Yes, AppResources.No, true);
 
                     if (result)
                     {
@@ -137,18 +134,68 @@ namespace SelfCheckout.ViewModels
             }
         });
 
-        public ICommand RefreshOrderCommand => new Command(async () =>
+        public ICommand ShowDetailCommand => new DelegateCommand<OrderDetail>((order) =>
+        {
+            MessagingCenter.Send(this, "ShowOrderDetail", order);
+        });
+
+        public ICommand RefreshOrderCommand => new DelegateCommand(async () =>
         {
             IsRefreshing = true;
             await LoadOrderAsync();
             IsRefreshing = false;
         });
 
+        public ObservableCollection<OrderDetail> OrderDetails
+        {
+            get => _orderDetails;
+            set => SetProperty(ref _orderDetails, value);
+        }
+
+        public string CurrentShoppingCard
+        {
+            get => _currentShoppingCard;
+            set => SetProperty(ref _currentShoppingCard, value);
+        }
+
+        public CustomerData CustomerData
+        {
+            get => _customerData;
+            set => SetProperty(ref _customerData, value);
+        }
+
+        public bool IsChangeShoppingCardShowing
+        {
+            get => _isChangeShoppingCardShowing;
+            set => SetProperty(ref _isChangeShoppingCardShowing, value);
+        }
+
+        public bool IsSelectAllOrder
+        {
+            get => _isSelectAllOrder;
+            set
+            {
+                SetProperty(ref _isSelectAllOrder, value, () =>
+                {
+                    IsAnyOrderSelected = value;
+                });
+            }
+        }
+
+        public bool IsAnyOrderSelected
+        {
+            get => _isAnyOrderSelected;
+            set => SetProperty(ref _isAnyOrderSelected, value);
+        }
+
+        public bool IsFirstSelect { get; set; } = true;
+
         public override async Task OnTabSelected(TabItem item)
         {
             if (IsFirstSelect)
             {
                 await LoadOrderAsync();
+
                 IsFirstSelect = false;
             }
         }
@@ -159,6 +206,25 @@ namespace SelfCheckout.ViewModels
             return base.OnTabDeSelected(item);
         }
 
+        protected override async Task ValidateShoppingCardCallback(string shoppingCard)
+        {
+            CustomerData = RegisterService.CustomerData;
+            CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
+
+            var appConfig = SelfCheckoutService.AppConfig;
+            var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
+            SaleEngineService.LoginData = loginResult;
+
+            await LoadOrderAsync();
+        }
+
+        public override void Destroy()
+        {
+            MessagingCenter.Unsubscribe<MainViewModel, string>(this, "AddItemToOrder");
+            MessagingCenter.Unsubscribe<MainViewModel>(this, "CurrencyChanged");
+            MessagingCenter.Unsubscribe<MainViewModel>(this, "OrderRefresh");
+        }
+
         public async Task LoadOrderAsync()
         {
             try
@@ -166,23 +232,48 @@ namespace SelfCheckout.ViewModels
                 IsBusy = true;
                 var payload = new
                 {
-                    SessionKey = LoginData.SessionKey,
+                    SessionKey = SaleEngineService.LoginData.SessionKey,
                     Attributes = new object[]
                     {
                         new {
                             GROUP = "tran_no",
                             CODE = "shopping_card",
-                            valueOfString = CurrentShoppingCart
+                            valueOfString = CurrentShoppingCard
+                        }
+                    },
+                    paging = new
+                    {
+                        pageNo = 1,
+                        pageSize = 100
+                    },
+                    filter = new object[]
+                    {
+                        new
+                        {
+                            sign = "string",
+                            element = "order_data",
+                            option = "string",
+                            type = "string",
+                            low = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                            height = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                        }
+                    },
+                    sorting = new object[]
+                    {
+                        new
+                        {
+                            sortBy = "headerkey",
+                            orderBy = "desc"
                         }
                     }
                 };
 
-                var result = await SaleEngineService.GetOrderAsync(payload);
+                await SaleEngineService.GetOrderAsync(payload);
                 await RefreshOrderAsync();
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -192,10 +283,11 @@ namespace SelfCheckout.ViewModels
 
         public Task RefreshOrderAsync()
         {
-            OrderDetails = SaleEngineService.OrderData.OrderDetails?.ToObservableCollection();
+            OrderDetails = SaleEngineService.OrderData?.OrderDetails?.ToObservableCollection();
             MessagingCenter.Send(this, "OrderRefresh");
 
             IsSelectAllOrder = false;
+            IsAnyOrderSelected = false;
             return Task.FromResult(true);
         }
 
@@ -205,7 +297,7 @@ namespace SelfCheckout.ViewModels
             {
                 var payload = new
                 {
-                    SessionKey = LoginData.SessionKey,
+                    SessionKey = SaleEngineService.LoginData.SessionKey,
                     Rows = orders.Select(o => o.Guid).ToArray(),
                     ActionItemValue = new
                     {
@@ -236,42 +328,20 @@ namespace SelfCheckout.ViewModels
                 IsBusy = true;
                 var payload = new
                 {
-                    SessionKey = LoginData.SessionKey,
+                    SessionKey = SaleEngineService.LoginData.SessionKey,
                     ItemCode = barcode
                 };
-                var result = await SaleEngineService.AddItemToOrderAsync(payload);
-                var success = result.IsCompleted;
+                await SaleEngineService.AddItemToOrderAsync(payload);
+                await RefreshOrderAsync();
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
             finally
             {
                 IsBusy = false;
             }
-            await RefreshOrderAsync();
-        }
-
-        public async Task TestAddOrder()
-        {
-            var random = new Random();
-            var payload = items[random.Next(items.Length)];
-            try
-            {
-                IsBusy = true;
-                var result = await SaleEngineService.AddItemToOrderAsync(payload);
-                var success = result.IsCompleted;
-            }
-            catch (Exception ex)
-            {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-            await RefreshOrderAsync();
         }
     }
 }

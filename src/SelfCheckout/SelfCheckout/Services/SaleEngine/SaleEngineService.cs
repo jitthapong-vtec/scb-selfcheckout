@@ -30,26 +30,48 @@ namespace SelfCheckout.Services.SaleEngine
 
         public IList<Currency> Currencies { get; private set; }
 
+        public Currency CurrencySelected { get; set; }
+
+        public Currency BaseCurrency
+        {
+            get => Currencies.Where(c => c.CurrCode == "THB").FirstOrDefault() ?? new Currency
+            {
+                CurrCode = "THB",
+                CurrDesc = "THB",
+                CurrRate = 1
+            };
+        }
+
         public OrderData OrderData { get; private set; }
 
-        public async Task<ApiResultData<List<OrderData>>> ActionItemToOrderAsync(object payload)
+        public async Task<List<OrderData>> ActionItemToOrderAsync(object payload)
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/ActionItemToOrder");
             var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             OrderData = result.Data.FirstOrDefault();
-            return result;
+            return result.Data;
         }
 
-        public async Task<ApiResultData<List<OrderData>>> ActionListItemToOrderAsync(object payload)
+        public async Task<List<OrderData>> ActionListItemToOrderAsync(object payload)
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/ActionListItemToOrder");
             var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             OrderData = result.Data.FirstOrDefault();
-            return result;
+            return result.Data;
+        }
+
+        public async Task<List<OrderData>> ActionOrderPaymentAsync(object payload)
+        {
+            var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/ActionOrderPayment");
+            var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            OrderData = result.Data.FirstOrDefault();
+            return result.Data;
         }
 
         public async Task<OrderPayment> ActionPaymentToOrderAsync(object payload)
@@ -61,66 +83,87 @@ namespace SelfCheckout.Services.SaleEngine
             return result.Data?.FirstOrDefault().OrderPayments?.FirstOrDefault();
         }
 
-        public async Task<ApiResultData<List<OrderData>>> AddItemToOrderAsync(object payload)
+        public async Task<List<OrderData>> AddItemToOrderAsync(object payload)
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/AddItemToOrder");
             var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             OrderData = result.Data.FirstOrDefault();
-            return result;
+            return result.Data;
         }
 
-        public async Task<ApiResultData<List<OrderData>>> AddPaymentToOrderAsync(object payload)
+        public async Task<List<OrderData>> AddPaymentToOrderAsync(object payload)
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/AddPaymentToOrder");
             var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
-            if(!result.IsCompleted)
+            if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             OrderData = result.Data.FirstOrDefault();
-            return result;
+            return result.Data;
         }
 
-        public async Task<ApiResultData<List<OrderData>>> CheckoutPaymentOrder(object payload)
+        public async Task<List<OrderData>> CheckoutPaymentOrder(object payload)
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/CheckOutPaymentOrder");
             var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             OrderData = result.Data.FirstOrDefault();
-            return result;
+            return result.Data;
         }
 
-        public async Task<ApiResultData<List<OrderData>>> FinishPaymentOrderAsync(object payload)
+        public async Task<List<OrderData>> FinishPaymentOrderAsync(object payload)
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/FinishPaymentOrder");
             var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
-            OrderData = result.Data.FirstOrDefault();
-            return result;
+            return result.Data;
         }
 
-        public async Task<ApiResultData<List<OrderData>>> GetOrderAsync(object payload)
+        public async Task<List<OrderData>> GetOrderAsync(object payload)
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrder");
             var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             OrderData = result.Data.FirstOrDefault();
-            return result;
+            return result.Data;
         }
 
-        public async Task<ApiResultData<List<OrderData>>> GetOrderListAsync(object payload)
+        public async Task<List<OrderData>> GetOrderListAsync(object payload)
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrderList");
-            return await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
+            var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            return result.Data;
+
+            //var apiResultData = new ApiResultData<List<OrderData>>();
+            //var assembly = Assembly.GetExecutingAssembly();
+            //var resourceName = "SelfCheckout.Resources.order_list.json";
+
+            //try
+            //{
+            //    using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            //    using (StreamReader reader = new StreamReader(stream))
+            //    {
+            //        string result = await reader.ReadToEndAsync();
+            //        apiResultData = JsonConvert.DeserializeObject<ApiResultData<List<OrderData>>>(result);
+            //    }
+            //}
+            //catch { }
+            //return apiResultData;
         }
 
-        public async Task<ApiResultData<Wallet>> GetWalletTypeFromBarcodeAsync(object payload)
+        public async Task<Wallet> GetWalletTypeFromBarcodeAsync(object payload)
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetWalletTypeFromBarcode");
-            return await PostAsync<object, ApiResultData<Wallet>>(uri.ToString(), payload);
+            var result = await PostAsync<object, ApiResultData<Wallet>>(uri.ToString(), payload);
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            return result.Data;
         }
 
         public async Task LoadCurrencyAsync(object payload)
@@ -132,19 +175,57 @@ namespace SelfCheckout.Services.SaleEngine
             Currencies = result.Data;
         }
 
-        public async Task<ApiResultData<LoginData>> LoginAsync(object payload)
+        public async Task<LoginData> LoginAsync(string username, string password)
         {
+            var payload = new
+            {
+                branch_no = _selfCheckoutService.AppConfig.BranchNo,
+                module_code = _selfCheckoutService.AppConfig.Module,
+                user_code = username,
+                user_password = password,
+                machine_ip = GlobalSettings.Instance.MachineIp
+            };
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/Authen/LoginAuthen");
             var result = await PostAsync<object, ApiResultData<LoginData>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
-            return result;
+            return result.Data;
         }
 
         public Task LogoutAsync()
         {
             LoginData = null;
             return Task.FromResult(true);
+        }
+
+        public async Task<List<FullTaxInvoice>> PrintTaxInvoice(object payload)
+        {
+            var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/PrintTaxInvoice");
+            var result = await PostAsync<object, ApiResultData<List<FullTaxInvoice>>>(uri.ToString(), payload);
+            if (!result.IsCompleted)
+                throw new KPApiException(result.DefaultMessage);
+            return result.Data;
+        }
+
+        public async Task VoidPaymentAsync(string merchantId, string partnerTransId)
+        {
+            try
+            {
+                var payload = new object[]
+                {
+                new
+                {
+                    MerchantId = merchantId,
+                    PartnerTransId = partnerTransId
+                }
+                };
+
+                var uri = new UriBuilder("http://kpservices.kingpower.com/KPPaymentGatewayAPI/api/PaymentGateway/Cancel");
+                await PostAsync<object, object>(uri.ToString(), payload);
+            }
+            catch(Exception ex)
+            { 
+            }
         }
     }
 }

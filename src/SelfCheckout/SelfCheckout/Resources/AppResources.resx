@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Alert" xml:space="preserve">
+    <value>Alert</value>
+  </data>
   <data name="All" xml:space="preserve">
     <value>All</value>
   </data>
@@ -135,8 +138,8 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="ChangeShoppingCart" xml:space="preserve">
-    <value>Change Shopping Cart</value>
+  <data name="ChangeShoppingCard" xml:space="preserve">
+    <value>Change Shopping Card</value>
   </data>
   <data name="CheckerManagementSystem" xml:space="preserve">
     <value>Checker Management System</value>
@@ -151,19 +154,25 @@
     <value>Confirm</value>
   </data>
   <data name="ConfirmDeleteItem" xml:space="preserve">
-    <value>Do you want to delete item?</value>
+    <value>Do you have to delete item?</value>
   </data>
   <data name="ConfirmLogout" xml:space="preserve">
     <value>Are you sure you want to log out?</value>
   </data>
   <data name="ConfirmUseCoupon" xml:space="preserve">
-    <value>Do you want to use coupon?</value>
+    <value>Do you have to use coupon?</value>
+  </data>
+  <data name="ContinueShopping" xml:space="preserve">
+    <value>Continue Shopping</value>
   </data>
   <data name="CountDown" xml:space="preserve">
     <value>Countdown</value>
   </data>
   <data name="Currency" xml:space="preserve">
     <value>Currency</value>
+  </data>
+  <data name="DateSlashTime" xml:space="preserve">
+    <value>Date/Time</value>
   </data>
   <data name="DateTime" xml:space="preserve">
     <value>Date/Time</value>
@@ -184,6 +193,15 @@
   <data name="Discount" xml:space="preserve">
     <value>Discount</value>
   </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="FilterCustomer" xml:space="preserve">
+    <value>Filter Customer</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Finished</value>
+  </data>
   <data name="FlightNo" xml:space="preserve">
     <value>Flight No.</value>
   </data>
@@ -194,11 +212,17 @@
     <value>General</value>
     <comment>No translate</comment>
   </data>
+  <data name="History" xml:space="preserve">
+    <value>History</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
   <data name="Info" xml:space="preserve">
     <value>Info</value>
+  </data>
+  <data name="InvoiceNo" xml:space="preserve">
+    <value>Invoice No.</value>
   </data>
   <data name="Invoices" xml:space="preserve">
     <value>Invoices</value>
@@ -227,14 +251,26 @@
   <data name="MyCart" xml:space="preserve">
     <value>My Cart</value>
   </data>
+  <data name="MyOrder" xml:space="preserve">
+    <value>My order</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="Nationality" xml:space="preserve">
     <value>Nationality</value>
   </data>
+  <data name="Net" xml:space="preserve">
+    <value>Net</value>
+  </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
+  </data>
+  <data name="Occupied" xml:space="preserve">
+    <value>Occupied</value>
+  </data>
+  <data name="OccupiedDevice" xml:space="preserve">
+    <value>Occupied Device</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
@@ -281,20 +317,41 @@
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
   </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SaveSession" xml:space="preserve">
+    <value>Save Session</value>
+  </data>
+  <data name="SaveSessionConfirm" xml:space="preserve">
+    <value>Do you want to save this session?</value>
+  </data>
   <data name="ScanCoupon" xml:space="preserve">
     <value>Scan Coupon</value>
   </data>
-  <data name="ScanLaserOnShoppingCart" xml:space="preserve">
-    <value>Please scan laser on QR Shopping cart</value>
+  <data name="ScanLaserOnShoppingCard" xml:space="preserve">
+    <value>Please scan laser on QR Shopping card</value>
   </data>
-  <data name="ScanShoppingCart" xml:space="preserve">
-    <value>Please scan shopping cart</value>
+  <data name="ScanShoppingCard" xml:space="preserve">
+    <value>Please scan shopping card</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
   </data>
   <data name="SelectPaymentMethod" xml:space="preserve">
     <value>Select payment method</value>
   </data>
+  <data name="SessionAlreadyFinish" xml:space="preserve">
+    <value>This session already finished.</value>
+  </data>
   <data name="SessionHistory" xml:space="preserve">
     <value>Session history</value>
+  </data>
+  <data name="SessionKey" xml:space="preserve">
+    <value>Session Key</value>
   </data>
   <data name="Setting" xml:space="preserve">
     <value>Setting</value>
@@ -302,11 +359,20 @@
   <data name="Shopping" xml:space="preserve">
     <value>Shopping</value>
   </data>
+  <data name="ShoppingCardNotActivate" xml:space="preserve">
+    <value>This shopping card is not activate!</value>
+  </data>
   <data name="ShoppingCartEmpty" xml:space="preserve">
     <value>Your shopping cart is empty</value>
   </data>
   <data name="StaffLogin" xml:space="preserve">
     <value>Staff Login</value>
+  </data>
+  <data name="StartOccupied" xml:space="preserve">
+    <value>Start occupied</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
   </data>
   <data name="SubBranch" xml:space="preserve">
     <value>Sub Branch</value>
@@ -316,13 +382,19 @@
   </data>
   <data name="System" xml:space="preserve">
     <value>System</value>
-    <comment>No translate</comment>
+    
   </data>
   <data name="ThkForOrderDetail" xml:space="preserve">
     <value>You can see order in "My Order" menu</value>
   </data>
   <data name="ThkForOrderTitle" xml:space="preserve">
     <value>Thank you for your order</value>
+  </data>
+  <data name="TimeUse" xml:space="preserve">
+    <value>Time Use</value>
+  </data>
+  <data name="TotalNet" xml:space="preserve">
+    <value>Total Net</value>
   </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>
@@ -335,5 +407,26 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="ConfirmDeleteCoupon" xml:space="preserve">
+    <value>Do you have to delete coupon?</value>
+  </data>
+  <data name="TotalDiscount" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MoreDetail" xml:space="preserve">
+    <value>More Detail</value>
+  </data>
+  <data name="ShoppingCard" xml:space="preserve">
+    <value>Shopping Card</value>
+  </data>
+  <data name="ValidOn" xml:space="preserve">
+    <value>Valid on</value>
+  </data>
+  <data name="ExpireOn" xml:space="preserve">
+    <value>Expire on</value>
+  </data>
+  <data name="HolderDetail" xml:space="preserve">
+    <value>Holder Detail</value>
   </data>
 </root>

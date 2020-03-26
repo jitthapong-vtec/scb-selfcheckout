@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SelfCheckout.Resources;
+using SelfCheckout.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +17,13 @@ namespace SelfCheckout.Views
         public PaymentProcessView()
         {
             InitializeComponent();
+
+            MessagingCenter.Subscribe<MainViewModel>(this, "LanguageChanged", (sender) =>
+            {
+                lblCountdown.Text = AppResources.CountDown;
+                lblPayment.Text = AppResources.Payment;
+                lblScanPayment.Text = AppResources.PleaseScanPayment;
+            });
         }
     }
 }

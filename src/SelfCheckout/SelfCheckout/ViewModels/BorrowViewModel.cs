@@ -1,10 +1,17 @@
 ﻿using Newtonsoft.Json;
+using Prism.Commands;
+using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
 using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -12,113 +19,46 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class BorrowViewModel : ViewModelBase
+    public class BorrowViewModel : ShoppingCartViewModelBase
     {
         string _inputValue = "3600000711400";
 
-        public ICommand ScanShoppingCartCommand => new Command(async () => await ScanShoppingCartAsync());
-
-        public ICommand ValidateShoppingCartCommand => new Command(async () => await ValidateShoppingCartAsync());
-
-        async Task ScanShoppingCartAsync()
+        public BorrowViewModel(INavigationService navigatinService, IDialogService dialogService, ISaleEngineService saleEngineService, ISelfCheckoutService selfCheckoutService, IRegisterService registerService) : base(navigatinService, dialogService, saleEngineService, selfCheckoutService, registerService)
         {
-            var task = new TaskCompletionSource<string>();
-            await NavigationService.PushModalAsync<BarcodeScanViewModel, string>(null, task);
-            var result = await task.Task;
-            if (!string.IsNullOrEmpty(result))
-            {
-                try
-                {
-                    var definition = new { S = "", C = "" };
-                    var qrFromKiosk = JsonConvert.DeserializeAnonymousType(result, definition);
-                    InputValue = qrFromKiosk.S;
-                }
-                catch
-                {
-                    InputValue = result;
-                }
-            }
         }
 
-        async Task ValidateShoppingCartAsync()
-        {
-            try
-            {
-                IsBusy = true;
-                var validateResult = await SelfCheckoutService.ValidateShoppingCartAsync(LoginData.UserInfo.MachineEnv.MachineIp, InputValue);
-                if (!validateResult.IsCompleted)
-                {
-                    await DialogService.ShowAlertAsync(AppResources.Opps, validateResult.DefaultMessage, AppResources.Close);
-                    return;
-                }
+        public ICommand ScanShoppingCardCommand => new DelegateCommand(() => ScanShoppingCard());
 
-                SelfCheckoutService.CurrentShoppingCart = InputValue;
-
-                var payload = new
-                {
-                    shoppingCard = InputValue,
-                    SubBranch = AppConfig.SubBranch,
-                    isTour = false,
-                    isGenPdfPromotion = false,
-                    isGenImgShoppingCard = false
-                };
-
-                await RegisterService.GetCustomerAsync(payload);
-
-                if (CustomerData?.Person != null)
-                {
-                    //if (!CustomerData.Person.IsActivate)
-                    //{
-                    //    await DialogService.ShowAlertAsync(AppResources.Opps, $"{CustomerData.Person.NativeName} is not activate!", AppResources.Close);
-                    //    return;
-                    //}
-                    var task = new TaskCompletionSource<bool>();
-                    await NavigationService.PushModalAsync<CustomerCartConfirmViewModel, bool>(CustomerData.Person, task);
-                    var result = await task.Task;
-                    if (result)
-                        await StartSessionAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        async Task StartSessionAsync()
-        {
-            try
-            {
-                IsBusy = true;
-                var startResult = await SelfCheckoutService.StartSessionAsync(LoginData.UserInfo.UserCode, LoginData.UserInfo.MachineEnv.MachineNo, InputValue);
-                if (!startResult.IsCompleted)
-                {
-                    await DialogService.ShowAlertAsync(AppResources.Opps, startResult.DefaultMessage, AppResources.Close);
-                    return;
-                }
-                await NavigationService.NavigateToAsync<MainViewModel>();
-            }
-            catch (Exception ex)
-            {
-                await DialogService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
+        public ICommand ValidateShoppingCardCommand => new DelegateCommand(async () => await ValidateShoppingCardAsync(InputValue));
 
         public string InputValue
         {
             get => _inputValue;
-            set
+            set => SetProperty(ref _inputValue, value);
+        }
+
+        protected override Task ScanShoppingCardCallback(string inputValue)
+        {
+            InputValue = inputValue;
+            return Task.FromResult(true);
+        }
+
+        protected override async Task ValidateShoppingCardCallback(string shoppingCard)
+        {
+            try
             {
-                _inputValue = value;
-                RaisePropertyChanged(() => InputValue);
+                IsBusy = true;
+                var userInfo = SaleEngineService.LoginData?.UserInfo;
+                await SelfCheckoutService.StartSessionAsync(userInfo.UserCode, userInfo.MachineEnv.MachineNo, shoppingCard);
+                await NavigationService.NavigateAsync("MainView");
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
     }

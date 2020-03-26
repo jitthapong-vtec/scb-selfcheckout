@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:SelfCheckout.Controls"
+    xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+    xmlns:effects="clr-namespace:SelfCheckout.Effects"
+    xmlns:prism="http://prismlibrary.com"
+    prism:DialogLayout.RelativeWidthRequest="0.90"
+    mc:Ignorable="d"
+    x:Class="SelfCheckout.Views.CustomerCartConfirmDialog">
+    <ContentView.Content>
+        <Frame>
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" RowSpacing="8" Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:CustomLabel Grid.Row="0" Grid.Column="0" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate Name}"/>
+                    <controls:CustomLabel Grid.Row="0" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.EnglishName}" />
+                    <controls:CustomLabel Grid.Row="1" Grid.Column="0" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate PassportNo}"/>
+                    <controls:CustomLabel Grid.Row="1" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.PassportNo}"/>
+                    <controls:CustomLabel Grid.Row="2" Grid.Column="0" UpperCase="True" HorizontalOptions="Start" Text="{i18n:Translate FlightNo}"/>
+                    <controls:CustomLabel Grid.Row="2" Grid.Column="1" UpperCase="True" TextColor="{StaticResource SecondaryText}" HorizontalTextAlignment="End" Text="{Binding Person.FlightCode}"/>
+                </Grid>
+                <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="{StaticResource Gray200}"/>
+                <Grid Grid.Row="2" Margin="0,4,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:TappedGrid Grid.Column="0"
+                                             Style="{StaticResource TappedGridButtonStyle}"
+                                             TappedCommand="{Binding ConfirmCommand}"
+                                             BackgroundColor="{StaticResource Gray200}"
+                                             effects:RoundCornersEffect.CornerRadius="3">
+                        <controls:GradientBackground/>
+                        <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                    </controls:TappedGrid>
+                    <controls:TappedGrid Grid.Column="1"
+                                             Style="{StaticResource TappedGridButtonStyle}"
+                                             TappedCommand="{Binding CancelCommand}"
+                                             BackgroundColor="{StaticResource Gray200}"
+                                             effects:RoundCornersEffect.CornerRadius="3">
+                        <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Cancel}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                    </controls:TappedGrid>
+                </Grid>
+            </Grid>
+        </Frame>
+    </ContentView.Content>
+</ContentView>

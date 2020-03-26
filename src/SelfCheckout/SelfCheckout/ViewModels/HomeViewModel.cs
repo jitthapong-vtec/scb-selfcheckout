@@ -1,6 +1,11 @@
-﻿using SelfCheckout.Extensions;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Services.PimCore;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -15,22 +20,20 @@ namespace SelfCheckout.ViewModels
     public class HomeViewModel : ViewModelBase
     {
         IPimCoreService _pimCoreService;
+        ISelfCheckoutService _selfCheckoutService;
 
         ObservableCollection<PimCoreImageAsset> _assets;
+
+        public HomeViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, IPimCoreService pimCoreService) : base(navigatinService, dialogService)
+        {
+            _selfCheckoutService = selfCheckoutService;
+            _pimCoreService = pimCoreService;
+        }
 
         public ObservableCollection<PimCoreImageAsset> Assets
         {
             get => _assets;
-            set
-            {
-                _assets = value;
-                RaisePropertyChanged(() => Assets);
-            }
-        }
-
-        public HomeViewModel(IPimCoreService pimCoreService)
-        {
-            _pimCoreService = pimCoreService;
+            set => SetProperty(ref _assets, value);
         }
 
         public override async Task OnTabSelected(TabItem item)
@@ -43,10 +46,11 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var result = await _pimCoreService.GetMediaByLocationAsync();
+                var lang = _selfCheckoutService.CurrentLanguage.LangCode;
+                var result = await _pimCoreService.GetMediaByLocationAsync(lang.ToLower());
                 if (result.Status == "success")
                 {
-                    Assets = new ObservableCollection<PimCoreImageAsset>();
+                    var assets = new List<PimCoreImageAsset>();
                     foreach (var media in result.Data.ListMedia)
                     {
                         try
@@ -55,14 +59,15 @@ namespace SelfCheckout.ViewModels
                             if (assetResult.Status == "success")
                             {
                                 var asset = assetResult.Data;
-                                asset.DetailTitle = "Detail title";
-                                asset.DetailDesc = "Detail desc";
+                                asset.DetailTitle = media.Title;
+                                asset.DetailDesc = "";
                                 asset.DetailLink = media.Link;
-                                Assets.Add(asset);
+                                assets.Add(asset);
                             }
                         }
                         catch { }
                     }
+                    Assets = assets.ToObservableCollection();
                 }
             }
             catch { }

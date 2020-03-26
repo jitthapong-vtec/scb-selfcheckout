@@ -10,11 +10,17 @@ namespace SelfCheckout.Services.SelfCheckout
     {
         AppConfig AppConfig { get; }
 
-        IList<Payment> Payments { get; }
+        IList<Models.Payment> Payments { get; }
 
         IList<Language> Languages { get; }
 
-        string CurrentShoppingCart { get; set; }
+        Language CurrentLanguage { get; set; }
+
+        long BorrowSessionKey { get; }
+
+        string StartedShoppingCard { get; set; }
+
+        string CurrentShoppingCard { get; set; }
 
         Task LoadConfigAsync();
 
@@ -22,20 +28,20 @@ namespace SelfCheckout.Services.SelfCheckout
 
         Task LoadPaymentAsync();
 
-        Task<ApiResultData<int>> StartSessionAsync(string userId, string machineNo, string shoppingCartNo);
+        Task<long> StartSessionAsync(string userId, string machineNo, string shoppingCardNo);
 
-        Task<ApiResultData<bool>> UpdateSessionAsync(int sessionKey, int orderNo, string shoppingCartNo);
+        Task<bool> UpdateSessionAsync(long sessionKey, int orderNo, string shoppingCardNo);
 
-        Task<ApiResultData<bool>> EndSessionAsync(int sessionKey, string userId, string machineNo);
+        Task<bool> EndSessionAsync(long sessionKey, string userId, string machineNo);
 
-        Task<ApiResultData<SessionData>> GetSessionDetialAsync(int key);
+        Task<SessionData> GetSessionDetialAsync(long key);
 
-        Task<ApiResultData<SessionData>> GetDeviceStatusAsync(string machineNo);
+        Task<List<DeviceStatus>> GetDeviceStatusAsync(string machineNo);
 
-        Task<ApiResultData<List<SessionData>>> GetSessionHistory(DateTime? date, int sessionKey, string machineNo);
+        Task<List<DeviceStatus>> GetSessionHistory(DateTime? date, long sessionKey, string machineNo);
 
-        Task<ApiResultData<bool>> ValidateMachineAsync(string machineIp);
+        Task<bool> ValidateMachineAsync(string machineIp);
 
-        Task<ApiResultData<bool>> ValidateShoppingCartAsync(string machineIp, string shoppingCart);
+        Task<bool> ValidateShoppingCardAsync(string machineIp, string shoppingCard);
     }
 }

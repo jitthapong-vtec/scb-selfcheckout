@@ -1,4 +1,10 @@
-﻿using SelfCheckout.ViewModels.Base;
+﻿using Prism.Mvvm;
+using Prism.Navigation;
+using Prism.Services.Dialogs;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
+using SelfCheckout.Services.SelfCheckout;
+using SelfCheckout.ViewModels.Base;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -6,64 +12,63 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class BarcodeScanViewModel : ViewModelBase
+    public class BarcodeScanViewModel : BindableBase, IDialogAware
     {
-        TaskCompletionSource<string> _taskCompleteSource;
         bool _isScanning;
 
-        public override Task InitializeAsync<TViewModel, TResult>(object param, TaskCompletionSource<TResult> task)
-        {
-            _taskCompleteSource = task as TaskCompletionSource<string>;
-            IsScanning = true;
-
-            return base.InitializeAsync<TViewModel, TResult>(param, task);
-        }
+        public event Action<IDialogParameters> RequestClose;
 
         public ICommand ScanResultCommand => new Command<ZXing.Result>((result) => ScanResult(result));
 
-        public ICommand CancelCommand => new Command(async() =>
+        public ICommand CancelCommand => new Command(() =>
         {
-            await CancelScan();
+            CancelScan();
         });
 
         public bool IsScanning
         {
             get => _isScanning;
-            set
-            {
-                _isScanning = value;
-                RaisePropertyChanged(() => IsScanning);
-            }
+            set => SetProperty(ref _isScanning, value);
         }
 
         void ScanResult(ZXing.Result result)
         {
-            Device.BeginInvokeOnMainThread(async () =>
+            Device.BeginInvokeOnMainThread(() =>
             {
                 var scanResult = result.Text;
                 SetResult(scanResult);
-                await NavigationService.PopModalAsync();
             });
         }
 
-        public async Task CancelScan()
+        public void CancelScan()
         {
             SetResult(null);
-            await NavigationService.PopModalAsync();
         }
 
         public void SetResult(string data)
         {
             IsScanning = false;
 
-            if (_taskCompleteSource != null)
+            var parameters = new DialogParameters()
             {
-                try
-                {
-                    _taskCompleteSource.SetResult(data);
-                }
-                catch (Exception) { }
-            }
+                {"ScanData", data }
+            };
+
+            RequestClose(parameters);
+        }
+
+        public bool CanCloseDialog()
+        {
+            return true;
+        }
+
+        public void OnDialogClosed()
+        {
+        }
+
+        public void OnDialogOpened(IDialogParameters parameters)
+        {
+            IsScanning = true;
         }
     }
 }

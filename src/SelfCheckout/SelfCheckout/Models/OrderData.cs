@@ -36,20 +36,6 @@ namespace SelfCheckout.Models
             get => BillingQuantities[1].Uom;
         }
 
-        public int? TotalInvoice
-        {
-            get
-            {
-                int? totalInvoice = 0;
-                try
-                {
-                    totalInvoice = OrderInvoices?.Count;
-                }
-                catch { }
-                return totalInvoice;
-            }
-        }
-
         [JsonProperty("CustomerDetail")]
         public CustomerDetail CustomerDetail { get; set; }
 
@@ -421,6 +407,10 @@ namespace SelfCheckout.Models
 
     public class OrderInvoice
     {
+        public OrderInvoice()
+        {
+        }
+
         [JsonProperty("Guid")]
         public string Guid { get; set; }
 
@@ -743,7 +733,7 @@ namespace SelfCheckout.Models
         public double? PercentDiscountSpecial { get; set; }
 
         [JsonProperty("CurrentValueAdjust")]
-        public object CurrentValueAdjust { get; set; }
+        public ValueAdjust CurrentValueAdjust { get; set; }
 
         [JsonProperty("TotalSubsidize")]
         public DiscountAmount TotalSubsidize { get; set; }
@@ -771,5 +761,98 @@ namespace SelfCheckout.Models
 
         [JsonProperty("NetAmount")]
         public DiscountAmount NetAmount { get; set; }
+    }
+
+    public class ValueAdjust
+    {
+        [JsonProperty("Guid")]
+        public string Guid { get; set; }
+
+        [JsonProperty("Type")]
+        public string Type { get; set; }
+
+        [JsonProperty("FieldName")]
+        public string FieldName { get; set; }
+
+        [JsonProperty("VADetail")]
+        public VaDetail VaDetail { get; set; }
+
+        [JsonProperty("Amount")]
+        public Amount Amount { get; set; }
+
+        [JsonProperty("Percent")]
+        public object Percent { get; set; }
+
+        [JsonProperty("IsPercent")]
+        public bool IsPercent { get; set; }
+
+        [JsonProperty("RefNo")]
+        public object RefNo { get; set; }
+
+        [JsonProperty("isAllowOverwrite")]
+        public bool IsAllowOverwrite { get; set; }
+
+        [JsonProperty("promotionType")]
+        public string PromotionType { get; set; }
+
+        [JsonProperty("isCheckDuplicate")]
+        public bool IsCheckDuplicate { get; set; }
+
+        [JsonProperty("isOnlyOneLine")]
+        public bool IsOnlyOneLine { get; set; }
+
+        [JsonProperty("QRCode")]
+        public string QrCode { get; set; }
+
+        [JsonProperty("inputQRCode")]
+        public string InputQrCode { get; set; }
+
+        [JsonProperty("EanCode")]
+        public string EanCode { get; set; }
+
+        [JsonProperty("MethodCode")]
+        public string MethodCode { get; set; }
+
+        [JsonProperty("subsidize")]
+        public long Subsidize { get; set; }
+
+        [JsonProperty("amountInput")]
+        public long AmountInput { get; set; }
+    }
+
+    public class Amount
+    {
+        [JsonProperty("CurrCode")]
+        public VaDetail CurrCode { get; set; }
+
+        [JsonProperty("CurrRate")]
+        public long CurrRate { get; set; }
+
+        [JsonProperty("CurrAmt")]
+        public long CurrAmt { get; set; }
+
+        [JsonProperty("CurrAmtForCal")]
+        public long CurrAmtForCal { get; set; }
+
+        [JsonProperty("BaseCurrCode")]
+        public VaDetail BaseCurrCode { get; set; }
+
+        [JsonProperty("BaseCurrRate")]
+        public long BaseCurrRate { get; set; }
+
+        [JsonProperty("BaseCurrAmt")]
+        public long BaseCurrAmt { get; set; }
+
+        [JsonProperty("BaseCurrAmtForCal")]
+        public long BaseCurrAmtForCal { get; set; }
+    }
+
+    public class VaDetail
+    {
+        [JsonProperty("Code")]
+        public string Code { get; set; }
+
+        [JsonProperty("Desc")]
+        public string Desc { get; set; }
     }
 }

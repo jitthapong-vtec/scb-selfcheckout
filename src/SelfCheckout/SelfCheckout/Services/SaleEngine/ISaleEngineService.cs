@@ -8,33 +8,43 @@ namespace SelfCheckout.Services.SaleEngine
 {
     public interface ISaleEngineService
     {
-        LoginData LoginData { get; set; }
-
         OrderData OrderData { get; }
+
+        LoginData LoginData { get; set; }
 
         IList<Currency> Currencies { get; }
 
-        Task<ApiResultData<LoginData>> LoginAsync(object payload);
+        Currency CurrencySelected { get; set; }
 
-        Task<ApiResultData<List<OrderData>>> GetOrderAsync(object payload);
+        Currency BaseCurrency { get; }
 
-        Task<ApiResultData<List<OrderData>>> GetOrderListAsync(object payload);
+        Task<LoginData> LoginAsync(string username, string password);
 
-        Task<ApiResultData<List<OrderData>>> AddItemToOrderAsync(object payload);
+        Task<List<OrderData>> GetOrderAsync(object payload);
 
-        Task<ApiResultData<List<OrderData>>> ActionItemToOrderAsync(object payload);
+        Task<List<OrderData>> GetOrderListAsync(object payload);
 
-        Task<ApiResultData<List<OrderData>>> ActionListItemToOrderAsync(object payload);
+        Task<List<OrderData>> AddItemToOrderAsync(object payload);
 
-        Task<ApiResultData<Wallet>> GetWalletTypeFromBarcodeAsync(object payload);
+        Task<List<OrderData>> ActionItemToOrderAsync(object payload);
 
-        Task<ApiResultData<List<OrderData>>> CheckoutPaymentOrder(object payload);
+        Task<List<OrderData>> ActionListItemToOrderAsync(object payload);
 
-        Task<ApiResultData<List<OrderData>>> AddPaymentToOrderAsync(object payload);
+        Task<Wallet> GetWalletTypeFromBarcodeAsync(object payload);
+
+        Task<List<OrderData>> CheckoutPaymentOrder(object payload);
+
+        Task<List<OrderData>> AddPaymentToOrderAsync(object payload);
 
         Task<OrderPayment> ActionPaymentToOrderAsync(object payload);
 
-        Task<ApiResultData<List<OrderData>>> FinishPaymentOrderAsync(object payload);
+        Task<List<OrderData>> ActionOrderPaymentAsync(object payload);
+
+        Task<List<OrderData>> FinishPaymentOrderAsync(object payload);
+
+        Task<List<FullTaxInvoice>> PrintTaxInvoice(object payload);
+
+        Task VoidPaymentAsync(string merchantId, string partnerTransId);
 
         Task LoadCurrencyAsync(object payload);
 
