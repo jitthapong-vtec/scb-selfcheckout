@@ -810,11 +810,16 @@ namespace SelfCheckout.ViewModels
             finally
             {
                 IsBusy = false;
-                IsBeingPaymentProcess = false;
-                IsPaymentProcessing = false;
-                PaymentInputShowing = false;
-                PaymentBarcode = "";
+                ResetPaymentState();
             }
+        }
+
+        private void ResetPaymentState()
+        {
+            IsBeingPaymentProcess = false;
+            IsPaymentProcessing = false;
+            PaymentInputShowing = false;
+            PaymentBarcode = "";
         }
 
         async Task ConfirmPaymentAsync(object paymentPayload)
@@ -824,9 +829,17 @@ namespace SelfCheckout.ViewModels
             var tokenSource = new CancellationTokenSource();
             var ct = tokenSource.Token;
 
+            var paymentSuccess = false;
+            IsPaymentProcessing = true;
+
             PaymentCountdownTimer = _selfCheckoutService.AppConfig.PaymentTimeout;
             Device.StartTimer(TimeSpan.FromSeconds(1), () =>
             {
+                if (paymentSuccess)
+                {
+                    return false;
+                }
+
                 if (--PaymentCountdownTimer == 0)
                 {
                     tokenSource.Cancel();
@@ -837,8 +850,6 @@ namespace SelfCheckout.ViewModels
                 return true;
             });
 
-            IsPaymentProcessing = true;
-            var paymentSuccess = false;
             while (true)
             {
                 if (ct.IsCancellationRequested)
