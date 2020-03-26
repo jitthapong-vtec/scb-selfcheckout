@@ -45,6 +45,11 @@ namespace SelfCheckout.Services.Base
             _httpClient.DefaultRequestHeaders.Add(key, val);
         }
 
+        protected void SetRequestHeaderWithoutValidation(string key, string val)
+        {
+            _httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, val);
+        }
+
         public async Task<TResult> GetAsync<TResult>(string uri)
         {
             return await RequestAsync<object, TResult>(uri, RequestTypes.Get, null);

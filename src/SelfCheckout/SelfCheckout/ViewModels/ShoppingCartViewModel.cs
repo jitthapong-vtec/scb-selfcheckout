@@ -210,6 +210,11 @@ namespace SelfCheckout.ViewModels
         {
             CustomerData = RegisterService.CustomerData;
             CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
+
+            var appConfig = SelfCheckoutService.AppConfig;
+            var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
+            SaleEngineService.LoginData = loginResult;
+
             await LoadOrderAsync();
         }
 

@@ -10,7 +10,7 @@ namespace SelfCheckout.Services.SelfCheckout
     {
         AppConfig AppConfig { get; }
 
-        IList<Payment> Payments { get; }
+        IList<Models.Payment> Payments { get; }
 
         IList<Language> Languages { get; }
 

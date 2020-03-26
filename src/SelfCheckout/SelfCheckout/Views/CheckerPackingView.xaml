@@ -35,9 +35,9 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Entry Grid.Column="0" FontSize="Medium" x:Name="entrySessionKey" VerticalOptions="Center"
+                    <Entry Grid.Column="0" FontSize="Medium" VerticalOptions="Center" x:Name="entrySessionKey"
                            ReturnCommand="{Binding GetSessionDetailCommand}"
-                           ReturnCommandParameter="{Binding Source={Reference entrySessionKey},Path=Text}"/>
+                           ReturnCommandParameter="{Binding Source={RelativeSource Mode=Self},Path=Text}"/>
                     <controls:TappedGrid Grid.Column="1"
                                          HorizontalOptions="Center"
                                          WidthRequest="70"
@@ -54,12 +54,11 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Entry IsVisible="False" Text="{Binding SessionKey}" x:Name="hidenEntry"/>
                         <forms:ZXingBarcodeImageView
                             BarcodeFormat="QR_CODE"
                             HeightRequest="150"
                             WidthRequest="150"
-                            BarcodeValue="{Binding Source={x:Reference hidenEntry}, Path=Text}">
+                            BarcodeValue="{Binding SessionKey}">
                             <forms:ZXingBarcodeImageView.BarcodeOptions>
                                 <common:EncodingOptions Width="150" Height="150" PureBarcode="True"/>
                             </forms:ZXingBarcodeImageView.BarcodeOptions>

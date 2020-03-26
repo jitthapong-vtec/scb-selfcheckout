@@ -1,6 +1,7 @@
 ﻿using DLToolkit.Forms.Controls;
 using Prism;
 using Prism.Ioc;
+using SelfCheckout.Services.Payment;
 using SelfCheckout.Services.PimCore;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
@@ -47,6 +48,7 @@ namespace SelfCheckout
             containerRegistry.RegisterDialog<BarcodeScanView, BarcodeScanViewModel>("BarcodeScanDialog");
             containerRegistry.RegisterDialog<ShoppingCardInputDialog, ShoppingCardInputDialogViewModel>("ShoppingCardInputDialog");
             containerRegistry.RegisterDialog<SessionOrderDialog, SessionOrderDialogViewModel>("SessionOrderDialog");
+            containerRegistry.RegisterDialog<PromptPayQrDialog, PromptPayQrDialogViewModel>("PromptPayQrDialog");
 
             containerRegistry.Register<ShoppingCartViewModel>();
             containerRegistry.Register<DeviceViewModel>();
@@ -72,6 +74,7 @@ namespace SelfCheckout
             containerRegistry.RegisterSingleton<ISelfCheckoutService, SelfCheckoutService>();
             containerRegistry.RegisterSingleton<IRegisterService, RegisterService>();
             containerRegistry.RegisterSingleton<IPimCoreService, PimCoreService>();
+            containerRegistry.RegisterSingleton<IPaymentService, PaymentService>();
         }
     }
 }

@@ -282,19 +282,35 @@ namespace SelfCheckout.ViewModels
             PaymentSelectionShowing = !PaymentSelectionShowing;
         });
 
-        public ICommand PaymentSelectionCommand => new Command<Payment>((payment) =>
+        public ICommand PaymentSelectionCommand => new Command<Payment>(async(payment) =>
         {
             PaymentSelectionShowing = false;
             PaymentSelected = payment;
+
+            if (!payment.IsAlipay)
+            {
+                try
+                {
+                    var result = await DialogService.ShowDialogAsync("PromptPayQrDialog", null);
+                    var promptPayResult = result.Parameters.GetValue<PromptPayResult>("PromptPayResult");
+                    if(promptPayResult == null)
+                    {
+                        PaymentInputShowing = false;
+                        IsBeingPaymentProcess = false;
+                        PaymentSelected = _selfCheckoutService.Payments.FirstOrDefault();
+                    }
+                }
+                catch(Exception ex)
+                { 
+                }
+            }
         });
 
-        public ICommand ScanPaymentCommand => new Command<object>(
-            canExecute: (type) =>
+        public ICommand ScanPaymentCommand => new Command<object>((type) =>
             {
-                return !IsPaymentProcessing;
-            },
-            execute: (type) =>
-            {
+                if (IsPaymentProcessing)
+                    return;
+
                 if (Convert.ToInt32(type) == 1)
                 {
                     DialogService.ShowDialog("BarcodeScanDialog", null, async (dialogResult) =>

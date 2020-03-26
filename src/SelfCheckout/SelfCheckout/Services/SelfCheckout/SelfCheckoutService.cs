@@ -27,7 +27,7 @@ namespace SelfCheckout.Services.SelfCheckout
 
         public AppConfig AppConfig { get; private set; }
 
-        public IList<Payment> Payments { get; private set; }
+        public IList<Models.Payment> Payments { get; private set; }
 
         public IList<Language> Languages { get; private set; }
 
@@ -56,7 +56,7 @@ namespace SelfCheckout.Services.SelfCheckout
         public async Task LoadPaymentAsync()
         {
             var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Master/PaymentList");
-            var result = await GetAsync<ApiResultData<IList<Payment>>>(uri.ToString());
+            var result = await GetAsync<ApiResultData<IList<Models.Payment>>>(uri.ToString());
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             Payments = result.Data;

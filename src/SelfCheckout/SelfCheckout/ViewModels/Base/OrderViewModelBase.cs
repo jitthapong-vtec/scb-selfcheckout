@@ -129,15 +129,12 @@ namespace SelfCheckout.ViewModels.Base
 
             if (SessionData.SessionStatus.SessionCode == "END")
             {
-                Clear();
-
-                await DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
                 return true;
             }
             return false;
         }
 
-        private void Clear()
+        protected void Clear()
         {
             OrderInvoices?.Clear();
             OrderDetails?.Clear();
