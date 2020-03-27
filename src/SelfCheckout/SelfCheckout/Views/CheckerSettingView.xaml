@@ -8,6 +8,12 @@
              NavigationPage.HasNavigationBar="False"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.CheckerSettingView">
+    <ContentPage.Resources>
+        <Style TargetType="Entry">
+            <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            <Setter Property="FontSize" Value="Large"/>
+        </Style>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
             <ffimageloading:CachedImage 
@@ -38,11 +44,13 @@
                         </StackLayout>
                     </Grid>
                 </controls:ActionBarView>
-                <ScrollView Grid.Row="1" Margin="16" HorizontalOptions="Center" VerticalOptions="Center">
+                <ScrollView Grid.Row="1" Margin="16" HorizontalOptions="Center">
                     <StackLayout>
+                        <Label Text="Self Checkout Api"/>
+                        <Entry Text="{Binding SelfCheckoutApi}"/>
                         <Label Text="Receipt Printer"/>
                         <StackLayout Orientation="Horizontal">
-                            <Entry IsReadOnly="True" FontSize="Medium" Text="{Binding PrinterName}" WidthRequest="300" VerticalOptions="Center"/>
+                            <Entry IsReadOnly="True" WidthRequest="300" Text="{Binding PrinterName}" HorizontalOptions="Start" VerticalOptions="Center"/>
                             <Frame BackgroundColor="{StaticResource Primary}" VerticalOptions="Center">
                                 <controls:TappedGrid TappedCommand="{Binding FindPrinterCommand}"
                                     Padding="0"

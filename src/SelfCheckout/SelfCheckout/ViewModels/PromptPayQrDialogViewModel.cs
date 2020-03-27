@@ -169,23 +169,24 @@ namespace SelfCheckout.ViewModels
 
         async Task InquireAsync()
         {
-            if (_ct.IsCancellationRequested)
+            while (true)
             {
-                SetResult(null);
-                return;
-            }
+                if (_ct.IsCancellationRequested)
+                {
+                    SetResult(null);
+                    break;
+                }
 
-            try
-            {
-                var result = await _paymentService.InquiryAsync(_refNo);
-                if (result != null)
-                    SetResult(result);
-                else
-                    await InquireAsync();
-            }
-            finally
-            {
-                await InquireAsync();
+                try
+                {
+                    var result = await _paymentService.InquiryAsync(_refNo);
+                    if (result != null)
+                    {
+                        SetResult(result);
+                        break;
+                    }
+                }
+                catch { }
             }
         }
 

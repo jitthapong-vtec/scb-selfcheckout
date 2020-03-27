@@ -96,6 +96,10 @@ namespace SelfCheckout.Services.Base
             {
                 throw new HttpRequestExceptionEx(HttpStatusCode.RequestTimeout, "Connection timeout");
             }
+            catch (HttpRequestException)
+            {
+                throw new HttpRequestExceptionEx(HttpStatusCode.BadGateway, "Can't connect to server!");
+            }
 
             await HandleResponse(response);
             var result = await response.Content.ReadAsStringAsync();

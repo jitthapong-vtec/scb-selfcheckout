@@ -8,7 +8,7 @@
         <Grid BackgroundColor="{OnPlatform Android='#66000000', UWP=Transparent}">
             <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
                 <ActivityIndicator IsRunning="{Binding IsBusy}"/>
-                <controls:CustomLabel UpperCase="True" Margin="8"
+                <controls:CustomLabel UpperCase="True" Margin="8" IsVisible="{OnIdiom Phone=True}"
                                    TextColor="{OnIdiom Phone={StaticResource Gray50}, Default={StaticResource Primary}}"
                                    HorizontalTextAlignment="Center" Text="{i18n:Translate Loading}"/>
             </StackLayout>

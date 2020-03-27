@@ -3,6 +3,7 @@ using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Models;
 using SelfCheckout.Services.Print;
+using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,11 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class CheckerSettingViewModel : ViewModelBase
+    public class CheckerSettingViewModel : SettingViewModelBase
     {
         string _printerName;
 
-        public CheckerSettingViewModel(INavigationService navigatinService, IDialogService dialogService) : base(navigatinService, dialogService)
+        public CheckerSettingViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService, selfCheckoutService)
         {
         }
 

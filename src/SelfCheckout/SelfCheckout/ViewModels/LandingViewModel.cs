@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
@@ -40,8 +41,18 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-                await ReloadData();
+                var result = await DialogService.ConfirmAsync(ex.Message, "Do you want to go to settings?", AppResources.Yes, AppResources.No);
+                if (result)
+                {
+                    if (Device.RuntimePlatform == Device.UWP)
+                        await NavigationService.NavigateAsync("CheckerSettingView");
+                    else
+                        await NavigationService.NavigateAsync("SettingView");
+                }
+                else
+                {
+                    await ReloadData();
+                }
             }
             finally
             {

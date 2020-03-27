@@ -59,7 +59,7 @@ namespace SelfCheckout.Views
                     }
                     catch (DensoScannerException ex)
                     {
-                        MessagingCenter.Send(mainViewModel, "AddItemToOrder", "00008211470207673");
+                        //MessagingCenter.Send(mainViewModel, "AddItemToOrder", "00008211470207673");
                     }
                 }
             }

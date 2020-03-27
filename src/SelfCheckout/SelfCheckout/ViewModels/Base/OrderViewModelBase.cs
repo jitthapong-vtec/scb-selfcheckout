@@ -215,6 +215,11 @@ namespace SelfCheckout.ViewModels.Base
                 };
 
                 var result = await SaleEngineService.GetOrderListAsync(payload);
+                try
+                {
+                    result.ForEach(o => o.CustomerDetail.CustomerName = customer.CustomerName);
+                }
+                catch { }
                 ordersData.AddRange(result);
             }
 

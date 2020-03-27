@@ -695,7 +695,7 @@ namespace SelfCheckout.ViewModels
                     SessionKey = _saleEngineService.LoginData.SessionKey,
                 };
 
-                await ConfirmPaymentAsync(paymentPayload);
+                await ConfirmPaymentAsync(paymentPayload, false);
             }
             catch (Exception ex)
             {
@@ -704,9 +704,6 @@ namespace SelfCheckout.ViewModels
             finally
             {
                 IsBusy = false;
-                IsBeingPaymentProcess = false;
-                IsPaymentProcessing = false;
-                PaymentInputShowing = false;
             }
         }
 
@@ -792,7 +789,7 @@ namespace SelfCheckout.ViewModels
                     SessionKey = _saleEngineService.LoginData.SessionKey,
                 };
 
-                await ConfirmPaymentAsync(paymentPayload);
+                await ConfirmPaymentAsync(paymentPayload, true);
 
                 try
                 {
@@ -810,7 +807,6 @@ namespace SelfCheckout.ViewModels
             finally
             {
                 IsBusy = false;
-                ResetPaymentState();
             }
         }
 
@@ -822,54 +818,61 @@ namespace SelfCheckout.ViewModels
             PaymentBarcode = "";
         }
 
-        async Task ConfirmPaymentAsync(object paymentPayload)
+        async Task ConfirmPaymentAsync(object paymentPayload, bool isWallet)
         {
             await _saleEngineService.AddPaymentToOrderAsync(paymentPayload);
 
-            var tokenSource = new CancellationTokenSource();
-            var ct = tokenSource.Token;
-
             var paymentSuccess = false;
-            IsPaymentProcessing = true;
-
-            PaymentCountdownTimer = _selfCheckoutService.AppConfig.PaymentTimeout;
-            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+            if (isWallet)
             {
-                if (paymentSuccess)
-                {
-                    return false;
-                }
+                var tokenSource = new CancellationTokenSource();
+                var ct = tokenSource.Token;
 
-                if (--PaymentCountdownTimer == 0)
-                {
-                    tokenSource.Cancel();
-                    return false;
-                }
-                if (!IsPaymentProcessing)
-                    return false;
-                return true;
-            });
+                IsPaymentProcessing = true;
 
-            while (true)
+                PaymentCountdownTimer = _selfCheckoutService.AppConfig.PaymentTimeout;
+                Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+                {
+                    if (paymentSuccess)
+                    {
+                        return false;
+                    }
+
+                    if (--PaymentCountdownTimer == 0)
+                    {
+                        tokenSource.Cancel();
+                        return false;
+                    }
+                    if (!IsPaymentProcessing)
+                        return false;
+                    return true;
+                });
+
+                while (true)
+                {
+                    if (ct.IsCancellationRequested)
+                        break;
+
+                    var actionPayload = new
+                    {
+                        OrderGuid = _saleEngineService.OrderData.Guid,
+                        Rows = _saleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
+                        Action = 3,
+                        Value = "",
+                        currency = "",
+                        SessionKey = _saleEngineService.LoginData.SessionKey
+                    };
+                    var paymentStatus = await _saleEngineService.ActionPaymentToOrderAsync(actionPayload);
+                    if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
+                    {
+                        paymentSuccess = true;
+                        break;
+                    }
+                }
+            }
+            else
             {
-                if (ct.IsCancellationRequested)
-                    break;
-
-                var actionPayload = new
-                {
-                    OrderGuid = _saleEngineService.OrderData.Guid,
-                    Rows = _saleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
-                    Action = 3,
-                    Value = "",
-                    currency = "",
-                    SessionKey = _saleEngineService.LoginData.SessionKey
-                };
-                var paymentStatus = await _saleEngineService.ActionPaymentToOrderAsync(actionPayload);
-                if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
-                {
-                    paymentSuccess = true;
-                    break;
-                }
+                paymentSuccess = true;
             }
 
             if (paymentSuccess)
@@ -892,6 +895,8 @@ namespace SelfCheckout.ViewModels
                 var headerAttr = _saleEngineService.OrderData.HeaderAttributes.Where(o => o.Code == "order_no").FirstOrDefault();
                 var orderNo = Convert.ToInt32(headerAttr.ValueOfDecimal);
                 var result = await _selfCheckoutService.UpdateSessionAsync(_selfCheckoutService.BorrowSessionKey, orderNo, _selfCheckoutService.CurrentShoppingCard);
+
+                ResetPaymentState();
 
                 var appConfig = _selfCheckoutService.AppConfig;
                 var loginData = await _saleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
