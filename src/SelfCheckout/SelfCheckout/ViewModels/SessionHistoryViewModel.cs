@@ -139,6 +139,9 @@ namespace SelfCheckout.ViewModels
 
         public ICommand FilterCommand => new DelegateCommand(async () =>
         {
+            FilterTypes.Where(f => f.Selected).FirstOrDefault().Selected = false;
+            FilterTypes.Where(f => (int)f.Arg1 == 1).FirstOrDefault().Selected = true;
+
             await LoadSessionHistoryAsync();
             FilterDate = null;
         });
@@ -170,7 +173,13 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                _allSessionHistories = await _selfCheckoutService.GetSessionHistory(FilterDate, Convert.ToInt64(FilterSessionKey), FilterMachineNo);
+                long sessionKey = 0;
+                try
+                {
+                    sessionKey = Convert.ToInt64(FilterSessionKey);
+                }
+                catch { }
+                _allSessionHistories = await _selfCheckoutService.GetSessionHistory(FilterDate, sessionKey, FilterMachineNo);
                 SessionHistories = _allSessionHistories.ToObservableCollection();
             }
             catch (Exception ex)
