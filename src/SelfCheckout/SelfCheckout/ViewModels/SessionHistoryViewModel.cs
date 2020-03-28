@@ -143,7 +143,6 @@ namespace SelfCheckout.ViewModels
             FilterTypes.Where(f => (int)f.Arg1 == 1).FirstOrDefault().Selected = true;
 
             await LoadSessionHistoryAsync();
-            FilterDate = null;
         });
 
         async Task SaveSessionAsync(long sessionKey)

@@ -48,7 +48,7 @@ namespace SelfCheckout.ViewModels
                     await DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
                     return;
                 }
-                
+
                 await LoadCustomerSession();
 
                 CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);

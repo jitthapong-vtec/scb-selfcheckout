@@ -81,7 +81,7 @@
                         </BindableLayout.ItemTemplate>
                     </StackLayout>
                     <Grid Grid.Row="1">
-                        <Frame Padding="8">
+                        <Frame Padding="0">
                             <controls:TabViewContainer Content="{Binding CurrentView}"/>
                         </Frame>
                     </Grid>

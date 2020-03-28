@@ -67,5 +67,7 @@ namespace SelfCheckout
                 return "127.0.0.1";
             }
         }
+
+        public bool IsTestMode { get => Preferences.Get("IsTestMode", false); }
     }
 }

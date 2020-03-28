@@ -8,67 +8,67 @@
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
        x:Class="SelfCheckout.Views.OrderItemView">
-    <!--<SwipeView>
-                <SwipeView.RightItems>
-                    <SwipeItemView>
-                        <controls:TappedGrid Tapped="Delete_Tapped" BackgroundColor="Red" WidthRequest="96">
-                            <StackLayout VerticalOptions="Center" Margin="8" Spacing="0">
-                                <Label Style="{StaticResource LabelIconStyle}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" FontSize="36" Text="&#xf1f8;" HorizontalOptions="Center"/>
-                                <Label Text="{i18n:Translate Delete}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-                            </StackLayout>
-                        </controls:TappedGrid>
-                    </SwipeItemView>
-                </SwipeView.RightItems>-->
-    <Frame Margin="{OnPlatform Android='-4,0,-4,4', UWP=0}" Padding="{OnPlatform Android='8,4,8,4', UWP=0}">
-        <Grid Margin="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <controls:TappedGrid Grid.Column="0" x:Name="chkOrder" Tapped="CheckBox_Tapped" IsVisible="{OnIdiom Phone=True, Desktop=False}">
-                <Image Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center">
-                    <Image.Triggers>
-                        <DataTrigger TargetType="Image" Binding="{Binding IsSelected}" Value="True">
-                            <Setter Property="Source" Value="ic_check_active"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Image" Binding="{Binding IsSelected}" Value="False">
-                            <Setter Property="Source" Value="ic_check_normal"/>
-                        </DataTrigger>
-                    </Image.Triggers>
-                </Image>
-            </controls:TappedGrid>
-            <forms:CachedImage Source="https://member.kingpower.com/images/logo.png" WidthRequest="72" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.IsShowArticleImage}" Grid.Column="1" HeightRequest="72" Aspect="AspectFit"/>
-            <Grid Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+    <SwipeView>
+        <SwipeView.RightItems>
+            <SwipeItemView>
+                <controls:TappedGrid Tapped="Delete_Tapped" BackgroundColor="Red" WidthRequest="96">
+                    <StackLayout VerticalOptions="Center" Margin="8" Spacing="0">
+                        <Label Style="{StaticResource LabelIconStyle}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" FontSize="36" Text="&#xf1f8;" HorizontalOptions="Center"/>
+                        <Label Text="{i18n:Translate Delete}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                    </StackLayout>
+                </controls:TappedGrid>
+            </SwipeItemView>
+        </SwipeView.RightItems>
+        <Frame Margin="{OnPlatform Android='-4,0,-4,4', UWP=0}" Padding="{OnPlatform Android='8,4,8,4', UWP=0}">
+            <Grid Margin="4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding ItemDetail.Item.Desc}" MaxLines="1" LineBreakMode="TailTruncation"/>
-                <Label Grid.Row="1" Grid.Column="0" MaxLines="1" FontSize="Micro" Text="{Binding ItemDetail.Item.Code}"/>
-                <Label Grid.Row="1" Grid.Column="1" MaxLines="1" HorizontalTextAlignment="End" Text="{Binding ItemDetail.UnitPrice, Converter={StaticResource CurrencyFormatConverter}}" Style="{StaticResource LabelNumericStyle}"/>
-                <Label Grid.Row="2" Grid.Column="0" MaxLines="1" Text="{i18n:Translate Amount}"/>
-                <Label Grid.Row="2" Grid.Column="1" MaxLines="1" Text="{Binding BillingAmount.TotalAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" Style="{StaticResource LabelNumericStyle}"/>
-                <Label Grid.Row="3" Grid.Column="0" MaxLines="1" Text="{i18n:Translate Discount}" TextColor="Red"/>
-                <Label Grid.Row="3" Grid.Column="1" MaxLines="1" Text="{Binding BillingAmount.DiscountAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" TextColor="Red" Style="{StaticResource LabelNumericStyle}"/>
-                <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="{StaticResource Gray100}" HeightRequest="1"/>
-                <Entry Grid.Row="5" Grid.Column="0" VerticalOptions="Center" x:Name="entryOrderQty" HorizontalOptions="Start" HorizontalTextAlignment="Center" 
+                <controls:TappedGrid Grid.Column="0" x:Name="chkOrder" Tapped="CheckBox_Tapped" IsVisible="{OnIdiom Phone=True, Desktop=False}">
+                    <Image Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image" Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="Source" Value="ic_check_active"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Image" Binding="{Binding IsSelected}" Value="False">
+                                <Setter Property="Source" Value="ic_check_normal"/>
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
+                </controls:TappedGrid>
+                <forms:CachedImage Source="https://member.kingpower.com/images/logo.png" WidthRequest="72" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.IsShowArticleImage}" Grid.Column="1" HeightRequest="72" Aspect="AspectFit"/>
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding ItemDetail.Item.Desc}" MaxLines="1" LineBreakMode="TailTruncation"/>
+                    <Label Grid.Row="1" Grid.Column="0" MaxLines="1" FontSize="Micro" Text="{Binding ItemDetail.Item.Code}"/>
+                    <Label Grid.Row="1" Grid.Column="1" MaxLines="1" HorizontalTextAlignment="End" Text="{Binding ItemDetail.UnitPrice, Converter={StaticResource CurrencyFormatConverter}}" Style="{StaticResource LabelNumericStyle}"/>
+                    <Label Grid.Row="2" Grid.Column="0" MaxLines="1" Text="{i18n:Translate Amount}"/>
+                    <Label Grid.Row="2" Grid.Column="1" MaxLines="1" Text="{Binding BillingAmount.TotalAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" Style="{StaticResource LabelNumericStyle}"/>
+                    <Label Grid.Row="3" Grid.Column="0" MaxLines="1" Text="{i18n:Translate Discount}" TextColor="Red"/>
+                    <Label Grid.Row="3" Grid.Column="1" MaxLines="1" Text="{Binding BillingAmount.DiscountAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" TextColor="Red" Style="{StaticResource LabelNumericStyle}"/>
+                    <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="{StaticResource Gray100}" HeightRequest="1"/>
+                    <Entry Grid.Row="5" Grid.Column="0" VerticalOptions="Center" x:Name="entryOrderQty" HorizontalOptions="Start" HorizontalTextAlignment="Center" 
                                Unfocused="Entry_Qty_Unfocused" WidthRequest="72" Text="{Binding BillingQuantity.Quantity}" Keyboard="Numeric"/>
-                <Label Grid.Row="5" Grid.Column="1" MaxLines="1" Text="{Binding BillingAmount.NetAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" VerticalOptions="Center" TextColor="{StaticResource Primary}" Style="{StaticResource LabelNumericStyle}"/>
+                    <Label Grid.Row="5" Grid.Column="1" MaxLines="1" Text="{Binding BillingAmount.NetAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" VerticalOptions="Center" TextColor="{StaticResource Primary}" Style="{StaticResource LabelNumericStyle}"/>
+                </Grid>
+                <controls:TappedGrid Grid.Column="3" Padding="4" IsVisible="{OnIdiom Phone=True, Desktop=False}" VerticalOptions="Fill" Tapped="ShowDetail_Tapped">
+                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf054;" FontSize="18" VerticalOptions="Center" HorizontalOptions="Center"/>
+                </controls:TappedGrid>
             </Grid>
-            <controls:TappedGrid Grid.Column="3" Padding="4" IsVisible="{OnIdiom Phone=True, Desktop=False}" VerticalOptions="Fill" Tapped="ShowDetail_Tapped">
-                <Label Style="{StaticResource LabelIconStyle}" Text="&#xf054;" FontSize="18" VerticalOptions="Center" HorizontalOptions="Center"/>
-            </controls:TappedGrid>
-        </Grid>
-    </Frame>
-    <!--</SwipeView>-->
+        </Frame>
+    </SwipeView>
 </ContentView>

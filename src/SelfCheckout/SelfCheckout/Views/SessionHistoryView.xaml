@@ -7,7 +7,7 @@
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:views="clr-namespace:SelfCheckout.Views"
-             prism:ViewModelLocator.AutowireViewModel="True"
+             prism:ViewModelLocator.AutowireViewModel="True" 
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.SessionHistoryView">
     <ContentView.Content>
@@ -21,9 +21,8 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackLayout Grid.Row="0" Orientation="Horizontal" Padding="8,0,8,0" HeightRequest="56">
-                    <Label VerticalOptions="Center" VerticalTextAlignment="Center" Text="{i18n:Translate History}" FontSize="Medium" FontAttributes="Bold"/>
-                    <DatePicker VerticalOptions="Center" Date="{Binding FilterDate}" MaximumDate="{Binding MaxDate}"
-                                DateSelected="DatePicker_DateSelected" />
+                    <Label VerticalOptions="Center" VerticalTextAlignment="Center" Text="{i18n:Translate History}" FontSize="Medium" FontAttributes="Bold" Margin="0,0,16,0"/>
+                    <controls:CustomDatePicker VerticalOptions="Center" CustomDate="{Binding FilterDate}" CustomMaxDate="{Binding MaxDate}"/>
                     <Entry WidthRequest="200" VerticalOptions="Center" Placeholder="{i18n:Translate SessionKey}" Text="{Binding FilterSessionKey}"/>
                     <Entry WidthRequest="200" VerticalOptions="Center" Placeholder="{i18n:Translate MachineNo}" Text="{Binding FilterMachineNo}"/>
                     <controls:TappedGrid VerticalOptions="Center" TappedCommand="{Binding FilterCommand}"

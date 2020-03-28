@@ -20,8 +20,9 @@
     </ContentView.Resources>
     <ContentView.Content>
         <Grid>
-            <Grid>
+            <Grid RowSpacing="0" ColumnSpacing="0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
@@ -94,11 +95,10 @@
                             <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate Type}"/>
                             <Label Grid.Row="2" Grid.Column="1" Text="{Binding CustomerData.Person.CustomerTypeCode}" HorizontalTextAlignment="End"/>
                         </Grid>
-                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
                     </StackLayout>
                 </Grid>
-
-                <Grid Grid.Row="1" Grid.Column="0">
+                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="4" BackgroundColor="{StaticResource Primary}"/>
+                <Grid Grid.Row="2" Grid.Column="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -114,7 +114,6 @@
                             </Label.FormattedText>
                         </Label>
                     </Grid>
-
                     <ListView Grid.Row="1" BackgroundColor="Transparent" ItemsSource="{Binding OrderInvoices}" IsGroupingEnabled="True" 
                               HasUnevenRows="True" CachingStrategy="RecycleElement">
                         <ListView.GroupHeaderTemplate>
@@ -134,7 +133,7 @@
                     </ListView>
                 </Grid>
 
-                <Grid Grid.Row="1" Grid.Column="1">
+                <Grid Grid.Row="2" Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -151,7 +150,6 @@
                             </Label.FormattedText>
                         </Label>
                     </Grid>
-
                     <ListView Grid.Row="1" BackgroundColor="Transparent" ItemsSource="{Binding OrderDetails}" 
                               HasUnevenRows="True" CachingStrategy="RecycleElement">
                         <ListView.ItemTemplate>
@@ -164,7 +162,7 @@
                     </ListView>
                 </Grid>
 
-                <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" HorizontalOptions="Center">
+                <StackLayout Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" HorizontalOptions="Center">
                     <controls:TappedGrid
                             TappedCommand="{Binding SaveSessionCommand}"
                                     Padding="0"

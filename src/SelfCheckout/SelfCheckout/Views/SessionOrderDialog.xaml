@@ -15,8 +15,9 @@
              x:Class="SelfCheckout.Views.SessionOrderDialog">
     <Frame>
         <Grid>
-            <Grid Margin="8">
+            <Grid RowSpacing="0" ColumnSpacing="0" Margin="8">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
@@ -71,8 +72,8 @@
                         <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
                     </StackLayout>
                 </Grid>
-
-                <Grid Grid.Row="1">
+                <BoxView Grid.Row="1" HeightRequest="4" BackgroundColor="{StaticResource Primary}"/>
+                <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -146,7 +147,7 @@
                     </Grid>
                 </Grid>
 
-                <StackLayout Orientation="Horizontal" Grid.Row="2" HorizontalOptions="End">
+                <StackLayout Orientation="Horizontal" Grid.Row="3" HorizontalOptions="End">
                     <controls:TappedGrid
                             TappedCommand="{Binding ConfirmCommand}"
                                     Padding="0"
@@ -180,6 +181,10 @@
                     </controls:TappedGrid>
                 </StackLayout>
             </Grid>
+            <controls:TappedGrid TappedCommand="{Binding CancelCommand}" VerticalOptions="Start" HorizontalOptions="End" Margin="12">
+                <Label Style="{StaticResource LabelIconStyle}" FontSize="32" HorizontalOptions="Center" VerticalOptions="Center"
+                       Text="&#xf057;" TextColor="{StaticResource PrimaryText}"/>
+            </controls:TappedGrid>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </Frame>
