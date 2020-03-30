@@ -60,7 +60,7 @@
                            HorizontalTextAlignment="End" Margin="{OnIdiom Desktop='0,0,12,0'}"/>
                 </StackLayout>
                 <StackLayout Grid.Row="2">
-                    <Label MaxLines="1">
+                    <Label MaxLines="1" HorizontalOptions="StartAndExpand">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{i18n:Translate PassportNo}"/>

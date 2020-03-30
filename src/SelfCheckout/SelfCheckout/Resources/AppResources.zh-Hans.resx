@@ -312,4 +312,7 @@
   <data name="HolderDetail" xml:space="preserve">
     <value>用户详情</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>沒有</value>
+  </data>
 </root>

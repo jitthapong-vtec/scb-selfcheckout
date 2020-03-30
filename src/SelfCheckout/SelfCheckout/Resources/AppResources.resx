@@ -412,7 +412,7 @@
     <value>Do you have to delete coupon?</value>
   </data>
   <data name="TotalDiscount" xml:space="preserve">
-    <value></value>
+    <value>Total Discount</value>
   </data>
   <data name="MoreDetail" xml:space="preserve">
     <value>More Detail</value>

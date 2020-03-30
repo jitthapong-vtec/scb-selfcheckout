@@ -315,4 +315,7 @@
   <data name="PleaseScanPayment" xml:space="preserve">
     <value>กรุณาสแกนเพื่อชำระเงิน</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>ไม่ใช่</value>
+  </data>
 </root>
