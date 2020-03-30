@@ -7,10 +7,13 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.Devices.Enumeration;
 using Windows.Devices.PointOfService;
 using Windows.Foundation;
+using Windows.Foundation.Metadata;
 using Windows.Graphics.Imaging;
+using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
@@ -23,98 +26,41 @@ namespace SelfCheckout.UWP.Services
 {
     public class PrintService : IPrintService
     {
-        PosPrinter _printer;
-        ClaimedPosPrinter _claimedPrinter;
-
-        public async Task<Printer> FindAndClaimPrinter()
+        public Task<string> GetSavedPrinterName()
         {
-            DevicePicker devicePicker = new DevicePicker();
-            devicePicker.Filter.SupportedDeviceSelectors.Add(PosPrinter.GetDeviceSelector());
-
-            var pointerPosition = Windows.UI.Core.CoreWindow.GetForCurrentThread().PointerPosition;
-
-            GeneralTransform ge = Window.Current.Content.TransformToVisual(Window.Current.Content as UIElement);
-            Rect rect = ge.TransformBounds(new Rect(pointerPosition.X, pointerPosition.Y, 0, 0));
-
-            DeviceInformation deviceInfo = await devicePicker.PickSingleDeviceAsync(rect);
-            _printer = await PosPrinter.FromIdAsync(deviceInfo.Id);
-
-            return new Printer() { PrinterDeviceId = deviceInfo.Id, PrinterName = deviceInfo.Name };
+            var printerName = ApplicationData.Current.LocalSettings.Values["PrinterName"] as string;
+            return Task.FromResult<string>(printerName);
         }
 
         public async Task PrintBitmapFromUrl(string url)
         {
-            await ClaimAndEnablePrinter();
-
             var rass = RandomAccessStreamReference.CreateFromUri(new Uri(url));
             using (var stream = await rass.OpenReadAsync())
             {
-                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
-                using (var encoderStream = new InMemoryRandomAccessStream())
+                StorageFolder storageFolder = ApplicationData.Current.TemporaryFolder;
+
+                var fileBytes = new byte[stream.Size];
+                using (var reader = new DataReader(stream))
                 {
-                    BitmapEncoder encoder = await BitmapEncoder.CreateForTranscodingAsync(encoderStream, decoder);
-                    var newWidth = Convert.ToUInt32(_claimedPrinter.Receipt.PageSize.Width);
-                    var newHeight = decoder.PixelHeight;
-                    encoder.BitmapTransform.ScaledHeight = newHeight;
-                    encoder.BitmapTransform.ScaledWidth = newWidth;
+                    await reader.LoadAsync((uint)stream.Size);
+                    reader.ReadBytes(fileBytes);
+                }
+                var storageFile = await storageFolder.CreateFileAsync($"{Guid.NewGuid()}.png");
+                await FileIO.WriteBytesAsync(storageFile, fileBytes);
 
-                    await encoder.FlushAsync();
+                ApplicationData.Current.LocalSettings.Values["FileToPrint"] = storageFile.Path;
 
-                    byte[] pixels = new byte[newWidth * newHeight * 4];
-
-                    await encoderStream.ReadAsync(pixels.AsBuffer(), (uint)pixels.Length, InputStreamOptions.None);
-                    var final = await BitmapDecoder.CreateAsync(encoderStream);
-                    var bitmapFrame = await final.GetFrameAsync(0);
-
-                    _claimedPrinter.Receipt.IsLetterQuality = true;
-
-                    ReceiptPrintJob job = _claimedPrinter.Receipt.CreateJob();
-                    job.PrintBitmap(bitmapFrame, PosPrinterAlignment.Center);
-                    string feedString = "";
-                    for (uint n = 0; n < _claimedPrinter.Receipt.LinesToPaperCut; n++)
-                    {
-                        feedString += "\n";
-                    }
-                    job.Print(feedString);
-                    if (_printer.Capabilities.Receipt.CanCutPaper)
-                    {
-                        job.CutPaper();
-                    }
-                    await job.ExecuteAsync();
-                    ReleasePrinter();
+                if (ApiInformation.IsApiContractPresent("Windows.ApplicationModel.FullTrustAppContract", 1, 0))
+                {
+                    await FullTrustProcessLauncher.LaunchFullTrustProcessForCurrentAppAsync();
                 }
             }
         }
 
-        private async Task ClaimAndEnablePrinter()
+        public Task SavePrinterName(string printerName)
         {
-            var printerId = Preferences.Get("PrinterId", "");
-            if (string.IsNullOrEmpty(printerId))
-                throw new Exception("Not found config printer");
-
-            try
-            {
-                _printer = await PosPrinter.FromIdAsync(printerId);
-                _claimedPrinter = await _printer.ClaimPrinterAsync();
-                await _claimedPrinter.EnableAsync();
-            }
-            catch
-            {
-                ReleasePrinter();
-            }
-        }
-
-        private void ReleasePrinter()
-        {
-            try
-            {
-                _claimedPrinter.Dispose();
-                _claimedPrinter = null;
-
-                _printer.Dispose();
-                _printer = null;
-            }
-            catch { }
+            ApplicationData.Current.LocalSettings.Values["PrinterName"] = printerName;
+            return Task.FromResult(true);
         }
     }
 }

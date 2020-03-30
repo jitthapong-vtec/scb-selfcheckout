@@ -213,8 +213,8 @@ namespace SelfCheckout.Services.SaleEngine
                 var uri = new UriBuilder("http://kpservices.kingpower.com/KPPaymentGatewayAPI/api/PaymentGateway/Cancel");
                 await PostAsync<object, object>(uri.ToString(), payload);
             }
-            catch(Exception ex)
-            { 
+            catch (Exception ex)
+            {
             }
         }
     }

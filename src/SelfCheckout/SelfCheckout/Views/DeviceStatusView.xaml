@@ -87,6 +87,9 @@
                                                 <DataTrigger TargetType="Frame" Binding="{Binding SessionStatus.SessionCode}" Value="START">
                                                     <Setter Property="BackgroundColor" Value="{StaticResource RedDark}"/>
                                                 </DataTrigger>
+                                                <DataTrigger TargetType="Frame" Binding="{Binding SessionStatus.SessionCode}" Value="END">
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource RedDark}"/>
+                                                </DataTrigger>
                                             </Frame.Triggers>
                                         </Frame>
                                     </Grid>
@@ -104,6 +107,9 @@
                                                         <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.shopping_card.png"/>
                                                     </DataTrigger>
                                                     <DataTrigger TargetType="forms:CachedImage" Binding="{Binding SessionStatus.SessionCode}" Value="START">
+                                                        <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.shopping_card_active.png"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="forms:CachedImage" Binding="{Binding SessionStatus.SessionCode}" Value="END">
                                                         <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.shopping_card_active.png"/>
                                                     </DataTrigger>
                                                 </forms:CachedImage.Triggers>
@@ -125,8 +131,8 @@
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
 
-                                            <Label Grid.Row="0" Text="{Binding ShoppingCard}"/>
-                                            <Label Grid.Row="1" Text="{Binding ShoppingCardName}"/>
+                                            <Label Grid.Row="0" Text="{Binding ShoppingCard}" FontAttributes="Bold" HorizontalTextAlignment="End"/>
+                                            <Label Grid.Row="1" Text="{Binding ShoppingCardName}" FontAttributes="Bold" HorizontalTextAlignment="End"/>
                                             <BoxView Grid.Row="2" HeightRequest="1" BackgroundColor="{StaticResource Gray300}"/>
                                             <Grid Grid.Row="3">
                                                 <Grid.ColumnDefinitions>

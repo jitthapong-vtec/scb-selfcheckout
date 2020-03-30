@@ -44,23 +44,12 @@
                         </StackLayout>
                     </Grid>
                 </controls:ActionBarView>
-                <ScrollView Grid.Row="1" Margin="16" HorizontalOptions="Center">
+                <ScrollView Grid.Row="1" Margin="16" HorizontalOptions="CenterAndExpand">
                     <StackLayout>
                         <Label Text="Self Checkout Api"/>
                         <Entry Text="{Binding SelfCheckoutApi}"/>
                         <Label Text="Receipt Printer"/>
-                        <StackLayout Orientation="Horizontal">
-                            <Entry IsReadOnly="True" WidthRequest="300" Text="{Binding PrinterName}" HorizontalOptions="Start" VerticalOptions="Center"/>
-                            <Frame BackgroundColor="{StaticResource Primary}" VerticalOptions="Center">
-                                <controls:TappedGrid TappedCommand="{Binding FindPrinterCommand}"
-                                    Padding="0"
-                                    Margin="4"
-                                    WidthRequest="100"
-                                    Style="{StaticResource TappedGridButtonStyle}">
-                                    <controls:CustomLabel UpperCase="True" Text="Find Printer" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-                                </controls:TappedGrid>
-                            </Frame>
-                        </StackLayout>
+                        <Entry Text="{Binding PrinterName}" VerticalOptions="Center"/>
                     </StackLayout>
                 </ScrollView>
             </Grid>

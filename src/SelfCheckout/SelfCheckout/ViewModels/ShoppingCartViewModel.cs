@@ -117,7 +117,12 @@ namespace SelfCheckout.ViewModels
         {
             if (order != null)
             {
-                await DeleteItemAsync(new OrderDetail[] { order });
+                var result = await DialogService.ConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteItem, AppResources.Yes, AppResources.No, true);
+
+                if (result)
+                {
+                    await DeleteItemAsync(new OrderDetail[] { order });
+                }
             }
             else
             {

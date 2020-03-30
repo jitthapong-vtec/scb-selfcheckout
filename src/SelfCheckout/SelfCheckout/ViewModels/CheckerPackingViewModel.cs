@@ -68,6 +68,9 @@ namespace SelfCheckout.ViewModels
 
         public ICommand SaveSessionCommand => new Command(async () =>
         {
+            //await DependencyService.Get<IPrintService>().PrintBitmapFromUrl("https://kpservices.kingpower.com/portal/developer/SaleEngineAPI/Temp/MPOSDEV-00132_0_Original.png");
+            //return;
+
             if (SessionData == null)
                 return;
 

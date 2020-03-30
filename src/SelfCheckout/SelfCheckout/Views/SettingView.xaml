@@ -41,10 +41,6 @@
                     <Entry Placeholder="Web Member" Text="{Binding AppConfig.UrlMemberWeb}"/>
                     <Entry Placeholder="Payment Time out" Keyboard="Numeric" Text="{Binding AppConfig.PaymentTimeout}"/>
                     <Entry Placeholder="Device UID" x:Name="entryDeviceUid" Text="{Binding DeviceUID}" IsReadOnly="True"/>
-                    <StackLayout Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding IsTestMode}" VerticalOptions="Center"/>
-                        <Label Text="Test mode" VerticalOptions="Center"/>
-                    </StackLayout>
                     <forms:ZXingBarcodeImageView
                                 BarcodeFormat="QR_CODE"
                                 HeightRequest="200"

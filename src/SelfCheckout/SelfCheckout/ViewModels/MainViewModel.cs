@@ -90,17 +90,7 @@ namespace SelfCheckout.ViewModels
 
         private void RefreshTab()
         {
-            try
-            {
-                if (Tabs.Any())
-                {
-                    foreach (var tab in Tabs)
-                    {
-                        (tab.Page.BindingContext as ViewModelBase).Destroy();
-                    }
-                }
-            }
-            catch { }
+            DestroyTabItems();
 
             Tabs = new ObservableCollection<TabItem>();
             Tabs.Add(new TabItem()
@@ -152,6 +142,21 @@ namespace SelfCheckout.ViewModels
             CurrentView = firstTab.Page;
         }
 
+        private void DestroyTabItems()
+        {
+            try
+            {
+                if (Tabs.Any())
+                {
+                    foreach (var tab in Tabs)
+                    {
+                        (tab.Page.BindingContext as ViewModelBase).Destroy();
+                    }
+                }
+            }
+            catch { }
+        }
+
         public override async void Initialize(INavigationParameters parameters)
         {
             base.Initialize(parameters);
@@ -162,6 +167,8 @@ namespace SelfCheckout.ViewModels
 
         public override void Destroy()
         {
+            DestroyTabItems();
+
             MessagingCenter.Unsubscribe<DeviceViewModel>(this, "Logout");
             MessagingCenter.Unsubscribe<ViewModelBase>(this, "OrderRefresh");
         }
@@ -286,22 +293,6 @@ namespace SelfCheckout.ViewModels
         {
             PaymentSelectionShowing = false;
             PaymentSelected = payment;
-
-            if (!payment.IsAlipay)
-            {
-                var result = await DialogService.ShowDialogAsync("PromptPayQrDialog", null);
-                var promptPayResult = result.Parameters.GetValue<PromptPayResult>("PromptPayResult");
-                if (promptPayResult == null)
-                {
-                    PaymentInputShowing = false;
-                    IsBeingPaymentProcess = false;
-                    PaymentSelected = _selfCheckoutService.Payments.FirstOrDefault();
-                }
-                else
-                {
-                    await QRPaymentAsync(promptPayResult);
-                }
-            }
         });
 
         public ICommand ScanPaymentCommand => new Command<object>((type) =>
@@ -350,7 +341,25 @@ namespace SelfCheckout.ViewModels
             }
             else
             {
-                PaymentInputShowing = true;
+                if (!PaymentSelected.IsAlipay)
+                {
+                    var result = await DialogService.ShowDialogAsync("PromptPayQrDialog", null);
+                    var promptPayResult = result.Parameters.GetValue<PromptPayResult>("PromptPayResult");
+                    if (promptPayResult == null)
+                    {
+                        PaymentInputShowing = false;
+                        IsBeingPaymentProcess = false;
+                        PaymentSelected = _selfCheckoutService.Payments.FirstOrDefault();
+                    }
+                    else
+                    {
+                        await QRPaymentAsync(promptPayResult);
+                    }
+                }
+                else
+                {
+                    PaymentInputShowing = true;
+                }
             }
         });
 
@@ -660,12 +669,12 @@ namespace SelfCheckout.ViewModels
                         isComplete = false,
                         PaymentAmounts = new
                         {
-                            CurrAmt = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrAmt,
-                            CurrCode = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrCode,
-                            CurrRate = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrRate,
-                            BaseCurrCode = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrCode,
-                            BaseCurrRate = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrRate,
-                            BaseCurrAmt = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrAmt,
+                            CurrAmt = _saleEngineService.OrderData.RemainingAmount.NetAmount.CurrAmt,
+                            CurrCode = _saleEngineService.OrderData.RemainingAmount.NetAmount.CurrCode,
+                            CurrRate = _saleEngineService.OrderData.RemainingAmount.NetAmount.CurrRate,
+                            BaseCurrCode = _saleEngineService.OrderData.RemainingAmount.NetAmount.BaseCurrCode,
+                            BaseCurrRate = _saleEngineService.OrderData.RemainingAmount.NetAmount.BaseCurrRate,
+                            BaseCurrAmt = _saleEngineService.OrderData.RemainingAmount.NetAmount.BaseCurrAmt,
                         },
                         Transaction = new
                         {
@@ -681,8 +690,8 @@ namespace SelfCheckout.ViewModels
                                 new
                                 {
                                     TransactionMovementType = 1,
-                                    Amount = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrAmt,
-                                    Currency = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrCode,
+                                    Amount = _saleEngineService.OrderData.RemainingAmount.NetAmount.CurrAmt,
+                                    Currency = _saleEngineService.OrderData.RemainingAmount.NetAmount.BaseCurrCode,
                                     Description = "",
                                     Status = 1
                                 }
@@ -747,12 +756,12 @@ namespace SelfCheckout.ViewModels
                         isComplete = false,
                         PaymentAmounts = new
                         {
-                            CurrAmt = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrAmt,
-                            CurrCode = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrCode,
-                            CurrRate = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrRate,
-                            BaseCurrCode = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrCode,
+                            CurrAmt = _saleEngineService.OrderData.RemainingAmount.NetAmount.CurrAmt,
+                            CurrCode = _saleEngineService.OrderData.RemainingAmount.NetAmount.CurrCode,
+                            CurrRate = _saleEngineService.OrderData.RemainingAmount.NetAmount.CurrRate,
+                            BaseCurrCode = _saleEngineService.OrderData.RemainingAmount.NetAmount.BaseCurrCode,
                             BaseCurrRate = 1,
-                            BaseCurrAmt = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrAmt
+                            BaseCurrAmt = _saleEngineService.OrderData.RemainingAmount.NetAmount.BaseCurrAmt
                         },
                         Transaction = new
                         {
@@ -769,7 +778,7 @@ namespace SelfCheckout.ViewModels
                                     new
                                     {
                                         TransactionMovementType = 1,
-                                        Amount = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrAmt,
+                                        Amount = _saleEngineService.OrderData.RemainingAmount.NetAmount.CurrAmt,
                                         Description = "",
                                         Status = 1
                                     }
@@ -777,12 +786,12 @@ namespace SelfCheckout.ViewModels
                         },
                         ChangeAmounts = new
                         {
-                            CurrAmt = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrAmt,
-                            CurrCode = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrCode,
-                            CurrRate = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.CurrRate,
-                            BaseCurrCode = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrCode,
-                            BaseCurrRate = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrRate,
-                            BaseCurrAmt = _saleEngineService.OrderData.TotalBillingAmount.NetAmount.BaseCurrAmt
+                            CurrAmt = _saleEngineService.OrderData.RemainingAmount.NetAmount.CurrAmt,
+                            CurrCode = _saleEngineService.OrderData.RemainingAmount.NetAmount.CurrCode,
+                            CurrRate = _saleEngineService.OrderData.RemainingAmount.NetAmount.CurrRate,
+                            BaseCurrCode = _saleEngineService.OrderData.RemainingAmount.NetAmount.BaseCurrCode,
+                            BaseCurrRate = _saleEngineService.OrderData.RemainingAmount.NetAmount.BaseCurrRate,
+                            BaseCurrAmt = _saleEngineService.OrderData.RemainingAmount.NetAmount.BaseCurrAmt
                         },
                         status = ""
                     },

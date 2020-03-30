@@ -17,17 +17,8 @@ namespace SelfCheckout.ViewModels
 {
     public class SettingViewModel : SettingViewModelBase
     {
-        bool _isTestMode;
-
         public SettingViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService, selfCheckoutService)
         {
-            IsTestMode = GlobalSettings.Instance.IsTestMode;
-        }
-
-        public bool IsTestMode
-        {
-            get => _isTestMode;
-            set => SetProperty(ref _isTestMode, value, () => Preferences.Set("IsTestMode", value));
         }
     }
 }

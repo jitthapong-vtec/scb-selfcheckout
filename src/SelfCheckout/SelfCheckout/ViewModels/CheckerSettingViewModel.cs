@@ -22,31 +22,24 @@ namespace SelfCheckout.ViewModels
         {
         }
 
-        public ICommand FindPrinterCommand => new DelegateCommand(async () =>
-        {
-            try
-            {
-                var printer = await DependencyService.Get<IPrintService>().FindAndClaimPrinter();
-
-                PrinterName = printer.PrinterName;
-
-                Preferences.Set("PrinterId", printer.PrinterDeviceId);
-                Preferences.Set("PrinterName", printer.PrinterName);
-            }
-            catch { }
-        });
-
         public string PrinterName
         {
             get => _printerName;
             set => SetProperty(ref _printerName, value);
         }
 
-        public override void OnNavigatedTo(INavigationParameters parameters)
+        public override async void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            base.OnNavigatedFrom(parameters);
+
+            await DependencyService.Get<IPrintService>().SavePrinterName(PrinterName);
+        }
+
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
 
-            PrinterName = Preferences.Get("PrinterName", "");
+            PrinterName = await DependencyService.Get<IPrintService>().GetSavedPrinterName();
         }
     }
 }

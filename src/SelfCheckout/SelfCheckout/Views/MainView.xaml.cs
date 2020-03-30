@@ -21,23 +21,11 @@ namespace SelfCheckout.Views
         public MainView()
         {
             InitializeComponent();
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
 
             MessagingCenter.Subscribe<ViewModelBase>(this, "RequestHWScanner", (sender) =>
             {
                 FireScanEvent();
             });
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-
-            MessagingCenter.Unsubscribe<ViewModelBase>(this, "RequestHWScanner");
         }
 
         protected override bool OnBackButtonPressed()
@@ -59,8 +47,6 @@ namespace SelfCheckout.Views
                     }
                     catch (DensoScannerException ex)
                     {
-                        if (GlobalSettings.Instance.IsTestMode)
-                            MessagingCenter.Send(mainViewModel, "AddItemToOrder", "00008211470207673");
                     }
                 }
             }

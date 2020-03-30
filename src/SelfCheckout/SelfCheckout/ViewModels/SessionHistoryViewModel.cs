@@ -114,10 +114,10 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ChangeFilterTypeCommand => new DelegateCommand<SimpleSelectedItem>((filterType) =>
         {
-            filterType.Selected = true;
-
             var selectedItem = FilterTypes.Where(f => f.Selected).FirstOrDefault();
             selectedItem.Selected = false;
+
+            filterType.Selected = true;
 
             try
             {

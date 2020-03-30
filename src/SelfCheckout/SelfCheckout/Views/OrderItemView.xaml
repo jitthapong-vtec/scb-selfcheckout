@@ -8,7 +8,8 @@
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
        x:Class="SelfCheckout.Views.OrderItemView">
-    <SwipeView>
+        <Frame Margin="{OnPlatform Android='-4,0,-4,4', UWP=0}" Padding="0">
+    <SwipeView IsEnabled="{OnPlatform UWP=False, Android=True}">
         <SwipeView.RightItems>
             <SwipeItemView>
                 <controls:TappedGrid Tapped="Delete_Tapped" BackgroundColor="Red" WidthRequest="96">
@@ -19,15 +20,14 @@
                 </controls:TappedGrid>
             </SwipeItemView>
         </SwipeView.RightItems>
-        <Frame Margin="{OnPlatform Android='-4,0,-4,4', UWP=0}" Padding="{OnPlatform Android='8,4,8,4', UWP=0}">
-            <Grid Margin="4">
+            <Grid Padding="0,4,0,4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <controls:TappedGrid Grid.Column="0" x:Name="chkOrder" Tapped="CheckBox_Tapped" IsVisible="{OnIdiom Phone=True, Desktop=False}">
+                <controls:TappedGrid Grid.Column="0" x:Name="chkOrder" Tapped="CheckBox_Tapped" IsVisible="{OnIdiom Phone=True, Desktop=False}" Margin="8,0,4,0">
                     <Image Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center">
                         <Image.Triggers>
                             <DataTrigger TargetType="Image" Binding="{Binding IsSelected}" Value="True">
@@ -65,10 +65,10 @@
                                Unfocused="Entry_Qty_Unfocused" WidthRequest="72" Text="{Binding BillingQuantity.Quantity}" Keyboard="Numeric"/>
                     <Label Grid.Row="5" Grid.Column="1" MaxLines="1" Text="{Binding BillingAmount.NetAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" VerticalOptions="Center" TextColor="{StaticResource Primary}" Style="{StaticResource LabelNumericStyle}"/>
                 </Grid>
-                <controls:TappedGrid Grid.Column="3" Padding="4" IsVisible="{OnIdiom Phone=True, Desktop=False}" VerticalOptions="Fill" Tapped="ShowDetail_Tapped">
+                <controls:TappedGrid Grid.Column="3" Padding="4" Margin="8" IsVisible="{OnIdiom Phone=True, Desktop=False}" VerticalOptions="Fill" Tapped="ShowDetail_Tapped">
                     <Label Style="{StaticResource LabelIconStyle}" Text="&#xf054;" FontSize="18" VerticalOptions="Center" HorizontalOptions="Center"/>
                 </controls:TappedGrid>
             </Grid>
-        </Frame>
     </SwipeView>
+        </Frame>
 </ContentView>
