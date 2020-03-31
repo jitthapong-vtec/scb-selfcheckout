@@ -6,7 +6,7 @@
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              xmlns:prism="http://prismlibrary.com"
-             prism:DialogLayout.RelativeWidthRequest="{OnIdiom Phone=0.75, Desktop=0.5}"
+             prism:DialogLayout.RelativeWidthRequest="{OnIdiom Phone=0.95, Desktop=0.5}"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.AlertDialog">
   <ContentView.Content>
@@ -18,7 +18,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Margin="8,4,8,0" Text="{Binding Title}" FontSize="Large" FontAttributes="Bold"/>
-                <Label Grid.Row="1" Margin="8" Text="{Binding Message}" VerticalOptions="Center"/>
+                <Label Grid.Row="1" Margin="8" Text="{Binding Message}" FontSize="Medium" VerticalOptions="Center"/>
                 <controls:TappedGrid Grid.Row="2" HorizontalOptions="End" WidthRequest="100" Margin="8" 
                                      effects:RoundCornersEffect.CornerRadius="3"
                                      TappedCommand="{Binding OkCommand}">

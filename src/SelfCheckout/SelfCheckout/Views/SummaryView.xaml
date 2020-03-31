@@ -41,6 +41,7 @@
                 <StackLayout Orientation="Horizontal">
                     <Grid HorizontalOptions="FillAndExpand">
                         <controls:TappedGrid Margin="8" BackgroundColor="{StaticResource Brown}"
+                                              IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"
                                              TappedCommand="{Binding ScanCouponCommand}"
                                      Padding="4" VerticalOptions="Center" 
                                      HorizontalOptions="Start"
@@ -131,6 +132,7 @@
                             </Label.FormattedText>
                         </Label>
                         <controls:TappedGrid Grid.RowSpan="2" Grid.Column="1" Margin="8,0,8,0" 
+                                             IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"
                                              BackgroundColor="{StaticResource Secondary}"
                                              Padding="8" VerticalOptions="Center" 
                                              HorizontalOptions="Start"

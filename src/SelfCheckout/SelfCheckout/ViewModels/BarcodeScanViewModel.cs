@@ -54,7 +54,7 @@ namespace SelfCheckout.ViewModels
                 {"ScanData", data }
             };
 
-            RequestClose(parameters);
+            RequestClose?.Invoke(parameters);
         }
 
         public bool CanCloseDialog()

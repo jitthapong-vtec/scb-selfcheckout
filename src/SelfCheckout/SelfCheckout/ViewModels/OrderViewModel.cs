@@ -80,7 +80,6 @@ namespace SelfCheckout.ViewModels
                 if (isAlreadyEnd)
                 {
                     Clear();
-                    await DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
                 }
                 else
                 {

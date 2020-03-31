@@ -57,7 +57,7 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <BoxView Grid.Column="1" BackgroundColor="{StaticResource Gray500}" HeightRequest="1" VerticalOptions="Center" Margin="8,24,0,0"/>
+                        <BoxView Grid.Column="1" BackgroundColor="{StaticResource Gray500}" HeightRequest="1" VerticalOptions="Center" Margin="8,24,8,0"/>
                     </Grid>
                 </Grid>
                 <fl:FlowListView Grid.Row="1" RowHeight="200" FlowItemsSource="{Binding Devices}" FlowColumnCount="3"

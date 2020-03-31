@@ -36,7 +36,7 @@ namespace SelfCheckout.ViewModels
             {
                 {"IsAuthorized", isAuthorized }
             };
-            RequestClose(parameters);
+            RequestClose?.Invoke(parameters);
         }
 
         public bool CanCloseDialog()

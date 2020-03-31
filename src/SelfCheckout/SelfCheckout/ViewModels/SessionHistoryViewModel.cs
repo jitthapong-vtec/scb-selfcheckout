@@ -4,6 +4,7 @@ using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
@@ -17,11 +18,8 @@ using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class SessionHistoryViewModel : ViewModelBase
+    public class SessionHistoryViewModel : OrderViewModelBase
     {
-        ISelfCheckoutService _selfCheckoutService;
-        ISaleEngineService _saleEngineService;
-
         List<DeviceStatus> _allSessionHistories;
         ObservableCollection<DeviceStatus> _sessionHistories;
         ObservableCollection<SimpleSelectedItem> _filterTypes;
@@ -32,11 +30,9 @@ namespace SelfCheckout.ViewModels
         string _filterMachineNo;
 
         public SessionHistoryViewModel(INavigationService navigatinService, IDialogService dialogService, 
-            ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) : base(navigatinService, dialogService)
+            ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : 
+            base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
         {
-            _selfCheckoutService = selfCheckoutService;
-            _saleEngineService = saleEngineService;
-
             FilterTypes = new ObservableCollection<SimpleSelectedItem>() {
                 new SimpleSelectedItem()
                 {
@@ -105,7 +101,26 @@ namespace SelfCheckout.ViewModels
                 {
                     if(result != null && result.Parameters.GetValue<bool>("IsConfirmed"))
                     {
-                        await SaveSessionAsync(sess.SessionKey);
+                        var cf = await DialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
+                        if (!cf)
+                            return;
+
+                        OrderInvoices = result.Parameters.GetValue<ObservableCollection<OrderInvoiceGroup>>("OrderInvoices");
+                        LoginSession = result.Parameters.GetValue<string>("LoginSession");
+                        try
+                        {
+                            IsBusy = true;
+                            await SaveSessionAsync(sess.SessionKey.ToString());
+                            await LoadSessionHistoryAsync();
+                        }
+                        catch (Exception ex)
+                        {
+                            await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                        }
+                        finally
+                        {
+                            IsBusy = false;
+                        }
                     }
                 });
             }
@@ -145,28 +160,6 @@ namespace SelfCheckout.ViewModels
             await LoadSessionHistoryAsync();
         });
 
-        async Task SaveSessionAsync(long sessionKey)
-        {
-            var result = await DialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
-            if (!result)
-                return;
-            try
-            {
-                IsBusy = true;
-                var appSetting = _selfCheckoutService.AppConfig;
-                var machineNo = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
-                await _selfCheckoutService.EndSessionAsync(sessionKey, appSetting.UserName, machineNo);
-            }
-            catch (Exception ex)
-            {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
         async Task LoadSessionHistoryAsync()
         {
             try
@@ -178,7 +171,7 @@ namespace SelfCheckout.ViewModels
                     sessionKey = Convert.ToInt64(FilterSessionKey);
                 }
                 catch { }
-                _allSessionHistories = await _selfCheckoutService.GetSessionHistory(FilterDate, sessionKey, FilterMachineNo);
+                _allSessionHistories = await SelfCheckoutService.GetSessionHistory(FilterDate, sessionKey, FilterMachineNo);
                 SessionHistories = _allSessionHistories.ToObservableCollection();
             }
             catch (Exception ex)

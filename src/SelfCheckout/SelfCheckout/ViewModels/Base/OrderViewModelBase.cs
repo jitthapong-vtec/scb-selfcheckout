@@ -3,6 +3,7 @@ using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Print;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
@@ -134,6 +135,26 @@ namespace SelfCheckout.ViewModels.Base
             return false;
         }
 
+        protected async Task SaveSessionAsync(string sessionKey)
+        {
+            var appSetting = SelfCheckoutService.AppConfig;
+            var machineNo = SaleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
+            await SelfCheckoutService.EndSessionAsync(Convert.ToInt64(sessionKey), appSetting.UserName, machineNo);
+
+            foreach (var orderInvoice in OrderInvoices)
+            {
+                var invoices = await SaleEngineService.PrintTaxInvoice(new
+                {
+                    OrderNo = orderInvoice.OrderNo,
+                    ClaimcheckNo = "",
+                    SessionKey = LoginSession
+                });
+
+                var invoiceImgUrl = invoices.FirstOrDefault()?.Data.Original.FirstOrDefault().Value;
+                await DependencyService.Get<IPrintService>().PrintBitmapFromUrl(invoiceImgUrl);
+            }
+        }
+
         protected void Clear()
         {
             OrderInvoices?.Clear();
@@ -184,7 +205,7 @@ namespace SelfCheckout.ViewModels.Base
             var ordersData = new List<OrderData>();
 
             var customers = Customers.Where(c => !string.IsNullOrEmpty(c.CustomerShoppingCard)).ToList();
-            foreach(var customer in customers)
+            foreach (var customer in customers)
             {
                 var payload = new
                 {

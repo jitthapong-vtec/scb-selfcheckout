@@ -38,14 +38,16 @@ namespace SelfCheckout.ViewModels
         {
             var dialogParameter = new DialogParameters()
             {
-                {"IsConfirmed", true }
+                {"IsConfirmed", true },
+                {"LoginSession", LoginSession },
+                {"OrderInvoices", OrderInvoices }
             };
-            RequestClose(dialogParameter);
+            RequestClose?.Invoke(dialogParameter);
         });
 
         public ICommand CancelCommand => new DelegateCommand(() =>
         {
-            RequestClose(null);
+            RequestClose?.Invoke(null);
         });
 
         public bool CanCloseDialog()
@@ -55,7 +57,6 @@ namespace SelfCheckout.ViewModels
 
         public void OnDialogClosed()
         {
-            RequestClose(null);
         }
 
         public async void OnDialogOpened(IDialogParameters parameters)

@@ -68,35 +68,17 @@ namespace SelfCheckout.ViewModels
 
         public ICommand SaveSessionCommand => new Command(async () =>
         {
-            //await DependencyService.Get<IPrintService>().PrintBitmapFromUrl("https://kpservices.kingpower.com/portal/developer/SaleEngineAPI/Temp/MPOSDEV-00132_0_Original.png");
-            //return;
-
             if (SessionData == null)
                 return;
 
             var result = await DialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
             if (!result)
                 return;
+
             try
             {
                 IsBusy = true;
-                var appSetting = SelfCheckoutService.AppConfig;
-                var machineNo = SaleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
-                await SelfCheckoutService.EndSessionAsync(Convert.ToInt64(SessionKey), appSetting.UserName, machineNo);
-
-                foreach (var orderInvoice in OrderInvoices)
-                {
-                    var invoices = await SaleEngineService.PrintTaxInvoice(new
-                    {
-                        OrderNo = orderInvoice.OrderNo,
-                        ClaimcheckNo = "",
-                        SessionKey = LoginSession
-                    });
-
-                    var invoiceImgUrl = invoices.FirstOrDefault()?.Data.Original.FirstOrDefault().Value;
-                    await DependencyService.Get<IPrintService>().PrintBitmapFromUrl(invoiceImgUrl);
-                }
-
+                await SaveSessionAsync(SessionKey);
                 await LoadDataAsync();
             }
             catch (Exception ex)

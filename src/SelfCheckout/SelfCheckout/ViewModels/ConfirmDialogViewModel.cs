@@ -65,7 +65,7 @@ namespace SelfCheckout.ViewModels
                 {"IsConfirmed", isConfirm }
             };
 
-            RequestClose(parameters);
+            RequestClose?.Invoke(parameters);
         }
 
         public bool CanCloseDialog()

@@ -318,4 +318,7 @@
   <data name="No" xml:space="preserve">
     <value>ไม่ใช่</value>
   </data>
+  <data name="ConfirmLogout" xml:space="preserve">
+    <value>ต้องการออกจากระบบหรือไม่</value>
+  </data>
 </root>

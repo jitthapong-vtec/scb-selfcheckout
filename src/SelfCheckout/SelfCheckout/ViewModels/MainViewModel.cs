@@ -185,7 +185,8 @@ namespace SelfCheckout.ViewModels
             }
             else
             {
-                MessagingCenter.Send(this, "AddItemToOrder", data?.ToString());
+                if (CurrentView is ShoppingCartView)
+                    MessagingCenter.Send(this, "AddItemToOrder", data?.ToString());
             }
         });
 

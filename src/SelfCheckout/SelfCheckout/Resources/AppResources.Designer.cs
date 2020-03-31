@@ -925,7 +925,7 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Total Discount.
         /// </summary>
         internal static string TotalDiscount {
             get {

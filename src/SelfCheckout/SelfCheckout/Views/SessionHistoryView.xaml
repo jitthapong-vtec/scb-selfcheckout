@@ -65,6 +65,7 @@
                     <Grid.Resources>
                         <Style TargetType="Label">
                             <Setter Property="VerticalTextAlignment" Value="Center"/>
+                            <Setter Property="VerticalOptions" Value="Center"/>
                             <Setter Property="HorizontalTextAlignment" Value="Center"/>
                             <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
                         </Style>
@@ -90,6 +91,8 @@
                                     <Grid.Resources>
                                         <Style TargetType="Label">
                                             <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                                            <Setter Property="VerticalTextAlignment" Value="Center"/>
+                                            <Setter Property="VerticalOptions" Value="Center"/>
                                         </Style>
                                     </Grid.Resources>
                                     <Grid.ColumnDefinitions>

@@ -50,7 +50,7 @@ namespace SelfCheckout.ViewModels
             {
                 {"IsConfirm", isConfirm }
             };
-            RequestClose(parameters);
+            RequestClose?.Invoke(parameters);
         }
     }
 }

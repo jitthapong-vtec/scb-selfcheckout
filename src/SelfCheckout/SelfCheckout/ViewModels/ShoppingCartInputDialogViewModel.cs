@@ -48,12 +48,12 @@ namespace SelfCheckout.ViewModels
             {
                 { "ShoppingCard", InputValue }
             };
-            RequestClose(parameters);
+            RequestClose?.Invoke(parameters);
         });
 
         public ICommand CancelCommand => new DelegateCommand(() =>
         {
-            RequestClose(null);
+            RequestClose?.Invoke(null);
         });
 
         public string InputValue
