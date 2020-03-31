@@ -1,4 +1,6 @@
-﻿using Xamarin.Forms;
+﻿using Prism.Navigation;
+using System;
+using Xamarin.Forms;
 
 namespace SelfCheckout.Controls
 {

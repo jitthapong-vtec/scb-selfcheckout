@@ -88,7 +88,7 @@
                                                     <Setter Property="BackgroundColor" Value="{StaticResource RedDark}"/>
                                                 </DataTrigger>
                                                 <DataTrigger TargetType="Frame" Binding="{Binding SessionStatus.SessionCode}" Value="END">
-                                                    <Setter Property="BackgroundColor" Value="{StaticResource RedDark}"/>
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource Green}"/>
                                                 </DataTrigger>
                                             </Frame.Triggers>
                                         </Frame>

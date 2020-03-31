@@ -6,20 +6,46 @@
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              x:Name="this"
+             BackgroundColor="#99000000"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.CurrencySelectionView">
   <ContentView.Content>
         <Grid>
-            <CollectionView ItemsSource="{Binding Currencies}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <controls:TappedGrid Padding="16" TappedCommand="{Binding Source={x:Reference this}, Path=BindingContext.CurrencySelectionCommand}" CommandParameter="{Binding .}">
-                            <Label Text="{Binding CurrCode}" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
-                        </controls:TappedGrid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            <Grid BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="250"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="8">
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Label Text="{i18n:Translate Currency}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding CurrencyTappedCommand}"/>
+                    </Grid.GestureRecognizers>
+                </Grid>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding Currencies}" VerticalOptions="Center">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Center"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:TappedGrid Padding="16" TappedCommand="{Binding Source={x:Reference this}, Path=BindingContext.CurrencySelectionCommand}" CommandParameter="{Binding .}">
+                                <Label Text="{Binding CurrCode}" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                            </controls:TappedGrid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding CurrencyTappedCommand}"/>
+            </Grid.GestureRecognizers>
         </Grid>
   </ContentView.Content>
 </ContentView>

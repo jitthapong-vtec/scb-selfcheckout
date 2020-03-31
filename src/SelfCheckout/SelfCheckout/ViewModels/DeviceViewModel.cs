@@ -118,7 +118,7 @@ namespace SelfCheckout.ViewModels
                 if (result)
                 {
                     await _saleEngineService.LogoutAsync();
-                    MessagingCenter.Send(this, "Logout");
+                    MessagingCenter.Send(this, MessageKey_Logout);
                 }
             }
             catch { }

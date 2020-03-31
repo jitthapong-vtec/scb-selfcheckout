@@ -41,19 +41,14 @@ namespace SelfCheckout.ViewModels
             CustomerData = RegisterService.CustomerData;
             CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
 
-            MessagingCenter.Subscribe<MainViewModel, string>(this, "AddItemToOrder", async (sender, barcode) =>
+            MessagingCenter.Subscribe<MainViewModel>(this, MessageKey_CurrencyChanged, async (sender) =>
             {
-                await AddOrderAsync(barcode);
+                await RefreshOrderListAsync();
             });
 
-            MessagingCenter.Subscribe<MainViewModel>(this, "CurrencyChanged", async (sender) =>
+            MessagingCenter.Subscribe<MainViewModel>(this, MessageKey_RefreshOrderList, async (sender) =>
             {
-                await RefreshOrderAsync();
-            });
-
-            MessagingCenter.Subscribe<MainViewModel>(this, "OrderRefresh", async (sender) =>
-            {
-                await RefreshOrderAsync();
+                await RefreshOrderListAsync();
             });
         }
 
@@ -141,14 +136,13 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ShowDetailCommand => new DelegateCommand<OrderDetail>((order) =>
         {
-            MessagingCenter.Send(this, "ShowOrderDetail", order);
+            MessagingCenter.Send(this, MessageKey_ShowOrderDetail, order);
         });
 
-        public ICommand RefreshOrderCommand => new DelegateCommand(async () =>
+        public ICommand RefreshOrderCommand => new DelegateCommand(() =>
         {
             IsRefreshing = true;
-            await LoadOrderAsync();
-            IsRefreshing = false;
+            LoadOrderAsync();
         });
 
         public ObservableCollection<OrderDetail> OrderDetails
@@ -195,14 +189,13 @@ namespace SelfCheckout.ViewModels
 
         public bool IsFirstSelect { get; set; } = true;
 
-        public override async Task OnTabSelected(TabItem item)
+        public override Task OnTabSelected(TabItem item)
         {
             if (IsFirstSelect)
             {
-                await LoadOrderAsync();
-
-                IsFirstSelect = false;
+                LoadOrderAsync();
             }
+            return Task.FromResult(true);
         }
 
         public override Task OnTabDeSelected(TabItem item)
@@ -220,79 +213,27 @@ namespace SelfCheckout.ViewModels
             var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
             SaleEngineService.LoginData = loginResult;
 
-            await LoadOrderAsync();
+            LoadOrderAsync();
+        }
+
+        void LoadOrderAsync()
+        {
+            MessagingCenter.Send(this, MessageKey_LoadOrder);
         }
 
         public override void Destroy()
         {
-            MessagingCenter.Unsubscribe<MainViewModel, string>(this, "AddItemToOrder");
-            MessagingCenter.Unsubscribe<MainViewModel>(this, "CurrencyChanged");
-            MessagingCenter.Unsubscribe<MainViewModel>(this, "OrderRefresh");
+            MessagingCenter.Unsubscribe<MainViewModel>(this, MessageKey_CurrencyChanged);
+            MessagingCenter.Unsubscribe<MainViewModel>(this, MessageKey_RefreshOrderList);
         }
 
-        public async Task LoadOrderAsync()
-        {
-            try
-            {
-                IsBusy = true;
-                var payload = new
-                {
-                    SessionKey = SaleEngineService.LoginData.SessionKey,
-                    Attributes = new object[]
-                    {
-                        new {
-                            GROUP = "tran_no",
-                            CODE = "shopping_card",
-                            valueOfString = CurrentShoppingCard
-                        }
-                    },
-                    paging = new
-                    {
-                        pageNo = 1,
-                        pageSize = 100
-                    },
-                    filter = new object[]
-                    {
-                        new
-                        {
-                            sign = "string",
-                            element = "order_data",
-                            option = "string",
-                            type = "string",
-                            low = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
-                            height = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                        }
-                    },
-                    sorting = new object[]
-                    {
-                        new
-                        {
-                            sortBy = "headerkey",
-                            orderBy = "desc"
-                        }
-                    }
-                };
-
-                await SaleEngineService.GetOrderAsync(payload);
-                await RefreshOrderAsync();
-            }
-            catch (Exception ex)
-            {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        public Task RefreshOrderAsync()
+        public Task RefreshOrderListAsync()
         {
             OrderDetails = SaleEngineService.OrderData?.OrderDetails?.ToObservableCollection();
-            MessagingCenter.Send(this, "OrderRefresh");
 
             IsSelectAllOrder = false;
             IsAnyOrderSelected = false;
+            IsRefreshing = false;
             return Task.FromResult(true);
         }
 
@@ -323,30 +264,9 @@ namespace SelfCheckout.ViewModels
             catch (Exception ex)
             {
             }
-            await RefreshOrderAsync();
-        }
+            await RefreshOrderListAsync();
 
-        public async Task AddOrderAsync(string barcode)
-        {
-            try
-            {
-                IsBusy = true;
-                var payload = new
-                {
-                    SessionKey = SaleEngineService.LoginData.SessionKey,
-                    ItemCode = barcode
-                };
-                await SaleEngineService.AddItemToOrderAsync(payload);
-                await RefreshOrderAsync();
-            }
-            catch (Exception ex)
-            {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            MessagingCenter.Send(this, MessageKey_RefreshSummary);
         }
     }
 }

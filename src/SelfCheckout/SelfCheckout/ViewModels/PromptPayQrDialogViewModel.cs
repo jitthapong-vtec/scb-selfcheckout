@@ -143,7 +143,7 @@ namespace SelfCheckout.ViewModels
                 {
                     qrType = "PP",
                     invoice = $"INV{_saleEngineService.OrderData.ModifiedDate.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture)}",
-                    amount = _saleEngineService.OrderData.RemainingAmount.NetAmount.CurrAmt,
+                    amount = _saleEngineService.OrderData.RemainingAmount.NetAmount.BaseCurrAmt,
                     ppId = "450439699596861",
                     ppType = "BILLERID",
                     ref1 = _refNo,

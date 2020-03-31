@@ -22,7 +22,7 @@ namespace SelfCheckout.Views
         {
             InitializeComponent();
 
-            MessagingCenter.Subscribe<ViewModelBase>(this, "RequestHWScanner", (sender) =>
+            MessagingCenter.Subscribe<ViewModelBase>(this, ViewModelBase.MessageKey_RequestHWScanner, (sender) =>
             {
                 FireScanEvent();
             });
@@ -49,6 +49,7 @@ namespace SelfCheckout.Views
                     {
                     }
                 }
+                shoppingCartViewModel.IsFirstSelect = false;
             }
         }
     }

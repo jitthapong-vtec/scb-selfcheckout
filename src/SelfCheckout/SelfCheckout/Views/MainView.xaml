@@ -96,25 +96,25 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-            <ctrls:ActionBarView Grid.Row="0">
-                <Grid.Resources>
-                    <Style TargetType="Label">
-                        <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                <ctrls:ActionBarView Grid.Row="0">
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
                             <Setter Property="VerticalTextAlignment" Value="Center"/>
                             <Setter Property="VerticalOptions" Value="Center"/>
                         </Style>
-                </Grid.Resources>
-                <Label Text="{Binding PageTitle}" FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"/>
-                <ctrls:TappedGrid HorizontalOptions="Start" Padding="8" TappedCommand="{Binding LanguageTappedCommand}">
-                    <Image Source="ic_lang" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="24"/>
-                </ctrls:TappedGrid>
-                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="4,0,12,0">
-                    <Image Source="ic_info" VerticalOptions="Center"/>
-                    <ctrls:TappedGrid TappedCommand="{Binding CurrencyTappedCommand}">
-                        <Label Text="{Binding CurrencySelected.CurrCode}" VerticalTextAlignment="Center" HorizontalOptions="Center"/>
+                    </Grid.Resources>
+                    <Label Text="{Binding PageTitle}" FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"/>
+                    <ctrls:TappedGrid HorizontalOptions="Start" Padding="8" TappedCommand="{Binding LanguageTappedCommand}">
+                        <Image Source="ic_lang" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="24"/>
                     </ctrls:TappedGrid>
-                </StackLayout>
-            </ctrls:ActionBarView>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="4,0,12,0">
+                        <Image Source="ic_info" VerticalOptions="Center"/>
+                        <ctrls:TappedGrid TappedCommand="{Binding CurrencyTappedCommand}">
+                            <Label Text="{Binding CurrencySelected.CurrCode}" VerticalTextAlignment="Center" HorizontalOptions="Center"/>
+                        </ctrls:TappedGrid>
+                    </StackLayout>
+                </ctrls:ActionBarView>
                 <Grid Grid.Row="1">
                     <ctrls:TabViewContainer Content="{Binding CurrentView}"/>
                     <views:SummaryView IsVisible="{Binding SummaryVisible}" VerticalOptions="End"/>
@@ -125,47 +125,11 @@
                                  BindableLayout.ItemTemplateSelector="{StaticResource BottomTemplateSelector}"/>
                 </Grid>
             </Grid>
-            <Grid IsVisible="{Binding LangShowing}" HeightRequest="200" BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="8">
-                    <Grid.Resources>
-                        <Style TargetType="Label">
-                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Label Text="{i18n:Translate Language}" HorizontalOptions="Start" VerticalOptions="Center"/>
-                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding LanguageTappedCommand}"/>
-                    </Grid.GestureRecognizers>
-                </Grid>
-                <views:LanguageSelectionView Grid.Row="1"/>
-            </Grid>
-            <Grid IsVisible="{Binding CurrencyShowing}" HeightRequest="200" BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="8">
-                    <Grid.Resources>
-                        <Style TargetType="Label">
-                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Label Text="{i18n:Translate Currency}" HorizontalOptions="Start" VerticalOptions="Center"/>
-                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding CurrencyTappedCommand}"/>
-                    </Grid.GestureRecognizers>
-                </Grid>
-                <views:CurrencySelectionView Grid.Row="1"/>
-            </Grid>
-            
+            <views:LanguageSelectionView IsVisible="{Binding LangShowing}"/>
+            <views:CurrencySelectionView IsVisible="{Binding CurrencyShowing}"/>
             <views:PaymentMethodSelectionView IsVisible="{Binding PaymentSelectionShowing}"/>
             <views:PaymentProcessView IsVisible="{Binding PaymentInputShowing}"/>
+            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentPage.Content>
 </ctrls:DensoScannerPage>

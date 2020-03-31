@@ -53,7 +53,7 @@ namespace SelfCheckout.ViewModels
                 }
             };
 
-            MessagingCenter.Subscribe<MainViewModel>(this, "CurrencyChanged", async (s) =>
+            MessagingCenter.Subscribe<MainViewModel>(this, MessageKey_CurrencyChanged, async (s) =>
             {
                 try
                 {

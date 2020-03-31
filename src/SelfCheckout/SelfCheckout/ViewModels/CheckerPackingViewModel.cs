@@ -11,6 +11,7 @@ using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,9 +45,9 @@ namespace SelfCheckout.ViewModels
                 var isAlreadyEnd = await LoadSessionDetailAsync(Convert.ToInt64(SessionKey));
                 if (isAlreadyEnd)
                 {
-                    Clear();
-                    await DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
-                    return;
+                    //Clear();
+                    //await DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
+                    //return;
                 }
 
                 await LoadCustomerSession();

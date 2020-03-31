@@ -1,19 +1,15 @@
-﻿using Newtonsoft.Json;
-using Prism.Navigation;
+﻿using Prism.Navigation;
 using Prism.Services.Dialogs;
-using SelfCheckout.Controls;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
-using SelfCheckout.Services.Base;
-using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using SelfCheckout.Views;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -58,33 +54,24 @@ namespace SelfCheckout.ViewModels
             _saleEngineService = saleEngineService;
             _selfCheckoutService = selfCheckoutService;
 
-            MessagingCenter.Subscribe<DeviceViewModel>(this, "Logout", async (s) =>
+            MessagingCenter.Subscribe<DeviceViewModel>(this, MessageKey_Logout, async (s) =>
             {
                 await NavigationService.GoBackToRootAsync();
             });
 
-            MessagingCenter.Subscribe<ShoppingCartViewModel, OrderDetail>(this, "ShowOrderDetail", async (sender, order) =>
+            MessagingCenter.Subscribe<ShoppingCartViewModel, OrderDetail>(this, MessageKey_ShowOrderDetail, async (sender, order) =>
             {
                 await NavigationService.NavigateAsync("OrderDetailView", new NavigationParameters() { { "OrderDetail", order } });
             });
 
-            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, "OrderRefresh", (s) =>
+            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, MessageKey_LoadOrder, async(s) =>
             {
-                OrderData = _saleEngineService.OrderData;
-                try
-                {
-                    if (CurrentView is ShoppingCartView)
-                    {
-                        if (OrderData.BillingQty > 0)
-                            PageTitle = $"{AppResources.MyCart} ({OrderData.BillingQty})";
-                        else
-                            PageTitle = AppResources.MyCart;
-                    }
+                await LoadOrderAsync();
+            });
 
-                    var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
-                    tab.BadgeCount = Convert.ToInt32(OrderData.BillingQty);
-                }
-                catch { }
+            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, MessageKey_RefreshSummary, (s) =>
+            {
+                RefreshSummary();
             });
         }
 
@@ -165,12 +152,21 @@ namespace SelfCheckout.ViewModels
             await LoadCurrencyAsync();
         }
 
+        public override async void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+
+            await LoadOrderAsync();
+        }
+
         public override void Destroy()
         {
             DestroyTabItems();
 
-            MessagingCenter.Unsubscribe<DeviceViewModel>(this, "Logout");
-            MessagingCenter.Unsubscribe<ViewModelBase>(this, "OrderRefresh");
+            MessagingCenter.Unsubscribe<DeviceViewModel>(this, MessageKey_Logout);
+            MessagingCenter.Unsubscribe<ShoppingCartViewModel>(this, MessageKey_ShowOrderDetail);
+            MessagingCenter.Unsubscribe<ShoppingCartViewModel>(this, MessageKey_LoadOrder);
+            MessagingCenter.Unsubscribe<ShoppingCartViewModel>(this, MessageKey_RefreshSummary);
         }
 
         public ICommand TabSelectedCommand => new Command<TabItem>(async (item) => await SelectTabAsync(item));
@@ -186,7 +182,7 @@ namespace SelfCheckout.ViewModels
             else
             {
                 if (CurrentView is ShoppingCartView)
-                    MessagingCenter.Send(this, "AddItemToOrder", data?.ToString());
+                    await AddOrderAsync(data?.ToString());
             }
         });
 
@@ -211,7 +207,9 @@ namespace SelfCheckout.ViewModels
                 {
                     await _saleEngineService.ActionOrderPaymentAsync(payload);
                     CouponCode = "";
-                    MessagingCenter.Send(this, "OrderRefresh");
+
+                    MessagingCenter.Send(this, MessageKey_RefreshOrderList);
+                    RefreshSummary();
                 }
                 catch (Exception ex)
                 {
@@ -243,7 +241,8 @@ namespace SelfCheckout.ViewModels
 
                             CouponCode = _saleEngineService.OrderData.TotalBillingAmount.CurrentValueAdjust?.VaDetail?.Code;
 
-                            MessagingCenter.Send(this, "OrderRefresh");
+                            MessagingCenter.Send(this, MessageKey_RefreshOrderList);
+                            RefreshSummary();
                         }
                         catch (Exception ex)
                         {
@@ -290,7 +289,7 @@ namespace SelfCheckout.ViewModels
             PaymentSelectionShowing = !PaymentSelectionShowing;
         });
 
-        public ICommand PaymentSelectionCommand => new Command<Payment>(async (payment) =>
+        public ICommand PaymentSelectionCommand => new Command<Payment>((payment) =>
         {
             PaymentSelectionShowing = false;
             PaymentSelected = payment;
@@ -315,7 +314,7 @@ namespace SelfCheckout.ViewModels
                 }
                 else
                 {
-                    MessagingCenter.Send<ViewModelBase>(this, "RequestHWScanner");
+                    MessagingCenter.Send<ViewModelBase>(this, MessageKey_RequestHWScanner);
                 }
             });
 
@@ -487,7 +486,8 @@ namespace SelfCheckout.ViewModels
                     GlobalSettings.Instance.CountryCode = "zh-Hans";
                 GlobalSettings.Instance.InitLanguage();
 
-                MessagingCenter.Send(this, "LanguageChanged");
+                MessagingCenter.Send(this, MessageKey_LanguageChanged);
+
                 RefreshTab();
             });
         }
@@ -570,7 +570,9 @@ namespace SelfCheckout.ViewModels
                     }
                 };
                 await _saleEngineService.ActionListItemToOrderAsync(payload);
-                MessagingCenter.Send(this, "CurrencyChanged");
+
+                MessagingCenter.Send(this, MessageKey_CurrencyChanged);
+                RefreshSummary();
             }
             catch { }
         }
@@ -604,12 +606,121 @@ namespace SelfCheckout.ViewModels
                 };
                 await _saleEngineService.LoadCurrencyAsync(payload);
                 Currencies = _saleEngineService.Currencies?.ToObservableCollection();
-                CurrencySelected = Currencies.Where(c => c.CurrCode == "THB").FirstOrDefault();
+                SetDefaultCurrency();
             }
             catch (Exception ex)
             {
                 await DialogService.ShowAlert(AppResources.Opps, ex.Message);
             }
+        }
+
+        private void SetDefaultCurrency()
+        {
+            CurrencySelected = Currencies.Where(c => c.CurrCode == "THB").FirstOrDefault();
+        }
+
+        public async Task LoadOrderAsync()
+        {
+            try
+            {
+                IsBusy = true;
+                var payload = new
+                {
+                    SessionKey = _saleEngineService.LoginData.SessionKey,
+                    Attributes = new object[]
+                    {
+                        new {
+                            GROUP = "tran_no",
+                            CODE = "shopping_card",
+                            valueOfString = _selfCheckoutService.CurrentShoppingCard
+                        }
+                    },
+                    paging = new
+                    {
+                        pageNo = 1,
+                        pageSize = 100
+                    },
+                    filter = new object[]
+                    {
+                        new
+                        {
+                            sign = "string",
+                            element = "order_data",
+                            option = "string",
+                            type = "string",
+                            low = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                            height = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                        }
+                    },
+                    sorting = new object[]
+                    {
+                        new
+                        {
+                            sortBy = "headerkey",
+                            orderBy = "desc"
+                        }
+                    }
+                };
+
+                await _saleEngineService.GetOrderAsync(payload);
+
+                MessagingCenter.Send(this, MessageKey_RefreshOrderList);
+
+                RefreshSummary();
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public async Task AddOrderAsync(string barcode)
+        {
+            try
+            {
+                IsBusy = true;
+                var payload = new
+                {
+                    SessionKey = _saleEngineService.LoginData.SessionKey,
+                    ItemCode = barcode
+                };
+                await _saleEngineService.AddItemToOrderAsync(payload);
+
+                RefreshSummary();
+
+                MessagingCenter.Send(this, MessageKey_RefreshOrderList);
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        void RefreshSummary()
+        {
+            OrderData = _saleEngineService.OrderData;
+            try
+            {
+                if (CurrentView is ShoppingCartView)
+                {
+                    if (OrderData.BillingQty > 0)
+                        PageTitle = $"{AppResources.MyCart} ({OrderData.BillingQty})";
+                    else
+                        PageTitle = AppResources.MyCart;
+                }
+
+                var tab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
+                tab.BadgeCount = Convert.ToInt32(OrderData.BillingQty);
+            }
+            catch { }
         }
 
         async Task CheckoutAsync()
@@ -826,6 +937,8 @@ namespace SelfCheckout.ViewModels
             IsPaymentProcessing = false;
             PaymentInputShowing = false;
             PaymentBarcode = "";
+
+            SetDefaultCurrency();
         }
 
         async Task ConfirmPaymentAsync(object paymentPayload, bool isWallet)
@@ -913,7 +1026,7 @@ namespace SelfCheckout.ViewModels
                 _saleEngineService.LoginData = loginData;
 
                 var shoppingCartTab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
-                await (shoppingCartTab.Page.BindingContext as ShoppingCartViewModel).LoadOrderAsync();
+                await LoadOrderAsync();
 
                 var isContinueShopping = await DialogService.ConfirmAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.ContinueShopping, AppResources.MyOrder);
                 if (!isContinueShopping)

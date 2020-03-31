@@ -1,11 +1,6 @@
 ﻿using SelfCheckout.Resources;
 using SelfCheckout.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using SelfCheckout.ViewModels.Base;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -18,7 +13,7 @@ namespace SelfCheckout.Views
         {
             InitializeComponent();
 
-            MessagingCenter.Subscribe<MainViewModel>(this, "LanguageChanged", (sender) =>
+            MessagingCenter.Subscribe<MainViewModel>(this, ViewModelBase.MessageKey_LanguageChanged, (sender) =>
             {
                 if (sender.SummaryVisible)
                     sender.SummaryVisible = false;

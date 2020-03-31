@@ -137,9 +137,9 @@ namespace SelfCheckout.ViewModels.Base
 
         protected async Task SaveSessionAsync(string sessionKey)
         {
-            var appSetting = SelfCheckoutService.AppConfig;
-            var machineNo = SaleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
-            await SelfCheckoutService.EndSessionAsync(Convert.ToInt64(sessionKey), appSetting.UserName, machineNo);
+            //var appSetting = SelfCheckoutService.AppConfig;
+            //var machineNo = SaleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
+            //await SelfCheckoutService.EndSessionAsync(Convert.ToInt64(sessionKey), appSetting.UserName, machineNo);
 
             foreach (var orderInvoice in OrderInvoices)
             {
@@ -151,7 +151,7 @@ namespace SelfCheckout.ViewModels.Base
                 });
 
                 var invoiceImgUrl = invoices.FirstOrDefault()?.Data.Original.FirstOrDefault().Value;
-                await DependencyService.Get<IPrintService>().PrintBitmapFromUrl(invoiceImgUrl);
+                ///await DependencyService.Get<IPrintService>().PrintBitmapFromUrl(invoiceImgUrl);
             }
         }
 

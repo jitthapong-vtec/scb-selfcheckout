@@ -15,6 +15,16 @@ namespace SelfCheckout.ViewModels.Base
 {
     public abstract class ViewModelBase : BindableBase, IInitialize, INavigationAware, IDestructible
     {
+        public const string MessageKey_LoadOrder = "LoadOrder";
+        public const string MessageKey_OrderLoaded = "OrderLoaded";
+        public const string MessageKey_RefreshSummary = "RefreshSummary";
+        public const string MessageKey_RefreshOrderList = "RefreshOrderList";
+        public const string MessageKey_CurrencyChanged = "CurrencyChanged";
+        public const string MessageKey_ShowOrderDetail = "ShowOrderDetail";
+        public const string MessageKey_RequestHWScanner = "RequestHWScanner";
+        public const string MessageKey_LanguageChanged = "LanguageChanged";
+        public const string MessageKey_Logout = "Logout";
+
         public INavigationService NavigationService { get; private set; }
         public IDialogService DialogService { get; private set; }
 

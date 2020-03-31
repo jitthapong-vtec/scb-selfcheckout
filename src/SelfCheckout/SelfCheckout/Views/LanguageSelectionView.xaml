@@ -5,21 +5,47 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
-             mc:Ignorable="d"
+             mc:Ignorable="d" 
+             BackgroundColor="#99000000"
              x:Name="this"
              x:Class="SelfCheckout.Views.LanguageSelectionView">
   <ContentView.Content>
         <Grid>
-            <CollectionView ItemsSource="{Binding Languages}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <controls:TappedGrid Padding="16" TappedCommand="{Binding Source={x:Reference this}, Path=BindingContext.LanguageSelectionCommand}" CommandParameter="{Binding .}">
-                            <Label Text="{Binding LangDesc}" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
-                        </controls:TappedGrid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            <Grid BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="250"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="8">
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Label Text="{i18n:Translate Language}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding LanguageTappedCommand}"/>
+                    </Grid.GestureRecognizers>
+                </Grid>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding Languages}" VerticalOptions="Center">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" SnapPointsAlignment="Center"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:TappedGrid Padding="16" TappedCommand="{Binding Source={x:Reference this}, Path=BindingContext.LanguageSelectionCommand}" CommandParameter="{Binding .}">
+                                <Label Text="{Binding LangDesc}" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                            </controls:TappedGrid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding LanguageTappedCommand}"/>
+            </Grid.GestureRecognizers>
         </Grid>
   </ContentView.Content>
 </ContentView>

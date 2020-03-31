@@ -1,5 +1,6 @@
 ﻿using SelfCheckout.Resources;
 using SelfCheckout.ViewModels;
+using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace SelfCheckout.Views
         {
             InitializeComponent();
 
-            MessagingCenter.Subscribe<MainViewModel>(this, "LanguageChanged", (sender) =>
+            MessagingCenter.Subscribe<MainViewModel>(this, ViewModelBase.MessageKey_LanguageChanged, (sender) =>
             {
                 lblSelectPaymentMethod.Text = AppResources.SelectPaymentMethod;
             });

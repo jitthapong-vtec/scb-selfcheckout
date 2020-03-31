@@ -1,4 +1,5 @@
-﻿using SelfCheckout.Controls;
+﻿using Prism.Navigation;
+using SelfCheckout.Controls;
 using SelfCheckout.ViewModels;
 using System;
 using System.Collections.Generic;
