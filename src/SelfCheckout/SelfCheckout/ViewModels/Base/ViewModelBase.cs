@@ -10,6 +10,7 @@ using Prism.Services.Dialogs;
 using Prism.Commands;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.Services.SaleEngine;
+using System.Collections.Generic;
 
 namespace SelfCheckout.ViewModels.Base
 {
@@ -51,6 +52,23 @@ namespace SelfCheckout.ViewModels.Base
         public virtual Task OnTabDeSelected(TabItem item)
         {
             return Task.FromResult(item);
+        }
+
+        protected async Task SetOrderImage(List<OrderDetail> orders)
+        {
+            var selfCheckoutService = App.Current.Container.Resolve(typeof(ISelfCheckoutService)) as ISelfCheckoutService;
+            if (IsShowArticleImage)
+            {
+                try
+                {
+                    foreach (var order in orders)
+                    {
+                        var result = await selfCheckoutService.GetArticleImageAsync(order.ItemDetail.Item.Code);
+                        order.ImageUrl = result.ImageUrl;
+                    }
+                }
+                catch { }
+            }
         }
 
         public string PageTitle

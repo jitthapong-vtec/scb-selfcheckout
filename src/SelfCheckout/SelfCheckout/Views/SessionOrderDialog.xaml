@@ -73,7 +73,7 @@
                     </StackLayout>
                 </Grid>
                 <BoxView Grid.Row="1" HeightRequest="4" BackgroundColor="{StaticResource Primary}"/>
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="2" ColumnSpacing="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>

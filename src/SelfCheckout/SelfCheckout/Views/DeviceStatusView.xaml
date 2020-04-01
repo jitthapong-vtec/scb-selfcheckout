@@ -32,7 +32,9 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Entry x:Name="entrySearch" Grid.Column="0" VerticalOptions="Center"/>
+                            <Entry x:Name="entrySearch" Grid.Column="0" VerticalOptions="Center"
+                                   ReturnCommand="{Binding SearchCommand}"
+                                   ReturnCommandParameter="{Binding Source={RelativeSource Mode=Self},Path=Text}"/>
                             <controls:TappedGrid Grid.Column="1" TappedCommand="{Binding SearchCommand}"
                                                      CommandParameter="{Binding Source={x:Reference entrySearch}, Path=Text}">
                                 <Frame CornerRadius="1" BackgroundColor="{StaticResource Green}" Padding="0" HeightRequest="32"

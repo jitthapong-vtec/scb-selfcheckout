@@ -10,6 +10,7 @@ namespace SelfCheckout.Models
         {
         }
 
+        public string LoginSession { get; set; }
         public long OrderNo { get; set; }
         public string CurrencyCode { get; set; }
         public string InvoiceNo { get; set; }

@@ -25,6 +25,7 @@ namespace SelfCheckout.ViewModels.Base
         protected IRegisterService RegisterService { get; private set; }
 
         protected List<OrderInvoiceGroup> _allOrderInvoiceGroups;
+        protected List<long> _allOrdersNo;
 
         ObservableCollection<OrderInvoiceGroup> _orderInvoices;
         ObservableCollection<OrderDetail> _orderDetails;
@@ -33,7 +34,6 @@ namespace SelfCheckout.ViewModels.Base
         SessionData _sessionData;
 
         string _currencyCode;
-        string _loginSession;
 
         int? _totalInvoice;
         double? _totalQty;
@@ -58,12 +58,6 @@ namespace SelfCheckout.ViewModels.Base
         {
             get => _sessionData;
             set => SetProperty(ref _sessionData, value);
-        }
-
-        public string LoginSession
-        {
-            get => _loginSession;
-            set => SetProperty(ref _loginSession, value);
         }
 
         public long BorrowSessionKey
@@ -145,24 +139,18 @@ namespace SelfCheckout.ViewModels.Base
                     {
                         OrderNo = orderInvoice.OrderNo,
                         ClaimcheckNo = "",
-                        SessionKey = LoginSession
+                        SessionKey = orderInvoice.LoginSession
                     });
 
                     var invoiceImgUrl = invoices.FirstOrDefault()?.Data.Original.FirstOrDefault().Value;
                     invoiceImgUrls.Add(invoiceImgUrl);
                 }
-                catch(Exception ex) 
-                { 
+                catch (Exception ex)
+                {
                 }
             }
 
-            if (invoiceImgUrls.Any())
-            {
-                foreach (var invoiceImgUrl in invoiceImgUrls)
-                {
-                    await DependencyService.Get<IPrintService>().PrintBitmapFromUrl(invoiceImgUrl);
-                }
-            }
+            await PrintInvoiceAsync(invoiceImgUrls);
 
             //TODO : remove this when production
             foreach (var orderInvoice in OrderInvoices)
@@ -174,8 +162,19 @@ namespace SelfCheckout.ViewModels.Base
                     // Test void payment
                     await SaleEngineService.VoidPaymentAsync(orderInvoice.WalletMerchantId, orderInvoice.PartnerTransId);
                 }
-                catch 
+                catch
                 {
+                }
+            }
+        }
+
+        async Task PrintInvoiceAsync(List<string> invoiceImgUrls)
+        {
+            if (invoiceImgUrls.Any())
+            {
+                foreach (var invoiceImgUrl in invoiceImgUrls)
+                {
+                    await DependencyService.Get<IPrintService>().PrintBitmapFromUrl(invoiceImgUrl);
                 }
             }
         }
@@ -198,6 +197,8 @@ namespace SelfCheckout.ViewModels.Base
         {
             var sessionsGroup = SessionData.SesionDetail.GroupBy(s => s.ShoppingCard, (k, g) => new { ShoppingCard = k, SessionDetails = g.ToList() }).ToList();
             var customers = new List<CustomerOrder>();
+            _allOrdersNo = new List<long>();
+
             customers.Add(new CustomerOrder
             {
                 CustomerName = AppResources.All
@@ -213,8 +214,9 @@ namespace SelfCheckout.ViewModels.Base
                         CustomerShoppingCard = shoppingCard,
                         CustomerName = result.FirstOrDefault()?.Person.EnglishName
                     };
-                    customer.SessionDetails.AddRange(sessionGroup.SessionDetails);
                     customers.Add(customer);
+
+                    _allOrdersNo.AddRange(sessionGroup.SessionDetails.Select(s => s.OrderNo).ToList());
                 }
                 catch { }
             }
@@ -224,14 +226,14 @@ namespace SelfCheckout.ViewModels.Base
         protected async Task LoadOrderListAsync(object filter = null)
         {
             var appConfig = SelfCheckoutService.AppConfig;
-            var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
-            LoginSession = loginResult.SessionKey;
 
             var ordersData = new List<OrderData>();
 
             var customers = Customers.Where(c => !string.IsNullOrEmpty(c.CustomerShoppingCard)).ToList();
             foreach (var customer in customers)
             {
+                var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
+
                 var payload = new
                 {
                     SessionKey = loginResult.SessionKey,
@@ -263,7 +265,11 @@ namespace SelfCheckout.ViewModels.Base
                 var result = await SaleEngineService.GetOrderListAsync(payload);
                 try
                 {
-                    result.ForEach(o => o.CustomerDetail.CustomerName = customer.CustomerName);
+                    result.ForEach(o =>
+                    {
+                        o.LoginSession = loginResult.SessionKey;
+                        o.CustomerDetail.CustomerName = customer.CustomerName;
+                    });
                 }
                 catch { }
                 ordersData.AddRange(result);
@@ -278,7 +284,8 @@ namespace SelfCheckout.ViewModels.Base
                 var customerAttr = order.CustomerDetail?.CustomerAttributes;
                 var orderInvoiceGroup = new OrderInvoiceGroup(orderDetails)
                 {
-                    InvoiceNo = order.OrderInvoices.FirstOrDefault()?.InvoiceNo.ToString(),
+                    LoginSession = order.LoginSession,
+                    InvoiceNo = order.OrderInvoices.FirstOrDefault()?.TaxAbbNo,
                     OrderNo = Convert.ToInt64(order.HeaderAttributes.Where(attr => attr.Code == "order_no").FirstOrDefault()?.ValueOfDecimal),
                     InvoiceDateTime = orderInvoice.Cashier.MachineDateTime, // TODO: concern
                     CustomerName = order.CustomerDetail?.CustomerName,
@@ -302,21 +309,23 @@ namespace SelfCheckout.ViewModels.Base
                 _allOrderInvoiceGroups.Add(orderInvoiceGroup);
             }
 
-            var sessionDetails = new List<SesionDetail>();
-            foreach (var customer in Customers)
-            {
-                sessionDetails.AddRange(customer.SessionDetails);
-            }
-            var ordersNo = sessionDetails.Select(s => s.OrderNo).ToList();
-            _allOrderInvoiceGroups = _allOrderInvoiceGroups.Where(o => ordersNo.Contains(o.OrderNo)).ToList();
+            _allOrderInvoiceGroups = _allOrderInvoiceGroups.Where(o => _allOrdersNo.Contains(o.OrderNo)).ToList();
             OrderInvoices = _allOrderInvoiceGroups.ToObservableCollection();
 
             OrderDetails = new ObservableCollection<OrderDetail>();
             foreach (var order in _allOrderInvoiceGroups)
             {
-                order.ForEach((orderDetail) => OrderDetails.Add(orderDetail));
+                order.ForEach((orderDetail) =>
+                {
+                    OrderDetails.Add(orderDetail);
+                });
             }
             CalculateSummary();
+
+            foreach (var order in _allOrderInvoiceGroups)
+            {
+                await SetOrderImage(order.AsEnumerable().ToList());
+            }
         }
 
         protected void CalculateSummary()

@@ -41,5 +41,7 @@ namespace SelfCheckout.Services.SelfCheckout
         Task<bool> ValidateMachineAsync(string machineIp);
 
         Task<bool> ValidateShoppingCardAsync(string machineIp, string shoppingCard);
+
+        Task<ArticleImage> GetArticleImageAsync(string code);
     }
 }

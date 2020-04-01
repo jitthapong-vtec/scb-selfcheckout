@@ -60,13 +60,19 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <forms:CachedImage
+                        <Image
                             Grid.Row="0"
                             Grid.ColumnSpan="2"
-                            Source="https://member.kingpower.com/images/logo.png" WidthRequest="72" 
+                            Source="{Binding OrderDetail.ImageUrl}" 
+                            HeightRequest="180" 
                             VerticalOptions="Start"
                             IsVisible="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.IsShowArticleImage}" 
-                            HeightRequest="100" Aspect="AspectFit"/>
+                            Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ShowImageDetailCommand}"
+                                                      CommandParameter="{Binding .}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
                         <Label Grid.Row="1" Grid.Column="0" Text="{Binding OrderDetail.ItemDetail.Item.Desc}"/>
                         <Label Grid.Row="1" Grid.Column="1" FontAttributes="Bold">
                             <Label.FormattedText>

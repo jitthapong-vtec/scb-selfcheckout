@@ -39,7 +39,7 @@
                         </Image.Triggers>
                     </Image>
                 </controls:TappedGrid>
-                <forms:CachedImage Source="https://member.kingpower.com/images/logo.png" WidthRequest="72" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.IsShowArticleImage}" Grid.Column="1" HeightRequest="72" Aspect="AspectFit"/>
+                <Image Source="{Binding ImageUrl}" WidthRequest="72" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.IsShowArticleImage}" Grid.Column="1" HeightRequest="72" Aspect="AspectFit"/>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -65,9 +65,12 @@
                                Unfocused="Entry_Qty_Unfocused" WidthRequest="72" Text="{Binding BillingQuantity.Quantity}" Keyboard="Numeric"/>
                     <Label Grid.Row="5" Grid.Column="1" MaxLines="1" Text="{Binding BillingAmount.NetAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" VerticalOptions="Center" TextColor="{StaticResource Primary}" Style="{StaticResource LabelNumericStyle}"/>
                 </Grid>
-                <controls:TappedGrid Grid.Column="3" Padding="4" Margin="8" IsVisible="{OnIdiom Phone=True, Desktop=False}" VerticalOptions="Fill" Tapped="ShowDetail_Tapped">
+                <Grid Grid.Column="3" Padding="4" Margin="8" IsVisible="{OnIdiom Phone=True, Desktop=False}" VerticalOptions="Fill">
                     <Label Style="{StaticResource LabelIconStyle}" Text="&#xf054;" FontSize="18" VerticalOptions="Center" HorizontalOptions="Center"/>
-                </controls:TappedGrid>
+                </Grid>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_Tapped"/>
+                </Grid.GestureRecognizers>
             </Grid>
     </SwipeView>
         </Frame>

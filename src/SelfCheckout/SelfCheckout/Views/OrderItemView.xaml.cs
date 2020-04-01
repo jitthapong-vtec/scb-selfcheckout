@@ -148,7 +148,7 @@ namespace SelfCheckout.Views
             ChangeQtyCommand?.Execute(CommandParameter);
         }
 
-        private void ShowDetail_Tapped(object sender, object e)
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             ShowDetailCommand?.Execute(CommandParameter);
         }

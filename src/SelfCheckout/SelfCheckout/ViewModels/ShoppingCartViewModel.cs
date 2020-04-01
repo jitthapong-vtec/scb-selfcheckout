@@ -229,7 +229,10 @@ namespace SelfCheckout.ViewModels
 
         public Task RefreshOrderListAsync()
         {
-            OrderDetails = SaleEngineService.OrderData?.OrderDetails?.ToObservableCollection();
+            var orderDetails = SaleEngineService.OrderData?.OrderDetails;
+            OrderDetails = orderDetails.ToObservableCollection();
+
+            Task.Run(() => SetOrderImage(orderDetails));
 
             IsSelectAllOrder = false;
             IsAnyOrderSelected = false;

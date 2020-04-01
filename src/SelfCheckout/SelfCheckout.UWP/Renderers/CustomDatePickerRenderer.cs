@@ -23,6 +23,7 @@ namespace SelfCheckout.UWP.Renderers
                 Windows.UI.Xaml.Controls.CalendarDatePicker datePicker = new Windows.UI.Xaml.Controls.CalendarDatePicker();
                 datePicker.DateChanged += DatePicker_DateChanged;
                 datePicker.MaxDate = DateTime.SpecifyKind((Element as CustomDatePicker).CustomMaxDate, DateTimeKind.Utc);
+                datePicker.DateFormat = "{day.integer}‎/{month.integer}/‎{year.full}";
                 SetNativeControl(datePicker);
             }
         }

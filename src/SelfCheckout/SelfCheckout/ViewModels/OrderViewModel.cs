@@ -112,11 +112,10 @@ namespace SelfCheckout.ViewModels
 
         void FilterOrder(CustomerOrder customer)
         {
-            var ordersNo = customer.SessionDetails.Select(c => c.OrderNo).ToList();
-            if (!customer.SessionDetails.Any())
+            if (!_allOrdersNo.Any())
                 OrderInvoices = _allOrderInvoiceGroups.ToObservableCollection();
             else
-                OrderInvoices = _allOrderInvoiceGroups.Where(o => ordersNo.Contains(o.OrderNo)).ToList().ToObservableCollection();
+                OrderInvoices = _allOrderInvoiceGroups.Where(o => _allOrdersNo.Contains(o.OrderNo)).ToList().ToObservableCollection();
 
             OrderDetails = new ObservableCollection<OrderDetail>();
             foreach (var order in OrderInvoices)

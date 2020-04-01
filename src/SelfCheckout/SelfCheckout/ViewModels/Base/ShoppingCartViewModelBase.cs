@@ -2,11 +2,13 @@
 using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
+using SelfCheckout.Models;
 using SelfCheckout.Resources;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 

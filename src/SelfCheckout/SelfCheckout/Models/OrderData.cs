@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -9,6 +10,8 @@ namespace SelfCheckout.Models
 {
     public class OrderData
     {
+        public string LoginSession { get; set; }
+
         [JsonProperty("Guid")]
         public string Guid { get; set; }
 
@@ -27,7 +30,8 @@ namespace SelfCheckout.Models
         [JsonProperty("BillingQuantities")]
         public List<BillingQuantity> BillingQuantities { get; set; }
 
-        public double? BillingQty {
+        public double? BillingQty
+        {
             get => BillingQuantities[1].Quantity;
         }
 
@@ -271,6 +275,7 @@ namespace SelfCheckout.Models
     public class OrderDetail : INotifyPropertyChanged
     {
         bool _isSelected;
+        string _imageUrl;
 
         [JsonProperty("Guid")]
         public string Guid { get; set; }
@@ -326,7 +331,18 @@ namespace SelfCheckout.Models
         [JsonProperty("DetailAttributes")]
         public object DetailAttributes { get; set; }
 
-        public bool IsSelected {
+        public string ImageUrl
+        {
+            get => _imageUrl;
+            set
+            {
+                _imageUrl = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool IsSelected
+        {
             get => _isSelected;
             set
             {

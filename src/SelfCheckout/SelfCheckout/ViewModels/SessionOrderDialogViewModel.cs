@@ -39,7 +39,6 @@ namespace SelfCheckout.ViewModels
             var dialogParameter = new DialogParameters()
             {
                 {"IsConfirmed", true },
-                {"LoginSession", LoginSession },
                 {"OrderInvoices", OrderInvoices }
             };
             RequestClose?.Invoke(dialogParameter);

@@ -175,5 +175,12 @@ namespace SelfCheckout.Services.SelfCheckout
                 throw new KPApiException(result.DefaultMessage);
             return result.Data;
         }
+
+        public async Task<ArticleImage> GetArticleImageAsync(string code)
+        {
+            var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Master/ArticleImg?article_code={code}");
+            var result = await GetAsync<ApiResultData<ArticleImage>>(uri.ToString());
+            return result.Data;
+        }
     }
 }

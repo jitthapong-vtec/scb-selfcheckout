@@ -49,6 +49,7 @@ namespace SelfCheckout
             containerRegistry.RegisterDialog<ShoppingCardInputDialog, ShoppingCardInputDialogViewModel>("ShoppingCardInputDialog");
             containerRegistry.RegisterDialog<SessionOrderDialog, SessionOrderDialogViewModel>("SessionOrderDialog");
             containerRegistry.RegisterDialog<PromptPayQrDialog, PromptPayQrDialogViewModel>("PromptPayQrDialog");
+            containerRegistry.RegisterDialog<ProductImageDetailDialog, ProductImageDetailDialogViewModel>("ProductImageDetailDialog");
 
             containerRegistry.Register<ShoppingCartViewModel>();
             containerRegistry.Register<DeviceViewModel>();

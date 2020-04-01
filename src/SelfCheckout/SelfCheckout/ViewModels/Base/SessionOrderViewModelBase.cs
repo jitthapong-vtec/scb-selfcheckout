@@ -40,7 +40,6 @@ namespace SelfCheckout.ViewModels.Base
                             return;
 
                         OrderInvoices = result.Parameters.GetValue<ObservableCollection<OrderInvoiceGroup>>("OrderInvoices");
-                        LoginSession = result.Parameters.GetValue<string>("LoginSession");
                         try
                         {
                             IsBusy = true;
