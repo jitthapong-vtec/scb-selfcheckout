@@ -4,6 +4,8 @@ using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Register;
+using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
@@ -16,7 +18,7 @@ using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class DeviceStatusViewModel : ViewModelBase
+    public class DeviceStatusViewModel : SessionOrderViewModelBase
     {
         ISelfCheckoutService _selfCheckoutService;
 
@@ -24,7 +26,8 @@ namespace SelfCheckout.ViewModels
 
         int _totalOccupiedDevice;
 
-        public DeviceStatusViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService)
+        public DeviceStatusViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService,
+            ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
         {
             _selfCheckoutService = selfCheckoutService;
         }
@@ -32,6 +35,12 @@ namespace SelfCheckout.ViewModels
         public ICommand SearchCommand => new DelegateCommand<string>(async (search) =>
         {
             await GetDeviceStatusAsync(search);
+        });
+
+        public ICommand ShowOrderDetailCommand => new DelegateCommand<DeviceStatus>((sess) =>
+        {
+            if (sess.SessionStatus.SessionCode == "START")
+                ShowSessionOrder(sess);
         });
 
         public ObservableCollection<DeviceStatus> Devices
@@ -44,6 +53,11 @@ namespace SelfCheckout.ViewModels
         {
             get => _totalOccupiedDevice;
             set => SetProperty(ref _totalOccupiedDevice, value);
+        }
+
+        protected override async Task SessionCloseCallback()
+        {
+            await GetDeviceStatusAsync();
         }
 
         async Task GetDeviceStatusAsync(string search = "")

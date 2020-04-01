@@ -107,11 +107,6 @@ namespace SelfCheckout.ViewModels.Base
             set => SetProperty(ref _totalNetAmount, value);
         }
 
-        public string CurrentShoppingCard
-        {
-            get => SelfCheckoutService.CurrentShoppingCard;
-        }
-
         public ObservableCollection<OrderInvoiceGroup> OrderInvoices
         {
             get => _orderInvoices;
@@ -137,21 +132,51 @@ namespace SelfCheckout.ViewModels.Base
 
         protected async Task SaveSessionAsync(string sessionKey)
         {
-            //var appSetting = SelfCheckoutService.AppConfig;
-            //var machineNo = SaleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
-            //await SelfCheckoutService.EndSessionAsync(Convert.ToInt64(sessionKey), appSetting.UserName, machineNo);
+            var appSetting = SelfCheckoutService.AppConfig;
+            var machineNo = SaleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
+            await SelfCheckoutService.EndSessionAsync(Convert.ToInt64(sessionKey), appSetting.UserName, machineNo);
 
+            var invoiceImgUrls = new List<string>();
             foreach (var orderInvoice in OrderInvoices)
             {
-                var invoices = await SaleEngineService.PrintTaxInvoice(new
+                try
                 {
-                    OrderNo = orderInvoice.OrderNo,
-                    ClaimcheckNo = "",
-                    SessionKey = LoginSession
-                });
+                    var invoices = await SaleEngineService.PrintTaxInvoice(new
+                    {
+                        OrderNo = orderInvoice.OrderNo,
+                        ClaimcheckNo = "",
+                        SessionKey = LoginSession
+                    });
 
-                var invoiceImgUrl = invoices.FirstOrDefault()?.Data.Original.FirstOrDefault().Value;
-                ///await DependencyService.Get<IPrintService>().PrintBitmapFromUrl(invoiceImgUrl);
+                    var invoiceImgUrl = invoices.FirstOrDefault()?.Data.Original.FirstOrDefault().Value;
+                    invoiceImgUrls.Add(invoiceImgUrl);
+                }
+                catch(Exception ex) 
+                { 
+                }
+            }
+
+            if (invoiceImgUrls.Any())
+            {
+                foreach (var invoiceImgUrl in invoiceImgUrls)
+                {
+                    await DependencyService.Get<IPrintService>().PrintBitmapFromUrl(invoiceImgUrl);
+                }
+            }
+
+            //TODO : remove this when production
+            foreach (var orderInvoice in OrderInvoices)
+            {
+                if (string.IsNullOrEmpty(orderInvoice.WalletMerchantId))
+                    continue;
+                try
+                {
+                    // Test void payment
+                    await SaleEngineService.VoidPaymentAsync(orderInvoice.WalletMerchantId, orderInvoice.PartnerTransId);
+                }
+                catch 
+                {
+                }
             }
         }
 
@@ -266,6 +291,13 @@ namespace SelfCheckout.ViewModels.Base
                     TotalNet = orderInvoice.BillingAmount.NetAmount.CurrAmt,
                     TotalDiscount = orderInvoice.BillingAmount.DiscountAmount.CurrAmt
                 };
+
+                try
+                {
+                    orderInvoiceGroup.WalletMerchantId = order.OrderPayments.FirstOrDefault().WalletMerchantId.ToString();
+                    orderInvoiceGroup.PartnerTransId = order.OrderPayments.FirstOrDefault().PartnerTransId.ToString();
+                }
+                catch { }
 
                 _allOrderInvoiceGroups.Add(orderInvoiceGroup);
             }

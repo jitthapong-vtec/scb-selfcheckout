@@ -84,6 +84,8 @@ namespace SelfCheckout.ViewModels
                 else
                 {
                     await LoadCustomerSession();
+                    CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
+
                     await LoadOrderListAsync();
                 }
 
@@ -189,7 +191,6 @@ namespace SelfCheckout.ViewModels
 
         public override async Task OnTabSelected(TabItem item)
         {
-            CustomerData = await GetCustomerSessionAsync(CurrentShoppingCard);
             await RefreshOrderAsync();
         }
     }

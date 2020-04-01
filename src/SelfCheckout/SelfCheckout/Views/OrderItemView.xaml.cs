@@ -33,6 +33,18 @@ namespace SelfCheckout.Views
         public static readonly BindableProperty IsEnableChkOrderProperty =
             BindableProperty.Create("IsEnableChkOrder", typeof(bool), typeof(OrderItemView), true, propertyChanged: IsEnableChkOrderPropertyChanged);
 
+        public static readonly BindableProperty IsEnableSwipeViewProperty =
+            BindableProperty.Create("IsEnableSwipeView", typeof(bool), typeof(OrderItemView), false, propertyChanged: IsEnableSwipeViewPropertyChanged);
+
+        private static void IsEnableSwipeViewPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            try
+            {
+                (bindable as OrderItemView).swipeView.IsEnabled = (bool)newValue;
+            }
+            catch { }
+        }
+
         private static void IsEnableChkOrderPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             try
@@ -49,6 +61,12 @@ namespace SelfCheckout.Views
                 (bindable as OrderItemView).entryOrderQty.IsReadOnly = !(bool)newValue;
             }
             catch { }
+        }
+
+        public bool IsEnableSwipeView
+        {
+            get => (bool)GetValue(IsEnableSwipeViewProperty);
+            set => SetValue(IsEnableSwipeViewProperty, value);
         }
 
         public bool IsEnableEntryOrderQty
@@ -111,6 +129,8 @@ namespace SelfCheckout.Views
         public OrderItemView()
         {
             InitializeComponent();
+
+            swipeView.IsEnabled = false;
         }
 
         public void Delete_Tapped(object sender, object e)

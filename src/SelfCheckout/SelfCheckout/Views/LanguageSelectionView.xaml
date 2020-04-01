@@ -16,7 +16,7 @@
             <Grid BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="250"/>
+                    <RowDefinition Height="200"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="8">
                     <Grid.Resources>

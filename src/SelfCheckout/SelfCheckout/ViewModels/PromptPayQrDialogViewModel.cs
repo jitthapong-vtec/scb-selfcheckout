@@ -8,6 +8,7 @@ using SelfCheckout.Services.SelfCheckout;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -192,8 +193,10 @@ namespace SelfCheckout.ViewModels
 
         private string GetRefNo()
         {
-            var sessKey = _saleEngineService.LoginData.SessionKey.Replace("-", "").ToUpper();
-            return sessKey.Substring(sessKey.Length - 20, 20);
+            var orderData = _saleEngineService.OrderData;
+            var shoppingCard = orderData.HeaderAttributes.Where(attr => attr.Code == "shopping_card").FirstOrDefault().ValueOfString;
+            var orderNo = (int)orderData.HeaderAttributes.Where(attr => attr.Code == "order_no").FirstOrDefault().ValueOfDecimal;
+            return $"{shoppingCard}{orderNo}";
         }
     }
 }

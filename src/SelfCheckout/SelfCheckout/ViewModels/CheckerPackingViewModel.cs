@@ -45,9 +45,9 @@ namespace SelfCheckout.ViewModels
                 var isAlreadyEnd = await LoadSessionDetailAsync(Convert.ToInt64(SessionKey));
                 if (isAlreadyEnd)
                 {
-                    //Clear();
-                    //await DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
-                    //return;
+                    Clear();
+                    await DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
+                    return;
                 }
 
                 await LoadCustomerSession();

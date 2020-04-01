@@ -9,7 +9,7 @@
              mc:Ignorable="d"
        x:Class="SelfCheckout.Views.OrderItemView">
         <Frame Margin="{OnPlatform Android='-4,0,-4,4', UWP=0}" Padding="0">
-    <SwipeView IsEnabled="{OnPlatform UWP=False, Android=True}">
+    <SwipeView x:Name="swipeView">
         <SwipeView.RightItems>
             <SwipeItemView>
                 <controls:TappedGrid Tapped="Delete_Tapped" BackgroundColor="Red" WidthRequest="96">

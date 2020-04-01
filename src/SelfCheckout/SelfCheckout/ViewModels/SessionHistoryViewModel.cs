@@ -18,7 +18,7 @@ using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class SessionHistoryViewModel : OrderViewModelBase
+    public class SessionHistoryViewModel : SessionOrderViewModelBase
     {
         List<DeviceStatus> _allSessionHistories;
         ObservableCollection<DeviceStatus> _sessionHistories;
@@ -90,41 +90,7 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ShowOrderDetailCommand => new DelegateCommand<DeviceStatus>((sess) =>
         {
-            var parameters = new DialogParameters()
-            {
-                {"SessionKey", sess.SessionKey },
-                {"ShoppingCard", sess.ShoppingCard }
-            };
-            try
-            {
-                DialogService.ShowDialog("SessionOrderDialog", parameters, async (result) =>
-                {
-                    if(result != null && result.Parameters.GetValue<bool>("IsConfirmed"))
-                    {
-                        var cf = await DialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
-                        if (!cf)
-                            return;
-
-                        OrderInvoices = result.Parameters.GetValue<ObservableCollection<OrderInvoiceGroup>>("OrderInvoices");
-                        LoginSession = result.Parameters.GetValue<string>("LoginSession");
-                        try
-                        {
-                            IsBusy = true;
-                            await SaveSessionAsync(sess.SessionKey.ToString());
-                            await LoadSessionHistoryAsync();
-                        }
-                        catch (Exception ex)
-                        {
-                            await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-                        }
-                        finally
-                        {
-                            IsBusy = false;
-                        }
-                    }
-                });
-            }
-            catch { }
+            ShowSessionOrder(sess);
         });
 
         public ICommand ChangeFilterTypeCommand => new DelegateCommand<SimpleSelectedItem>((filterType) =>
@@ -159,6 +125,11 @@ namespace SelfCheckout.ViewModels
 
             await LoadSessionHistoryAsync();
         });
+
+        protected override async Task SessionCloseCallback()
+        {
+            await LoadSessionHistoryAsync();
+        }
 
         async Task LoadSessionHistoryAsync()
         {

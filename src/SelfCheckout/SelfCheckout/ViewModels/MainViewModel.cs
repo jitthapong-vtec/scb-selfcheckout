@@ -911,15 +911,6 @@ namespace SelfCheckout.ViewModels
                 };
 
                 await ConfirmPaymentAsync(paymentPayload, true);
-
-                try
-                {
-                    // Test void payment
-                    await _saleEngineService.VoidPaymentAsync(wallet.WalletagentMaster.MerchantId, _saleEngineService.OrderData.PaymentTransaction.PartnerTransId);
-                }
-                catch (Exception ex)
-                {
-                }
             }
             catch (Exception ex)
             {
@@ -933,10 +924,12 @@ namespace SelfCheckout.ViewModels
 
         private void ResetPaymentState()
         {
+            SummaryShowing = false;
             IsBeingPaymentProcess = false;
             IsPaymentProcessing = false;
             PaymentInputShowing = false;
             PaymentBarcode = "";
+            CouponCode = "";
 
             SetDefaultCurrency();
         }

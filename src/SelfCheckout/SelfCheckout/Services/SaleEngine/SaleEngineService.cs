@@ -182,10 +182,15 @@ namespace SelfCheckout.Services.SaleEngine
             return result.Data;
         }
 
-        public Task LogoutAsync()
+        public async Task LogoutAsync()
         {
+            var payload = new
+            {
+                SessionKey = LoginData.SessionKey
+            };
+            var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/SignOut");
+            var result = await PostAsync<object, ApiResultData<bool>>(uri.ToString(), payload);
             LoginData = null;
-            return Task.FromResult(true);
         }
 
         public async Task<List<FullTaxInvoice>> PrintTaxInvoice(object payload)

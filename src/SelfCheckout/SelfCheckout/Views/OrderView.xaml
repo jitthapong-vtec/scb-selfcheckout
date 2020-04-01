@@ -46,7 +46,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <StackLayout Grid.Column="0">
-                                <Label FontAttributes="Bold" Text="{Binding CurrentShoppingCard}"/>
+                                <Label FontAttributes="Bold" Text="{Binding SessionData.ShoppingCard}"/>
                                 <Label Text="{Binding CustomerData.Person.EnglishName}"/>
                             </StackLayout>
                             <Image Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Source="ic_user"/>

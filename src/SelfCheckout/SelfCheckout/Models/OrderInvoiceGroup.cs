@@ -22,5 +22,8 @@ namespace SelfCheckout.Models
         public double? SubTotal { get; set; }
         public double? TotalNet { get; set; }
         public double? TotalDiscount { get; set; }
+
+        public string WalletMerchantId { get; set; }
+        public string PartnerTransId { get; set; }
     }
 }

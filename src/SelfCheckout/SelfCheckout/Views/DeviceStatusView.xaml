@@ -61,7 +61,8 @@
                     </Grid>
                 </Grid>
                 <fl:FlowListView Grid.Row="1" RowHeight="200" FlowItemsSource="{Binding Devices}" FlowColumnCount="3"
-                                 FlowRowBackgroundColor="White" FlowTappedBackgroundColor="White">
+                                 FlowRowBackgroundColor="White" FlowTappedBackgroundColor="White"
+                                 FlowItemTappedCommand="{Binding ShowOrderDetailCommand}">
                     <fl:FlowListView.FlowColumnTemplate>
                         <DataTemplate>
                             <Grid>
