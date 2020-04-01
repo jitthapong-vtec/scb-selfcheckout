@@ -28,6 +28,11 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _printerName, value);
         }
 
+        public ICommand PickPrinterCommand => new DelegateCommand(async() =>
+        {
+            PrinterName = await DependencyService.Get<IPrintService>().PickPrinterAsync();
+        });
+
         public override async void OnNavigatedFrom(INavigationParameters parameters)
         {
             base.OnNavigatedFrom(parameters);
@@ -40,6 +45,7 @@ namespace SelfCheckout.ViewModels
             base.OnNavigatedTo(parameters);
 
             PrinterName = await DependencyService.Get<IPrintService>().GetSavedPrinterName();
+
         }
     }
 }

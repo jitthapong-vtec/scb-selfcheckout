@@ -9,5 +9,6 @@ namespace SelfCheckout.Models
         public string LoginSession { get; set; }
         public string CustomerShoppingCard { get; set; }
         public string CustomerName { get; set; }
+        public List<SesionDetail> SessionDetails { get; set; } = new List<SesionDetail>();
     }
 }

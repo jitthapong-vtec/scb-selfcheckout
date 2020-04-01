@@ -32,24 +32,54 @@ namespace SelfCheckout.UWP.Services
             return Task.FromResult<string>(printerName);
         }
 
-        public async Task PrintBitmapFromUrl(string url)
+        public async Task<string> PickPrinterAsync()
         {
-            var rass = RandomAccessStreamReference.CreateFromUri(new Uri(url));
-            using (var stream = await rass.OpenReadAsync())
+            DevicePicker devicePicker = new DevicePicker();
+            devicePicker.Appearance.Title = "Printers";
+
+            devicePicker.Filter.SupportedDeviceSelectors.Add("System.Devices.InterfaceClassGuid:=\"{0ecef634-6ef0-472a-8085-5ad023ecbccd}\"");
+
+            var pointerPosition = Windows.UI.Core.CoreWindow.GetForCurrentThread().PointerPosition;
+            GeneralTransform ge = Window.Current.Content.TransformToVisual(Window.Current.Content as UIElement);
+            Rect rect = ge.TransformBounds(new Rect(pointerPosition.X, pointerPosition.Y, 0, 0));
+
+            DeviceInformation deviceInfo = await devicePicker.PickSingleDeviceAsync(rect);
+            return deviceInfo.Name;
+        }
+
+        public async Task PrintBitmapFromUrl(List<string> urls)
+        {
+            if (ApplicationData.Current.LocalSettings.Containers.ContainsKey("List_Invoices") == false)
             {
-                StorageFolder storageFolder = ApplicationData.Current.TemporaryFolder;
+                ApplicationData.Current.LocalSettings.CreateContainer("List_Invoices", ApplicationDataCreateDisposition.Always);
+            }
+            else
+            {
+                ApplicationData.Current.LocalSettings.Containers["List_Invoices"].Values.Clear();
+            }
 
-                var fileBytes = new byte[stream.Size];
-                using (var reader = new DataReader(stream))
+            for (var i = 0; i < urls.Count(); i++)
+            {
+                var url = urls[i];
+                var rass = RandomAccessStreamReference.CreateFromUri(new Uri(url));
+                using (var stream = await rass.OpenReadAsync())
                 {
-                    await reader.LoadAsync((uint)stream.Size);
-                    reader.ReadBytes(fileBytes);
+                    StorageFolder storageFolder = ApplicationData.Current.TemporaryFolder;
+
+                    var fileBytes = new byte[stream.Size];
+                    using (var reader = new DataReader(stream))
+                    {
+                        await reader.LoadAsync((uint)stream.Size);
+                        reader.ReadBytes(fileBytes);
+                    }
+                    var storageFile = await storageFolder.CreateFileAsync($"{Guid.NewGuid()}.png");
+                    await FileIO.WriteBytesAsync(storageFile, fileBytes);
+                    ApplicationData.Current.LocalSettings.Containers["List_Invoices"].Values[i.ToString()] = storageFile.Path;
                 }
-                var storageFile = await storageFolder.CreateFileAsync($"{Guid.NewGuid()}.png");
-                await FileIO.WriteBytesAsync(storageFile, fileBytes);
+            }
 
-                ApplicationData.Current.LocalSettings.Values["FileToPrint"] = storageFile.Path;
-
+            if (urls.Any())
+            {
                 if (ApiInformation.IsApiContractPresent("Windows.ApplicationModel.FullTrustAppContract", 1, 0))
                 {
                     await FullTrustProcessLauncher.LaunchFullTrustProcessForCurrentAppAsync();

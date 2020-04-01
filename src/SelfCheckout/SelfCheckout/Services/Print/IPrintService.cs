@@ -8,10 +8,12 @@ namespace SelfCheckout.Services.Print
 {
     public interface IPrintService
     {
+        Task<string> PickPrinterAsync();
+
         Task SavePrinterName(string printerName);
 
         Task<string> GetSavedPrinterName();
 
-        Task PrintBitmapFromUrl(string url);
+        Task PrintBitmapFromUrl(List<string> urls);
     }
 }

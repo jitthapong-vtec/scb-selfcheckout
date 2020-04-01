@@ -49,7 +49,26 @@
                         <Label Text="Self Checkout Api"/>
                         <Entry Text="{Binding SelfCheckoutApi}"/>
                         <Label Text="Receipt Printer"/>
-                        <Entry Text="{Binding PrinterName}" VerticalOptions="Center"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Entry Grid.Column="0" Text="{Binding PrinterName}" VerticalOptions="Center"/>
+                            <controls:TappedGrid Grid.Column="1"
+                            TappedCommand="{Binding PickPrinterCommand}"
+                                    Padding="0"
+                                    WidthRequest="100"
+                                                 VerticalOptions="Fill"
+                                    Style="{StaticResource TappedGridButtonStyle}">
+                                <Frame Style="{StaticResource FrameButtonStyle}">
+                                    <Grid>
+                                        <controls:GradientBackground/>
+                                        <controls:CustomLabel UpperCase="True" Text="Browse" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                    </Grid>
+                                </Frame>
+                            </controls:TappedGrid>
+                        </Grid>
                     </StackLayout>
                 </ScrollView>
             </Grid>

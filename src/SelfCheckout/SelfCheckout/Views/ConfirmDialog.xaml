@@ -18,12 +18,13 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Margin="8,4,8,0" Text="{Binding Title}" FontSize="Large" FontAttributes="Bold"/>
             <Label Grid.Row="1" Margin="8" Text="{Binding Message}" FontSize="Medium" VerticalOptions="Center"/>
-            <Grid Grid.Row="2" HeightRequest="40">
+            <Grid Grid.Row="2" HeightRequest="40" HorizontalOptions="{OnPlatform UWP=End, Android=Fill}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="{OnPlatform UWP=Auto, Android=*}"/>
+                    <ColumnDefinition Width="{OnPlatform UWP=Auto, Android=*}"/>
                 </Grid.ColumnDefinitions>
                 <controls:TappedGrid Grid.Column="0" TappedCommand="{Binding YesCommand}"
+                                     WidthRequest="{OnPlatform UWP=100}"
                                      effects:RoundCornersEffect.CornerRadius="3">
                     <controls:GradientBackground IsVisible="{Binding OkAsRedButton, Converter={StaticResource InverseBooleanConverter}}"/>
                     <Label Text="{Binding OkButtonText}" TextColor="{StaticResource Gray50}" Margin="4,0,4,0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
@@ -37,6 +38,7 @@
                     </controls:TappedGrid.Triggers>
                 </controls:TappedGrid>
                 <controls:TappedGrid Grid.Column="1" BackgroundColor="{StaticResource Gray200}" 
+                                     WidthRequest="{OnPlatform UWP=100}"
                                      effects:RoundCornersEffect.CornerRadius="3"
                                      TappedCommand="{Binding NoCommand}">
                     <Label Text="{Binding CancelButtonText}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>

@@ -64,7 +64,7 @@ namespace SelfCheckout.ViewModels
                 await NavigationService.NavigateAsync("OrderDetailView", new NavigationParameters() { { "OrderDetail", order } });
             });
 
-            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, MessageKey_LoadOrder, async(s) =>
+            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, MessageKey_LoadOrder, async (s) =>
             {
                 await LoadOrderAsync();
             });
@@ -820,7 +820,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await DialogService.ShowAlert(AppResources.Payment, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -830,6 +830,7 @@ namespace SelfCheckout.ViewModels
 
         async Task WalletPaymentAsync()
         {
+            Wallet wallet = null;
             try
             {
                 IsBusy = true;
@@ -839,7 +840,25 @@ namespace SelfCheckout.ViewModels
                     machine_ip = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineIp,
                     branch_no = _selfCheckoutService.AppConfig.BranchNo
                 };
-                var wallet = await _saleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
+
+                wallet = await _saleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlert("Get wallet", ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                PaymentBarcode = "";
+                IsBusy = false;
+            }
+
+            if (wallet == null)
+                return;
+
+            try
+            {
+                IsBusy = true;
 
                 var paymentPayload = new
                 {
@@ -914,10 +933,11 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await DialogService.ShowAlert(AppResources.Payment, ex.Message, AppResources.Close);
             }
             finally
             {
+                PaymentBarcode = "";
                 IsBusy = false;
             }
         }

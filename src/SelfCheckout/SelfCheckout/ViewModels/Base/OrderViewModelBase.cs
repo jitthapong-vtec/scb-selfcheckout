@@ -25,7 +25,6 @@ namespace SelfCheckout.ViewModels.Base
         protected IRegisterService RegisterService { get; private set; }
 
         protected List<OrderInvoiceGroup> _allOrderInvoiceGroups;
-        protected List<long> _allOrdersNo;
 
         ObservableCollection<OrderInvoiceGroup> _orderInvoices;
         ObservableCollection<OrderDetail> _orderDetails;
@@ -172,10 +171,7 @@ namespace SelfCheckout.ViewModels.Base
         {
             if (invoiceImgUrls.Any())
             {
-                foreach (var invoiceImgUrl in invoiceImgUrls)
-                {
-                    await DependencyService.Get<IPrintService>().PrintBitmapFromUrl(invoiceImgUrl);
-                }
+                await DependencyService.Get<IPrintService>().PrintBitmapFromUrl(invoiceImgUrls);
             }
         }
 
@@ -197,7 +193,6 @@ namespace SelfCheckout.ViewModels.Base
         {
             var sessionsGroup = SessionData.SesionDetail.GroupBy(s => s.ShoppingCard, (k, g) => new { ShoppingCard = k, SessionDetails = g.ToList() }).ToList();
             var customers = new List<CustomerOrder>();
-            _allOrdersNo = new List<long>();
 
             customers.Add(new CustomerOrder
             {
@@ -214,9 +209,8 @@ namespace SelfCheckout.ViewModels.Base
                         CustomerShoppingCard = shoppingCard,
                         CustomerName = result.FirstOrDefault()?.Person.EnglishName
                     };
+                    customer.SessionDetails.AddRange(sessionGroup.SessionDetails);
                     customers.Add(customer);
-
-                    _allOrdersNo.AddRange(sessionGroup.SessionDetails.Select(s => s.OrderNo).ToList());
                 }
                 catch { }
             }
@@ -309,7 +303,14 @@ namespace SelfCheckout.ViewModels.Base
                 _allOrderInvoiceGroups.Add(orderInvoiceGroup);
             }
 
-            _allOrderInvoiceGroups = _allOrderInvoiceGroups.Where(o => _allOrdersNo.Contains(o.OrderNo)).ToList();
+            var sessionDetails = new List<SesionDetail>();
+            foreach (var customer in Customers)
+            {
+                sessionDetails.AddRange(customer.SessionDetails);
+            }
+            var ordersNo = sessionDetails.Select(s => s.OrderNo).ToList();
+
+            _allOrderInvoiceGroups = _allOrderInvoiceGroups.Where(o => ordersNo.Contains(o.OrderNo)).ToList();
             OrderInvoices = _allOrderInvoiceGroups.ToObservableCollection();
 
             OrderDetails = new ObservableCollection<OrderDetail>();
