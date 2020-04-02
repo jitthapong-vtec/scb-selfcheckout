@@ -124,6 +124,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t cannect to server! Please try again.
+        /// </summary>
+        internal static string CannotConnectToServer {
+            get {
+                return ResourceManager.GetString("CannotConnectToServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change Shopping Card.
         /// </summary>
         internal static string ChangeShoppingCard {

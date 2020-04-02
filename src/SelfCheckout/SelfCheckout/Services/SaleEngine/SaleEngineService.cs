@@ -117,7 +117,7 @@ namespace SelfCheckout.Services.SaleEngine
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/GetOrder");
             var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
-                throw new KPApiException(result.DefaultMessage);
+                throw new KPApiException(result.DefaultMessageCode, result.DefaultMessage);
             OrderData = result.Data.FirstOrDefault();
             return result.Data;
         }

@@ -32,7 +32,14 @@ namespace SelfCheckout.ViewModels
             _dialogService.ShowDialog("AuthorizeDialog", null, async (result) =>
             {
                 if (result.Parameters.GetValue<bool>("IsAuthorized"))
-                    await _navigationService.NavigateAsync("SettingView");
+                {
+                    var loginData = result.Parameters.GetValue<LoginData>("LoginData");
+                    var navParam = new NavigationParameters()
+                    {
+                        {"LoginData", loginData }
+                    };
+                    await _navigationService.NavigateAsync("SettingView", navParam);
+                }
             });
         });
 

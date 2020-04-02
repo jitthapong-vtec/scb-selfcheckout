@@ -50,10 +50,9 @@
                 <Grid Grid.Row="1" Margin="32,12,32,32" RowSpacing="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <StackLayout Grid.Row="0" Orientation="Horizontal" Spacing="0" BindableLayout.ItemsSource="{Binding Tabs}">
+                    <StackLayout Grid.Row="0" Margin="4,0,0,0" Orientation="Horizontal" Spacing="0" BindableLayout.ItemsSource="{Binding Tabs}">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
                                 <controls:TappedGrid HeightRequest="36" TappedCommand="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}, AncestorLevel=1}, Path=BindingContext.TabSelectionCommand}" CommandParameter="{Binding .}">
@@ -81,10 +80,11 @@
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
                     </StackLayout>
-                    <BoxView HeightRequest="2" Grid.Row="1" BackgroundColor="{StaticResource Gray200}" Margin="8,0,8,0"/>
-                    <Grid Grid.Row="2">
-                        <Frame Padding="0">
-                            <controls:TabViewContainer Content="{Binding CurrentView}"/>
+                    <Grid Grid.Row="1">
+                        <Frame Padding="1" BackgroundColor="{StaticResource Gray200}" IsClippedToBounds="True">
+                            <Frame Padding="0">
+                                <controls:TabViewContainer Content="{Binding CurrentView}"/>
+                            </Frame>
                         </Frame>
                     </Grid>
                 </Grid>

@@ -19,22 +19,23 @@ namespace SelfCheckout.ViewModels
 
         protected override Task AuthorizeCallback(LoginData loginData)
         {
-            SetResult(true);
+            SetResult(true, loginData);
             return Task.FromResult(true);
         }
 
         public ICommand CancelCommand => new DelegateCommand(() =>
         {
-            SetResult(false);
+            SetResult(false, null);
         });
 
         public event Action<IDialogParameters> RequestClose;
 
-        void SetResult(bool isAuthorized)
+        void SetResult(bool isAuthorized, LoginData loginData)
         {
             var parameters = new DialogParameters()
             {
-                {"IsAuthorized", isAuthorized }
+                {"IsAuthorized", isAuthorized },
+                {"LoginData", loginData }
             };
             RequestClose?.Invoke(parameters);
         }

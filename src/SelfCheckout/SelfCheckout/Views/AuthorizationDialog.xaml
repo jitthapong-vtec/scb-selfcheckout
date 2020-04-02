@@ -6,7 +6,7 @@
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:prism="http://prismlibrary.com"
-             prism:DialogLayout.RelativeWidthRequest="0.75"
+             prism:DialogLayout.RelativeWidthRequest="0.90"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:components="clr-namespace:SelfCheckout.Views.Components"
              NavigationPage.HasNavigationBar="False"

@@ -69,6 +69,7 @@ namespace SelfCheckout.ViewModels.Base
                     if (!customerData.Person.IsActivate)
                     {
                         await DialogService.ShowAlert(AppResources.Opps, AppResources.ShoppingCardNotActivate, AppResources.Close);
+                        return;
                     }
                     var parameters = new DialogParameters()
                     {

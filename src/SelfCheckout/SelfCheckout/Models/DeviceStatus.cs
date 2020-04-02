@@ -41,7 +41,7 @@ namespace SelfCheckout.Models
                 {
                     timeUse = DateTime.Now.Subtract(SessionDt);
                 }
-                return timeUse.ToString("mm\\:ss");
+                return timeUse.ToString("hh\\:mm\\:ss");
             }
         }
 

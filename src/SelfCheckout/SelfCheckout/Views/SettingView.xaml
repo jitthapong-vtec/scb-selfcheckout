@@ -41,11 +41,12 @@
                     <Entry Placeholder="Web Member" Text="{Binding AppConfig.UrlMemberWeb}"/>
                     <Entry Placeholder="Payment Time out" Keyboard="Numeric" Text="{Binding AppConfig.PaymentTimeout}"/>
                     <Entry Placeholder="Device UID" x:Name="entryDeviceUid" Text="{Binding DeviceUID}" IsReadOnly="True"/>
+                    <Entry IsVisible="False" x:Name="entryMachineNo" Text="{Binding MachineNo}"/>
                     <forms:ZXingBarcodeImageView
                                 BarcodeFormat="QR_CODE"
                                 HeightRequest="200"
                                 WidthRequest="200"
-                                BarcodeValue="{Binding Source={x:Reference entryDeviceUid}, Path=Text}">
+                                BarcodeValue="{Binding Source={x:Reference entryMachineNo}, Path=Text}">
                         <forms:ZXingBarcodeImageView.BarcodeOptions>
                             <common:EncodingOptions Width="200" Height="200" PureBarcode="True"/>
                         </forms:ZXingBarcodeImageView.BarcodeOptions>

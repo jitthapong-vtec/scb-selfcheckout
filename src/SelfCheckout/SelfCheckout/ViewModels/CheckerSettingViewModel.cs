@@ -1,8 +1,11 @@
 ﻿using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
+using SelfCheckout.Extensions;
 using SelfCheckout.Models;
+using SelfCheckout.Resources;
 using SelfCheckout.Services.Print;
+using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
@@ -18,7 +21,9 @@ namespace SelfCheckout.ViewModels
     {
         string _printerName;
 
-        public CheckerSettingViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService, selfCheckoutService)
+        public CheckerSettingViewModel(INavigationService navigatinService, IDialogService dialogService,
+            ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) :
+            base(navigatinService, dialogService, selfCheckoutService, saleEngineService)
         {
         }
 
@@ -28,9 +33,13 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _printerName, value);
         }
 
-        public ICommand PickPrinterCommand => new DelegateCommand(async() =>
+        public ICommand PickPrinterCommand => new DelegateCommand(async () =>
         {
-            PrinterName = await DependencyService.Get<IPrintService>().PickPrinterAsync();
+            try
+            {
+                PrinterName = await DependencyService.Get<IPrintService>().PickPrinterAsync();
+            }
+            catch { }
         });
 
         public override async void OnNavigatedFrom(INavigationParameters parameters)

@@ -1,5 +1,6 @@
 ﻿using Prism.Navigation;
 using Prism.Services.Dialogs;
+using SelfCheckout.Exceptions;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
@@ -670,7 +671,23 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                if (ex is KPApiException)
+                {
+                    if ((ex as KPApiException).ErrorCode == "SESSION_EXPIRE")
+                    {
+                        await DialogService.ShowAlert(AppResources.Opps, AppResources.CannotConnectToServer, AppResources.Close);
+                        await LoginAsync();
+                        await LoadOrderAsync();
+                    }
+                    else
+                    {
+                        await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                    }
+                }
+                else
+                {
+                    await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                }
             }
             finally
             {
@@ -846,10 +863,10 @@ namespace SelfCheckout.ViewModels
             catch (Exception ex)
             {
                 await DialogService.ShowAlert("Get wallet", ex.Message, AppResources.Close);
+                PaymentBarcode = "";
             }
             finally
             {
-                PaymentBarcode = "";
                 IsBusy = false;
             }
 
@@ -1033,10 +1050,7 @@ namespace SelfCheckout.ViewModels
                 var result = await _selfCheckoutService.UpdateSessionAsync(_selfCheckoutService.BorrowSessionKey, orderNo, _selfCheckoutService.CurrentShoppingCard);
 
                 ResetPaymentState();
-
-                var appConfig = _selfCheckoutService.AppConfig;
-                var loginData = await _saleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
-                _saleEngineService.LoginData = loginData;
+                await LoginAsync();
 
                 var shoppingCartTab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
                 await LoadOrderAsync();
@@ -1048,6 +1062,13 @@ namespace SelfCheckout.ViewModels
                     TabSelectedCommand.Execute(orderTab);
                 }
             }
+        }
+
+        private async Task LoginAsync()
+        {
+            var appConfig = _selfCheckoutService.AppConfig;
+            var loginData = await _saleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
+            _saleEngineService.LoginData = loginData;
         }
     }
 }

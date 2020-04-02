@@ -382,7 +382,6 @@
   </data>
   <data name="System" xml:space="preserve">
     <value>System</value>
-    
   </data>
   <data name="ThkForOrderDetail" xml:space="preserve">
     <value>You can see order in "My Order" menu</value>
@@ -428,5 +427,8 @@
   </data>
   <data name="HolderDetail" xml:space="preserve">
     <value>Holder Detail</value>
+  </data>
+  <data name="CannotConnectToServer" xml:space="preserve">
+    <value>Can't cannect to server! Please try again</value>
   </data>
 </root>

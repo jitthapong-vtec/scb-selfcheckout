@@ -26,6 +26,11 @@ namespace SelfCheckout.Models
         [JsonProperty("Message")]
         public Message[] Message { get; set; }
 
+        public string DefaultMessageCode
+        {
+            get => Message?.FirstOrDefault()?.MessageCode;
+        }
+
         public string DefaultMessage
         {
             get
