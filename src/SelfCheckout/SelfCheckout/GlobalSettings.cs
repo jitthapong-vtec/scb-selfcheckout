@@ -57,6 +57,11 @@ namespace SelfCheckout
             get => Preferences.Get("self_checkout_api", "https://kpservices.kingpower.com/portal/developer/selfcheckoutapi/");
         }
 
+        public string PromptPayApi
+        {
+            get => Preferences.Get("promptpay_api", "https://kpw.vtec-system.com:4455/");
+        }
+
         public string PimCoreUrl { get => "https://pim.kingpower.com/"; }
 
         public string MachineIp

@@ -15,6 +15,7 @@ namespace SelfCheckout.ViewModels.Base
         public ISaleEngineService SaleEngineService { get; private set; }
 
         string _selfCheckoutApi;
+        string _promptPayApi;
         string _machineNo;
 
         public SettingViewModelBase(INavigationService navigatinService, IDialogService dialogService,
@@ -40,6 +41,17 @@ namespace SelfCheckout.ViewModels.Base
 
             if (!string.IsNullOrEmpty(SelfCheckoutApi))
                 Preferences.Set("self_checkout_api", SelfCheckoutApi);
+            if (!string.IsNullOrEmpty(PromptPayApi))
+            {
+                if (!PromptPayApi.EndsWith("/"))
+                    PromptPayApi += "/";
+                Preferences.Set("promptpay_api", PromptPayApi);
+            }
+        }
+
+        public string PromptPayApi {
+            get => _promptPayApi;
+            set => SetProperty(ref _promptPayApi, value);
         }
 
         public string SelfCheckoutApi
