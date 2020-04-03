@@ -14,12 +14,12 @@ namespace SelfCheckout.Services.Payment
     {
         public PaymentService(ISerializeService converterService) : base(converterService)
         {
-            SetRequestHeaderWithoutValidation("Authorization", "7kohkIZXZbIXULjr+Qycjdxh9katA7EYgNcnUXku9Mo=");
+            SetRequestHeaderWithoutValidation("Authorization", GlobalSettings.PromptPayApiKey);
         }
 
         public async Task<string> GeneratePPQrCode(object payload)
         {
-            var uri = new UriBuilder("https://kpw.vtec-system.com:4455/api/qrcreate");
+            var uri = new UriBuilder($"{GlobalSettings.Instance.PromptPayApi}api/qrcreate");
             var result = await PostAsync<object, PromptPayQRCode>(uri.ToString(), payload);
             if (result.Status.Code != 1000)
             {
@@ -30,7 +30,7 @@ namespace SelfCheckout.Services.Payment
 
         public async Task<PromptPayResult> InquiryAsync(string refField)
         {
-            var uri = new UriBuilder($"https://kpw.vtec-system.com:4455/api/noti/billPaymentRef1/{refField}");
+            var uri = new UriBuilder($"{GlobalSettings.Instance.PromptPayApi}api/noti/billPaymentRef1/{refField}");
             var result = await GetAsync<List<PromptPayResult>>(uri.ToString());
             return result.FirstOrDefault();
         }

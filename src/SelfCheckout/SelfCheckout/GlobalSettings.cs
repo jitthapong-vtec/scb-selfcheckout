@@ -16,6 +16,8 @@ namespace SelfCheckout
 
         public const string PimCoreApiKey = "db4dd68cb67e35107ad2f9f78a316a42ae981466ce095498af3000ced075d00f";
 
+        public const string PromptPayApiKey = "7kohkIZXZbIXULjr+Qycjdxh9katA7EYgNcnUXku9Mo=";
+
         static GlobalSettings _instance;
         static object syncRoot = new object();
 
@@ -55,6 +57,11 @@ namespace SelfCheckout
         public string SelfCheckoutApi
         {
             get => Preferences.Get("self_checkout_api", "https://kpservices.kingpower.com/portal/developer/selfcheckoutapi/");
+        }
+
+        public string PromptPayApi
+        {
+            get => Preferences.Get("promptpay_api", "https://kpw.vtec-system.com:4455/");
         }
 
         public string PimCoreUrl { get => "https://pim.kingpower.com/"; }

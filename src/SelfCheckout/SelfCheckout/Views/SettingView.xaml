@@ -32,6 +32,7 @@
                         </Style>
                     </StackLayout.Resources>
                     <Entry Placeholder="API Self-Checkout" Text="{Binding SelfCheckoutApi}" IsReadOnly="False"/>
+                    <Entry Placeholder="API PromptPay" Text="{Binding PromptPayApi}" IsReadOnly="False"/>
                     <Entry Placeholder="Module" Text="{Binding AppConfig.Module}"/>
                     <Entry Placeholder="Branch No." Text="{Binding AppConfig.BranchNo}"/>
                     <Entry Placeholder="Sub Branch" Text="{Binding AppConfig.SubBranch}"/>
