@@ -11,7 +11,7 @@ namespace SelfCheckout
 {
     public class GlobalSettings
     {
-        public const string AccessKey = "WLR7xq7jrA5t4TF7z3JLTkBFKmskmANQ";
+        public const string KPApiKey = "WLR7xq7jrA5t4TF7z3JLTkBFKmskmANQ";
         public const string CallerId = "SCBCHECKOUT";
 
         public const string PimCoreApiKey = "db4dd68cb67e35107ad2f9f78a316a42ae981466ce095498af3000ced075d00f";

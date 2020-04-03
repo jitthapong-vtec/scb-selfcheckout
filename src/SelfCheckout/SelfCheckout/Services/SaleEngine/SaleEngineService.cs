@@ -22,8 +22,8 @@ namespace SelfCheckout.Services.SaleEngine
         {
             _selfCheckoutService = selfCheckoutService;
 
-            SetRequestHeader("Authorization", $"Bearer {GlobalSettings.AccessKey}");
-            SetRequestHeader("CallerID", "SCBCHECKOUT");
+            SetRequestHeader("Authorization", $"Bearer {GlobalSettings.KPApiKey}");
+            SetRequestHeader("CallerID", GlobalSettings.CallerId);
         }
 
         public LoginData LoginData { get; set; }
