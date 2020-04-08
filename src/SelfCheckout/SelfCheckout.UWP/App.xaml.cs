@@ -9,6 +9,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -67,6 +68,8 @@ namespace SelfCheckout.UWP
                 ZXing.Net.Mobile.Forms.WindowsUniversal.ZXingBarcodeImageViewRenderer.Init();
 
                 Xamarin.Forms.Forms.Init(e, assembliesToInclude);
+
+                ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Maximized;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
