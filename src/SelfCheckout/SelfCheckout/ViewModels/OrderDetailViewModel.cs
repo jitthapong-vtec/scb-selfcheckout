@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class OrderDetailViewModel : ViewModelBase
+    public class OrderDetailViewModel : NavigatableViewModelBase
     {
         OrderDetail _orderDetail;
 

@@ -26,8 +26,9 @@ namespace SelfCheckout.ViewModels
 
         int _totalOccupiedDevice;
 
-        public DeviceStatusViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService,
-            ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        public DeviceStatusViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService,
+            ISaleEngineService saleEngineService, IRegisterService registerService) : 
+            base(dialogService, selfCheckoutService, saleEngineService, registerService)
         {
             _selfCheckoutService = selfCheckoutService;
         }

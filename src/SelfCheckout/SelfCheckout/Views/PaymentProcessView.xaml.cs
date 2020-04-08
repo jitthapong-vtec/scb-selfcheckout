@@ -19,7 +19,7 @@ namespace SelfCheckout.Views
         {
             InitializeComponent();
 
-            MessagingCenter.Subscribe<MainViewModel>(this, ViewModelBase.MessageKey_LanguageChanged, (sender) =>
+            MessagingCenter.Subscribe<MainViewModel>(this, "LanguageChange", (sender) =>
             {
                 lblCountdown.Text = AppResources.CountDown;
                 lblPayment.Text = AppResources.Payment;

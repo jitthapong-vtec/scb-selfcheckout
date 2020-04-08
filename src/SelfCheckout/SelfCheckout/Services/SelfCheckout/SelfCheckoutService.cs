@@ -17,6 +17,8 @@ namespace SelfCheckout.Services.SelfCheckout
     {
         public SelfCheckoutService(ISerializeService serializeService) : base(serializeService)
         {
+            SetRequestHeader("Authorization", $"Bearer {GlobalSettings.KPApiKey}");
+            SetRequestHeader("CallerID", GlobalSettings.CallerId);
         }
 
         public long BorrowSessionKey { get; private set; }

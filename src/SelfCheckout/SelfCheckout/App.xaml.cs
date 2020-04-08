@@ -51,15 +51,6 @@ namespace SelfCheckout
             containerRegistry.RegisterDialog<PromptPayQrDialog, PromptPayQrDialogViewModel>("PromptPayQrDialog");
             containerRegistry.RegisterDialog<ProductImageDetailDialog, ProductImageDetailDialogViewModel>("ProductImageDetailDialog");
 
-            containerRegistry.Register<ShoppingCartViewModel>();
-            containerRegistry.Register<DeviceViewModel>();
-            containerRegistry.Register<OrderViewModel>();
-            containerRegistry.Register<ProfileViewModel>();
-            containerRegistry.Register<HomeViewModel>();
-            containerRegistry.Register<CheckerPackingViewModel>();
-            containerRegistry.Register<DeviceStatusViewModel>();
-            containerRegistry.Register<SessionHistoryViewModel>();
-
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<SettingView, SettingViewModel>();
             containerRegistry.RegisterForNavigation<CheckerSettingView, CheckerSettingViewModel>();
@@ -69,6 +60,7 @@ namespace SelfCheckout
             containerRegistry.RegisterForNavigation<BorrowView, BorrowViewModel>();
             containerRegistry.RegisterForNavigation<CheckerMainView, CheckerMainViewModel>();
             containerRegistry.RegisterForNavigation<OrderDetailView, OrderDetailViewModel>();
+            containerRegistry.RegisterForNavigation<CameraScannerView, CameraScannerViewModel>();
 
             containerRegistry.RegisterSingleton<ISerializeService, JsonSerializeService>();
             containerRegistry.RegisterSingleton<ISaleEngineService, SaleEngineService>();

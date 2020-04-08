@@ -6,10 +6,8 @@
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:views="clr-namespace:SelfCheckout.Views"
-             xmlns:prism="http://prismlibrary.com"
              xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
-             prism:ViewModelLocator.AutowireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.CheckerPackingView">
     <ContentView.Resources>

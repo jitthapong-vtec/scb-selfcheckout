@@ -5,12 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
-             xmlns:prism="http://prismlibrary.com"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:fl="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
              xmlns:views="clr-namespace:SelfCheckout.Views"
-             prism:ViewModelLocator.AutowireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.DeviceStatusView">
     <ContentView.Content>

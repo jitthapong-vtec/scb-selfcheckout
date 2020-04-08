@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels.Base
 {
-    public abstract class SettingViewModelBase : ViewModelBase
+    public abstract class SettingViewModelBase : NavigatableViewModelBase
     {
         public ISelfCheckoutService SelfCheckoutService { get; private set; }
         public ISaleEngineService SaleEngineService { get; private set; }
@@ -30,6 +30,7 @@ namespace SelfCheckout.ViewModels.Base
             base.OnNavigatedTo(parameters);
 
             SelfCheckoutApi = GlobalSettings.Instance.SelfCheckoutApi;
+            PromptPayApi = GlobalSettings.Instance.PromptPayApi;
 
             var loginData = parameters.GetValue<LoginData>("LoginData");
             MachineNo = loginData?.UserInfo?.MachineEnv?.MachineNo;
@@ -49,7 +50,8 @@ namespace SelfCheckout.ViewModels.Base
             }
         }
 
-        public string PromptPayApi {
+        public string PromptPayApi
+        {
             get => _promptPayApi;
             set => SetProperty(ref _promptPayApi, value);
         }

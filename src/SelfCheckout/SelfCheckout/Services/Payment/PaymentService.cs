@@ -14,7 +14,7 @@ namespace SelfCheckout.Services.Payment
     {
         public PaymentService(ISerializeService converterService) : base(converterService)
         {
-            SetRequestHeaderWithoutValidation("Authorization", "7kohkIZXZbIXULjr+Qycjdxh9katA7EYgNcnUXku9Mo=");
+            SetRequestHeaderWithoutValidation("Authorization", GlobalSettings.PromptPayApiKey);
         }
 
         public async Task<string> GeneratePPQrCode(object payload)

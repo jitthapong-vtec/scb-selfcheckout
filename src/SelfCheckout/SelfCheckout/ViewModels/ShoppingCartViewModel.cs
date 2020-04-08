@@ -26,6 +26,14 @@ namespace SelfCheckout.ViewModels
 {
     public class ShoppingCartViewModel : ShoppingCartViewModelBase
     {
+        object _lock = new object();
+
+        public Action<OrderDetail> ShowOrderDetail;
+        public Func<Task> ReloadOrderDataAsync;
+        public Action RefreshSummary;
+        public Action<bool> ShoppingCardChanging;
+        public Func<Task> ShowCameraScanner;
+
         ObservableCollection<OrderDetail> _orderDetails;
 
         CustomerData _customerData;
@@ -36,20 +44,12 @@ namespace SelfCheckout.ViewModels
         bool _isAnyOrderSelected;
         bool _isChangeShoppingCardShowing;
 
-        public ShoppingCartViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, saleEngineService, selfCheckoutService, registerService)
+        public ShoppingCartViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService,
+            ISaleEngineService saleEngineService, IRegisterService registerService) :
+            base(dialogService, saleEngineService, selfCheckoutService, registerService)
         {
             CustomerData = RegisterService.CustomerData;
             CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
-
-            MessagingCenter.Subscribe<MainViewModel>(this, MessageKey_CurrencyChanged, async (sender) =>
-            {
-                await RefreshOrderListAsync();
-            });
-
-            MessagingCenter.Subscribe<MainViewModel>(this, MessageKey_RefreshOrderList, async (sender) =>
-            {
-                await RefreshOrderListAsync();
-            });
         }
 
         public ICommand ToggleChangeShoppingCardCommand => new DelegateCommand(() =>
@@ -59,12 +59,30 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ChangeShoppingCardCommand => new DelegateCommand(() =>
         {
-            IsChangeShoppingCardShowing = false;
-            DialogService.ShowDialog("ShoppingCardInputDialog", null, async (dialogResult) =>
+            lock (_lock)
+            {
+                if (IsChangeShoppingCardShowing == false)
+                    return;
+                else
+                    IsChangeShoppingCardShowing = false;
+            }
+
+            ShoppingCardChanging(true);
+
+            Action showCameraScannerAction = () =>
+            {
+                ShowCameraScanner();
+            };
+            var dialogParameter = new DialogParameters()
+            {
+                { "ShowCameraScannerAction", showCameraScannerAction}
+            };
+            DialogService.ShowDialog("ShoppingCardInputDialog", dialogParameter, async (dialogResult) =>
             {
                 var shoppingCard = dialogResult.Parameters.GetValue<string>("ShoppingCard");
                 if (!string.IsNullOrEmpty(shoppingCard))
                     await ValidateShoppingCardAsync(shoppingCard);
+                ShoppingCardChanging(false);
             });
         });
 
@@ -136,13 +154,15 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ShowDetailCommand => new DelegateCommand<OrderDetail>((order) =>
         {
-            MessagingCenter.Send(this, MessageKey_ShowOrderDetail, order);
+            ShowOrderDetail(order);
         });
 
-        public ICommand RefreshOrderCommand => new DelegateCommand(() =>
+        public ICommand RefreshOrderCommand => new DelegateCommand(async () =>
         {
             IsRefreshing = true;
-            LoadOrderAsync();
+            await ReloadOrderDataAsync();
+            await RefreshOrderListAsync();
+            IsRefreshing = false;
         });
 
         public ObservableCollection<OrderDetail> OrderDetails
@@ -189,13 +209,12 @@ namespace SelfCheckout.ViewModels
 
         public bool IsFirstSelect { get; set; } = true;
 
-        public override Task OnTabSelected(TabItem item)
+        public override async Task OnTabSelected(TabItem item)
         {
             if (IsFirstSelect)
             {
-                LoadOrderAsync();
+                await ReloadOrderDataAsync();
             }
-            return Task.FromResult(true);
         }
 
         public override Task OnTabDeSelected(TabItem item)
@@ -213,18 +232,7 @@ namespace SelfCheckout.ViewModels
             var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
             SaleEngineService.LoginData = loginResult;
 
-            LoadOrderAsync();
-        }
-
-        void LoadOrderAsync()
-        {
-            MessagingCenter.Send(this, MessageKey_LoadOrder);
-        }
-
-        public override void Destroy()
-        {
-            MessagingCenter.Unsubscribe<MainViewModel>(this, MessageKey_CurrencyChanged);
-            MessagingCenter.Unsubscribe<MainViewModel>(this, MessageKey_RefreshOrderList);
+            await ReloadOrderDataAsync();
         }
 
         public Task RefreshOrderListAsync()
@@ -236,7 +244,6 @@ namespace SelfCheckout.ViewModels
 
             IsSelectAllOrder = false;
             IsAnyOrderSelected = false;
-            IsRefreshing = false;
             return Task.FromResult(true);
         }
 
@@ -269,7 +276,7 @@ namespace SelfCheckout.ViewModels
             }
             await RefreshOrderListAsync();
 
-            MessagingCenter.Send(this, MessageKey_RefreshSummary);
+            RefreshSummary();
         }
     }
 }

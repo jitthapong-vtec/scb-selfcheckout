@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             xmlns:effects="clr-namespace:SelfCheckout.Effects"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:prism="http://prismlibrary.com"
+             prism:DialogLayout.RelativeWidthRequest="0.90"
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.CouponInputDialog">
+  <ContentView.Content>
+        <Frame Padding="0">
+            <Grid RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" BackgroundColor="{StaticResource Gray100}">
+                <Label Margin="8" FontSize="Large" HorizontalTextAlignment="Center" Text="{i18n:Translate ScanShoppingCard}"/>
+                    
+                </Grid>
+                <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="{StaticResource Gray200}"/>
+                <Grid Grid.Row="2" Margin="12,48">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:TappedGrid Grid.Column="0" 
+                                             WidthRequest="40"
+                                             TappedCommand="{Binding ScanShoppingCardCommand}"
+                                         effects:RoundCornersEffect.CornerRadius="3"
+                                         BackgroundColor="{StaticResource Secondary}">
+                        <Label FontFamily="{StaticResource FontAwesome}" Text="&#xf030;" HorizontalOptions="Center" VerticalOptions="Center" FontSize="24" TextColor="{StaticResource Gray50}"/>
+                    </controls:TappedGrid>
+                    <Entry FontSize="Medium" Grid.Column="1" Text="{Binding InputValue}"/>
+                    <controls:TappedGrid Grid.Column="2"
+                                             WidthRequest="40"
+                                             TappedCommand="{Binding ValidateShoppingCardCommand}"
+                                             IsEnabled="{Binding Source={RelativeSource Mode=Self}, Path=Text, Converter={StaticResource StringNotNullOrEmptyConverter}}"
+                                         BackgroundColor="{StaticResource Gray200}"
+                                         effects:RoundCornersEffect.CornerRadius="3">
+                        <Label FontFamily="{StaticResource FontAwesome}" HorizontalOptions="Center" VerticalOptions="Center" Text="&#xf00c;" FontSize="24" TextColor="{StaticResource Secondary}"/>
+                    </controls:TappedGrid>
+                </Grid>
+                <controls:TappedGrid Grid.Row="3" HeightRequest="48" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray200}" 
+                                     TappedCommand="{Binding CancelCommand}">
+                    <Label Text="{i18n:Translate Cancel}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                </controls:TappedGrid>
+            </Grid>
+        </Frame>
+  </ContentView.Content>
+</ContentView>

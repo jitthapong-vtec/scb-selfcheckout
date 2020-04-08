@@ -21,6 +21,8 @@ namespace SelfCheckout.ViewModels
 {
     public class DeviceViewModel : ViewModelBase
     {
+        public Func<Task> GoBackToRootAsync;
+
         ISaleEngineService _saleEngineService;
 
         List<SimpleSelectedItem> _allDeviceInfoItems;
@@ -33,9 +35,9 @@ namespace SelfCheckout.ViewModels
         bool _isAuthorized;
         bool _logoutButtonVisible;
 
-        public DeviceViewModel(INavigationService navigatinService, IDialogService dialogService,
+        public DeviceViewModel(IDialogService dialogService,
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService,
-            IRegisterService registerService) : base(navigatinService, dialogService)
+            IRegisterService registerService) : base(dialogService)
         {
             _saleEngineService = saleEngineService;
             _appConfig = selfCheckoutService.AppConfig;
@@ -118,7 +120,9 @@ namespace SelfCheckout.ViewModels
                 if (result)
                 {
                     await _saleEngineService.LogoutAsync();
-                    MessagingCenter.Send(this, MessageKey_Logout);
+                    GlobalSettings.Instance.CountryCode = "en-US";
+                    GlobalSettings.Instance.InitLanguage();
+                    await GoBackToRootAsync();
                 }
             }
             catch { }

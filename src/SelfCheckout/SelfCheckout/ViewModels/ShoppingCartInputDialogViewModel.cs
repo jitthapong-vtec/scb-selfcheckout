@@ -6,40 +6,37 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
     public class ShoppingCardInputDialogViewModel : BindableBase, IDialogAware
     {
+        object _lock = new object();
+
+        public Action ShowCameraScanner;
+
         public event Action<IDialogParameters> RequestClose;
         string _inputValue;
+        bool _isOpenScanner;
 
-        IDialogService _dialogService;
-
-        public ShoppingCardInputDialogViewModel(IDialogService dialogService)
+        public ShoppingCardInputDialogViewModel()
         {
-            _dialogService = dialogService;
+            MessagingCenter.Subscribe<MainViewModel, string>(this, "ReceiveShoppingCardFromScanner", (sender, barcode) =>
+            {
+                InputValue = barcode;
+            });
         }
 
         public ICommand ScanShoppingCardCommand => new DelegateCommand(() =>
          {
-             _dialogService.ShowDialog("BarcodeScanDialog", null, (scanResult) =>
+             lock (_lock)
              {
-                 var result = scanResult.Parameters.GetValue<string>("ScanData");
-                 if (!string.IsNullOrEmpty(result))
-                 {
-                     try
-                     {
-                         var definition = new { S = "", C = "" };
-                         var qrFromKiosk = JsonConvert.DeserializeAnonymousType(result, definition);
-                         InputValue = qrFromKiosk.S;
-                     }
-                     catch
-                     {
-                         InputValue = result;
-                     }
-                 }
-             });
+                 if (_isOpenScanner)
+                     return;
+                 else _isOpenScanner = true;
+             }
+             ShowCameraScanner();
          });
 
         public ICommand ValidateShoppingCardCommand => new DelegateCommand(() =>
@@ -69,10 +66,12 @@ namespace SelfCheckout.ViewModels
 
         public void OnDialogClosed()
         {
+            MessagingCenter.Unsubscribe<MainViewModel, string>(this, "ReceiveShoppingCardFromScanner");
         }
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
+            ShowCameraScanner = parameters.GetValue<Action>("ShowCameraScannerAction");
         }
     }
 }

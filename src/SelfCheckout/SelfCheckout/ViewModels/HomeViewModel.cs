@@ -3,17 +3,11 @@ using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Services.PimCore;
-using SelfCheckout.Services.Register;
-using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
-using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
@@ -24,7 +18,8 @@ namespace SelfCheckout.ViewModels
 
         ObservableCollection<PimCoreImageAsset> _assets;
 
-        public HomeViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, IPimCoreService pimCoreService) : base(navigatinService, dialogService)
+        public HomeViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, 
+            IPimCoreService pimCoreService) : base(dialogService)
         {
             _selfCheckoutService = selfCheckoutService;
             _pimCoreService = pimCoreService;

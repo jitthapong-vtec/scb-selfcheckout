@@ -9,8 +9,8 @@
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
-             prism:DialogLayout.RelativeWidthRequest=".75"
-             prism:DialogLayout.RelativeHeightRequest=".75"
+             prism:DialogLayout.RelativeWidthRequest=".85"
+             prism:DialogLayout.RelativeHeightRequest=".95"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.SessionOrderDialog">
     <Frame>

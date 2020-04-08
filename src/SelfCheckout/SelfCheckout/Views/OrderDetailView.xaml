@@ -30,10 +30,10 @@
                     </Grid.Resources>
                     <Label VerticalOptions="Center" HorizontalTextAlignment="Center" FontSize="Large" Text="{i18n:Translate ItemDetail}"/>
                     <controls:TappedGrid HorizontalOptions="Start" VerticalOptions="Center"
-                                         Margin="8,0,0,0"
-                                         Padding="8,0,8,0"
+                                         WidthRequest="36"
+                                         HeightRequest="36"
                                          TappedCommand="{Binding BackCommand}">
-                        <Label VerticalOptions="Center" HorizontalTextAlignment="Center" FontSize="24" Style="{StaticResource LabelIconStyle}"
+                        <Label VerticalOptions="Center" HorizontalTextAlignment="Center" Style="{StaticResource ActionBarLabelIconStyle}"
                            Text="&#xf053;" TextColor="{StaticResource Gray50}"/>
                     </controls:TappedGrid>
                 </controls:ActionBarView>

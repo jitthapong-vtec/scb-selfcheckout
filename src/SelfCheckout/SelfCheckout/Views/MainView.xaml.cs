@@ -22,7 +22,7 @@ namespace SelfCheckout.Views
         {
             InitializeComponent();
 
-            MessagingCenter.Subscribe<ViewModelBase>(this, ViewModelBase.MessageKey_RequestHWScanner, (sender) =>
+            MessagingCenter.Subscribe<ViewModelBase>(this, "RequestHWScanner", (sender) =>
             {
                 FireScanEvent();
             });

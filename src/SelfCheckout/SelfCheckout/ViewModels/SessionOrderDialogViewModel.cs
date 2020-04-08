@@ -24,7 +24,9 @@ namespace SelfCheckout.ViewModels
 
         CustomerData _customerData;
 
-        public SessionOrderDialogViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        public SessionOrderDialogViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, 
+            ISaleEngineService saleEngineService, IRegisterService registerService) : 
+            base(dialogService, selfCheckoutService, saleEngineService, registerService)
         {
         }
 
@@ -62,6 +64,7 @@ namespace SelfCheckout.ViewModels
         {
             var sessionKey = parameters.GetValue<long>("SessionKey");
             var shoppingCard = parameters.GetValue<string>("ShoppingCard");
+            var sessionDate = parameters.GetValue<DateTime>("SessionDate");
 
             try
             {
@@ -71,7 +74,24 @@ namespace SelfCheckout.ViewModels
 
                 CustomerData = await GetCustomerSessionAsync(shoppingCard);
 
-                await LoadOrderListAsync();
+                object filter = null;
+                /*
+                if (sessionDate != null)
+                {
+                    filter = new object[]
+                    {
+                        new
+                        {
+                            sign = "string",
+                            element = "order_data",
+                            option = "string",
+                            type = "string",
+                            low = sessionDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                            height = sessionDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                        }
+                    };
+                }*/
+                await LoadOrderListAsync(filter);
             }
             catch { }
             finally

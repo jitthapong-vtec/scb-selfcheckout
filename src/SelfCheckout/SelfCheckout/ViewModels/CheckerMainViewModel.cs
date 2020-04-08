@@ -25,24 +25,29 @@ namespace SelfCheckout.ViewModels
 
         ObservableCollection<TabItem> _tabs;
 
-        public CheckerMainViewModel(INavigationService navigatinService, IDialogService dialogService) : base(navigatinService, dialogService)
+        public CheckerMainViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService,
+            ISaleEngineService saleEngineService, IRegisterService registerService) : base(dialogService)
         {
+            PackingViewModel = new CheckerPackingViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
+            DeviceStatusViewModel = new DeviceStatusViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
+            SessionHistoryViewModel = new SessionHistoryViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
+
             Tabs = new ObservableCollection<TabItem>()
             {
                 new TabItem
                 {
                     TabText = AppResources.Packing,
-                    Page = new CheckerPackingView()
+                    Page = new CheckerPackingView(){BindingContext = PackingViewModel}
                 },
                 new TabItem
                 {
                     TabText = AppResources.DeviceStatus,
-                    Page = new DeviceStatusView()
+                    Page = new DeviceStatusView(){BindingContext = DeviceStatusViewModel}
                 },
                 new TabItem
                 {
                     TabText = AppResources.SessionHistory,
-                    Page = new SessionHistoryView()
+                    Page = new SessionHistoryView(){BindingContext = SessionHistoryViewModel}
                 }
             };
 
@@ -50,6 +55,10 @@ namespace SelfCheckout.ViewModels
             firstTab.Selected = true;
             CurrentView = firstTab.Page;
         }
+
+        public CheckerPackingViewModel PackingViewModel { get; }
+        public DeviceStatusViewModel DeviceStatusViewModel { get; }
+        public SessionHistoryViewModel SessionHistoryViewModel { get; }
 
         public ObservableCollection<TabItem> Tabs
         {

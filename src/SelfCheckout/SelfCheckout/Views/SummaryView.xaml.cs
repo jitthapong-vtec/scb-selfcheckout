@@ -13,7 +13,7 @@ namespace SelfCheckout.Views
         {
             InitializeComponent();
 
-            MessagingCenter.Subscribe<MainViewModel>(this, ViewModelBase.MessageKey_LanguageChanged, (sender) =>
+            MessagingCenter.Subscribe<MainViewModel>(this, "LanguageChange", (sender) =>
             {
                 if (sender.SummaryVisible)
                     sender.SummaryVisible = false;

@@ -18,7 +18,9 @@ namespace SelfCheckout.ViewModels.Base
 {
     public abstract class SessionOrderViewModelBase : OrderViewModelBase
     {
-        public SessionOrderViewModelBase(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        public SessionOrderViewModelBase(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, 
+            ISaleEngineService saleEngineService, IRegisterService registerService) : 
+            base(dialogService, selfCheckoutService, saleEngineService, registerService)
         {
         }
 
@@ -27,7 +29,8 @@ namespace SelfCheckout.ViewModels.Base
             var parameters = new DialogParameters()
             {
                 {"SessionKey", sess.SessionKey },
-                {"ShoppingCard", sess.ShoppingCard }
+                {"ShoppingCard", sess.ShoppingCard },
+                {"SessionDate", sess.SessionDt }
             };
             try
             {

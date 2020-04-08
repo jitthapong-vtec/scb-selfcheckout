@@ -25,7 +25,9 @@ namespace SelfCheckout.ViewModels
         string _sessionKey;
         CustomerData _customerData;
 
-        public CheckerPackingViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        public CheckerPackingViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, 
+            ISaleEngineService saleEngineService, IRegisterService registerService) : 
+            base(dialogService, selfCheckoutService, saleEngineService, registerService)
         {
         }
 

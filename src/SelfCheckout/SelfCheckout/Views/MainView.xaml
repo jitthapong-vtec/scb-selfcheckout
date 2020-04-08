@@ -1,12 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ctrls:DensoScannerPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
              xmlns:ctrls="clr-namespace:SelfCheckout.Controls"
-             xmlns:animations="clr-namespace:SelfCheckout.Animations"
-             xmlns:trigger="clr-namespace:SelfCheckout.Triggers"
-             xmlns:effects="clr-namespace:SelfCheckout.Effects"
-             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              ScanCommand="{Binding ScanCommand}"
@@ -106,10 +101,17 @@
                     </Grid.Resources>
                     <Label Text="{Binding PageTitle}" FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"/>
                     <ctrls:TappedGrid HorizontalOptions="Start" Padding="8" TappedCommand="{Binding LanguageTappedCommand}">
-                        <Image Source="ic_lang" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="24"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="ic_lang" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="24"/>
+                        <Label Grid.Column="1" Text="{Binding LanguageSelected.LangCode}" VerticalOptions="Center"/>
                     </ctrls:TappedGrid>
                     <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="4,0,12,0">
-                        <Image Source="ic_info" VerticalOptions="Center"/>
+                        <ctrls:TappedGrid WidthRequest="36" HeightRequest="36" TappedCommand="{Binding ShowInfoCommand}">
+                            <Image Source="ic_info" VerticalOptions="Center"/>
+                        </ctrls:TappedGrid>
                         <ctrls:TappedGrid TappedCommand="{Binding CurrencyTappedCommand}">
                             <Label Text="{Binding CurrencySelected.CurrCode}" VerticalTextAlignment="Center" HorizontalOptions="Center"/>
                         </ctrls:TappedGrid>

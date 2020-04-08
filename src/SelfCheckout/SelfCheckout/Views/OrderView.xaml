@@ -7,10 +7,8 @@
              xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
-             xmlns:prism="http://prismlibrary.com"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:views="clr-namespace:SelfCheckout.Views"
-             prism:ViewModelLocator.AutowireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.OrderView">
     <ContentView.Content>

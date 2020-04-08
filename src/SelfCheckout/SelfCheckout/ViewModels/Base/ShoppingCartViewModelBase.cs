@@ -1,14 +1,11 @@
 ﻿using Newtonsoft.Json;
-using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
-using SelfCheckout.Models;
 using SelfCheckout.Resources;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,8 +17,8 @@ namespace SelfCheckout.ViewModels.Base
         protected ISelfCheckoutService SelfCheckoutService { get; private set; }
         protected IRegisterService RegisterService { get; private set; }
 
-        public ShoppingCartViewModelBase(INavigationService navigatinService, IDialogService dialogService,
-            ISaleEngineService saleEngineService, ISelfCheckoutService selfCheckoutService, IRegisterService registerService) : base(navigatinService, dialogService)
+        public ShoppingCartViewModelBase(IDialogService dialogService, ISaleEngineService saleEngineService, 
+            ISelfCheckoutService selfCheckoutService, IRegisterService registerService) : base(dialogService)
         {
             SaleEngineService = saleEngineService;
             SelfCheckoutService = selfCheckoutService;

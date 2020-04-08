@@ -21,6 +21,8 @@ namespace SelfCheckout.ViewModels
 {
     public class OrderViewModel : OrderViewModelBase
     {
+        public Func<Task> GoBackToRootAsync;
+
         ObservableCollection<SimpleSelectedItem> _tabs;
 
         CustomerOrder _selectedCustomer;
@@ -30,8 +32,9 @@ namespace SelfCheckout.ViewModels
         bool _summaryShowing;
         bool _filterCustomerShowing;
 
-        public OrderViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService)
-            : base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+        public OrderViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, 
+            ISaleEngineService saleEngineService, IRegisterService registerService)
+            : base(dialogService, selfCheckoutService, saleEngineService, registerService)
         {
             SelectedCustomer = new CustomerOrder
             {
@@ -53,15 +56,6 @@ namespace SelfCheckout.ViewModels
                 }
             };
 
-            MessagingCenter.Subscribe<MainViewModel>(this, MessageKey_CurrencyChanged, async (s) =>
-            {
-                try
-                {
-                    await RefreshOrderAsync();
-                }
-                catch { }
-            });
-
             IsShowGroup = true;
         }
 
@@ -71,7 +65,7 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _tabs, value);
         }
 
-        private async Task RefreshOrderAsync()
+        public async Task RefreshOrderAsync()
         {
             try
             {
@@ -80,6 +74,10 @@ namespace SelfCheckout.ViewModels
                 if (isAlreadyEnd)
                 {
                     Clear();
+                    await SaleEngineService.LogoutAsync();
+                    GlobalSettings.Instance.CountryCode = "en-US";
+                    GlobalSettings.Instance.InitLanguage();
+                    await GoBackToRootAsync();
                 }
                 else
                 {

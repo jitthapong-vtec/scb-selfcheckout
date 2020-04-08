@@ -29,9 +29,9 @@ namespace SelfCheckout.ViewModels
         string _filterSessionKey;
         string _filterMachineNo;
 
-        public SessionHistoryViewModel(INavigationService navigatinService, IDialogService dialogService, 
+        public SessionHistoryViewModel(IDialogService dialogService, 
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : 
-            base(navigatinService, dialogService, selfCheckoutService, saleEngineService, registerService)
+            base(dialogService, selfCheckoutService, saleEngineService, registerService)
         {
             FilterTypes = new ObservableCollection<SimpleSelectedItem>() {
                 new SimpleSelectedItem()

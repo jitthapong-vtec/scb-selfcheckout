@@ -4,6 +4,8 @@ using SelfCheckout.Exceptions;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.PimCore;
+using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
@@ -19,7 +21,7 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : NavigatableViewModelBase
     {
         ISaleEngineService _saleEngineService;
         ISelfCheckoutService _selfCheckoutService;
@@ -49,37 +51,35 @@ namespace SelfCheckout.ViewModels
         bool _isPaymentProcessing;
         bool _paymentSelectionShowing;
         bool _paymentInputShowing;
+        bool _isChangingShoppingCard;
 
-        public MainViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) : base(navigatinService, dialogService)
+        public MainViewModel(INavigationService navigatinService, IDialogService dialogService,
+            ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService,
+            IRegisterService registerService, IPimCoreService pimCoreService) : base(navigatinService, dialogService)
         {
             _saleEngineService = saleEngineService;
             _selfCheckoutService = selfCheckoutService;
 
-            MessagingCenter.Subscribe<DeviceViewModel>(this, MessageKey_Logout, async (s) =>
-            {
-                await NavigationService.GoBackToRootAsync();
-            });
+            HomeViewModel = new HomeViewModel(dialogService, selfCheckoutService, pimCoreService);
 
-            MessagingCenter.Subscribe<ShoppingCartViewModel, OrderDetail>(this, MessageKey_ShowOrderDetail, async (sender, order) =>
-            {
-                await NavigationService.NavigateAsync("OrderDetailView", new NavigationParameters() { { "OrderDetail", order } });
-            });
+            DeviceViewModel = new DeviceViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
+            DeviceViewModel.GoBackToRootAsync = GoBackToRootAsync;
 
-            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, MessageKey_LoadOrder, async (s) =>
-            {
-                await LoadOrderAsync();
-            });
+            ShoppingCartViewModel = new ShoppingCartViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
+            ShoppingCartViewModel.ReloadOrderDataAsync = LoadOrderAsync;
+            ShoppingCartViewModel.RefreshSummary = RefreshSummary;
+            ShoppingCartViewModel.ShowOrderDetail = async (order) => await NavigationService.NavigateAsync("OrderDetailView", new NavigationParameters() { { "OrderDetail", order } });
+            ShoppingCartViewModel.ShowCameraScanner = ShowCameraScannerAsync;
+            ShoppingCartViewModel.ShoppingCardChanging = (isChanging) => _isChangingShoppingCard = isChanging;
 
-            MessagingCenter.Subscribe<ShoppingCartViewModel>(this, MessageKey_RefreshSummary, (s) =>
-            {
-                RefreshSummary();
-            });
+            OrderViewModel = new OrderViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
+            OrderViewModel.GoBackToRootAsync = GoBackToRootAsync;
+
+            ProfileViewModel = new ProfileViewModel(dialogService, selfCheckoutService);
         }
 
         private void RefreshTab()
         {
-            DestroyTabItems();
-
             Tabs = new ObservableCollection<TabItem>();
             Tabs.Add(new TabItem()
             {
@@ -87,7 +87,7 @@ namespace SelfCheckout.ViewModels
                 Icon = "\ue904",
                 Title = AppResources.Home,
                 TabText = AppResources.Home,
-                Page = new HomeView()
+                Page = new HomeView() { BindingContext = HomeViewModel }
             });
             Tabs.Add(new TabItem()
             {
@@ -95,7 +95,7 @@ namespace SelfCheckout.ViewModels
                 Icon = "\ue903",
                 Title = AppResources.DeviceInfo,
                 TabText = AppResources.Device,
-                Page = new DeviceView()
+                Page = new DeviceView() { BindingContext = DeviceViewModel }
             });
             Tabs.Add(new TabItem()
             {
@@ -103,7 +103,7 @@ namespace SelfCheckout.ViewModels
                 Icon = "\ue901",
                 Title = AppResources.MyCart,
                 TabText = AppResources.Shopping,
-                Page = new ShoppingCartView(),
+                Page = new ShoppingCartView() { BindingContext = ShoppingCartViewModel },
                 BadgeCount = 0,
                 TabType = 1
             });
@@ -113,7 +113,7 @@ namespace SelfCheckout.ViewModels
                 Icon = "\ue900",
                 Title = AppResources.Orders,
                 TabText = AppResources.Orders,
-                Page = new OrderView()
+                Page = new OrderView() { BindingContext = OrderViewModel }
             });
             Tabs.Add(new TabItem()
             {
@@ -121,28 +121,13 @@ namespace SelfCheckout.ViewModels
                 Icon = "\ue902",
                 Title = AppResources.Profile,
                 TabText = AppResources.Profile,
-                Page = new ProfileView()
+                Page = new ProfileView() { BindingContext = ProfileViewModel }
             });
 
             var firstTab = Tabs.FirstOrDefault();
             firstTab.Selected = true;
             PageTitle = firstTab.Title;
             CurrentView = firstTab.Page;
-        }
-
-        private void DestroyTabItems()
-        {
-            try
-            {
-                if (Tabs.Any())
-                {
-                    foreach (var tab in Tabs)
-                    {
-                        (tab.Page.BindingContext as ViewModelBase).Destroy();
-                    }
-                }
-            }
-            catch { }
         }
 
         public override async void Initialize(INavigationParameters parameters)
@@ -158,16 +143,11 @@ namespace SelfCheckout.ViewModels
             base.OnNavigatedTo(parameters);
 
             await LoadOrderAsync();
-        }
 
-        public override void Destroy()
-        {
-            DestroyTabItems();
-
-            MessagingCenter.Unsubscribe<DeviceViewModel>(this, MessageKey_Logout);
-            MessagingCenter.Unsubscribe<ShoppingCartViewModel>(this, MessageKey_ShowOrderDetail);
-            MessagingCenter.Unsubscribe<ShoppingCartViewModel>(this, MessageKey_LoadOrder);
-            MessagingCenter.Unsubscribe<ShoppingCartViewModel>(this, MessageKey_RefreshSummary);
+            if (!string.IsNullOrEmpty(parameters.GetValue<string>("ScanData")))
+            {
+                MessagingCenter.Send(this, "ReceiveShoppingCardFromScanner", parameters.GetValue<string>("ScanData"));
+            }
         }
 
         public ICommand TabSelectedCommand => new Command<TabItem>(async (item) => await SelectTabAsync(item));
@@ -182,8 +162,15 @@ namespace SelfCheckout.ViewModels
             }
             else
             {
-                if (CurrentView is ShoppingCartView)
-                    await AddOrderAsync(data?.ToString());
+                if (_isChangingShoppingCard)
+                {
+                    MessagingCenter.Send(this, "ReceiveShoppingCardFromScanner", data?.ToString());
+                }
+                else
+                {
+                    if (CurrentView is ShoppingCartView)
+                        await AddOrderAsync(data?.ToString());
+                }
             }
         });
 
@@ -209,7 +196,7 @@ namespace SelfCheckout.ViewModels
                     await _saleEngineService.ActionOrderPaymentAsync(payload);
                     CouponCode = "";
 
-                    MessagingCenter.Send(this, MessageKey_RefreshOrderList);
+                    await ShoppingCartViewModel.RefreshOrderListAsync();
                     RefreshSummary();
                 }
                 catch (Exception ex)
@@ -242,7 +229,7 @@ namespace SelfCheckout.ViewModels
 
                             CouponCode = _saleEngineService.OrderData.TotalBillingAmount.CurrentValueAdjust?.VaDetail?.Code;
 
-                            MessagingCenter.Send(this, MessageKey_RefreshOrderList);
+                            await ShoppingCartViewModel.RefreshOrderListAsync();
                             RefreshSummary();
                         }
                         catch (Exception ex)
@@ -252,6 +239,12 @@ namespace SelfCheckout.ViewModels
                     }
                 });
             }
+        });
+
+        public ICommand ShowInfoCommand => new Command(() =>
+        {
+            var homeTab = Tabs.Where(t => t.TabId == 1).FirstOrDefault();
+            TabSelectedCommand.Execute(homeTab);
         });
 
         public ICommand LanguageTappedCommand => new Command(() =>
@@ -315,7 +308,7 @@ namespace SelfCheckout.ViewModels
                 }
                 else
                 {
-                    MessagingCenter.Send<ViewModelBase>(this, MessageKey_RequestHWScanner);
+                    MessagingCenter.Send<ViewModelBase>(this, "RequestHWScanner");
                 }
             });
 
@@ -363,6 +356,12 @@ namespace SelfCheckout.ViewModels
                 }
             }
         });
+
+        public HomeViewModel HomeViewModel { get; }
+        public DeviceViewModel DeviceViewModel { get; }
+        public ShoppingCartViewModel ShoppingCartViewModel { get; }
+        public OrderViewModel OrderViewModel { get; }
+        public ProfileViewModel ProfileViewModel { get; }
 
         public ObservableCollection<TabItem> Tabs
         {
@@ -487,8 +486,7 @@ namespace SelfCheckout.ViewModels
                     GlobalSettings.Instance.CountryCode = "zh-Hans";
                 GlobalSettings.Instance.InitLanguage();
 
-                MessagingCenter.Send(this, MessageKey_LanguageChanged);
-
+                MessagingCenter.Send(this, "LanguageChange");
                 RefreshTab();
             });
         }
@@ -557,6 +555,11 @@ namespace SelfCheckout.ViewModels
             return Task.FromResult(true);
         }
 
+        async Task ShowCameraScannerAsync()
+        {
+            await NavigationService.NavigateAsync("CameraScannerView");
+        }
+
         async Task ChangeCurrency()
         {
             try
@@ -572,7 +575,8 @@ namespace SelfCheckout.ViewModels
                 };
                 await _saleEngineService.ActionListItemToOrderAsync(payload);
 
-                MessagingCenter.Send(this, MessageKey_CurrencyChanged);
+                await ShoppingCartViewModel.RefreshOrderListAsync();
+
                 RefreshSummary();
             }
             catch { }
@@ -665,7 +669,7 @@ namespace SelfCheckout.ViewModels
 
                 await _saleEngineService.GetOrderAsync(payload);
 
-                MessagingCenter.Send(this, MessageKey_RefreshOrderList);
+                await ShoppingCartViewModel.RefreshOrderListAsync();
 
                 RefreshSummary();
             }
@@ -709,7 +713,7 @@ namespace SelfCheckout.ViewModels
 
                 RefreshSummary();
 
-                MessagingCenter.Send(this, MessageKey_RefreshOrderList);
+                await ShoppingCartViewModel.RefreshOrderListAsync();
             }
             catch (Exception ex)
             {

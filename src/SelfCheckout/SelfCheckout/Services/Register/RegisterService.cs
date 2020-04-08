@@ -19,7 +19,7 @@ namespace SelfCheckout.Services.Register
         {
             _selfCheckoutService = selfCheckoutService;
 
-            SetRequestHeader("Authorization", $"Bearer {GlobalSettings.AccessKey}");
+            SetRequestHeader("Authorization", $"Bearer {GlobalSettings.KPApiKey}");
             SetRequestHeader("CallerID", "SCBCHECKOUT");
         }
 

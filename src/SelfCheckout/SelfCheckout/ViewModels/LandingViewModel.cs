@@ -15,7 +15,7 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class LandingViewModel : ViewModelBase
+    public class LandingViewModel : NavigatableViewModelBase
     {
         ISelfCheckoutService _selfCheckoutService;
 

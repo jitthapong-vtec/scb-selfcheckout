@@ -65,7 +65,7 @@ namespace SelfCheckout.ViewModels
             SaleEngineService.LoginData = loginData;
             if (Device.Idiom == TargetIdiom.Phone)
             {
-                await _navigationService.NavigateAsync("BorrowView");
+                var result = await _navigationService.NavigateAsync("BorrowView");
             }
             else if (Device.Idiom == TargetIdiom.Desktop)
             {

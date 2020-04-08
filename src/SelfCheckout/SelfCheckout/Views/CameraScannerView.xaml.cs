@@ -1,5 +1,4 @@
-﻿using SelfCheckout.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,16 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace SelfCheckout.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class BorrowView : DensoScannerPage
+    public partial class CameraScannerView : ContentPage
     {
-        public BorrowView()
+        public CameraScannerView()
         {
             InitializeComponent();
-        }
-
-        protected override bool OnBackButtonPressed()
-        {
-            return true;
         }
     }
 }

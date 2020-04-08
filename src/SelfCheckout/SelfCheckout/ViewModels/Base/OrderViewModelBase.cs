@@ -40,7 +40,8 @@ namespace SelfCheckout.ViewModels.Base
         double? _totalDiscount;
         double? _totalNetAmount;
 
-        public OrderViewModelBase(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigatinService, dialogService)
+        public OrderViewModelBase(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, 
+            ISaleEngineService saleEngineService, IRegisterService registerService) : base(dialogService)
         {
             SaleEngineService = saleEngineService;
             SelfCheckoutService = selfCheckoutService;

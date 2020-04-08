@@ -7,8 +7,6 @@
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
-             xmlns:prism="http://prismlibrary.com"
-             prism:ViewModelLocator.AutowireViewModel="True"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.ShoppingCartView">
     <ContentView.Content>
@@ -112,6 +110,7 @@
                     </controls:TappedGrid>
                 </Grid>
             </Grid>
+            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentView.Content>
 </ContentView>

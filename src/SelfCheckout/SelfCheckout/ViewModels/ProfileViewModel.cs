@@ -16,7 +16,7 @@ namespace SelfCheckout.ViewModels
     {
         ISelfCheckoutService _selfCheckoutService;
 
-        public ProfileViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService)
+        public ProfileViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(dialogService)
         {
             _selfCheckoutService = selfCheckoutService;
         }

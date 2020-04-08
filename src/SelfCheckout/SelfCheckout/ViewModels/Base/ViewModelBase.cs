@@ -14,33 +14,16 @@ using System.Collections.Generic;
 
 namespace SelfCheckout.ViewModels.Base
 {
-    public abstract class ViewModelBase : BindableBase, IInitialize, INavigationAware, IDestructible
+    public abstract class ViewModelBase : BindableBase, IInitialize, IDestructible
     {
-        public const string MessageKey_LoadOrder = "LoadOrder";
-        public const string MessageKey_OrderLoaded = "OrderLoaded";
-        public const string MessageKey_RefreshSummary = "RefreshSummary";
-        public const string MessageKey_RefreshOrderList = "RefreshOrderList";
-        public const string MessageKey_CurrencyChanged = "CurrencyChanged";
-        public const string MessageKey_ShowOrderDetail = "ShowOrderDetail";
-        public const string MessageKey_RequestHWScanner = "RequestHWScanner";
-        public const string MessageKey_LanguageChanged = "LanguageChanged";
-        public const string MessageKey_Logout = "Logout";
-
-        public INavigationService NavigationService { get; private set; }
         public IDialogService DialogService { get; private set; }
 
         string _pageTitle;
         bool _isBusy;
         bool _isRefreshing;
 
-        public ICommand BackCommand => new DelegateCommand(async () =>
+        public ViewModelBase(IDialogService dialogService)
         {
-            await NavigationService.GoBackAsync();
-        });
-
-        public ViewModelBase(INavigationService navigatinService, IDialogService dialogService)
-        {
-            NavigationService = navigatinService;
             DialogService = dialogService;
         }
 
@@ -56,7 +39,7 @@ namespace SelfCheckout.ViewModels.Base
 
         protected async Task SetOrderImage(List<OrderDetail> orders)
         {
-            var selfCheckoutService = App.Current.Container.Resolve(typeof(ISelfCheckoutService)) as ISelfCheckoutService;
+            var selfCheckoutService = Prism.PrismApplicationBase.Current.Container.Resolve(typeof(ISelfCheckoutService)) as ISelfCheckoutService;
             if (IsShowArticleImage)
             {
                 try
@@ -81,7 +64,7 @@ namespace SelfCheckout.ViewModels.Base
         {
             get
             {
-                return (App.Current.Container.Resolve(typeof(ISelfCheckoutService)) as ISelfCheckoutService).AppConfig.ShowArticleImage;
+                return (Prism.PrismApplicationBase.Current.Container.Resolve(typeof(ISelfCheckoutService)) as ISelfCheckoutService).AppConfig.ShowArticleImage;
             }
         }
 
@@ -101,14 +84,6 @@ namespace SelfCheckout.ViewModels.Base
         public string Version { get => VersionTracking.CurrentVersion; }
 
         public virtual void Initialize(INavigationParameters parameters)
-        {
-        }
-
-        public virtual void OnNavigatedFrom(INavigationParameters parameters)
-        {
-        }
-
-        public virtual void OnNavigatedTo(INavigationParameters parameters)
         {
         }
 

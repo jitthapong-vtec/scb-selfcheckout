@@ -19,22 +19,66 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class BorrowViewModel : ShoppingCartViewModelBase
+    public class BorrowViewModel : ShoppingCartViewModelBase, INavigationAware
     {
-        string _inputValue = "3600000711400";
+        object _lock = new object();
 
-        public BorrowViewModel(INavigationService navigatinService, IDialogService dialogService, ISaleEngineService saleEngineService, ISelfCheckoutService selfCheckoutService, IRegisterService registerService) : base(navigatinService, dialogService, saleEngineService, selfCheckoutService, registerService)
+        string _inputValue = "";
+
+        bool _isBeingScan;
+
+        public BorrowViewModel(INavigationService navigationService, IDialogService dialogService, ISaleEngineService saleEngineService,
+            ISelfCheckoutService selfCheckoutService, IRegisterService registerService) :
+            base(dialogService, saleEngineService, selfCheckoutService, registerService)
         {
+            NavigationService = navigationService;
         }
 
-        public ICommand ScanShoppingCardCommand => new DelegateCommand(() => ScanShoppingCard());
+        public ICommand ScanCommand => new Command<object>((data) =>
+        {
+            InputValue = data?.ToString();
+        });
+
+        public ICommand ScanShoppingCardCommand => new Command(async () =>
+        {
+            lock (_lock)
+            {
+                if (IsBegingScan)
+                    return;
+                else
+                    IsBegingScan = true;
+            }
+            await NavigationService.NavigateAsync("CameraScannerView");
+        });
 
         public ICommand ValidateShoppingCardCommand => new DelegateCommand(async () => await ValidateShoppingCardAsync(InputValue));
+
+        public INavigationService NavigationService { get; private set; }
 
         public string InputValue
         {
             get => _inputValue;
             set => SetProperty(ref _inputValue, value);
+        }
+
+        public bool IsBegingScan
+        {
+            get => _isBeingScan;
+            set => SetProperty(ref _isBeingScan, value);
+        }
+
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
+
+        public void OnNavigatedTo(INavigationParameters parameters)
+        {
+            var scanData = parameters.GetValue<string>("ScanData");
+            if (!string.IsNullOrEmpty(scanData))
+            {
+                InputValue = scanData;
+            }
+            IsBegingScan = false;
         }
 
         protected override Task ScanShoppingCardCallback(string inputValue)

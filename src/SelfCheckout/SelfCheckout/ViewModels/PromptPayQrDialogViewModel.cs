@@ -35,6 +35,7 @@ namespace SelfCheckout.ViewModels
         bool _isCountdownStarted;
         bool _isBusy;
         bool _isQrVisible;
+        bool _isCloseBtnVisible;
 
         public PromptPayQrDialogViewModel(IPaymentService paymentService, ISaleEngineService saleEngineService, ISelfCheckoutService selfCheckoutService)
         {
@@ -83,6 +84,12 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _msg, value);
         }
 
+        public bool IsCloseBtnVisible
+        {
+            get => _isCloseBtnVisible;
+            set => SetProperty(ref _isCloseBtnVisible, value);
+        }
+
         public string QRData
         {
             get => _qrData;
@@ -100,9 +107,12 @@ namespace SelfCheckout.ViewModels
 
         public async void OnDialogOpened(IDialogParameters parameters)
         {
+            IsCloseBtnVisible = true;
+
             var canGenQr = await CreateQRCodeAsync();
             if (canGenQr)
             {
+                IsCloseBtnVisible = false;
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
                     if (_ct.IsCancellationRequested)
@@ -145,12 +155,9 @@ namespace SelfCheckout.ViewModels
                     qrType = "PP",
                     invoice = $"INV{_saleEngineService.OrderData.ModifiedDate.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture)}",
                     amount = _saleEngineService.OrderData.RemainingAmount.NetAmount.BaseCurrAmt,
-                    ppId = "450439699596861",
-                    ppType = "BILLERID",
                     ref1 = _refNo,
                     ref2 = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineNo,
                     ref3 = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineName,
-                    merchantId = "456114188212509"
                 };
                 QRData = await _paymentService.GeneratePPQrCode(payload);
                 IsQrVisible = true;
@@ -160,6 +167,7 @@ namespace SelfCheckout.ViewModels
             {
                 IsQrVisible = false;
                 Msg = ex.Message;
+                IsCloseBtnVisible = true;
             }
             finally
             {

@@ -8,7 +8,7 @@
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:prism="http://prismlibrary.com"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
-             prism:DialogLayout.RelativeWidthRequest="0.75"
+             prism:DialogLayout.RelativeWidthRequest="0.95"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.PromptPayQrDialog">
     <ContentView.Content>
@@ -48,7 +48,7 @@
                         </Label>
                     </StackLayout>
                 </Grid>
-                <controls:TappedGrid TappedCommand="{Binding CancelCommand}" VerticalOptions="Start" HorizontalOptions="End" IsVisible="False">
+                <controls:TappedGrid TappedCommand="{Binding CancelCommand}" VerticalOptions="Start" HorizontalOptions="End" IsVisible="{Binding IsCloseBtnVisible}">
                     <Label Style="{StaticResource LabelIconStyle}" FontSize="32" HorizontalOptions="Center" VerticalOptions="Center"
                        Text="&#xf057;" TextColor="{StaticResource PrimaryText}"/>
                 </controls:TappedGrid>
