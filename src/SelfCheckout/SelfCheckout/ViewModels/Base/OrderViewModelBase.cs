@@ -145,9 +145,7 @@ namespace SelfCheckout.ViewModels.Base
                     var invoiceImgUrl = invoices.FirstOrDefault()?.Data.Original.FirstOrDefault().Value;
                     invoiceImgUrls.Add(invoiceImgUrl);
                 }
-                catch (Exception ex)
-                {
-                }
+                catch { }
             }
 
             await PrintInvoiceAsync(invoiceImgUrls);

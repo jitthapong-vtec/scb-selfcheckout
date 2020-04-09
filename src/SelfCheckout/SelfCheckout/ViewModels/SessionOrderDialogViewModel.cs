@@ -8,32 +8,18 @@ using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class SessionOrderDialogViewModel : OrderViewModelBase, IDialogAware
+    public class SessionOrderDialogViewModel : CheckerOrderViewModelBase, IDialogAware
     {
         public event Action<IDialogParameters> RequestClose;
-
-        CustomerData _customerData;
 
         public SessionOrderDialogViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, 
             ISaleEngineService saleEngineService, IRegisterService registerService) : 
             base(dialogService, selfCheckoutService, saleEngineService, registerService)
         {
-        }
-
-        public CustomerData CustomerData
-        {
-            get => _customerData;
-            set => SetProperty(ref _customerData, value);
         }
 
         public ICommand ConfirmCommand => new DelegateCommand(() =>
@@ -92,6 +78,7 @@ namespace SelfCheckout.ViewModels
                     };
                 }*/
                 await LoadOrderListAsync(filter);
+                GroupingOrder();
             }
             catch { }
             finally

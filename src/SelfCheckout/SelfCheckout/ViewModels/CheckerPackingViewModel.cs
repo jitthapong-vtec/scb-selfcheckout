@@ -20,11 +20,8 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class CheckerPackingViewModel : OrderViewModelBase
+    public class CheckerPackingViewModel : CheckerOrderViewModelBase
     {
-        string _sessionKey;
-        CustomerData _customerData;
-
         public CheckerPackingViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, 
             ISaleEngineService saleEngineService, IRegisterService registerService) : 
             base(dialogService, selfCheckoutService, saleEngineService, registerService)
@@ -39,61 +36,6 @@ namespace SelfCheckout.ViewModels
                 await LoadDataAsync();
             });
 
-        private async Task LoadDataAsync()
-        {
-            try
-            {
-                IsBusy = true;
-                var isAlreadyEnd = await LoadSessionDetailAsync(Convert.ToInt64(SessionKey));
-                if (isAlreadyEnd)
-                {
-                    Clear();
-                    await DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
-                    return;
-                }
-
-                await LoadCustomerSession();
-
-                CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
-
-                await LoadOrderListAsync();
-
-            }
-            catch (Exception ex)
-            {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        public ICommand SaveSessionCommand => new Command(async () =>
-        {
-            if (SessionData == null)
-                return;
-
-            var result = await DialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
-            if (!result)
-                return;
-
-            try
-            {
-                IsBusy = true;
-                await SaveSessionAsync(SessionKey);
-                await LoadDataAsync();
-            }
-            catch (Exception ex)
-            {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        });
-
         public ICommand ClearScreenCommand => new DelegateCommand(() =>
          {
              OrderInvoices?.Clear();
@@ -101,27 +43,5 @@ namespace SelfCheckout.ViewModels
              SessionData = new SessionData();
              CustomerData = new CustomerData();
          });
-
-        public string SessionKey
-        {
-            get => _sessionKey;
-            set => SetProperty(ref _sessionKey, value);
-        }
-
-        public CustomerData CustomerData
-        {
-            get => _customerData;
-            set => SetProperty(ref _customerData, value);
-        }
-
-        public override Task OnTabSelected(TabItem item)
-        {
-            return base.OnTabSelected(item);
-        }
-
-        public override Task OnTabDeSelected(TabItem item)
-        {
-            return base.OnTabDeSelected(item);
-        }
     }
 }
