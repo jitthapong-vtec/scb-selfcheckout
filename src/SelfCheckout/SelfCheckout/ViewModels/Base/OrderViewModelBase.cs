@@ -149,21 +149,6 @@ namespace SelfCheckout.ViewModels.Base
             }
 
             await PrintInvoiceAsync(invoiceImgUrls);
-
-            //TODO : remove this when production
-            foreach (var orderInvoice in OrderInvoices)
-            {
-                if (string.IsNullOrEmpty(orderInvoice.WalletMerchantId))
-                    continue;
-                try
-                {
-                    // Test void payment
-                    await SaleEngineService.VoidPaymentAsync(orderInvoice.WalletMerchantId, orderInvoice.PartnerTransId);
-                }
-                catch
-                {
-                }
-            }
         }
 
         async Task PrintInvoiceAsync(List<string> invoiceImgUrls)
