@@ -9,13 +9,9 @@ using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
@@ -24,92 +20,72 @@ namespace SelfCheckout.ViewModels
         public Func<Task> GoBackToRootAsync;
 
         ISaleEngineService _saleEngineService;
-
-        List<SimpleSelectedItem> _allDeviceInfoItems;
-        ObservableCollection<SimpleSelectedItem> _tabs;
-        ObservableCollection<SimpleSelectedItem> _deviceInfoItems;
-        CustomerData _customerData;
-        AppConfig _appConfig;
-        LoginData _loginData;
-
-        bool _isAuthorized;
-        bool _logoutButtonVisible;
+        ISelfCheckoutService _selfCheckoutService;
+        IRegisterService _registerService;
 
         public DeviceViewModel(IDialogService dialogService,
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService,
             IRegisterService registerService) : base(dialogService)
         {
             _saleEngineService = saleEngineService;
-            _appConfig = selfCheckoutService.AppConfig;
-            _customerData = registerService.CustomerData;
-            _loginData = saleEngineService.LoginData;
+            _selfCheckoutService = selfCheckoutService;
+            _registerService = registerService;
 
-            Tabs = new ObservableCollection<SimpleSelectedItem>()
-            {
-                new SimpleSelectedItem()
-                {
-                    Text1 = AppResources.General,
-                    Arg1 = 1,
-                    Selected = true
-                },
-                new SimpleSelectedItem()
-                {
-                    Text1 = AppResources.System,
-                    Arg1 = 2
-                }
-            };
+            //var appConfig = selfCheckoutService.AppConfig;
+            //CustomerData = registerService.CustomerData;
+            //var loginData = saleEngineService.LoginData;
 
-            _allDeviceInfoItems = new List<SimpleSelectedItem>()
-            {
-                new SimpleSelectedItem()
-                {
-                    Text1 = AppResources.Name,
-                    Text2 = _customerData?.Person?.EnglishName,
-                    Arg1 = 1
-                },
-                new SimpleSelectedItem()
-                {
-                    Text1 = AppResources.DateTime,
-                    Text2 = DateTime.Now.ToString("dd/MM/yyyy HH:mm tt"),
-                    Arg1 = 1
-                },
-                new SimpleSelectedItem()
-                {
-                    Text1 = AppResources.FlightNo,
-                    Text2 = _customerData?.Person?.FlightCode,
-                    Arg1 = 1
-                },
-                new SimpleSelectedItem()
-                {
-                    Text1 = AppResources.MobileNo,
-                    Text2 = _customerData?.Person?.ListContact.FirstOrDefault()?.ContactValue,
-                    Arg1 = 1
-                },
-                new SimpleSelectedItem()
-                {
-                    Text1 = AppResources.Module,
-                    Text2 = _appConfig?.Module,
-                    Arg1 = 2
-                },
-                new SimpleSelectedItem()
-                {
-                    Text1 = AppResources.BranchNo,
-                    Text2 = _appConfig?.BranchNo,
-                    Arg1 = 2
-                },
-                new SimpleSelectedItem()
-                {
-                    Text1 = AppResources.SubBranch,
-                    Text2 = _appConfig?.SubBranch,
-                    Arg1 = 2
-                },
-                new SimpleSelectedItem()
-                {
-                    Text1 = AppResources.MachineNo,
-                    Text2 = _loginData.UserInfo.MachineEnv.MachineNo,
-                    Arg1 = 2
-                },
-            };
+            //DeviceInfoItems = new ObservableCollection<SimpleSelectedItem>()
+            //{
+            //    new SimpleSelectedItem()
+            //    {
+            //        Text1 = AppResources.Name,
+            //        Text2 = customerData?.Person?.EnglishName,
+            //        Arg1 = 1
+            //    },
+            //    new SimpleSelectedItem()
+            //    {
+            //        Text1 = AppResources.DateTime,
+            //        Text2 = DateTime.Now.ToString("dd/MM/yyyy HH:mm tt"),
+            //        Arg1 = 1
+            //    },
+            //    new SimpleSelectedItem()
+            //    {
+            //        Text1 = AppResources.FlightNo,
+            //        Text2 = customerData?.Person?.FlightCode,
+            //        Arg1 = 1
+            //    },
+            //    new SimpleSelectedItem()
+            //    {
+            //        Text1 = AppResources.MobileNo,
+            //        Text2 = customerData?.Person?.ListContact.FirstOrDefault()?.ContactValue,
+            //        Arg1 = 1
+            //    },
+            //    new SimpleSelectedItem()
+            //    {
+            //        Text1 = AppResources.Module,
+            //        Text2 = appConfig?.Module,
+            //        Arg1 = 2
+            //    },
+            //    new SimpleSelectedItem()
+            //    {
+            //        Text1 = AppResources.BranchNo,
+            //        Text2 = appConfig?.BranchNo,
+            //        Arg1 = 2
+            //    },
+            //    new SimpleSelectedItem()
+            //    {
+            //        Text1 = AppResources.SubBranch,
+            //        Text2 = appConfig?.SubBranch,
+            //        Arg1 = 2
+            //    },
+            //    new SimpleSelectedItem()
+            //    {
+            //        Text1 = AppResources.MachineNo,
+            //        Text2 = loginData.UserInfo.MachineEnv.MachineNo,
+            //        Arg1 = 2
+            //    },
+            //};
         }
 
         public ICommand LogoutCommand => new DelegateCommand(async () =>
@@ -120,74 +96,39 @@ namespace SelfCheckout.ViewModels
                 if (result)
                 {
                     await _saleEngineService.LogoutAsync();
-                    GlobalSettings.Instance.CountryCode = "en-US";
-                    GlobalSettings.Instance.InitLanguage();
                     await GoBackToRootAsync();
                 }
             }
             catch { }
         });
 
-        public ICommand TabSelectedCommand => new DelegateCommand<SimpleSelectedItem>(async (item) =>
-        {
-            if ((int)item.Arg1 == 2 && !IsAuthorized)
-            {
-                var result = await DialogService.ShowDialogAsync("AuthorizeDialog", null);
-                IsAuthorized = result.Parameters.GetValue<bool>("IsAuthorized");
-                if (!IsAuthorized)
-                    return;
-            }
-
-            var seletedItem = Tabs.Where(t => t.Selected).FirstOrDefault();
-            seletedItem.Selected = false;
-
-            item.Selected = true;
-            LogoutButtonVisible = (int)item.Arg1 == 2 ? true : false;
-            RefreshDeviceInfo(item.Arg1);
-
-            IsAuthorized = false;
-        });
-
         public override Task OnTabSelected(TabItem item)
         {
-            TabSelectedCommand.Execute(Tabs.FirstOrDefault());
             return base.OnTabSelected(item);
         }
 
         public override Task OnTabDeSelected(TabItem item)
         {
-            IsAuthorized = false;
             return base.OnTabDeSelected(item);
         }
 
-        void RefreshDeviceInfo(object arg)
+        public LoginData LoginData
         {
-            var filter = _allDeviceInfoItems.Where(d => (int)d.Arg1 == (int)arg).ToList();
-            DeviceInfoItems = filter.ToObservableCollection();
+            get => _saleEngineService.LoginData;
         }
 
-        public ObservableCollection<SimpleSelectedItem> Tabs
+        public CustomerData CustomerData
         {
-            get => _tabs;
-            set => SetProperty(ref _tabs, value);
+            get => _registerService.CustomerData;
         }
 
-        public ObservableCollection<SimpleSelectedItem> DeviceInfoItems
+        public string NowDateTime
         {
-            get => _deviceInfoItems;
-            set => SetProperty(ref _deviceInfoItems, value);
+            get => DateTime.Now.ToString("dd/MM/yyyy HH:mm tt");
         }
 
-        public bool IsAuthorized
-        {
-            get => _isAuthorized;
-            set => SetProperty(ref _isAuthorized, value);
-        }
-
-        public bool LogoutButtonVisible
-        {
-            get => _logoutButtonVisible;
-            set => SetProperty(ref _logoutButtonVisible, value);
+        public string MobileNo {
+            get => CustomerData?.Person?.ListContact.FirstOrDefault()?.ContactValue;
         }
     }
 }

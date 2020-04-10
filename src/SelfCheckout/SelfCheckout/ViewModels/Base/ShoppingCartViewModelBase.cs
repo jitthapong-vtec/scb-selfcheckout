@@ -17,7 +17,7 @@ namespace SelfCheckout.ViewModels.Base
         protected ISelfCheckoutService SelfCheckoutService { get; private set; }
         protected IRegisterService RegisterService { get; private set; }
 
-        public ShoppingCartViewModelBase(IDialogService dialogService, ISaleEngineService saleEngineService, 
+        public ShoppingCartViewModelBase(IDialogService dialogService, ISaleEngineService saleEngineService,
             ISelfCheckoutService selfCheckoutService, IRegisterService registerService) : base(dialogService)
         {
             SaleEngineService = saleEngineService;
@@ -56,8 +56,6 @@ namespace SelfCheckout.ViewModels.Base
 
                 await SelfCheckoutService.ValidateShoppingCardAsync(SaleEngineService.LoginData.UserInfo.MachineEnv.MachineIp, shoppingCard);
 
-                SelfCheckoutService.CurrentShoppingCard = shoppingCard;
-
                 var customersData = await RegisterService.GetCustomerAsync(shoppingCard);
 
                 var customerData = customersData.FirstOrDefault();
@@ -77,6 +75,13 @@ namespace SelfCheckout.ViewModels.Base
                         var isConfirm = dialogResult.Parameters.GetValue<bool>("IsConfirm");
                         if (isConfirm)
                         {
+                            shoppingCard = customerData.Person?.ListIdentity?.Where(i => i.IdentityType == "SHOPCARD").FirstOrDefault()?.IdentityValue;
+                            if (string.IsNullOrEmpty(shoppingCard))
+                            {
+                                await DialogService.ShowAlert(AppResources.Opps, "Can't get SHOPCARD", AppResources.Close);
+                                return;
+                            }
+                            SelfCheckoutService.CurrentShoppingCard = shoppingCard;
                             await ValidateShoppingCardCallback(shoppingCard);
                         }
                     });

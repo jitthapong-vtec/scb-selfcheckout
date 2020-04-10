@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:controls="clr-namespace:SelfCheckout.Controls"
+             xmlns:effects="clr-namespace:SelfCheckout.Effects"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             mc:Ignorable="d"
+             x:Class="SelfCheckout.Views.SystemView">
+    <ContentView.Content>
+        <Grid BackgroundColor="{StaticResource Gray200}" RowSpacing="0" VerticalOptions="End">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="8">
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                    </Style>
+                </Grid.Resources>
+                <Label x:Name="lblSystem" HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding SystemViewVisible}" Value="True">
+                            <Setter Property="Text" Value="&#xf078;"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label" Binding="{Binding SystemViewVisible}" Value="False">
+                            <Setter Property="Text" Value="&#xf077;"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding HideSystemCommand}"/>
+                </Grid.GestureRecognizers>
+            </Grid>
+            <StackLayout Grid.Row="1">
+                <Frame Margin="-2,0,-2,0" HorizontalOptions="FillAndExpand">
+                    <StackLayout Margin="8" Spacing="12">
+                        <StackLayout Orientation="Horizontal">
+                            <Label x:Name="lblModule" HorizontalOptions="StartAndExpand"/>
+                            <Label Text="{Binding AppConfig.Module}" HorizontalTextAlignment="End"/>
+                        </StackLayout>
+                        <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray200}"/>
+                        <StackLayout Orientation="Horizontal">
+                            <Label x:Name="lblBranchNo" HorizontalOptions="StartAndExpand"/>
+                            <Label Text="{Binding AppConfig.BranchNo}" HorizontalTextAlignment="End"/>
+                        </StackLayout>
+                        <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray200}"/>
+                        <StackLayout Orientation="Horizontal">
+                            <Label x:Name="lblSubBranch" HorizontalOptions="StartAndExpand"/>
+                            <Label Text="{Binding AppConfig.SubBranch}" HorizontalTextAlignment="End"/>
+                        </StackLayout>
+                        <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray200}"/>
+                        <StackLayout Orientation="Horizontal">
+                            <Label x:Name="lblMachineNo" HorizontalOptions="StartAndExpand"/>
+                            <Label Text="{Binding LoginData.UserInfo.MachineEnv.MachineNo}" HorizontalTextAlignment="End"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+                <Frame Padding="8">
+                    <controls:TappedGrid Padding="0" VerticalOptions="Center" HorizontalOptions="Center"
+                                     IsVisible="{Binding LogoutButtonVisible}"
+                                     Style="{StaticResource TappedGridButtonStyle}"
+                                     TappedCommand="{Binding LogoutCommand}"
+                                     WidthRequest="100"
+                                     effects:RoundCornersEffect.CornerRadius="3">
+                        <controls:GradientBackground/>
+                        <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Logout}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                    </controls:TappedGrid>
+                </Frame>
+            </StackLayout>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

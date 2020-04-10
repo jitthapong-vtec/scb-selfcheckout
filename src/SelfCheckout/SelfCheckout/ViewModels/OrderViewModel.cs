@@ -32,7 +32,7 @@ namespace SelfCheckout.ViewModels
         bool _summaryShowing;
         bool _filterCustomerShowing;
 
-        public OrderViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, 
+        public OrderViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService,
             ISaleEngineService saleEngineService, IRegisterService registerService)
             : base(dialogService, selfCheckoutService, saleEngineService, registerService)
         {
@@ -45,18 +45,16 @@ namespace SelfCheckout.ViewModels
             {
                 new SimpleSelectedItem()
                 {
-                    Text1 = "",
-                    Selected = true,
-                    Arg1 = 1
+                    Text1 = AppResources.Units,
+                    Arg1 = 1,
+                    Selected = true
                 },
                 new SimpleSelectedItem()
                 {
-                    Text1 = "",
+                    Text1 = AppResources.Invoices,
                     Arg1 = 2
                 }
             };
-
-            IsShowGroup = true;
         }
 
         public ObservableCollection<SimpleSelectedItem> Tabs
@@ -75,8 +73,6 @@ namespace SelfCheckout.ViewModels
                 {
                     Clear();
                     await SaleEngineService.LogoutAsync();
-                    GlobalSettings.Instance.CountryCode = "en-US";
-                    GlobalSettings.Instance.InitLanguage();
                     await GoBackToRootAsync();
                 }
                 else
@@ -101,10 +97,10 @@ namespace SelfCheckout.ViewModels
 
         private void RefreshTab()
         {
-            var t2 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
+            var t2 = Tabs.Where(t => (int)t.Arg1 == 1).FirstOrDefault();
             t2.Text1 = $"{TotalQty} {AppResources.Units}";
 
-            var t1 = Tabs.Where(t => (int)t.Arg1 == 1).FirstOrDefault();
+            var t1 = Tabs.Where(t => (int)t.Arg1 == 2).FirstOrDefault();
             t1.Text1 = $"{TotalInvoice} {AppResources.Invoices}";
         }
 
@@ -131,7 +127,7 @@ namespace SelfCheckout.ViewModels
             var seletedItem = Tabs.Where(t => t.Selected).FirstOrDefault();
             seletedItem.Selected = false;
 
-            if ((int)item.Arg1 == 1)
+            if ((int)item.Arg1 == 2)
                 IsShowGroup = true;
             else
                 IsShowGroup = false;
@@ -157,6 +153,12 @@ namespace SelfCheckout.ViewModels
             SummaryShowing = !SummaryShowing;
         });
 
+        public bool IsShowGroup
+        {
+            get => _isShowGroup;
+            set => SetProperty(ref _isShowGroup, value);
+        }
+
         public CustomerOrder SelectedCustomer
         {
             get => _selectedCustomer;
@@ -173,12 +175,6 @@ namespace SelfCheckout.ViewModels
         {
             get => _filterCustomerShowing;
             set => SetProperty(ref _filterCustomerShowing, value);
-        }
-
-        public bool IsShowGroup
-        {
-            get => _isShowGroup;
-            set => SetProperty(ref _isShowGroup, value);
         }
 
         public bool SummaryShowing

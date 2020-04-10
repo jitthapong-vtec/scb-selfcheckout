@@ -54,7 +54,7 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Margin="0,-22,0,4" RowSpacing="0" ColumnSpacing="0">
                     <Frame Padding="0" WidthRequest="72" HeightRequest="72" CornerRadius="144" VerticalOptions="Center" HorizontalOptions="Center">
-                        <Grid VerticalOptions="Center" HorizontalOptions="Center" RowSpacing="0" ColumnSpacing="0">
+                        <Grid VerticalOptions="Center" Margin="0,0,-4,0" HorizontalOptions="Center" RowSpacing="0" ColumnSpacing="0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -131,6 +131,7 @@
             <views:CurrencySelectionView IsVisible="{Binding CurrencyShowing}"/>
             <views:PaymentMethodSelectionView IsVisible="{Binding PaymentSelectionShowing}"/>
             <views:PaymentProcessView IsVisible="{Binding PaymentInputShowing}"/>
+            <views:SystemView IsVisible="{Binding SystemViewVisible}"/>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentPage.Content>

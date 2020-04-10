@@ -43,6 +43,7 @@ namespace SelfCheckout.ViewModels
         string _couponCode;
         string _checkoutButtonText;
 
+        bool _systemViewVisible;
         bool _summaryVisible;
         bool _summaryShowing;
         bool _langShowing;
@@ -61,6 +62,7 @@ namespace SelfCheckout.ViewModels
             _selfCheckoutService = selfCheckoutService;
 
             HomeViewModel = new HomeViewModel(dialogService, selfCheckoutService, pimCoreService);
+            HomeViewModel.ShowSystemView = () => SystemViewVisible = true;
 
             DeviceViewModel = new DeviceViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
             DeviceViewModel.GoBackToRootAsync = GoBackToRootAsync;
@@ -278,6 +280,11 @@ namespace SelfCheckout.ViewModels
                 IsBeingPaymentProcess = false;
         });
 
+        public ICommand HideSystemCommand => new Command(() =>
+        {
+            SystemViewVisible = false;
+        });
+
         public ICommand PaymentMethodTappedCommand => new Command(() =>
         {
             PaymentSelectionShowing = !PaymentSelectionShowing;
@@ -358,10 +365,18 @@ namespace SelfCheckout.ViewModels
         });
 
         public HomeViewModel HomeViewModel { get; }
+
         public DeviceViewModel DeviceViewModel { get; }
+
         public ShoppingCartViewModel ShoppingCartViewModel { get; }
+
         public OrderViewModel OrderViewModel { get; }
+
         public ProfileViewModel ProfileViewModel { get; }
+
+        public AppConfig AppConfig { get => _selfCheckoutService.AppConfig; }
+
+        public LoginData LoginData { get => _saleEngineService.LoginData; }
 
         public ObservableCollection<TabItem> Tabs
         {
@@ -447,6 +462,12 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _summaryShowing, value);
         }
 
+        public bool SystemViewVisible
+        {
+            get => _systemViewVisible;
+            set => SetProperty(ref _systemViewVisible, value);
+        }
+
         public bool SummaryVisible
         {
             get => _summaryVisible;
@@ -482,7 +503,7 @@ namespace SelfCheckout.ViewModels
                     GlobalSettings.Instance.CountryCode = "en-US";
                 else if (value.LangCode == "TH")
                     GlobalSettings.Instance.CountryCode = "th-TH";
-                else if (value.LangCode == "CH")
+                else if (value.LangCode == "ZH")
                     GlobalSettings.Instance.CountryCode = "zh-Hans";
                 GlobalSettings.Instance.InitLanguage();
 
@@ -526,7 +547,7 @@ namespace SelfCheckout.ViewModels
             }
         }
 
-        Task SelectTabAsync(TabItem item)
+        async Task SelectTabAsync(TabItem item)
         {
             if (item.Page is ShoppingCartView)
             {
@@ -552,7 +573,25 @@ namespace SelfCheckout.ViewModels
                 selectedTab.Selected = false;
             }
             catch { }
-            return Task.FromResult(true);
+
+            if (!(item.Page is OrderView))
+            {
+                await CheckSessionAlreadyEndAsync();
+            }
+        }
+
+        async Task CheckSessionAlreadyEndAsync()
+        {
+            try
+            {
+                var sessionData = await _selfCheckoutService.GetSessionDetialAsync(_selfCheckoutService.BorrowSessionKey);
+                if (sessionData.SessionStatus.SessionCode == "END")
+                {
+                    await _saleEngineService.LogoutAsync();
+                    await GoBackToRootAsync();
+                }
+            }
+            catch { }
         }
 
         async Task ShowCameraScannerAsync()

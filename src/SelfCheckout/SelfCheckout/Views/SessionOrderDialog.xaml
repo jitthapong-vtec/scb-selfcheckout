@@ -80,70 +80,78 @@
                     </Grid.ColumnDefinitions>
 
                     <Grid Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        <BoxView BackgroundColor="{StaticResource Gray200}"/>
+                        <Grid Margin="1" RowSpacing="0" BackgroundColor="White">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                        <Grid Grid.Row="0" BackgroundColor="{StaticResource Gray100}" Padding="8">
-                            <Label HorizontalTextAlignment="Center" TextColor="{StaticResource Primary}">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{Binding TotalInvoice}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{i18n:Translate Invoices}"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </Grid>
+                            <Grid Grid.Row="0" BackgroundColor="{StaticResource Gray100}" Padding="8">
+                                <Label HorizontalTextAlignment="Center" TextColor="{StaticResource Primary}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding TotalQty}"/>
+                                            <Span Text=" "/>
+                                            <Span Text="{i18n:Translate Units}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Grid>
 
-                        <ListView Grid.Row="1" BackgroundColor="Transparent" ItemsSource="{Binding OrderInvoices}" IsGroupingEnabled="True" 
+                            <ListView Grid.Row="1" BackgroundColor="White" ItemsSource="{Binding OrderDetails}" 
+                                      VerticalScrollBarVisibility="Always"
                               HasUnevenRows="True" CachingStrategy="RecycleElement">
-                            <ListView.GroupHeaderTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <views:OrderInvoiceItemView/>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.GroupHeaderTemplate>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <views:OrderItemView Margin="4,0,4,0" IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
                     </Grid>
 
                     <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        <BoxView BackgroundColor="{StaticResource Gray200}"/>
+                        <Grid Margin="1" RowSpacing="0" BackgroundColor="White">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                        <Grid Grid.Row="0" BackgroundColor="{StaticResource Gray100}" Padding="8">
-                            <Label HorizontalTextAlignment="Center" TextColor="{StaticResource Primary}">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{Binding TotalQty}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{i18n:Translate Units}"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </Grid>
+                            <Grid Grid.Row="0" BackgroundColor="{StaticResource Gray100}" Padding="8">
+                                <Label HorizontalTextAlignment="Center" TextColor="{StaticResource Primary}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding TotalInvoice}"/>
+                                            <Span Text=" "/>
+                                            <Span Text="{i18n:Translate Invoices}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Grid>
 
-                        <ListView Grid.Row="1" BackgroundColor="Transparent" ItemsSource="{Binding OrderDetails}" 
+                            <ListView Grid.Row="1" BackgroundColor="White" ItemsSource="{Binding OrderInvoices}" IsGroupingEnabled="True" 
+                                      VerticalScrollBarVisibility="Always"
                               HasUnevenRows="True" CachingStrategy="RecycleElement">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                                <ListView.GroupHeaderTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <views:OrderInvoiceItemView/>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.GroupHeaderTemplate>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <views:OrderItemView Margin="4,0,4,0" IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
                     </Grid>
                 </Grid>
 

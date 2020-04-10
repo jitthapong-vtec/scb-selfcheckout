@@ -49,7 +49,7 @@ namespace SelfCheckout.Services.SelfCheckout
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
 
-            var filter = new string[] { "EN", "TH", "CH" };
+            var filter = new string[] { "EN", "TH", "ZH" };
             Languages = result.Data.Where(l => filter.Contains(l.LangCode)).ToList();
         }
 
