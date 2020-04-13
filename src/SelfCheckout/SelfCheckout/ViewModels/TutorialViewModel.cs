@@ -26,9 +26,10 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _tutorialViewVisible, value);
         }
 
-        public void ShowTutorial(int pageId)
+        public void ShowTutorial()
         {
             Assets = PimCoreService.ImageAssets?.ToObservableCollection();
+            TutorialViewVisible = true;
         }
     }
 }

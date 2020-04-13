@@ -224,7 +224,7 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ShowInfoCommand => new Command(() =>
         {
-            TutorialViewModel.TutorialViewVisible = !TutorialViewModel.TutorialViewVisible;
+            TutorialViewModel.ShowTutorial();
         });
 
         public ICommand LanguageTappedCommand => new Command(() =>
