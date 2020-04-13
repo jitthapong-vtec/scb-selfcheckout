@@ -31,6 +31,8 @@ namespace SelfCheckout.ViewModels
         ObservableCollection<Currency> _currencies;
         ObservableCollection<Payment> _payments;
 
+        TabItem _currentTab;
+
         ContentView _currentView;
         Language _languageSelected;
         Currency _currencySelected;
@@ -64,8 +66,7 @@ namespace SelfCheckout.ViewModels
             HomeViewModel = new HomeViewModel(dialogService, selfCheckoutService, pimCoreService);
             HomeViewModel.ShowSystemView = () => SystemViewVisible = true;
 
-            DeviceViewModel = new DeviceViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
-            DeviceViewModel.GoBackToRootAsync = GoBackToRootAsync;
+            DeviceViewModel = new DeviceViewModel(dialogService, saleEngineService, registerService);
 
             ShoppingCartViewModel = new ShoppingCartViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
             ShoppingCartViewModel.ReloadOrderDataAsync = LoadOrderAsync;
@@ -126,10 +127,18 @@ namespace SelfCheckout.ViewModels
                 Page = new ProfileView() { BindingContext = ProfileViewModel }
             });
 
-            var firstTab = Tabs.FirstOrDefault();
-            firstTab.Selected = true;
-            PageTitle = firstTab.Title;
-            CurrentView = firstTab.Page;
+            if (_currentTab == null)
+            {
+                _currentTab = Tabs.FirstOrDefault();
+            }
+            try
+            {
+                var tab = Tabs.Where(t => t.TabId == _currentTab.TabId).FirstOrDefault();
+                tab.Selected = true;
+                PageTitle = tab.Title;
+                CurrentView = tab.Page;
+            }
+            catch { }
         }
 
         public override async void Initialize(INavigationParameters parameters)
@@ -283,6 +292,20 @@ namespace SelfCheckout.ViewModels
         public ICommand HideSystemCommand => new Command(() =>
         {
             SystemViewVisible = false;
+        });
+
+        public ICommand LogoutCommand => new Command(async () =>
+        {
+            try
+            {
+                var result = await DialogService.ConfirmAsync(AppResources.Logout, AppResources.ConfirmLogout, AppResources.Yes, AppResources.No);
+                if (result)
+                {
+                    await _saleEngineService.LogoutAsync();
+                    await GoBackToRootAsync();
+                }
+            }
+            catch { }
         });
 
         public ICommand PaymentMethodTappedCommand => new Command(() =>
@@ -567,8 +590,11 @@ namespace SelfCheckout.ViewModels
             CurrentView = item.Page;
             item.Selected = true;
 
+            _currentTab = item;
+
             try
             {
+                // Reset selected tab
                 var selectedTab = Tabs.Where(t => t.TabId != item.TabId && t.Selected).FirstOrDefault();
                 selectedTab.Selected = false;
             }

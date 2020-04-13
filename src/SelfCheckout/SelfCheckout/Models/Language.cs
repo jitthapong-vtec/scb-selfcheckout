@@ -11,5 +11,7 @@ namespace SelfCheckout.Models
         public string LangCode { get; set; }
         [JsonProperty("lang_desc")]
         public string LangDesc { get; set; }
+
+        public string Icon { get => $"ic_{LangCode.ToLower()}"; }
     }
 }

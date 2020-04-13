@@ -36,8 +36,15 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <controls:TappedGrid Padding="16" TappedCommand="{Binding Source={x:Reference this}, Path=BindingContext.LanguageSelectionCommand}" CommandParameter="{Binding .}">
-                                <Label Text="{Binding LangDesc}" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                            <controls:TappedGrid  Padding="16" TappedCommand="{Binding Source={x:Reference this}, Path=BindingContext.LanguageSelectionCommand}" CommandParameter="{Binding .}">
+                                <Grid HorizontalOptions="Center" ColumnSpacing="32">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center" Source="{Binding Icon}" WidthRequest="32"/>
+                                    <Label Grid.Column="1" Text="{Binding LangDesc}" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                                </Grid>
                             </controls:TappedGrid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

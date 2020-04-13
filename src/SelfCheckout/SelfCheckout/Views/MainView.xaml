@@ -105,7 +105,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Image Grid.Column="0" Source="ic_lang" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="24"/>
+                        <Image Grid.Column="0" Source="{Binding LanguageSelected.Icon}" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="32"/>
                         <Label Grid.Column="1" Text="{Binding LanguageSelected.LangCode}" VerticalOptions="Center"/>
                     </ctrls:TappedGrid>
                     <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="4,0,12,0">

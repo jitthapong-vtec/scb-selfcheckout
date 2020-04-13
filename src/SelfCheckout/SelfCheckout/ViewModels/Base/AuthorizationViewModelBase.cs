@@ -35,8 +35,6 @@ namespace SelfCheckout.ViewModels.Base
             _userName = new ValidatableObject<string>();
             _password = new ValidatableObject<string>();
 
-            _userName.Value = "k";
-            _password.Value = "kkkk";
             AddValidation();
         }
 
