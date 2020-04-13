@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls" 
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:views="clr-namespace:SelfCheckout.Views"
+             mc:Ignorable="d" 
+             BackgroundColor="#99000000"
+             x:Name="this"
+             x:Class="SelfCheckout.Views.TutorialView">
+    <ContentView.Content>
+        <Grid>
+            <Grid BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="300"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="8">
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Label Text="{i18n:Translate Help}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding HideTutorialCommand}"/>
+                    </Grid.GestureRecognizers>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Frame Margin="16" CornerRadius="12">
+                        <views:TutorialCollectionView/>
+                    </Frame>
+                </Grid>
+            </Grid>
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding HideTutorialCommand}"/>
+            </Grid.GestureRecognizers>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

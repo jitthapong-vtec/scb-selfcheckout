@@ -130,7 +130,7 @@ namespace SelfCheckout.ViewModels
         {
             if (order != null)
             {
-                var result = await DialogService.ConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteItem, AppResources.Yes, AppResources.No, true);
+                var result = await DialogService.ConfirmAsync(AppResources.ConfirmDeleteItem, order.ItemDetail.Item.Desc, AppResources.Yes, AppResources.No, true);
 
                 if (result)
                 {

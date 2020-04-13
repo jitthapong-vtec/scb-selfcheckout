@@ -87,6 +87,12 @@
     <Compile Update="Views\CouponInputDialog.xaml.cs">
       <DependentUpon>CouponInputDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\CouponInputView.xaml.cs">
+      <DependentUpon>CouponInputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\TutorialView.xaml.cs">
+      <DependentUpon>TutorialView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\ShoppingCardInputDialog.xaml.cs">
       <DependentUpon>ShoppingCardInputDialog.xaml</DependentUpon>
     </Compile>
@@ -173,6 +179,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\TestPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\TutorialCollectionView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\UserAuthenView.xaml">

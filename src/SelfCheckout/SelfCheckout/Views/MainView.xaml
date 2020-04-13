@@ -131,7 +131,9 @@
             <views:CurrencySelectionView IsVisible="{Binding CurrencyShowing}"/>
             <views:PaymentMethodSelectionView IsVisible="{Binding PaymentSelectionShowing}"/>
             <views:PaymentProcessView IsVisible="{Binding PaymentInputShowing}"/>
+            <views:CouponInputView BindingContext="{Binding CouponInputViewModel}" IsVisible="{Binding CouponInputViewVisible}"/>
             <views:SystemView IsVisible="{Binding SystemViewVisible}"/>
+            <views:TutorialView BindingContext="{Binding TutorialViewModel}" IsVisible="{Binding TutorialViewVisible}"/>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentPage.Content>

@@ -321,4 +321,13 @@
   <data name="ConfirmLogout" xml:space="preserve">
     <value>ต้องการออกจากระบบหรือไม่</value>
   </data>
+  <data name="Help" xml:space="preserve">
+    <value>ช่วยเหลือ</value>
+  </data>
+  <data name="PleaseScanCoupon" xml:space="preserve">
+    <value>กรุณาสแกนคูปอง</value>
+  </data>
+  <data name="ScanLaserOnQrCode" xml:space="preserve">
+    <value>กรุณาสแกนเลเซอร์ที่คิวอาร์โคด</value>
+  </data>
 </root>

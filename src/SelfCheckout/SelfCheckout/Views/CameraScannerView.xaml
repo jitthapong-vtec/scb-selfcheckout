@@ -12,7 +12,7 @@
     <ContentPage.Content>
         <Grid>
             <zxing:ZXingScannerView ScanResultCommand="{Binding ScanResultCommand}" IsScanning="{Binding IsScanning}"/>
-            <zxing:ZXingDefaultOverlay BottomText="{i18n:Translate ScanLaserOnShoppingCard}"/>
+            <zxing:ZXingDefaultOverlay BottomText="{i18n:Translate ScanLaserOnQRCode}"/>
             <controls:TappedGrid TappedCommand="{Binding CancelCommand}" VerticalOptions="Start" HorizontalOptions="End" Margin="12">
                 <Label Style="{StaticResource LabelIconStyle}" FontSize="32" HorizontalOptions="Center" VerticalOptions="Center"
                        Text="&#xf057;" TextColor="{StaticResource Gray50}"/>

@@ -178,7 +178,7 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you have to delete coupon?.
+        ///   Looks up a localized string similar to Do you want to delete coupon?.
         /// </summary>
         internal static string ConfirmDeleteCoupon {
             get {
@@ -187,7 +187,7 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you have to delete item?.
+        ///   Looks up a localized string similar to Do you want to delete item?.
         /// </summary>
         internal static string ConfirmDeleteItem {
             get {
@@ -205,7 +205,7 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you have to use coupon?.
+        ///   Looks up a localized string similar to Do you want to use coupon?.
         /// </summary>
         internal static string ConfirmUseCoupon {
             get {
@@ -363,6 +363,15 @@ namespace SelfCheckout.Resources {
         internal static string General {
             get {
                 return ResourceManager.GetString("General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        internal static string Help {
+            get {
+                return ResourceManager.GetString("Help", resourceCulture);
             }
         }
         
@@ -682,6 +691,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please scan coupon.
+        /// </summary>
+        internal static string PleaseScanCoupon {
+            get {
+                return ResourceManager.GetString("PleaseScanCoupon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please scan payment.
         /// </summary>
         internal static string PleaseScanPayment {
@@ -745,11 +763,11 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please scan laser on QR Shopping card.
+        ///   Looks up a localized string similar to Please scan laser on QR Code.
         /// </summary>
-        internal static string ScanLaserOnShoppingCard {
+        internal static string ScanLaserOnQrCode {
             get {
-                return ResourceManager.GetString("ScanLaserOnShoppingCard", resourceCulture);
+                return ResourceManager.GetString("ScanLaserOnQrCode", resourceCulture);
             }
         }
         

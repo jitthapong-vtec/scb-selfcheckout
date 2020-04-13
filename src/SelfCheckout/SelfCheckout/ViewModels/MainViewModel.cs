@@ -23,6 +23,8 @@ namespace SelfCheckout.ViewModels
 {
     public class MainViewModel : NavigatableViewModelBase
     {
+        object _lockProcess = new object();
+
         ISaleEngineService _saleEngineService;
         ISelfCheckoutService _selfCheckoutService;
 
@@ -31,14 +33,13 @@ namespace SelfCheckout.ViewModels
         ObservableCollection<Currency> _currencies;
         ObservableCollection<Payment> _payments;
 
-        TabItem _currentTab;
-
         ContentView _currentView;
         Language _languageSelected;
         Currency _currencySelected;
         Payment _paymentSelected;
         OrderData _orderData;
 
+        int _selectedTabId;
         int _paymentCountdownTimer;
 
         string _paymentBarCode;
@@ -79,6 +80,12 @@ namespace SelfCheckout.ViewModels
             OrderViewModel.GoBackToRootAsync = GoBackToRootAsync;
 
             ProfileViewModel = new ProfileViewModel(dialogService, selfCheckoutService);
+
+            TutorialViewModel = new TutorialViewModel(dialogService, selfCheckoutService, pimCoreService);
+
+            CouponInputViewModel = new CouponInputViewModel(dialogService);
+            CouponInputViewModel.OpenCameraScannerAsync = ShowCameraScannerAsync;
+            CouponInputViewModel.SetCouponAsync = AddCouponAsync;
         }
 
         private void RefreshTab()
@@ -127,13 +134,13 @@ namespace SelfCheckout.ViewModels
                 Page = new ProfileView() { BindingContext = ProfileViewModel }
             });
 
-            if (_currentTab == null)
+            if (_selectedTabId == 0)
             {
-                _currentTab = Tabs.FirstOrDefault();
+                _selectedTabId = 1;
             }
             try
             {
-                var tab = Tabs.Where(t => t.TabId == _currentTab.TabId).FirstOrDefault();
+                var tab = Tabs.Where(t => t.TabId == _selectedTabId).FirstOrDefault();
                 tab.Selected = true;
                 PageTitle = tab.Title;
                 CurrentView = tab.Page;
@@ -157,7 +164,11 @@ namespace SelfCheckout.ViewModels
 
             if (!string.IsNullOrEmpty(parameters.GetValue<string>("ScanData")))
             {
-                MessagingCenter.Send(this, "ReceiveShoppingCardFromScanner", parameters.GetValue<string>("ScanData"));
+                var scanData = parameters.GetValue<string>("ScanData");
+                if (CouponInputViewModel.CouponInputViewVisible)
+                    CouponInputViewModel.CouponCode = scanData;
+                else
+                    MessagingCenter.Send(this, "ReceiveShoppingCardFromScanner", scanData);
             }
         }
 
@@ -177,6 +188,10 @@ namespace SelfCheckout.ViewModels
                 {
                     MessagingCenter.Send(this, "ReceiveShoppingCardFromScanner", data?.ToString());
                 }
+                else if (CouponInputViewModel.CouponInputViewVisible)
+                {
+                    CouponInputViewModel.CouponCode = data?.ToString();
+                }
                 else
                 {
                     if (CurrentView is ShoppingCartView)
@@ -187,75 +202,29 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ScanCouponCommand => new Command(async () =>
         {
+            try
+            {
+                if (OrderData.TotalBillingAmount.NetAmount.CurrAmt <= 0)
+                    return;
+            }
+            catch
+            {
+                return;
+            }
+
             if (!string.IsNullOrEmpty(CouponCode))
             {
-                var isDeleteCoupon = await DialogService.ConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteCoupon, AppResources.Yes, AppResources.No, true);
-                if (!isDeleteCoupon)
-                    return;
-
-                var payload = new
-                {
-                    OrderGuid = "",
-                    Rows = new object[] { },
-                    Action = "clear_all_special_discount",
-                    Value = "",
-                    SessionKey = _saleEngineService.LoginData.SessionKey
-                };
-
-                try
-                {
-                    await _saleEngineService.ActionOrderPaymentAsync(payload);
-                    CouponCode = "";
-
-                    await ShoppingCartViewModel.RefreshOrderListAsync();
-                    RefreshSummary();
-                }
-                catch (Exception ex)
-                {
-                    await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-                }
+                await DeleteCouponAsync();
             }
             else
             {
-                var isWantToUseCoupon = await DialogService.ConfirmAsync(AppResources.ScanCoupon, AppResources.ConfirmUseCoupon, AppResources.Yes, AppResources.No);
-                if (!isWantToUseCoupon)
-                    return;
-                DialogService.ShowDialog("BarcodeScanDialog", null, async (scanResult) =>
-                {
-                    var result = scanResult.Parameters.GetValue<string>("ScanData");
-                    if (!string.IsNullOrEmpty(result))
-                    {
-                        var payload = new
-                        {
-                            OrderGuid = "",
-                            Rows = new object[] { },
-                            Action = "add_special_discount_by_qrcode",
-                            Value = result,
-                            SessionKey = _saleEngineService.LoginData.SessionKey
-                        };
-
-                        try
-                        {
-                            await _saleEngineService.ActionOrderPaymentAsync(payload);
-
-                            CouponCode = _saleEngineService.OrderData.TotalBillingAmount.CurrentValueAdjust?.VaDetail?.Code;
-
-                            await ShoppingCartViewModel.RefreshOrderListAsync();
-                            RefreshSummary();
-                        }
-                        catch (Exception ex)
-                        {
-                            await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-                        }
-                    }
-                });
+                CouponInputViewModel.CouponInputViewVisible = true;
             }
         });
 
         public ICommand ShowInfoCommand => new Command(() =>
         {
-            var homeTab = Tabs.Where(t => t.TabId == 1).FirstOrDefault();
-            TabSelectedCommand.Execute(homeTab);
+            TutorialViewModel.TutorialViewVisible = !TutorialViewModel.TutorialViewVisible;
         });
 
         public ICommand LanguageTappedCommand => new Command(() =>
@@ -397,6 +366,10 @@ namespace SelfCheckout.ViewModels
 
         public ProfileViewModel ProfileViewModel { get; }
 
+        public TutorialViewModel TutorialViewModel { get; }
+
+        public CouponInputViewModel CouponInputViewModel { get; }
+
         public AppConfig AppConfig { get => _selfCheckoutService.AppConfig; }
 
         public LoginData LoginData { get => _saleEngineService.LoginData; }
@@ -518,7 +491,7 @@ namespace SelfCheckout.ViewModels
         public Language LanguageSelected
         {
             get => _languageSelected;
-            set => SetProperty(ref _languageSelected, value, () =>
+            set => SetProperty(ref _languageSelected, value, async () =>
             {
                 _selfCheckoutService.CurrentLanguage = value;
 
@@ -531,6 +504,7 @@ namespace SelfCheckout.ViewModels
                 GlobalSettings.Instance.InitLanguage();
 
                 MessagingCenter.Send(this, "LanguageChange");
+                await TutorialViewModel.LoadImageAsset();
                 RefreshTab();
             });
         }
@@ -590,7 +564,7 @@ namespace SelfCheckout.ViewModels
             CurrentView = item.Page;
             item.Selected = true;
 
-            _currentTab = item;
+            _selectedTabId = item.TabId;
 
             try
             {
@@ -687,6 +661,80 @@ namespace SelfCheckout.ViewModels
         private void SetDefaultCurrency()
         {
             CurrencySelected = Currencies.Where(c => c.CurrCode == "THB").FirstOrDefault();
+        }
+
+        public async Task AddCouponAsync(string couponCode)
+        {
+            var isWantToUseCoupon = await DialogService.ConfirmAsync(AppResources.ScanCoupon, AppResources.ConfirmUseCoupon, AppResources.Yes, AppResources.No);
+            if (!isWantToUseCoupon)
+            {
+                CouponInputViewModel.CouponCode = "";
+                return;
+            }
+
+            var payload = new
+            {
+                OrderGuid = "",
+                Rows = new object[] { },
+                Action = "add_special_discount_by_qrcode",
+                Value = couponCode,
+                SessionKey = _saleEngineService.LoginData.SessionKey
+            };
+
+            try
+            {
+                IsBusy = true;
+                await _saleEngineService.ActionOrderPaymentAsync(payload);
+
+                CouponCode = _saleEngineService.OrderData.TotalBillingAmount.CurrentValueAdjust?.VaDetail?.Code;
+
+                await ShoppingCartViewModel.RefreshOrderListAsync();
+                RefreshSummary();
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
+                CouponInputViewModel.CouponCode = "";
+                CouponInputViewModel.CouponInputViewVisible = false;
+            }
+        }
+
+        public async Task DeleteCouponAsync()
+        {
+            var isDeleteCoupon = await DialogService.ConfirmAsync(AppResources.ConfirmDeleteCoupon, CouponCode, AppResources.Yes, AppResources.No, true);
+            if (!isDeleteCoupon)
+                return;
+
+            var payload = new
+            {
+                OrderGuid = "",
+                Rows = new object[] { },
+                Action = "clear_all_special_discount",
+                Value = "",
+                SessionKey = _saleEngineService.LoginData.SessionKey
+            };
+
+            try
+            {
+                IsBusy = true;
+                await _saleEngineService.ActionOrderPaymentAsync(payload);
+                CouponCode = "";
+
+                await ShoppingCartViewModel.RefreshOrderListAsync();
+                RefreshSummary();
+            }
+            catch (Exception ex)
+            {
+                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         public async Task LoadOrderAsync()

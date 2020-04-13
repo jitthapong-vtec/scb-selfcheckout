@@ -154,13 +154,13 @@
     <value>Confirm</value>
   </data>
   <data name="ConfirmDeleteItem" xml:space="preserve">
-    <value>Do you have to delete item?</value>
+    <value>Do you want to delete item?</value>
   </data>
   <data name="ConfirmLogout" xml:space="preserve">
     <value>Are you sure you want to log out?</value>
   </data>
   <data name="ConfirmUseCoupon" xml:space="preserve">
-    <value>Do you have to use coupon?</value>
+    <value>Do you want to use coupon?</value>
   </data>
   <data name="ContinueShopping" xml:space="preserve">
     <value>Continue Shopping</value>
@@ -332,8 +332,8 @@
   <data name="ScanCoupon" xml:space="preserve">
     <value>Scan Coupon</value>
   </data>
-  <data name="ScanLaserOnShoppingCard" xml:space="preserve">
-    <value>Please scan laser on QR Shopping card</value>
+  <data name="ScanLaserOnQrCode" xml:space="preserve">
+    <value>Please scan laser on QR Code</value>
   </data>
   <data name="ScanShoppingCard" xml:space="preserve">
     <value>Please scan shopping card</value>
@@ -408,7 +408,7 @@
     <value>Yes</value>
   </data>
   <data name="ConfirmDeleteCoupon" xml:space="preserve">
-    <value>Do you have to delete coupon?</value>
+    <value>Do you want to delete coupon?</value>
   </data>
   <data name="TotalDiscount" xml:space="preserve">
     <value>Total Discount</value>
@@ -430,5 +430,11 @@
   </data>
   <data name="CannotConnectToServer" xml:space="preserve">
     <value>Can't cannect to server! Please try again</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="PleaseScanCoupon" xml:space="preserve">
+    <value>Please scan coupon</value>
   </data>
 </root>
