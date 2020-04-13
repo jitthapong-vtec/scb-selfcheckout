@@ -90,6 +90,9 @@ namespace SelfCheckout.ViewModels
         {
             if (OrderDetails == null)
                 return;
+            if (!string.IsNullOrEmpty(SaleEngineService.OrderData.TotalBillingAmount.CurrentValueAdjust?.VaDetail?.Code))
+                return;
+
             IsSelectAllOrder = !IsSelectAllOrder;
             foreach (var order in OrderDetails)
             {
@@ -142,7 +145,12 @@ namespace SelfCheckout.ViewModels
                 var selectedOrders = OrderDetails.Where(o => o.IsSelected).ToArray();
                 if (selectedOrders.Any())
                 {
-                    var result = await DialogService.ConfirmAsync(AppResources.Delete, AppResources.ConfirmDeleteItem, AppResources.Yes, AppResources.No, true);
+                    var itemsNameToDelete = "";
+                    foreach(var selectedOrder in selectedOrders)
+                    {
+                        itemsNameToDelete += $"{selectedOrder.ItemDetail.Item.Desc}\n";
+                    }
+                    var result = await DialogService.ConfirmAsync(AppResources.ConfirmDeleteItem, itemsNameToDelete, AppResources.Yes, AppResources.No, true);
 
                     if (result)
                     {
@@ -238,6 +246,10 @@ namespace SelfCheckout.ViewModels
         public Task RefreshOrderListAsync()
         {
             var orderDetails = SaleEngineService.OrderData?.OrderDetails;
+            if (!string.IsNullOrEmpty(SaleEngineService.OrderData.TotalBillingAmount.CurrentValueAdjust?.VaDetail?.Code))
+            {
+                orderDetails.ForEach(o => o.IsEditable = false);
+            }
             OrderDetails = orderDetails.ToObservableCollection();
 
             Task.Run(() => SetOrderImage(orderDetails));

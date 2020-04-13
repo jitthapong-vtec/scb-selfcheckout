@@ -332,7 +332,7 @@
   <data name="ScanCoupon" xml:space="preserve">
     <value>Scan Coupon</value>
   </data>
-  <data name="ScanLaserOnQrCode" xml:space="preserve">
+  <data name="ScanLaserOnQRCode" xml:space="preserve">
     <value>Please scan laser on QR Code</value>
   </data>
   <data name="ScanShoppingCard" xml:space="preserve">

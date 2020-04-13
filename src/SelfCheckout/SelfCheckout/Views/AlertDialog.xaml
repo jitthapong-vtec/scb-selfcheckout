@@ -17,8 +17,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Margin="8,4,8,0" Text="{Binding Title}" FontSize="Large" FontAttributes="Bold"/>
-                <Label Grid.Row="1" Margin="8" Text="{Binding Message}" FontSize="Medium" VerticalOptions="Center"/>
+                <Label Grid.Row="0" Margin="8,4,8,0" Text="{Binding Title}" FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                <Label Grid.Row="1" Margin="8" Text="{Binding Message}" FontSize="Medium" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
                 <controls:TappedGrid Grid.Row="2" HorizontalOptions="End" WidthRequest="100" Margin="8" 
                                      effects:RoundCornersEffect.CornerRadius="3"
                                      TappedCommand="{Binding OkCommand}">

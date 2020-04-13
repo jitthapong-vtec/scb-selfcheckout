@@ -276,6 +276,7 @@ namespace SelfCheckout.Models
     {
         bool _isSelected;
         string _imageUrl;
+        bool _isEditable = true;
 
         [JsonProperty("Guid")]
         public string Guid { get; set; }
@@ -346,7 +347,18 @@ namespace SelfCheckout.Models
             get => _isSelected;
             set
             {
+                if (!IsEditable)
+                    return;
                 _isSelected = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool IsEditable {
+            get => _isEditable;
+            set
+            {
+                _isEditable = value;
                 NotifyPropertyChanged();
             }
         }

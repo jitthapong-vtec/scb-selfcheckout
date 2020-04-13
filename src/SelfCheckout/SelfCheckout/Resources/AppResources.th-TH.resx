@@ -327,7 +327,7 @@
   <data name="PleaseScanCoupon" xml:space="preserve">
     <value>กรุณาสแกนคูปอง</value>
   </data>
-  <data name="ScanLaserOnQrCode" xml:space="preserve">
+  <data name="ScanLaserOnQRCode" xml:space="preserve">
     <value>กรุณาสแกนเลเซอร์ที่คิวอาร์โคด</value>
   </data>
 </root>

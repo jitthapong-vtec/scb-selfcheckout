@@ -395,7 +395,22 @@ namespace SelfCheckout.ViewModels
         public ContentView CurrentView
         {
             get => _currentView;
-            set => SetProperty(ref _currentView, value);
+            set => SetProperty(ref _currentView, value, () =>
+            {
+                if (value is ShoppingCartView)
+                {
+                    SummaryVisible = true;
+                }
+                else
+                {
+                    SummaryVisible = false;
+
+                    if (value is OrderView)
+                    {
+                        IsBeingPaymentProcess = false;
+                    }
+                }
+            });
         }
 
         public ObservableCollection<Payment> Payments
@@ -546,20 +561,6 @@ namespace SelfCheckout.ViewModels
 
         async Task SelectTabAsync(TabItem item)
         {
-            if (item.Page is ShoppingCartView)
-            {
-                SummaryVisible = true;
-            }
-            else
-            {
-                SummaryVisible = false;
-
-                if (item.Page is OrderView)
-                {
-                    IsBeingPaymentProcess = false;
-                }
-            }
-
             PageTitle = item.Title;
             CurrentView = item.Page;
             item.Selected = true;

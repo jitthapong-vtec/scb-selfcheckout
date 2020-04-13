@@ -765,9 +765,9 @@ namespace SelfCheckout.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Please scan laser on QR Code.
         /// </summary>
-        internal static string ScanLaserOnQrCode {
+        internal static string ScanLaserOnQRCode {
             get {
-                return ResourceManager.GetString("ScanLaserOnQrCode", resourceCulture);
+                return ResourceManager.GetString("ScanLaserOnQRCode", resourceCulture);
             }
         }
         
