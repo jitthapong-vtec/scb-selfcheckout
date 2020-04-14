@@ -25,27 +25,23 @@ namespace SelfCheckout.ViewModels.Base
             RegisterService = registerService;
         }
 
-        protected void ScanShoppingCard()
+        protected string DecodeShoppingCardData(string scanData)
         {
-            DialogService.ShowDialog("BarcodeScanDialog", null, (scanResult) =>
+            var data = "";
+            if (!string.IsNullOrEmpty(scanData))
             {
-                var result = scanResult.Parameters.GetValue<string>("ScanData");
-                if (!string.IsNullOrEmpty(result))
+                try
                 {
-                    var inputValue = "";
-                    try
-                    {
-                        var definition = new { S = "", C = "" };
-                        var qrFromKiosk = JsonConvert.DeserializeAnonymousType(result, definition);
-                        inputValue = qrFromKiosk.S;
-                    }
-                    catch
-                    {
-                        inputValue = result;
-                    }
-                    ScanShoppingCardCallback(inputValue);
+                    var definition = new { S = "", C = "" };
+                    var qrFromKiosk = JsonConvert.DeserializeAnonymousType(scanData, definition);
+                    data = qrFromKiosk.S;
                 }
-            });
+                catch
+                {
+                    data = scanData;
+                }
+            }
+            return data;
         }
 
         protected async Task ValidateShoppingCardAsync(string shoppingCard)

@@ -36,7 +36,7 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ScanCommand => new Command<object>((data) =>
         {
-            InputValue = data?.ToString();
+            InputValue = DecodeShoppingCardData(data?.ToString());
         });
 
         public ICommand ScanShoppingCardCommand => new Command(async () =>
@@ -76,7 +76,7 @@ namespace SelfCheckout.ViewModels
             var scanData = parameters.GetValue<string>("ScanData");
             if (!string.IsNullOrEmpty(scanData))
             {
-                InputValue = scanData;
+                InputValue = DecodeShoppingCardData(scanData);
             }
             IsBegingScan = false;
         }

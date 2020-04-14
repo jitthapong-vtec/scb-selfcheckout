@@ -24,7 +24,19 @@ namespace SelfCheckout.ViewModels
         {
             MessagingCenter.Subscribe<MainViewModel, string>(this, "ReceiveShoppingCardFromScanner", (sender, barcode) =>
             {
-                InputValue = barcode;
+                if (!string.IsNullOrEmpty(barcode))
+                {
+                    try
+                    {
+                        var definition = new { S = "", C = "" };
+                        var qrFromKiosk = JsonConvert.DeserializeAnonymousType(barcode, definition);
+                        InputValue = qrFromKiosk.S;
+                    }
+                    catch
+                    {
+                        InputValue = barcode;
+                    }
+                }
             });
         }
 
