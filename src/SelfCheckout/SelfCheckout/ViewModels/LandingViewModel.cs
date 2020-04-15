@@ -2,6 +2,7 @@
 using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Resources;
+using SelfCheckout.Services;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
@@ -37,11 +38,13 @@ namespace SelfCheckout.ViewModels
                 IsBusy = true;
 
                 await _selfCheckoutService.LoadConfigAsync();
+                await _selfCheckoutService.ValidateMachineAsync(GlobalSettings.Instance.MachineIp);
+
                 await NavigationService.NavigateAsync("LoginView");
             }
             catch (Exception ex)
             {
-                var result = await DialogService.ConfirmAsync(ex.Message, "Do you want to go to settings?", AppResources.Yes, AppResources.No);
+                var result = await DialogService.ConfirmAsync("Do you want to go to settings?", ex.Message, AppResources.Yes, AppResources.No);
                 if (result)
                 {
                     if (Device.RuntimePlatform == Device.UWP)
@@ -51,7 +54,7 @@ namespace SelfCheckout.ViewModels
                 }
                 else
                 {
-                    await ReloadData();
+                    DependencyService.Get<INativeApiService>()?.ExitApp();
                 }
             }
             finally

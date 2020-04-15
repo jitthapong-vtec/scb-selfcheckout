@@ -195,7 +195,11 @@ namespace SelfCheckout.ViewModels
                 else
                 {
                     if (CurrentView is ShoppingCartView)
+                    {
+                        if (!string.IsNullOrEmpty(_saleEngineService.OrderData.TotalBillingAmount.CurrentValueAdjust?.VaDetail?.Code))
+                            return;
                         await AddOrderAsync(data?.ToString());
+                    }
                 }
             }
         });
@@ -519,7 +523,7 @@ namespace SelfCheckout.ViewModels
                 GlobalSettings.Instance.InitLanguage();
 
                 MessagingCenter.Send(this, "LanguageChange");
-                await TutorialViewModel.LoadImageAsset();
+                await TutorialViewModel.ReloadImageAsset();
                 RefreshTab();
             });
         }

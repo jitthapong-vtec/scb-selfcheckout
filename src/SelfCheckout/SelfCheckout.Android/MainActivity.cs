@@ -8,6 +8,7 @@ using Android.Support.V4.App;
 using Android;
 using Prism;
 using Prism.Ioc;
+using Plugin.CurrentActivity;
 
 namespace SelfCheckout.Droid
 {
@@ -28,6 +29,7 @@ namespace SelfCheckout.Droid
 
             base.OnCreate(savedInstanceState);
 
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             ImageService.Instance.Initialize(new FFImageLoading.Config.Configuration()

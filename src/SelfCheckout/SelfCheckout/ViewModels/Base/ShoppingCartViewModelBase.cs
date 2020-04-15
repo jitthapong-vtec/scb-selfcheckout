@@ -50,7 +50,7 @@ namespace SelfCheckout.ViewModels.Base
             {
                 IsBusy = true;
 
-                await SelfCheckoutService.ValidateShoppingCardAsync(SaleEngineService.LoginData.UserInfo.MachineEnv.MachineIp, shoppingCard);
+                await SelfCheckoutService.ValidateShoppingCardAsync(GlobalSettings.Instance.MachineIp, shoppingCard);
 
                 var customersData = await RegisterService.GetCustomerAsync(shoppingCard);
 

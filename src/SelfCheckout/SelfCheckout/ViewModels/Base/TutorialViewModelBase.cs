@@ -35,10 +35,19 @@ namespace SelfCheckout.ViewModels.Base
             return PimCoreService.ImageAssets?.Where(a => a.AssetId == id).FirstOrDefault();
         }
 
-        public async Task LoadImageAsset()
+        protected async Task LoadImageAsset()
         {
-            var lang = _selfCheckoutService.CurrentLanguage.LangCode;
-            await PimCoreService.GetMediaByLocationAsync(lang.ToLower());
+            try
+            {
+                IsBusy = true;
+                var lang = _selfCheckoutService.CurrentLanguage.LangCode;
+                await PimCoreService.GetMediaByLocationAsync(lang.ToLower());
+            }
+            catch { }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }

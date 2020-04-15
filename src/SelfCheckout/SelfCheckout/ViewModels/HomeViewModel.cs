@@ -34,17 +34,8 @@ namespace SelfCheckout.ViewModels
 
         public override async Task OnTabSelected(TabItem item)
         {
-            try
-            {
-                IsBusy = true;
-                await LoadImageAsset();
-                Assets = PimCoreService.ImageAssets?.ToObservableCollection();
-            }
-            catch { }
-            finally
-            {
-                IsBusy = false;
-            }
+            await LoadImageAsset();
+            Assets = PimCoreService.ImageAssets?.ToObservableCollection();
         }
     }
 }
