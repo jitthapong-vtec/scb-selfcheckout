@@ -85,7 +85,8 @@ namespace SelfCheckout.ViewModels
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            base.OnNavigatedTo(parameters);
+            if (TaskResult == null)
+                base.OnNavigatedTo(parameters);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
+using SelfCheckout.Extensions;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,11 @@ namespace SelfCheckout.ViewModels
         {
         }
 
-        public ICommand OpenCameraScannerCommand => new Command(async () => await NavigationService.NavigateAsync("CameraScannerView"));
+        public ICommand OpenCameraScannerCommand => new Command(async () =>
+        {
+            var result = await NavigationService.ShowDialogAsync<string>("CameraScannerView", null);
+            CouponCode = result;
+        });
 
         public ICommand OpenHardwareScannerCommand => new Command(() => MessagingCenter.Send<ViewModelBase>(this, "RequestHWScanner"));
 
@@ -56,7 +61,11 @@ namespace SelfCheckout.ViewModels
         public bool CouponInputViewVisible
         {
             get => _couponInputViewVisible;
-            set => SetProperty(ref _couponInputViewVisible, value);
+            set => SetProperty(ref _couponInputViewVisible, value, () =>
+            {
+                CouponCode = "";
+                CouponCodeDsp = "";
+            });
         }
     }
 }

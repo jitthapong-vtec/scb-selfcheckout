@@ -9,7 +9,7 @@
              mc:Ignorable="d"
        x:Class="SelfCheckout.Views.OrderItemView">
     <Frame Margin="{OnPlatform Android='-4,0,-4,4', UWP=0}" Padding="0">
-        <SwipeView x:Name="swipeView" IsEnabled="{Binding IsEditable}">
+        <SwipeView x:Name="swipeView">
             <SwipeView.RightItems>
                 <SwipeItemView>
                     <controls:TappedGrid Tapped="Delete_Tapped" BackgroundColor="Red" WidthRequest="96">
@@ -17,6 +17,14 @@
                             <Label Style="{StaticResource LabelIconStyle}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" FontSize="36" Text="&#xf1f8;" HorizontalOptions="Center"/>
                             <Label Text="{i18n:Translate Delete}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
                         </StackLayout>
+                        <controls:TappedGrid.Triggers>
+                            <DataTrigger TargetType="controls:TappedGrid"  Binding="{Binding IsEditable}" Value="True">
+                                <Setter Property="BackgroundColor" Value="Red"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="controls:TappedGrid"  Binding="{Binding IsEditable}" Value="False">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Gray400}"/>
+                            </DataTrigger>
+                        </controls:TappedGrid.Triggers>
                     </controls:TappedGrid>
                 </SwipeItemView>
             </SwipeView.RightItems>

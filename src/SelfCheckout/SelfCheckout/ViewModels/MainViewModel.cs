@@ -157,15 +157,6 @@ namespace SelfCheckout.ViewModels
             base.OnNavigatedTo(parameters);
 
             await LoadOrderAsync();
-
-            if (!string.IsNullOrEmpty(parameters.GetValue<string>("ScanData")))
-            {
-                var scanData = parameters.GetValue<string>("ScanData");
-                if (CouponInputViewModel.CouponInputViewVisible)
-                    CouponInputViewModel.CouponCode = scanData;
-                else
-                    MessagingCenter.Send(this, "ReceiveShoppingCardFromScanner", scanData);
-            }
         }
 
         public ICommand TabSelectedCommand => new Command<TabItem>(async (item) => await SelectTabAsync(item));

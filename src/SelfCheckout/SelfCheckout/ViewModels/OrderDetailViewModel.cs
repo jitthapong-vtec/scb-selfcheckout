@@ -38,7 +38,9 @@ namespace SelfCheckout.ViewModels
         {
             base.OnNavigatedTo(parameters);
 
-            OrderDetail = parameters.GetValue<OrderDetail>("OrderDetail");
+            var orderDetail = parameters.GetValue<OrderDetail>("OrderDetail");
+            if (orderDetail != null)
+                OrderDetail = orderDetail;
         }
     }
 }
