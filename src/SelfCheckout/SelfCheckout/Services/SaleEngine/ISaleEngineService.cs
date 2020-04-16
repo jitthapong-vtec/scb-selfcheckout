@@ -10,6 +10,8 @@ namespace SelfCheckout.Services.SaleEngine
     {
         OrderData OrderData { get; }
 
+        string CouponCode { get; }
+
         LoginData LoginData { get; set; }
 
         IList<Currency> Currencies { get; }

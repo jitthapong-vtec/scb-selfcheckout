@@ -677,7 +677,7 @@ namespace SelfCheckout.ViewModels
                 IsBusy = true;
                 await _saleEngineService.ActionOrderPaymentAsync(payload);
 
-                CouponCode = _saleEngineService.OrderData.TotalBillingAmount.CurrentValueAdjust?.VaDetail?.Code;
+                CouponCode = _saleEngineService.CouponCode;
 
                 await ShoppingCartViewModel.RefreshOrderListAsync();
                 RefreshSummary();

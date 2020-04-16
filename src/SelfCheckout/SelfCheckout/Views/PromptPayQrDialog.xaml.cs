@@ -16,6 +16,7 @@ namespace SelfCheckout.Views
         public PromptPayQrDialog()
         {
             InitializeComponent();
+            CloseWhenBackgroundIsClicked = false;
         }
 
         protected override bool OnBackButtonPressed()

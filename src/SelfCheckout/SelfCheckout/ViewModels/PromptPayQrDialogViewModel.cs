@@ -105,21 +105,27 @@ namespace SelfCheckout.ViewModels
             if (canGenQr)
             {
                 IsCloseBtnVisible = false;
-                Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+                var stopTimer = false;
+                await Task.Run(() =>
                 {
-                    if (_ct.IsCancellationRequested)
-                        return false;
+                    Device.InvokeOnMainThreadAsync(async () =>
+                        {
+                            while (!stopTimer)
+                            {
+                                if (_ct.IsCancellationRequested)
+                                    stopTimer = true;
 
-                    if (CountDown == 0)
-                        return true;
+                                if (CountDown == 0)
+                                    stopTimer = true;
 
-                    if (--CountDown == 0)
-                    {
-                        _tokenSource.Cancel();
-                        SetResult(null);
-                        return false;
-                    }
-                    return true;
+                                if (--CountDown == 0)
+                                {
+                                    _tokenSource.Cancel();
+                                    stopTimer = true;
+                                    await SetResult(null);
+                                }
+                            }
+                        });
                 });
                 await InquireAsync();
             }
@@ -130,7 +136,7 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                CountDown = 120;
+                CountDown = GlobalSettings.Instance.PromptPayTimeout;
                 IsCountdownStarted = true;
                 var payload = new
                 {

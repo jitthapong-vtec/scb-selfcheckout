@@ -78,7 +78,7 @@ namespace SelfCheckout.ViewModels
         {
             if (OrderDetails == null)
                 return;
-            if (!string.IsNullOrEmpty(SaleEngineService.OrderData.TotalBillingAmount.CurrentValueAdjust?.VaDetail?.Code))
+            if (!string.IsNullOrEmpty(SaleEngineService.CouponCode))
                 return;
 
             IsSelectAllOrder = !IsSelectAllOrder;
@@ -104,6 +104,9 @@ namespace SelfCheckout.ViewModels
         public ICommand ChangeQtyCommand => new DelegateCommand<OrderDetail>(async (order) =>
         {
             var qty = order.BillingQuantity.Quantity;
+            if (qty <= 0)
+                return;
+
             var payload = new
             {
                 SessionKey = SaleEngineService.LoginData.SessionKey,
@@ -119,6 +122,9 @@ namespace SelfCheckout.ViewModels
 
         public ICommand DeleteOrderCommand => new DelegateCommand<OrderDetail>(async (order) =>
         {
+            if (!string.IsNullOrEmpty(SaleEngineService.CouponCode))
+                return;
+
             if (order != null)
             {
                 var result = await NavigationService.ConfirmAsync(AppResources.ConfirmDeleteItem, order.ItemDetail.Item.Desc, AppResources.Yes, AppResources.No, true);
@@ -234,7 +240,7 @@ namespace SelfCheckout.ViewModels
         public Task RefreshOrderListAsync()
         {
             var orderDetails = SaleEngineService.OrderData?.OrderDetails;
-            if (!string.IsNullOrEmpty(SaleEngineService.OrderData.TotalBillingAmount.CurrentValueAdjust?.VaDetail?.Code))
+            if (!string.IsNullOrEmpty(SaleEngineService.CouponCode))
             {
                 orderDetails.ForEach(o => o.IsEditable = false);
             }

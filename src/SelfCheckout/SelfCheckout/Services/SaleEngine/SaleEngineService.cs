@@ -28,6 +28,8 @@ namespace SelfCheckout.Services.SaleEngine
 
         public LoginData LoginData { get; set; }
 
+        public string CouponCode { get => OrderData?.TotalBillingAmount?.CurrentValueAdjust?.VaDetail?.Code; }
+
         public IList<Currency> Currencies { get; private set; }
 
         public Currency CurrencySelected { get; set; }

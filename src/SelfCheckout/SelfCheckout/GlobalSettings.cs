@@ -66,6 +66,8 @@ namespace SelfCheckout
 
         public string PimCoreUrl { get => "https://pim.kingpower.com/"; }
 
+        public int PromptPayTimeout { get => Preferences.Get("promptpay_timeout", 120); }
+
         public string MachineIp
         {
             get

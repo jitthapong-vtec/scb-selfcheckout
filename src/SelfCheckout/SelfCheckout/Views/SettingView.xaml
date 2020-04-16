@@ -41,6 +41,7 @@
                     <Entry Placeholder="API Self-Checkout" Text="{Binding AppConfig.UrlSaleEngineApi}"/>
                     <Entry Placeholder="Web Member" Text="{Binding AppConfig.UrlMemberWeb}"/>
                     <Entry Placeholder="Payment Time out" Keyboard="Numeric" Text="{Binding AppConfig.PaymentTimeout}"/>
+                    <Entry Placeholder="Prompt Pay Time out" Keyboard="Numeric" Text="{Binding PromptPayTimeout}" IsReadOnly="False"/>
                     <Entry Placeholder="Device UID" x:Name="entryDeviceUid" Text="{Binding DeviceUID}" IsReadOnly="True"/>
                     <Entry IsVisible="False" x:Name="entryMachineNo" Text="{Binding MachineNo}"/>
                     <forms:ZXingBarcodeImageView
