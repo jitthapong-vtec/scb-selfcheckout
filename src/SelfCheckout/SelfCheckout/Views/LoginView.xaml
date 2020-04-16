@@ -26,6 +26,9 @@
                     Desktop=resource://SelfCheckout.Resources.Images.desktop_bg.png}"/>
             <controls:ActionBarView IsVisible="{OnIdiom Phone=True}">
                 <ffimageloading:CachedImage IsVisible="{OnIdiom Phone=True, Desktop=False}" HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.png"/>
+                <controls:TappedGrid IsVisible="{OnPlatform Android=True, UWP=False}" TappedCommand="{Binding BackCommand}" HorizontalOptions="Start" WidthRequest="36" HeightRequest="36">
+                    <Label Style="{StaticResource ActionBarLabelIconStyle}" Text="&#xf053;" VerticalOptions="Center" HorizontalOptions="Center"/>
+                </controls:TappedGrid>
             </controls:ActionBarView>
             <Grid VerticalOptions="Center">
                 <Grid.RowDefinitions>

@@ -23,26 +23,28 @@
                     
                 </Grid>
                 <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="{StaticResource Gray200}"/>
-                <Grid Grid.Row="2" Margin="12,48">
+                <Grid Grid.Row="2" Margin="12,48" ColumnSpacing="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <controls:TappedGrid Grid.Column="0" 
-                                             WidthRequest="40"
+                                             WidthRequest="48"
                                              TappedCommand="{Binding ScanShoppingCardCommand}"
                                          effects:RoundCornersEffect.CornerRadius="3"
+                                         effects:RoundCornersEffect.RoundCorner="Left"
                                          BackgroundColor="{StaticResource Secondary}">
                         <Label FontFamily="{StaticResource FontAwesome}" Text="&#xf030;" HorizontalOptions="Center" VerticalOptions="Center" FontSize="24" TextColor="{StaticResource Gray50}"/>
                     </controls:TappedGrid>
-                    <Entry FontSize="Medium" Grid.Column="1" Text="{Binding InputValue}"/>
+                    <Entry FontSize="Large" Grid.Column="1" HorizontalTextAlignment="Center" Text="{Binding InputValue}"/>
                     <controls:TappedGrid Grid.Column="2"
-                                             WidthRequest="40"
+                                             WidthRequest="48"
                                              TappedCommand="{Binding ValidateShoppingCardCommand}"
                                              IsEnabled="{Binding Source={RelativeSource Mode=Self}, Path=Text, Converter={StaticResource StringNotNullOrEmptyConverter}}"
                                          BackgroundColor="{StaticResource Gray200}"
-                                         effects:RoundCornersEffect.CornerRadius="3">
+                                         effects:RoundCornersEffect.CornerRadius="3"
+                                         effects:RoundCornersEffect.RoundCorner="Right">
                         <Label FontFamily="{StaticResource FontAwesome}" HorizontalOptions="Center" VerticalOptions="Center" Text="&#xf00c;" FontSize="24" TextColor="{StaticResource Secondary}"/>
                     </controls:TappedGrid>
                 </Grid>

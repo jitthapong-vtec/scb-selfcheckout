@@ -4,6 +4,7 @@ using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
+using SelfCheckout.Services;
 using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -27,16 +28,7 @@ namespace SelfCheckout.ViewModels
             {
                 if (!string.IsNullOrEmpty(barcode))
                 {
-                    try
-                    {
-                        var definition = new { S = "", C = "" };
-                        var qrFromKiosk = JsonConvert.DeserializeAnonymousType(barcode, definition);
-                        InputValue = qrFromKiosk.S;
-                    }
-                    catch
-                    {
-                        InputValue = barcode;
-                    }
+                    InputValue = Utils.TryDecodeKioskShoppingCard(barcode);
                 }
             });
         }
@@ -50,7 +42,7 @@ namespace SelfCheckout.ViewModels
                  else _isOpenScanner = true;
              }
              var result = await NavigationService.ShowDialogAsync<string>("CameraScannerView", null);
-             InputValue = result;
+             InputValue = Utils.TryDecodeKioskShoppingCard(result);
          });
 
         public ICommand ValidateShoppingCardCommand => new DelegateCommand(async () =>

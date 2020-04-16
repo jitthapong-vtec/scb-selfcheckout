@@ -26,25 +26,6 @@ namespace SelfCheckout.ViewModels.Base
             RegisterService = registerService;
         }
 
-        protected string DecodeShoppingCardData(string scanData)
-        {
-            var data = "";
-            if (!string.IsNullOrEmpty(scanData))
-            {
-                try
-                {
-                    var definition = new { S = "", C = "" };
-                    var qrFromKiosk = JsonConvert.DeserializeAnonymousType(scanData, definition);
-                    data = qrFromKiosk.S;
-                }
-                catch
-                {
-                    data = scanData;
-                }
-            }
-            return data;
-        }
-
         protected async Task ValidateShoppingCardAsync(string shoppingCard)
         {
             try

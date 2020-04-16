@@ -5,6 +5,7 @@ using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
@@ -35,7 +36,7 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ScanCommand => new Command<object>((data) =>
         {
-            InputValue = DecodeShoppingCardData(data?.ToString());
+            InputValue = Utils.TryDecodeKioskShoppingCard(data?.ToString());
         });
 
         public ICommand ScanShoppingCardCommand => new Command(async () =>
@@ -48,7 +49,7 @@ namespace SelfCheckout.ViewModels
                     IsBegingScan = true;
             }
             var result = await NavigationService.ShowDialogAsync<string>("CameraScannerView", null);
-            InputValue = result;
+            InputValue = Utils.TryDecodeKioskShoppingCard(result);
         });
 
         public ICommand ValidateShoppingCardCommand => new DelegateCommand(async () => await ValidateShoppingCardAsync(InputValue));
