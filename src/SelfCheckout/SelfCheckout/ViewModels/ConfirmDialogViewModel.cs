@@ -3,12 +3,14 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
+using SelfCheckout.ViewModels.Base;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class ConfirmDialogViewModel : BindableBase, IDialogAware, IAutoInitialize
+    public class ConfirmDialogViewModel : PopupNavigationBase<bool>
     {
         bool __okAsRedButton;
 
@@ -16,6 +18,10 @@ namespace SelfCheckout.ViewModels
         string _message;
         string _okButtonText;
         string _cancelButtonText;
+
+        public ConfirmDialogViewModel(INavigationService navigationService) : base(navigationService)
+        {
+        }
 
         public string Title
         {
@@ -46,39 +52,20 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref __okAsRedButton, value);
         }
 
-        public ICommand YesCommand => new DelegateCommand(() =>
+        public ICommand YesCommand => new DelegateCommand(async() =>
         {
-            SetResult(true);
+            await GoBackAsync(true);
         });
 
-        public ICommand NoCommand => new DelegateCommand(() =>
+        public ICommand NoCommand => new DelegateCommand(async() =>
         {
-            SetResult(false);
+            await GoBackAsync(false);
         });
 
-        public event Action<IDialogParameters> RequestClose;
-
-        void SetResult(bool isConfirm)
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            var parameters = new DialogParameters()
-            {
-                {"IsConfirmed", isConfirm }
-            };
+            base.OnNavigatedTo(parameters);
 
-            RequestClose?.Invoke(parameters);
-        }
-
-        public bool CanCloseDialog()
-        {
-            return true;
-        }
-
-        public void OnDialogClosed()
-        {
-        }
-
-        public void OnDialogOpened(IDialogParameters parameters)
-        {
             Title = parameters.GetValue<string>("Title");
             Message = parameters.GetValue<string>("Message");
             OkButtonText = parameters.GetValue<string>("OkButtonText");

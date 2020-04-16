@@ -7,11 +7,11 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class CameraScannerViewModel : NavigatableViewModelBase
+    public class CameraScannerViewModel : PopupNavigationBase<string>
     {
         bool _isScanning;
 
-        public CameraScannerViewModel(INavigationService navigationService, IDialogService dialogService) : base(navigationService, dialogService)
+        public CameraScannerViewModel(INavigationService navigationService) : base(navigationService)
         {
         }
 
@@ -52,12 +52,7 @@ namespace SelfCheckout.ViewModels
         public async Task SetResultAsync(string data)
         {
             IsScanning = false;
-
-            var parameters = new NavigationParameters()
-            {
-                {"ScanData", data }
-            };
-            await NavigationService.GoBackAsync(parameters);
+            await GoBackAsync(data);
         }
     }
 }

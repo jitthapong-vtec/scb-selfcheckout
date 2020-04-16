@@ -17,9 +17,9 @@ namespace SelfCheckout.ViewModels
 {
     public class SettingViewModel : SettingViewModelBase
     {
-        public SettingViewModel(INavigationService navigatinService, IDialogService dialogService, 
+        public SettingViewModel(INavigationService navigatinService,
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) : 
-            base(navigatinService, dialogService, selfCheckoutService, saleEngineService)
+            base(navigatinService, selfCheckoutService, saleEngineService)
         {
         }
     }

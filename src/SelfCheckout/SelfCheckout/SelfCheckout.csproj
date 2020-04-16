@@ -32,6 +32,7 @@
     <PackageReference Include="MagicGradients" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
+    <PackageReference Include="Prism.Plugin.Popups" Version="7.2.0.1046" />
     <PackageReference Include="Sharpnado.Presentation.Forms" Version="1.4.0" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.2" />
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
@@ -71,8 +72,8 @@
     <Compile Update="Views\ConfirmDialog.xaml.cs">
       <DependentUpon>ConfirmDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\CustomerCartConfirmDialog.xaml.cs">
-      <DependentUpon>CustomerCartConfirmDialog.xaml</DependentUpon>
+    <Compile Update="Views\CustomerShoppingCardConfirmDialog.xaml.cs">
+      <DependentUpon>CustomerShoppingCardConfirmDialog.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\CustomerSelectionView.xaml.cs">
       <DependentUpon>CustomerSelectionView.xaml</DependentUpon>
@@ -183,7 +184,7 @@
     <EmbeddedResource Update="Views\UserAuthenView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\CustomerCartConfirmDialog.xaml">
+    <EmbeddedResource Update="Views\CustomerShoppingCardConfirmDialog.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\DeviceView.xaml">

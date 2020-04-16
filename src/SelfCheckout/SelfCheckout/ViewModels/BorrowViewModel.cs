@@ -19,7 +19,7 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class BorrowViewModel : ShoppingCartViewModelBase, INavigationAware
+    public class BorrowViewModel : ShoppingCartViewModelBase
     {
         object _lock = new object();
 
@@ -27,11 +27,10 @@ namespace SelfCheckout.ViewModels
 
         bool _isBeingScan;
 
-        public BorrowViewModel(INavigationService navigationService, IDialogService dialogService, ISaleEngineService saleEngineService,
+        public BorrowViewModel(INavigationService navigationService, ISaleEngineService saleEngineService,
             ISelfCheckoutService selfCheckoutService, IRegisterService registerService) :
-            base(dialogService, saleEngineService, selfCheckoutService, registerService)
+            base(navigationService, saleEngineService, selfCheckoutService, registerService)
         {
-            NavigationService = navigationService;
         }
 
         public ICommand ScanCommand => new Command<object>((data) =>
@@ -48,12 +47,11 @@ namespace SelfCheckout.ViewModels
                 else
                     IsBegingScan = true;
             }
-            await NavigationService.NavigateAsync("CameraScannerView");
+            var result = await NavigationService.ShowDialogAsync<string>("CameraScannerView", null);
+            InputValue = result;
         });
 
         public ICommand ValidateShoppingCardCommand => new DelegateCommand(async () => await ValidateShoppingCardAsync(InputValue));
-
-        public INavigationService NavigationService { get; private set; }
 
         public string InputValue
         {
@@ -67,17 +65,8 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _isBeingScan, value);
         }
 
-        public void OnNavigatedFrom(INavigationParameters parameters)
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
-        }
-
-        public void OnNavigatedTo(INavigationParameters parameters)
-        {
-            var scanData = parameters.GetValue<string>("ScanData");
-            if (!string.IsNullOrEmpty(scanData))
-            {
-                InputValue = DecodeShoppingCardData(scanData);
-            }
             IsBegingScan = false;
         }
 
@@ -98,7 +87,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {

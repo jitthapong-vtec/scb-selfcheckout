@@ -26,9 +26,9 @@ namespace SelfCheckout.ViewModels
 
         int _totalOccupiedDevice;
 
-        public DeviceStatusViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService,
+        public DeviceStatusViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
             ISaleEngineService saleEngineService, IRegisterService registerService) : 
-            base(dialogService, selfCheckoutService, saleEngineService, registerService)
+            base(navigationService, selfCheckoutService, saleEngineService, registerService)
         {
             _selfCheckoutService = selfCheckoutService;
         }
@@ -38,10 +38,10 @@ namespace SelfCheckout.ViewModels
             await GetDeviceStatusAsync(search);
         });
 
-        public ICommand ShowOrderDetailCommand => new DelegateCommand<DeviceStatus>((sess) =>
+        public ICommand ShowOrderDetailCommand => new DelegateCommand<DeviceStatus>(async(sess) =>
         {
             if (sess.SessionStatus.SessionCode == "START")
-                ShowSessionOrder(sess);
+                await ShowSessionOrder(sess);
         });
 
         public ObservableCollection<DeviceStatus> Devices
@@ -74,7 +74,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {

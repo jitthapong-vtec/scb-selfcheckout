@@ -11,46 +11,39 @@ using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class AuthorizationDialogViewModel : AuthorizationViewModelBase, IDialogAware
+    public class AuthorizationDialogViewModel : AuthorizationViewModelBase
     {
-        public AuthorizationDialogViewModel(ISaleEngineService saleEngineService, ISelfCheckoutService selfCheckoutService) : base(saleEngineService, selfCheckoutService)
+        TaskCompletionSource<INavigationParameters> _tcs;
+
+        public AuthorizationDialogViewModel(INavigationService navigationService, ISaleEngineService saleEngineService,
+            ISelfCheckoutService selfCheckoutService) : base(navigationService, saleEngineService, selfCheckoutService)
         {
         }
 
-        protected override Task AuthorizeCallback(LoginData loginData)
+        protected override async Task AuthorizeCallback(LoginData loginData)
         {
-            SetResult(true, loginData);
-            return Task.FromResult(true);
+            await SetResult(true, loginData);
         }
 
-        public ICommand CancelCommand => new DelegateCommand(() =>
+        public ICommand CancelCommand => new DelegateCommand(async () =>
         {
-            SetResult(false, null);
+            await SetResult(false, null);
         });
 
-        public event Action<IDialogParameters> RequestClose;
-
-        void SetResult(bool isAuthorized, LoginData loginData)
+        async Task SetResult(bool isAuthorized, LoginData loginData)
         {
-            var parameters = new DialogParameters()
+            var parameters = new NavigationParameters()
             {
                 {"IsAuthorized", isAuthorized },
                 {"LoginData", loginData }
             };
-            RequestClose?.Invoke(parameters);
+            _tcs?.SetResult(parameters);
+            await NavigationService.GoBackAsync();
         }
 
-        public bool CanCloseDialog()
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            return true;
-        }
-
-        public void OnDialogClosed()
-        {
-        }
-
-        public void OnDialogOpened(IDialogParameters parameters)
-        {
+            _tcs = parameters.GetValue<TaskCompletionSource<INavigationParameters>>("TaskResult");
         }
     }
 }

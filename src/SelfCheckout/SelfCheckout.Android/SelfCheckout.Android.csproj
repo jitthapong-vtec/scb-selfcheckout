@@ -70,6 +70,9 @@
     <PackageReference Include="Plugin.CurrentActivity">
       <Version>2.1.0.4</Version>
     </PackageReference>
+    <PackageReference Include="Prism.Plugin.Popups">
+      <Version>7.2.0.1046</Version>
+    </PackageReference>
     <PackageReference Include="Sharpnado.Presentation.Forms">
       <Version>1.4.0</Version>
     </PackageReference>

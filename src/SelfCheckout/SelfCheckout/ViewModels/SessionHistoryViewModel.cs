@@ -29,9 +29,9 @@ namespace SelfCheckout.ViewModels
         string _filterSessionKey;
         string _filterMachineNo;
 
-        public SessionHistoryViewModel(IDialogService dialogService, 
+        public SessionHistoryViewModel(INavigationService navigationService, 
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : 
-            base(dialogService, selfCheckoutService, saleEngineService, registerService)
+            base(navigationService, selfCheckoutService, saleEngineService, registerService)
         {
             FilterTypes = new ObservableCollection<SimpleSelectedItem>() {
                 new SimpleSelectedItem()
@@ -88,9 +88,9 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _filterMachineNo, value);
         }
 
-        public ICommand ShowOrderDetailCommand => new DelegateCommand<DeviceStatus>((sess) =>
+        public ICommand ShowOrderDetailCommand => new DelegateCommand<DeviceStatus>(async (sess) =>
         {
-            ShowSessionOrder(sess);
+            await ShowSessionOrder(sess);
         });
 
         public ICommand ChangeFilterTypeCommand => new DelegateCommand<SimpleSelectedItem>((filterType) =>
@@ -147,7 +147,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {

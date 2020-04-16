@@ -1,4 +1,5 @@
-﻿using Prism.Services.Dialogs;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Services.PimCore;
@@ -15,8 +16,8 @@ namespace SelfCheckout.ViewModels
     {
         bool _tutorialViewVisible;
 
-        public TutorialViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService,
-            IPimCoreService pimCoreService) : base(dialogService, selfCheckoutService, pimCoreService)
+        public TutorialViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
+            IPimCoreService pimCoreService) : base(navigationService, selfCheckoutService, pimCoreService)
         {
         }
 

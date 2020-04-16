@@ -8,46 +8,46 @@ using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class SessionOrderDialogViewModel : CheckerOrderViewModelBase, IDialogAware
+    public class SessionOrderDialogViewModel : CheckerOrderViewModelBase
     {
-        public event Action<IDialogParameters> RequestClose;
+        TaskCompletionSource<INavigationParameters> _tcs;
 
-        public SessionOrderDialogViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, 
-            ISaleEngineService saleEngineService, IRegisterService registerService) : 
-            base(dialogService, selfCheckoutService, saleEngineService, registerService)
+        public SessionOrderDialogViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
+            ISaleEngineService saleEngineService, IRegisterService registerService) :
+            base(navigationService, selfCheckoutService, saleEngineService, registerService)
         {
         }
 
-        public ICommand ConfirmCommand => new DelegateCommand(() =>
+        public ICommand ConfirmCommand => new DelegateCommand(async () =>
         {
-            var dialogParameter = new DialogParameters()
+            var parameters = new NavigationParameters()
             {
                 {"IsConfirmed", true },
                 {"OrderInvoices", OrderInvoices }
             };
-            RequestClose?.Invoke(dialogParameter);
+            await SetResult(parameters);
         });
 
-        public ICommand CancelCommand => new DelegateCommand(() =>
+        public ICommand CancelCommand => new DelegateCommand(async () =>
         {
-            RequestClose?.Invoke(null);
+            await SetResult(null);
         });
 
-        public bool CanCloseDialog()
+        async Task SetResult(INavigationParameters parameters)
         {
-            return true;
+            _tcs?.SetResult(parameters);
+            await NavigationService.GoBackAsync();
         }
 
-        public void OnDialogClosed()
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-        }
+            _tcs = parameters.GetValue<TaskCompletionSource<INavigationParameters>>("TaskResult");
 
-        public async void OnDialogOpened(IDialogParameters parameters)
-        {
             var sessionKey = parameters.GetValue<long>("SessionKey");
             var shoppingCard = parameters.GetValue<string>("ShoppingCard");
             var sessionDate = parameters.GetValue<DateTime>("SessionDate");

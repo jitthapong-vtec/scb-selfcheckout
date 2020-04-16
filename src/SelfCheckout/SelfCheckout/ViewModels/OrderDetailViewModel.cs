@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
+using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.ViewModels.Base;
 using System;
@@ -14,7 +15,7 @@ namespace SelfCheckout.ViewModels
     {
         OrderDetail _orderDetail;
 
-        public OrderDetailViewModel(INavigationService navigatinService, IDialogService dialogService) : base(navigatinService, dialogService)
+        public OrderDetailViewModel(INavigationService navigatinService) : base(navigatinService)
         {
         }
 
@@ -24,13 +25,13 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _orderDetail, value);
         }
 
-        public ICommand ShowImageDetailCommand => new DelegateCommand(() =>
+        public ICommand ShowImageDetailCommand => new DelegateCommand(async() =>
         {
-            var parameter = new DialogParameters()
+            var parameter = new NavigationParameters()
             {
                 {"ImageUrl", OrderDetail.ImageUrl}
             };
-            DialogService.ShowDialog("ProductImageDetailDialog", parameter);
+            await NavigationService.ShowDialogAsync<INavigationParameters>("ProductImageDetailDialog", parameter);
         });
 
         public override void OnNavigatedTo(INavigationParameters parameters)

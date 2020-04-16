@@ -1,26 +1,27 @@
 ﻿using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Navigation;
 using Prism.Services.Dialogs;
+using SelfCheckout.Extensions;
+using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class ShoppingCardInputDialogViewModel : BindableBase, IDialogAware
+    public class ShoppingCardInputDialogViewModel : PopupNavigationBase<INavigationParameters>
     {
         object _lock = new object();
 
-        public Action ShowCameraScanner;
-
-        public event Action<IDialogParameters> RequestClose;
         string _inputValue;
         bool _isOpenScanner;
 
-        public ShoppingCardInputDialogViewModel()
+        public ShoppingCardInputDialogViewModel(INavigationService navigationService) : base(navigationService)
         {
             MessagingCenter.Subscribe<MainViewModel, string>(this, "ReceiveShoppingCardFromScanner", (sender, barcode) =>
             {
@@ -40,7 +41,7 @@ namespace SelfCheckout.ViewModels
             });
         }
 
-        public ICommand ScanShoppingCardCommand => new DelegateCommand(() =>
+        public ICommand ScanShoppingCardCommand => new DelegateCommand(async () =>
          {
              lock (_lock)
              {
@@ -48,22 +49,28 @@ namespace SelfCheckout.ViewModels
                      return;
                  else _isOpenScanner = true;
              }
-             ShowCameraScanner();
+             var result = await NavigationService.ShowDialogAsync<string>("CameraScannerView", null);
+             InputValue = result;
          });
 
-        public ICommand ValidateShoppingCardCommand => new DelegateCommand(() =>
+        public ICommand ValidateShoppingCardCommand => new DelegateCommand(async () =>
         {
-            var parameters = new DialogParameters()
-            {
-                { "ShoppingCard", InputValue }
-            };
-            RequestClose?.Invoke(parameters);
+            await SetResult(InputValue);
         });
 
-        public ICommand CancelCommand => new DelegateCommand(() =>
+        public ICommand CancelCommand => new DelegateCommand(async () =>
         {
-            RequestClose?.Invoke(null);
+            await SetResult(null);
         });
+
+        async Task SetResult(string result)
+        {
+            var parameters = new NavigationParameters()
+            {
+                { "ShoppingCard", result }
+            };
+            await GoBackAsync(parameters);
+        }
 
         public string InputValue
         {
@@ -71,19 +78,14 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _inputValue, value);
         }
 
-        public bool CanCloseDialog()
-        {
-            return true;
-        }
-
-        public void OnDialogClosed()
+        public override void OnNavigatedFrom(INavigationParameters parameters)
         {
             MessagingCenter.Unsubscribe<MainViewModel, string>(this, "ReceiveShoppingCardFromScanner");
         }
 
-        public void OnDialogOpened(IDialogParameters parameters)
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            ShowCameraScanner = parameters.GetValue<Action>("ShowCameraScannerAction");
+            base.OnNavigatedTo(parameters);
         }
     }
 }

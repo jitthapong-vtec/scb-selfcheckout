@@ -1,6 +1,7 @@
 ﻿using DLToolkit.Forms.Controls;
 using Prism;
 using Prism.Ioc;
+using Prism.Plugin.Popups;
 using SelfCheckout.Services.Payment;
 using SelfCheckout.Services.PimCore;
 using SelfCheckout.Services.Register;
@@ -41,17 +42,17 @@ namespace SelfCheckout
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterDialog<AlertDialog, AlertDialogViewModel>("AlertDialog");
-            containerRegistry.RegisterDialog<ConfirmDialog, ConfirmDialogViewModel>("ConfirmDialog");
-            containerRegistry.RegisterDialog<AuthorizationDialog, AuthorizationDialogViewModel>("AuthorizeDialog");
-            containerRegistry.RegisterDialog<CustomerCartConfirmDialog, CustomerCartConfirmDialogViewModel>("CustomerCardConfirmDialog");
-            containerRegistry.RegisterDialog<BarcodeScanView, BarcodeScanViewModel>("BarcodeScanDialog");
-            containerRegistry.RegisterDialog<ShoppingCardInputDialog, ShoppingCardInputDialogViewModel>("ShoppingCardInputDialog");
-            containerRegistry.RegisterDialog<SessionOrderDialog, SessionOrderDialogViewModel>("SessionOrderDialog");
-            containerRegistry.RegisterDialog<PromptPayQrDialog, PromptPayQrDialogViewModel>("PromptPayQrDialog");
-            containerRegistry.RegisterDialog<ProductImageDetailDialog, ProductImageDetailDialogViewModel>("ProductImageDetailDialog");
+            containerRegistry.RegisterPopupNavigationService();
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<AlertDialog, AlertDialogViewModel>("AlertDialog");
+            containerRegistry.RegisterForNavigation<ConfirmDialog, ConfirmDialogViewModel>("ConfirmDialog");
+            containerRegistry.RegisterForNavigation<AuthorizationDialog, AuthorizationDialogViewModel>("AuthorizeDialog");
+            containerRegistry.RegisterForNavigation<CustomerShoppingCardConfirmDialog, CustomerShoppingCardConfirmDialogViewModel>("CustomerCardConfirmDialog");
+            containerRegistry.RegisterForNavigation<ShoppingCardInputDialog, ShoppingCardInputDialogViewModel>("ShoppingCardInputDialog");
+            containerRegistry.RegisterForNavigation<SessionOrderDialog, SessionOrderDialogViewModel>("SessionOrderDialog");
+            containerRegistry.RegisterForNavigation<PromptPayQrDialog, PromptPayQrDialogViewModel>("PromptPayQrDialog");
+            containerRegistry.RegisterForNavigation<ProductImageDetailDialog, ProductImageDetailDialogViewModel>("ProductImageDetailDialog");
             containerRegistry.RegisterForNavigation<SettingView, SettingViewModel>();
             containerRegistry.RegisterForNavigation<CheckerSettingView, CheckerSettingViewModel>();
             containerRegistry.RegisterForNavigation<LandingView, LandingViewModel>();

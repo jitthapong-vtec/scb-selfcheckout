@@ -1,6 +1,8 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Navigation;
 using Prism.Services.Dialogs;
+using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,15 +10,17 @@ using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class ProductImageDetailDialogViewModel : BindableBase, IDialogAware
+    public class ProductImageDetailDialogViewModel : PopupNavigationBase<INavigationParameters>
     {
-        public event Action<IDialogParameters> RequestClose;
-
         string _imageUrl;
 
-        public ICommand CloseCommand => new DelegateCommand(() =>
+        public ProductImageDetailDialogViewModel(INavigationService navigationService) : base(navigationService)
         {
-            RequestClose?.Invoke(null);
+        }
+
+        public ICommand CloseCommand => new DelegateCommand(async () =>
+        {
+            await GoBackAsync(null);
         });
 
         public string ImageUrl
@@ -25,17 +29,10 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _imageUrl, value);
         }
 
-        public bool CanCloseDialog()
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
-            return true;
-        }
+            base.OnNavigatedTo(parameters);
 
-        public void OnDialogClosed()
-        {
-        }
-
-        public void OnDialogOpened(IDialogParameters parameters)
-        {
             ImageUrl = parameters.GetValue<string>("ImageUrl");
         }
     }

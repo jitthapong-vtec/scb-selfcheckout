@@ -18,8 +18,8 @@ namespace SelfCheckout.ViewModels.Base
         string _promptPayApi;
         string _machineNo;
 
-        public SettingViewModelBase(INavigationService navigatinService, IDialogService dialogService,
-            ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) : base(navigatinService, dialogService)
+        public SettingViewModelBase(INavigationService navigatinService,
+            ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) : base(navigatinService)
         {
             SelfCheckoutService = selfCheckoutService;
             SaleEngineService = saleEngineService;

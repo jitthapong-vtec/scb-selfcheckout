@@ -21,8 +21,6 @@ namespace SelfCheckout.ViewModels
 {
     public class OrderViewModel : OrderViewModelBase
     {
-        public Func<Task> GoBackToRootAsync;
-
         ObservableCollection<SimpleSelectedItem> _tabs;
 
         CustomerOrder _selectedCustomer;
@@ -32,9 +30,9 @@ namespace SelfCheckout.ViewModels
         bool _summaryShowing;
         bool _filterCustomerShowing;
 
-        public OrderViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService,
+        public OrderViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
             ISaleEngineService saleEngineService, IRegisterService registerService)
-            : base(dialogService, selfCheckoutService, saleEngineService, registerService)
+            : base(navigationService, selfCheckoutService, saleEngineService, registerService)
         {
             SelectedCustomer = new CustomerOrder
             {
@@ -87,7 +85,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {

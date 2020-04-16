@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Resources;
@@ -11,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace SelfCheckout.ViewModels.Base
 {
-    public abstract class ShoppingCartViewModelBase : ViewModelBase
+    public abstract class ShoppingCartViewModelBase : NavigatableViewModelBase
     {
         protected ISaleEngineService SaleEngineService { get; private set; }
         protected ISelfCheckoutService SelfCheckoutService { get; private set; }
         protected IRegisterService RegisterService { get; private set; }
 
-        public ShoppingCartViewModelBase(IDialogService dialogService, ISaleEngineService saleEngineService,
-            ISelfCheckoutService selfCheckoutService, IRegisterService registerService) : base(dialogService)
+        public ShoppingCartViewModelBase(INavigationService navigationService, ISaleEngineService saleEngineService,
+            ISelfCheckoutService selfCheckoutService, IRegisterService registerService) : base(navigationService)
         {
             SaleEngineService = saleEngineService;
             SelfCheckoutService = selfCheckoutService;
@@ -59,28 +60,27 @@ namespace SelfCheckout.ViewModels.Base
                 {
                     if (!customerData.Person.IsActivate)
                     {
-                        await DialogService.ShowAlert(AppResources.Opps, AppResources.ShoppingCardNotActivate, AppResources.Close);
+                        await NavigationService.ShowAlertAsync(AppResources.Opps, AppResources.ShoppingCardNotActivate, AppResources.Close);
                         return;
                     }
-                    var parameters = new DialogParameters()
+                    var parameters = new NavigationParameters()
                     {
                         {"Person", customerData.Person }
                     };
-                    DialogService.ShowDialog("CustomerCardConfirmDialog", parameters, async (dialogResult) =>
+                    var dialogResult = await NavigationService.ShowDialogAsync<INavigationParameters>("CustomerCardConfirmDialog", parameters);
+
+                    var isConfirm = dialogResult.GetValue<bool>("IsConfirm");
+                    if (isConfirm)
                     {
-                        var isConfirm = dialogResult.Parameters.GetValue<bool>("IsConfirm");
-                        if (isConfirm)
+                        shoppingCard = customerData.Person?.ListIdentity?.Where(i => i.IdentityType == "SHOPCARD").FirstOrDefault()?.IdentityValue;
+                        if (string.IsNullOrEmpty(shoppingCard))
                         {
-                            shoppingCard = customerData.Person?.ListIdentity?.Where(i => i.IdentityType == "SHOPCARD").FirstOrDefault()?.IdentityValue;
-                            if (string.IsNullOrEmpty(shoppingCard))
-                            {
-                                await DialogService.ShowAlert(AppResources.Opps, "Can't get SHOPCARD", AppResources.Close);
-                                return;
-                            }
-                            SelfCheckoutService.CurrentShoppingCard = shoppingCard;
-                            await ValidateShoppingCardCallback(shoppingCard);
+                            await NavigationService.ShowAlertAsync(AppResources.Opps, "Can't get SHOPCARD", AppResources.Close);
+                            return;
                         }
-                    });
+                        SelfCheckoutService.CurrentShoppingCard = shoppingCard;
+                        await ValidateShoppingCardCallback(shoppingCard);
+                    }
                 }
                 else
                 {
@@ -89,7 +89,7 @@ namespace SelfCheckout.ViewModels.Base
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {

@@ -28,11 +28,9 @@ namespace SelfCheckout.ViewModels
     {
         object _lock = new object();
 
-        public Action<OrderDetail> ShowOrderDetail;
         public Func<Task> ReloadOrderDataAsync;
         public Action RefreshSummary;
         public Action<bool> ShoppingCardChanging;
-        public Func<Task> ShowCameraScanner;
 
         ObservableCollection<OrderDetail> _orderDetails;
 
@@ -44,9 +42,9 @@ namespace SelfCheckout.ViewModels
         bool _isAnyOrderSelected;
         bool _isChangeShoppingCardShowing;
 
-        public ShoppingCartViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService,
+        public ShoppingCartViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
             ISaleEngineService saleEngineService, IRegisterService registerService) :
-            base(dialogService, saleEngineService, selfCheckoutService, registerService)
+            base(navigationService, saleEngineService, selfCheckoutService, registerService)
         {
             CustomerData = RegisterService.CustomerData;
             CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
@@ -57,7 +55,7 @@ namespace SelfCheckout.ViewModels
             IsChangeShoppingCardShowing = !IsChangeShoppingCardShowing;
         });
 
-        public ICommand ChangeShoppingCardCommand => new DelegateCommand(() =>
+        public ICommand ChangeShoppingCardCommand => new DelegateCommand(async () =>
         {
             lock (_lock)
             {
@@ -69,21 +67,11 @@ namespace SelfCheckout.ViewModels
 
             ShoppingCardChanging(true);
 
-            Action showCameraScannerAction = () =>
-            {
-                ShowCameraScanner();
-            };
-            var dialogParameter = new DialogParameters()
-            {
-                { "ShowCameraScannerAction", showCameraScannerAction}
-            };
-            DialogService.ShowDialog("ShoppingCardInputDialog", dialogParameter, async (dialogResult) =>
-            {
-                var shoppingCard = dialogResult.Parameters.GetValue<string>("ShoppingCard");
-                if (!string.IsNullOrEmpty(shoppingCard))
-                    await ValidateShoppingCardAsync(shoppingCard);
-                ShoppingCardChanging(false);
-            });
+            var result = await NavigationService.ShowDialogAsync<INavigationParameters>("ShoppingCardInputDialog", null);
+            var shoppingCard = result.GetValue<string>("ShoppingCard");
+            if (!string.IsNullOrEmpty(shoppingCard))
+                await ValidateShoppingCardAsync(shoppingCard);
+            ShoppingCardChanging(false);
         });
 
         public ICommand SelectAllOrderCommand => new DelegateCommand(() =>
@@ -133,7 +121,7 @@ namespace SelfCheckout.ViewModels
         {
             if (order != null)
             {
-                var result = await DialogService.ConfirmAsync(AppResources.ConfirmDeleteItem, order.ItemDetail.Item.Desc, AppResources.Yes, AppResources.No, true);
+                var result = await NavigationService.ConfirmAsync(AppResources.ConfirmDeleteItem, order.ItemDetail.Item.Desc, AppResources.Yes, AppResources.No, true);
 
                 if (result)
                 {
@@ -146,11 +134,11 @@ namespace SelfCheckout.ViewModels
                 if (selectedOrders.Any())
                 {
                     var itemsNameToDelete = "";
-                    foreach(var selectedOrder in selectedOrders)
+                    foreach (var selectedOrder in selectedOrders)
                     {
                         itemsNameToDelete += $"{selectedOrder.ItemDetail.Item.Desc}\n";
                     }
-                    var result = await DialogService.ConfirmAsync(AppResources.ConfirmDeleteItem, itemsNameToDelete, AppResources.Yes, AppResources.No, true);
+                    var result = await NavigationService.ConfirmAsync(AppResources.ConfirmDeleteItem, itemsNameToDelete, AppResources.Yes, AppResources.No, true);
 
                     if (result)
                     {
@@ -160,9 +148,9 @@ namespace SelfCheckout.ViewModels
             }
         });
 
-        public ICommand ShowDetailCommand => new DelegateCommand<OrderDetail>((order) =>
+        public ICommand ShowDetailCommand => new DelegateCommand<OrderDetail>(async (order) =>
         {
-            ShowOrderDetail(order);
+            await NavigationService.NavigateAsync("OrderDetailView", new NavigationParameters() { { "OrderDetail", order } });
         });
 
         public ICommand RefreshOrderCommand => new DelegateCommand(async () =>

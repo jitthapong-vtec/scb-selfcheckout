@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<pages:PopupPage  xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                  xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
-             xmlns:prism="http://prismlibrary.com"
-             prism:DialogLayout.RelativeWidthRequest="{OnIdiom Phone=0.95, Desktop=0.5}"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.ConfirmDialog">
-    <Frame>
-        <Grid Margin="8">
+    <Frame Margin="8,48,8,48" VerticalOptions="Center" Padding="8" WidthRequest="{OnPlatform UWP=400}">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -46,4 +45,4 @@
             </Grid>
         </Grid>
     </Frame>
-</ContentView>
+</pages:PopupPage>

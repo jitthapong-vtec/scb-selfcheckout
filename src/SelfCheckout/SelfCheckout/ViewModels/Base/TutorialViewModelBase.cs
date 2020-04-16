@@ -1,4 +1,5 @@
 ﻿using Prism.Mvvm;
+using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
@@ -10,13 +11,14 @@ using System.Threading.Tasks;
 
 namespace SelfCheckout.ViewModels.Base
 {
-    public abstract class TutorialViewModelBase : ViewModelBase
+    public abstract class TutorialViewModelBase : NavigatableViewModelBase
     {
         ISelfCheckoutService _selfCheckoutService;
 
         ObservableCollection<PimCoreImageAsset> _assets;
 
-        public TutorialViewModelBase(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, IPimCoreService pimCoreService) : base(dialogService)
+        public TutorialViewModelBase(INavigationService navigationService, ISelfCheckoutService selfCheckoutService, 
+            IPimCoreService pimCoreService) : base(navigationService)
         {
             _selfCheckoutService = selfCheckoutService;
             PimCoreService = pimCoreService;

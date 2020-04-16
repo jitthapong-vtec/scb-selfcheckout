@@ -29,7 +29,8 @@ namespace SelfCheckout.Droid
 
             base.OnCreate(savedInstanceState);
 
-            CrossCurrentActivity.Current.Init(this, savedInstanceState);
+            CrossCurrentActivity.Current.Init(this, savedInstanceState); 
+            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             ImageService.Instance.Initialize(new FFImageLoading.Config.Configuration()

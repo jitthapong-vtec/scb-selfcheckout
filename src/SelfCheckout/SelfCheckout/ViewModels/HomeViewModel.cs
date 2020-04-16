@@ -1,4 +1,5 @@
-﻿using Prism.Services.Dialogs;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Services.PimCore;
@@ -16,20 +17,19 @@ namespace SelfCheckout.ViewModels
     {
         public Action ShowSystemView;
 
-        public HomeViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService,
-            IPimCoreService pimCoreService) : base(dialogService, selfCheckoutService, pimCoreService)
+        public HomeViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
+            IPimCoreService pimCoreService) : base(navigationService, selfCheckoutService, pimCoreService)
         {
         }
 
-        public ICommand ShowSystemCommand => new Command(() =>
+        public ICommand ShowSystemCommand => new Command(async () =>
         {
-            DialogService.ShowDialog("AuthorizeDialog", null, (result) =>
+            var result = await NavigationService.ShowDialogAsync<INavigationParameters>("AuthorizeDialog", null);
+
+            if (result.GetValue<bool>("IsAuthorized"))
             {
-                if (result.Parameters.GetValue<bool>("IsAuthorized"))
-                {
-                    ShowSystemView?.Invoke();
-                }
-            });
+                ShowSystemView?.Invoke();
+            }
         });
 
         public override async Task OnTabSelected(TabItem item)

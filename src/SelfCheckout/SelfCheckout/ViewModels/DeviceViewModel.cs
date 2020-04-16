@@ -13,8 +13,8 @@ namespace SelfCheckout.ViewModels
         ISaleEngineService _saleEngineService;
         IRegisterService _registerService;
 
-        public DeviceViewModel(IDialogService dialogService, ISaleEngineService saleEngineService,
-            IRegisterService registerService) : base(dialogService)
+        public DeviceViewModel(ISaleEngineService saleEngineService,
+            IRegisterService registerService)
         {
             _saleEngineService = saleEngineService;
             _registerService = registerService;

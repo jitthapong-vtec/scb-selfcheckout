@@ -18,15 +18,15 @@ namespace SelfCheckout.ViewModels.Base
 {
     public abstract class SessionOrderViewModelBase : OrderViewModelBase
     {
-        public SessionOrderViewModelBase(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, 
-            ISaleEngineService saleEngineService, IRegisterService registerService) : 
-            base(dialogService, selfCheckoutService, saleEngineService, registerService)
+        public SessionOrderViewModelBase(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
+            ISaleEngineService saleEngineService, IRegisterService registerService) :
+            base(navigationService, selfCheckoutService, saleEngineService, registerService)
         {
         }
 
-        protected void ShowSessionOrder(DeviceStatus sess)
+        protected async Task ShowSessionOrder(DeviceStatus sess)
         {
-            var parameters = new DialogParameters()
+            var parameters = new NavigationParameters()
             {
                 {"SessionKey", sess.SessionKey },
                 {"ShoppingCard", sess.ShoppingCard },
@@ -34,31 +34,30 @@ namespace SelfCheckout.ViewModels.Base
             };
             try
             {
-                DialogService.ShowDialog("SessionOrderDialog", parameters, async (result) =>
-                {
-                    if (result != null && result.Parameters.GetValue<bool>("IsConfirmed"))
-                    {
-                        var cf = await DialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
-                        if (!cf)
-                            return;
+                var result = await NavigationService.ShowDialogAsync<INavigationParameters>("SessionOrderDialog", parameters);
 
-                        OrderInvoices = result.Parameters.GetValue<ObservableCollection<OrderInvoiceGroup>>("OrderInvoices");
-                        try
-                        {
-                            IsBusy = true;
-                            await SaveSessionAsync(sess.SessionKey.ToString());
-                            await SessionCloseCallback();
-                        }
-                        catch (Exception ex)
-                        {
-                            await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
-                        }
-                        finally
-                        {
-                            IsBusy = false;
-                        }
+                if (result != null && result.GetValue<bool>("IsConfirmed"))
+                {
+                    var cf = await NavigationService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
+                    if (!cf)
+                        return;
+
+                    OrderInvoices = result.GetValue<ObservableCollection<OrderInvoiceGroup>>("OrderInvoices");
+                    try
+                    {
+                        IsBusy = true;
+                        await SaveSessionAsync(sess.SessionKey.ToString());
+                        await SessionCloseCallback();
                     }
-                });
+                    catch (Exception ex)
+                    {
+                        await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                    }
+                    finally
+                    {
+                        IsBusy = false;
+                    }
+                }
             }
             catch { }
         }

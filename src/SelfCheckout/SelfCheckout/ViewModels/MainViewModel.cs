@@ -57,34 +57,30 @@ namespace SelfCheckout.ViewModels
         bool _paymentInputShowing;
         bool _isChangingShoppingCard;
 
-        public MainViewModel(INavigationService navigatinService, IDialogService dialogService,
+        public MainViewModel(INavigationService navigationService,
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService,
-            IRegisterService registerService, IPimCoreService pimCoreService) : base(navigatinService, dialogService)
+            IRegisterService registerService, IPimCoreService pimCoreService) : base(navigationService)
         {
             _saleEngineService = saleEngineService;
             _selfCheckoutService = selfCheckoutService;
 
-            HomeViewModel = new HomeViewModel(dialogService, selfCheckoutService, pimCoreService);
+            HomeViewModel = new HomeViewModel(navigationService, selfCheckoutService, pimCoreService);
             HomeViewModel.ShowSystemView = () => SystemViewVisible = true;
 
-            DeviceViewModel = new DeviceViewModel(dialogService, saleEngineService, registerService);
+            DeviceViewModel = new DeviceViewModel(saleEngineService, registerService);
 
-            ShoppingCartViewModel = new ShoppingCartViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
+            ShoppingCartViewModel = new ShoppingCartViewModel(navigationService, selfCheckoutService, saleEngineService, registerService);
             ShoppingCartViewModel.ReloadOrderDataAsync = LoadOrderAsync;
             ShoppingCartViewModel.RefreshSummary = RefreshSummary;
-            ShoppingCartViewModel.ShowOrderDetail = async (order) => await NavigationService.NavigateAsync("OrderDetailView", new NavigationParameters() { { "OrderDetail", order } });
-            ShoppingCartViewModel.ShowCameraScanner = ShowCameraScannerAsync;
             ShoppingCartViewModel.ShoppingCardChanging = (isChanging) => _isChangingShoppingCard = isChanging;
 
-            OrderViewModel = new OrderViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
-            OrderViewModel.GoBackToRootAsync = GoBackToRootAsync;
+            OrderViewModel = new OrderViewModel(navigationService, selfCheckoutService, saleEngineService, registerService);
 
-            ProfileViewModel = new ProfileViewModel(dialogService, selfCheckoutService);
+            ProfileViewModel = new ProfileViewModel(selfCheckoutService);
 
-            TutorialViewModel = new TutorialViewModel(dialogService, selfCheckoutService, pimCoreService);
+            TutorialViewModel = new TutorialViewModel(navigationService, selfCheckoutService, pimCoreService);
 
-            CouponInputViewModel = new CouponInputViewModel(dialogService);
-            CouponInputViewModel.OpenCameraScannerAsync = ShowCameraScannerAsync;
+            CouponInputViewModel = new CouponInputViewModel(navigationService);
             CouponInputViewModel.SetCouponAsync = AddCouponAsync;
         }
 
@@ -271,7 +267,7 @@ namespace SelfCheckout.ViewModels
         {
             try
             {
-                var result = await DialogService.ConfirmAsync(AppResources.Logout, AppResources.ConfirmLogout, AppResources.Yes, AppResources.No);
+                var result = await NavigationService.ConfirmAsync(AppResources.Logout, AppResources.ConfirmLogout, AppResources.Yes, AppResources.No);
                 if (result)
                 {
                     await _saleEngineService.LogoutAsync();
@@ -292,22 +288,21 @@ namespace SelfCheckout.ViewModels
             PaymentSelected = payment;
         });
 
-        public ICommand ScanPaymentCommand => new Command<object>((type) =>
+        public ICommand ScanPaymentCommand => new Command<object>(async (type) =>
             {
                 if (IsPaymentProcessing)
                     return;
 
                 if (Convert.ToInt32(type) == 1)
                 {
-                    DialogService.ShowDialog("BarcodeScanDialog", null, async (dialogResult) =>
+                    var result = await NavigationService.ShowDialogAsync<INavigationParameters>("CameraScannerView", null);
+
+                    var scanData = result.GetValue<string>("ScanData");
+                    if (!string.IsNullOrEmpty(scanData))
                     {
-                        var result = dialogResult.Parameters.GetValue<string>("ScanData");
-                        if (!string.IsNullOrEmpty(result))
-                        {
-                            PaymentBarcode = result;
-                            await WalletPaymentAsync();
-                        }
-                    });
+                        PaymentBarcode = scanData;
+                        await WalletPaymentAsync();
+                    }
                 }
                 else
                 {
@@ -340,8 +335,8 @@ namespace SelfCheckout.ViewModels
             {
                 if (!PaymentSelected.IsAlipay)
                 {
-                    var result = await DialogService.ShowDialogAsync("PromptPayQrDialog", null);
-                    var promptPayResult = result.Parameters.GetValue<PromptPayResult>("PromptPayResult");
+                    var result = await NavigationService.ShowDialogAsync<INavigationParameters>("PromptPayQrDialog", null);
+                    var promptPayResult = result.GetValue<PromptPayResult>("PromptPayResult");
                     if (promptPayResult == null)
                     {
                         PaymentInputShowing = false;
@@ -599,10 +594,10 @@ namespace SelfCheckout.ViewModels
             catch { }
         }
 
-        async Task ShowCameraScannerAsync()
-        {
-            await NavigationService.NavigateAsync("CameraScannerView");
-        }
+        //async Task ShowCameraScannerAsync()
+        //{
+        //    await NavigationService.NavigateAsync("CameraScannerView");
+        //}
 
         async Task ChangeCurrency()
         {
@@ -641,7 +636,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message);
+                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message);
             }
         }
 
@@ -659,7 +654,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message);
+                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message);
             }
         }
 
@@ -670,7 +665,7 @@ namespace SelfCheckout.ViewModels
 
         public async Task AddCouponAsync(string couponCode)
         {
-            var isWantToUseCoupon = await DialogService.ConfirmAsync(AppResources.ScanCoupon, AppResources.ConfirmUseCoupon, AppResources.Yes, AppResources.No);
+            var isWantToUseCoupon = await NavigationService.ConfirmAsync(AppResources.ScanCoupon, AppResources.ConfirmUseCoupon, AppResources.Yes, AppResources.No);
             if (!isWantToUseCoupon)
             {
                 CouponInputViewModel.CouponCode = "";
@@ -698,7 +693,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -710,7 +705,7 @@ namespace SelfCheckout.ViewModels
 
         public async Task DeleteCouponAsync()
         {
-            var isDeleteCoupon = await DialogService.ConfirmAsync(AppResources.ConfirmDeleteCoupon, CouponCode, AppResources.Yes, AppResources.No, true);
+            var isDeleteCoupon = await NavigationService.ConfirmAsync(AppResources.ConfirmDeleteCoupon, CouponCode, AppResources.Yes, AppResources.No, true);
             if (!isDeleteCoupon)
                 return;
 
@@ -734,7 +729,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -797,18 +792,18 @@ namespace SelfCheckout.ViewModels
                 {
                     if ((ex as KPApiException).ErrorCode == "SESSION_EXPIRE")
                     {
-                        await DialogService.ShowAlert(AppResources.Opps, AppResources.CannotConnectToServer, AppResources.Close);
+                        await NavigationService.ShowAlertAsync(AppResources.Opps, AppResources.CannotConnectToServer, AppResources.Close);
                         await LoginAsync();
                         await LoadOrderAsync();
                     }
                     else
                     {
-                        await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                        await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
                     }
                 }
                 else
                 {
-                    await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                    await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
                 }
             }
             finally
@@ -835,7 +830,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message);
+                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message);
             }
             finally
             {
@@ -880,7 +875,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -959,7 +954,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Payment, ex.Message, AppResources.Close);
+                await NavigationService.ShowAlertAsync(AppResources.Payment, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -984,7 +979,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert("Get wallet", ex.Message, AppResources.Close);
+                await NavigationService.ShowAlertAsync("Get wallet", ex.Message, AppResources.Close);
                 PaymentBarcode = "";
             }
             finally
@@ -1072,7 +1067,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Payment, ex.Message, AppResources.Close);
+                await NavigationService.ShowAlertAsync(AppResources.Payment, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -1177,7 +1172,7 @@ namespace SelfCheckout.ViewModels
                 var shoppingCartTab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
                 await LoadOrderAsync();
 
-                var isContinueShopping = await DialogService.ConfirmAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.ContinueShopping, AppResources.MyOrder);
+                var isContinueShopping = await NavigationService.ConfirmAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.ContinueShopping, AppResources.MyOrder);
                 if (!isContinueShopping)
                 {
                     var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();

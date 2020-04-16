@@ -22,9 +22,9 @@ namespace SelfCheckout.ViewModels
 {
     public class CheckerPackingViewModel : CheckerOrderViewModelBase
     {
-        public CheckerPackingViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, 
+        public CheckerPackingViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService, 
             ISaleEngineService saleEngineService, IRegisterService registerService) : 
-            base(dialogService, selfCheckoutService, saleEngineService, registerService)
+            base(navigationService, selfCheckoutService, saleEngineService, registerService)
         {
         }
 

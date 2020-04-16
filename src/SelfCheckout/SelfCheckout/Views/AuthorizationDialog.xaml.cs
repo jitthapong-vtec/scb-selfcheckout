@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,7 @@ using Xamarin.Forms.Xaml;
 namespace SelfCheckout.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AuthorizationDialog : ContentView
+    public partial class AuthorizationDialog : PopupPage
     {
         public AuthorizationDialog()
         {

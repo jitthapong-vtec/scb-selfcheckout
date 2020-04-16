@@ -10,15 +10,20 @@ using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SelfCheckout.ViewModels
 {
-    public class AlertDialogViewModel : BindableBase, IDialogAware, IAutoInitialize
+    public class AlertDialogViewModel : PopupNavigationBase<INavigationParameters>
     {
         string _title;
         string _message;
         string _okButtonText;
+
+        public AlertDialogViewModel(INavigationService navigationService) : base(navigationService)
+        {
+        }
 
         public string Title
         {
@@ -38,24 +43,15 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _okButtonText, value);
         }
 
-        public event Action<IDialogParameters> RequestClose;
-
-        public bool CanCloseDialog()
+        public ICommand OkCommand => new DelegateCommand(async() =>
         {
-            return true;
-        }
-
-        public void OnDialogClosed()
-        {
-        }
-
-        public ICommand OkCommand => new DelegateCommand(() =>
-        {
-            RequestClose?.Invoke(null);
+            await GoBackAsync(null);
         });
 
-        public void OnDialogOpened(IDialogParameters parameters)
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
+            base.OnNavigatedTo(parameters);
+
             Title = parameters.GetValue<string>("Title");
             Message = parameters.GetValue<string>("Message");
             OkButtonText = parameters.GetValue<string>("OkButtonText");

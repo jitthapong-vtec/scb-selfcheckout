@@ -61,9 +61,11 @@ namespace SelfCheckout.UWP
                     typeof(FFImageLoading.Forms.Platform.CachedImageRenderer).GetTypeInfo().Assembly,
                     typeof(ZXing.Net.Mobile.Forms.WindowsUniversal.ZXingScannerViewRenderer).GetTypeInfo().Assembly,
 					typeof(ZXing.Net.Mobile.Forms.WindowsUniversal.ZXingBarcodeImageViewRenderer).GetTypeInfo().Assembly,
+                    typeof(Rg.Plugins.Popup.Popup).GetTypeInfo().Assembly,
                     typeof(Image).GetTypeInfo().Assembly
                 };
 
+                Rg.Plugins.Popup.Popup.Init();
                 FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
                 ZXing.Net.Mobile.Forms.WindowsUniversal.ZXingBarcodeImageViewRenderer.Init();
 

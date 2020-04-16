@@ -1,4 +1,5 @@
-﻿using Prism.Services.Dialogs;
+﻿using Prism.Navigation;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,83 +9,64 @@ namespace SelfCheckout.Extensions
 {
     public static class DialogExtensions
     {
-        public static Task<IDialogResult> ShowAlert(this IDialogService dialogService, string title, string message, string okButtonText = "Close")
+        public static async Task<INavigationParameters> ShowAlertAsync(this INavigationService navigationService, string title, string message, string okButtonText = "Close")
         {
-            var parameters = new DialogParameters
+            var tcs = new TaskCompletionSource<INavigationParameters>();
+            var parameters = new NavigationParameters
             {
                 { "Title", title },
                 { "Message", message },
+                { "TaskResult", tcs },
                 { "OkButtonText", okButtonText }
             };
-            var tcs = new TaskCompletionSource<IDialogResult>();
             try
             {
-                dialogService.ShowDialog("AlertDialog", parameters, (result) =>
-                {
-                    if (result.Exception != null)
-                    {
-                        tcs.SetException(result.Exception);
-                        return;
-                    }
-                    tcs.SetResult(result);
-                });
+                await navigationService.NavigateAsync("AlertDialog", parameters);
             }
             catch (Exception ex)
             {
                 tcs.SetException(ex);
             }
-            return tcs.Task;
+            return await tcs.Task;
         }
 
-        public static Task<bool> ConfirmAsync(this IDialogService dialogService, string title, string message, string okButtonText, string cancelButtonText, bool okAsRedButton = false)
+        public static async Task<bool> ConfirmAsync(this INavigationService navigationService, string title, string message, string okButtonText, string cancelButtonText, bool okAsRedButton = false)
         {
             var tcs = new TaskCompletionSource<bool>();
-            var parameters = new DialogParameters
+            var parameters = new NavigationParameters
                 {
                     { "Title", title },
                     { "Message", message },
+                    { "TaskResult", tcs },
                     { "OkButtonText", okButtonText },
                     { "CancelButtonText", cancelButtonText },
                     { "OkAsRedButton", okAsRedButton }
                 };
             try
             {
-                dialogService.ShowDialog("ConfirmDialog", parameters, (result) =>
-                {
-                    if (result.Exception != null)
-                    {
-                        tcs.SetException(result.Exception);
-                    }
-                    tcs.SetResult(result.Parameters.GetValue<bool>("IsConfirmed"));
-                });
+                await navigationService.NavigateAsync("ConfirmDialog", parameters);
             }
             catch (Exception ex)
             {
                 tcs.SetException(ex);
             }
-            return tcs.Task;
+            return await tcs.Task;
         }
 
-        public static Task<IDialogResult> ShowDialogAsync(this IDialogService dialogService, string name, IDialogParameters parameters)
+        public static async Task<TResult> ShowDialogAsync<TResult>(this INavigationService navigationService, string name, INavigationParameters parameters)
         {
-            var tcs = new TaskCompletionSource<IDialogResult>();
+            var tcs = new TaskCompletionSource<TResult>();
             try
             {
-                dialogService.ShowDialog(name, parameters, (result) =>
-                {
-                    if (result.Exception != null)
-                    {
-                        tcs.SetException(result.Exception);
-                        return;
-                    }
-                    tcs.SetResult(result);
-                });
+                parameters = parameters ?? new NavigationParameters();
+                parameters.Add("TaskResult", tcs);
+                await navigationService.NavigateAsync(name, parameters);
             }
             catch (Exception ex)
             {
                 tcs.SetException(ex);
             }
-            return tcs.Task;
+            return await tcs.Task;
         }
     }
 }

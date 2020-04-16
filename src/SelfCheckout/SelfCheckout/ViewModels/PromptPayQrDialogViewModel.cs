@@ -1,10 +1,12 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Models;
 using SelfCheckout.Services.Payment;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
+using SelfCheckout.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,16 +19,13 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class PromptPayQrDialogViewModel : BindableBase, IDialogAware
+    public class PromptPayQrDialogViewModel : PopupNavigationBase<INavigationParameters>
     {
-        public event Action<IDialogParameters> RequestClose;
-
         CancellationTokenSource _tokenSource;
         CancellationToken _ct;
 
         IPaymentService _paymentService;
         ISaleEngineService _saleEngineService;
-        ISelfCheckoutService _selfCheckoutService;
 
         string _refNo;
         string _qrData;
@@ -37,11 +36,11 @@ namespace SelfCheckout.ViewModels
         bool _isQrVisible;
         bool _isCloseBtnVisible;
 
-        public PromptPayQrDialogViewModel(IPaymentService paymentService, ISaleEngineService saleEngineService, ISelfCheckoutService selfCheckoutService)
+        public PromptPayQrDialogViewModel(INavigationService navigationService, IPaymentService paymentService,
+            ISaleEngineService saleEngineService) : base(navigationService)
         {
             _paymentService = paymentService;
             _saleEngineService = saleEngineService;
-            _selfCheckoutService = selfCheckoutService;
 
             _tokenSource = new CancellationTokenSource();
             _ct = _tokenSource.Token;
@@ -49,9 +48,9 @@ namespace SelfCheckout.ViewModels
             _refNo = GetRefNo();
         }
 
-        public ICommand CancelCommand => new DelegateCommand(() =>
+        public ICommand CancelCommand => new DelegateCommand(async () =>
         {
-            SetResult(null);
+            await SetResult(null);
         });
 
         public bool IsBusy
@@ -96,17 +95,10 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _qrData, value);
         }
 
-        public bool CanCloseDialog()
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            return true;
-        }
+            base.OnNavigatedTo(parameters);
 
-        public void OnDialogClosed()
-        {
-        }
-
-        public async void OnDialogOpened(IDialogParameters parameters)
-        {
             IsCloseBtnVisible = true;
 
             var canGenQr = await CreateQRCodeAsync();
@@ -131,16 +123,6 @@ namespace SelfCheckout.ViewModels
                 });
                 await InquireAsync();
             }
-        }
-
-        void SetResult(PromptPayResult result)
-        {
-            var parameter = new DialogParameters()
-            {
-                { "PromptPayResult", result}
-            };
-
-            RequestClose?.Invoke(parameter);
         }
 
         async Task<bool> CreateQRCodeAsync()
@@ -182,7 +164,7 @@ namespace SelfCheckout.ViewModels
             {
                 if (_ct.IsCancellationRequested)
                 {
-                    SetResult(null);
+                    await SetResult(null);
                     break;
                 }
 
@@ -191,12 +173,21 @@ namespace SelfCheckout.ViewModels
                     var result = await _paymentService.InquiryAsync(_refNo);
                     if (result != null)
                     {
-                        SetResult(result);
+                        await SetResult(result);
                         break;
                     }
                 }
                 catch { }
             }
+        }
+
+        async Task SetResult(PromptPayResult result)
+        {
+            var parameter = new NavigationParameters()
+            {
+                { "PromptPayResult", result}
+            };
+            await GoBackAsync(parameter);
         }
 
         private string GetRefNo()

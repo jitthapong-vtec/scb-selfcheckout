@@ -1,16 +1,14 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<pages:PopupPage  xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                  xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:views="clr-namespace:SelfCheckout.Views"
-             xmlns:prism="http://prismlibrary.com"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
-             prism:DialogLayout.RelativeWidthRequest=".85"
-             prism:DialogLayout.RelativeHeightRequest=".95"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.SessionOrderDialog">
     <Frame>
@@ -196,4 +194,4 @@
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </Frame>
-</ContentView>
+</pages:PopupPage>

@@ -17,7 +17,7 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels.Base
 {
-    public abstract class AuthorizationViewModelBase : BindableBase
+    public abstract class AuthorizationViewModelBase : NavigatableViewModelBase
     {
         protected ISaleEngineService SaleEngineService { get; private set; }
         protected ISelfCheckoutService SelfCheckoutService { get; private set; }
@@ -25,9 +25,8 @@ namespace SelfCheckout.ViewModels.Base
         ValidatableObject<string> _userName;
         ValidatableObject<string> _password;
 
-        bool _isBusy;
-
-        public AuthorizationViewModelBase(ISaleEngineService saleEngineService, ISelfCheckoutService selfCheckoutService)
+        public AuthorizationViewModelBase(INavigationService navigationService, ISaleEngineService saleEngineService, 
+            ISelfCheckoutService selfCheckoutService) : base(navigationService)
         {
             SaleEngineService = saleEngineService;
             SelfCheckoutService = selfCheckoutService;
@@ -62,12 +61,6 @@ namespace SelfCheckout.ViewModels.Base
                 }
             }
         });
-
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set => SetProperty(ref _isBusy, value);
-        }
 
         public ValidatableObject<string> UserName
         {

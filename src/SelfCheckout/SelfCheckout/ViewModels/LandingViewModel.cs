@@ -20,14 +20,13 @@ namespace SelfCheckout.ViewModels
     {
         ISelfCheckoutService _selfCheckoutService;
 
-        public LandingViewModel(INavigationService navigatinService, IDialogService dialogService, ISelfCheckoutService selfCheckoutService) : base(navigatinService, dialogService)
+        public LandingViewModel(INavigationService navigatinService, ISelfCheckoutService selfCheckoutService) : base(navigatinService)
         {
             _selfCheckoutService = selfCheckoutService;
         }
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            base.OnNavigatedTo(parameters);
             await ReloadData();
         }
 
@@ -44,7 +43,7 @@ namespace SelfCheckout.ViewModels
             }
             catch (Exception ex)
             {
-                var result = await DialogService.ConfirmAsync("Do you want to go to settings?", ex.Message, AppResources.Yes, AppResources.No);
+                var result = await NavigationService.ConfirmAsync("Do you want to go to settings?", ex.Message, AppResources.Yes, AppResources.No);
                 if (result)
                 {
                     if (Device.RuntimePlatform == Device.UWP)

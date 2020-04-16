@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentView
+<pages:PopupPage
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
@@ -7,13 +8,11 @@
     xmlns:controls="clr-namespace:SelfCheckout.Controls"
     xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
     xmlns:effects="clr-namespace:SelfCheckout.Effects"
-    xmlns:prism="http://prismlibrary.com"
-    prism:DialogLayout.RelativeWidthRequest="0.90"
     mc:Ignorable="d"
-    x:Class="SelfCheckout.Views.CustomerCartConfirmDialog">
-    <ContentView.Content>
-        <Frame>
-            <Grid Margin="8">
+    x:Class="SelfCheckout.Views.CustomerShoppingCardConfirmDialog">
+    <ContentPage.Content>
+        <Frame VerticalOptions="Center" Margin="16,48,16,48" Padding="8">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -60,5 +59,5 @@
                 </Grid>
             </Grid>
         </Frame>
-    </ContentView.Content>
-</ContentView>
+    </ContentPage.Content>
+</pages:PopupPage>

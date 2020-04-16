@@ -19,18 +19,18 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class CheckerMainViewModel : ViewModelBase
+    public class CheckerMainViewModel : NavigatableViewModelBase
     {
         ContentView _currentView;
 
         ObservableCollection<TabItem> _tabs;
 
-        public CheckerMainViewModel(IDialogService dialogService, ISelfCheckoutService selfCheckoutService,
-            ISaleEngineService saleEngineService, IRegisterService registerService) : base(dialogService)
+        public CheckerMainViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
+            ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigationService)
         {
-            PackingViewModel = new CheckerPackingViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
-            DeviceStatusViewModel = new DeviceStatusViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
-            SessionHistoryViewModel = new SessionHistoryViewModel(dialogService, selfCheckoutService, saleEngineService, registerService);
+            PackingViewModel = new CheckerPackingViewModel(navigationService, selfCheckoutService, saleEngineService, registerService);
+            DeviceStatusViewModel = new DeviceStatusViewModel(navigationService, selfCheckoutService, saleEngineService, registerService);
+            SessionHistoryViewModel = new SessionHistoryViewModel(navigationService, selfCheckoutService, saleEngineService, registerService);
 
             Tabs = new ObservableCollection<TabItem>()
             {

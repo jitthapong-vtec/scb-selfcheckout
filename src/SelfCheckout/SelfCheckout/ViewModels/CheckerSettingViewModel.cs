@@ -21,9 +21,9 @@ namespace SelfCheckout.ViewModels
     {
         string _printerName;
 
-        public CheckerSettingViewModel(INavigationService navigatinService, IDialogService dialogService,
+        public CheckerSettingViewModel(INavigationService navigatinService,
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) :
-            base(navigatinService, dialogService, selfCheckoutService, saleEngineService)
+            base(navigatinService, selfCheckoutService, saleEngineService)
         {
         }
 

@@ -18,7 +18,7 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels.Base
 {
-    public abstract class OrderViewModelBase : ViewModelBase
+    public abstract class OrderViewModelBase : NavigatableViewModelBase
     {
         protected ISaleEngineService SaleEngineService { get; private set; }
         protected ISelfCheckoutService SelfCheckoutService { get; private set; }
@@ -40,8 +40,8 @@ namespace SelfCheckout.ViewModels.Base
         double? _totalDiscount;
         double? _totalNetAmount;
 
-        public OrderViewModelBase(ISelfCheckoutService selfCheckoutService, 
-            ISaleEngineService saleEngineService, IRegisterService registerService)
+        public OrderViewModelBase(INavigationService navigationService, ISelfCheckoutService selfCheckoutService, 
+            ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigationService)
         {
             SaleEngineService = saleEngineService;
             SelfCheckoutService = selfCheckoutService;

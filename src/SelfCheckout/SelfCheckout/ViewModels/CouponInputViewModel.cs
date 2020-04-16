@@ -1,4 +1,5 @@
 ﻿using Prism.Mvvm;
+using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.ViewModels.Base;
 using System;
@@ -10,9 +11,8 @@ using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
 {
-    public class CouponInputViewModel : ViewModelBase
+    public class CouponInputViewModel : NavigatableViewModelBase
     {
-        public Func<Task> OpenCameraScannerAsync;
         public Func<string, Task> SetCouponAsync;
 
         string _couponCode;
@@ -20,11 +20,11 @@ namespace SelfCheckout.ViewModels
 
         bool _couponInputViewVisible;
 
-        public CouponInputViewModel(IDialogService dialogService) : base(dialogService)
+        public CouponInputViewModel(INavigationService navigationService) : base(navigationService)
         {
         }
 
-        public ICommand OpenCameraScannerCommand => new Command(() => OpenCameraScannerAsync?.Invoke());
+        public ICommand OpenCameraScannerCommand => new Command(async () => await NavigationService.NavigateAsync("CameraScannerView"));
 
         public ICommand OpenHardwareScannerCommand => new Command(() => MessagingCenter.Send<ViewModelBase>(this, "RequestHWScanner"));
 

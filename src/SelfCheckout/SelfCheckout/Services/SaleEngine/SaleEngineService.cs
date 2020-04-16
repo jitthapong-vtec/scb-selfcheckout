@@ -190,9 +190,6 @@ namespace SelfCheckout.Services.SaleEngine
             };
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/SignOut");
             var result = await PostAsync<object, ApiResultData<bool>>(uri.ToString(), payload);
-            LoginData = null;
-            GlobalSettings.Instance.CountryCode = "en-US";
-            GlobalSettings.Instance.InitLanguage();
         }
 
         public async Task<List<FullTaxInvoice>> PrintTaxInvoice(object payload)
