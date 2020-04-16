@@ -40,8 +40,8 @@ namespace SelfCheckout.ViewModels.Base
         double? _totalDiscount;
         double? _totalNetAmount;
 
-        public OrderViewModelBase(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, 
-            ISaleEngineService saleEngineService, IRegisterService registerService) : base(dialogService)
+        public OrderViewModelBase(ISelfCheckoutService selfCheckoutService, 
+            ISaleEngineService saleEngineService, IRegisterService registerService)
         {
             SaleEngineService = saleEngineService;
             SelfCheckoutService = selfCheckoutService;
@@ -142,8 +142,11 @@ namespace SelfCheckout.ViewModels.Base
                         SessionKey = orderInvoice.LoginSession
                     });
 
-                    var invoiceImgUrl = invoices.FirstOrDefault()?.Data.Original.FirstOrDefault().Value;
-                    invoiceImgUrls.Add(invoiceImgUrl);
+                    var orgInvoiceImgUrl = invoices.FirstOrDefault()?.Data.Original.FirstOrDefault().Value;
+                    invoiceImgUrls.Add(orgInvoiceImgUrl);
+
+                    var copyInvoiceImgUrl = invoices.FirstOrDefault()?.Data.Copy.FirstOrDefault().Value;
+                    invoiceImgUrls.Add(copyInvoiceImgUrl);
                 }
                 catch { }
             }

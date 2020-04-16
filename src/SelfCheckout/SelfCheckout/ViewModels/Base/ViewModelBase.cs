@@ -16,16 +16,9 @@ namespace SelfCheckout.ViewModels.Base
 {
     public abstract class ViewModelBase : BindableBase, IInitialize, IDestructible
     {
-        public IDialogService DialogService { get; private set; }
-
         string _pageTitle;
         bool _isBusy;
         bool _isRefreshing;
-
-        public ViewModelBase(IDialogService dialogService)
-        {
-            DialogService = dialogService;
-        }
 
         public virtual Task OnTabSelected(TabItem item)
         {

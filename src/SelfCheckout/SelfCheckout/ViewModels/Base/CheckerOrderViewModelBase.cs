@@ -20,7 +20,7 @@ namespace SelfCheckout.ViewModels.Base
         string _sessionKey;
         CustomerData _customerData;
 
-        public CheckerOrderViewModelBase(IDialogService dialogService, ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(dialogService, selfCheckoutService, saleEngineService, registerService)
+        public CheckerOrderViewModelBase(ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService, IRegisterService registerService) : base(selfCheckoutService, saleEngineService, registerService)
         {
         }
 
@@ -41,7 +41,7 @@ namespace SelfCheckout.ViewModels.Base
             if (SessionData == null)
                 return;
 
-            var result = await DialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
+            var result = await _dialogService.ConfirmAsync(AppResources.SaveSession, AppResources.SaveSessionConfirm, AppResources.Yes, AppResources.No);
             if (!result)
                 return;
 
@@ -53,7 +53,7 @@ namespace SelfCheckout.ViewModels.Base
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await _dialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {
@@ -70,7 +70,7 @@ namespace SelfCheckout.ViewModels.Base
                 if (isAlreadyEnd)
                 {
                     Clear();
-                    await DialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
+                    await _dialogService.ShowAlert(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
                     return;
                 }
 
@@ -83,7 +83,7 @@ namespace SelfCheckout.ViewModels.Base
             }
             catch (Exception ex)
             {
-                await DialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
+                await _dialogService.ShowAlert(AppResources.Opps, ex.Message, AppResources.Close);
             }
             finally
             {

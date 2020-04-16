@@ -11,7 +11,7 @@ namespace SelfCheckout.ViewModels.Base
 {
     public abstract class NavigatableViewModelBase : ViewModelBase, INavigationAware
     {
-        public NavigatableViewModelBase(INavigationService navigationService, IDialogService dialogService) : base(dialogService)
+        public NavigatableViewModelBase(INavigationService navigationService)
         {
             NavigationService = navigationService;
         }
