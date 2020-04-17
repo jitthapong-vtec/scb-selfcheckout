@@ -29,12 +29,12 @@ namespace SelfCheckout.ViewModels
         }
 
         public ICommand GetSessionDetailCommand => new Command<string>(async (sessionKey) =>
-            {
-                if (string.IsNullOrEmpty(sessionKey))
-                    return;
-                SessionKey = sessionKey;
-                await LoadDataAsync();
-            });
+        {
+            if (string.IsNullOrEmpty(sessionKey))
+                return;
+            SessionKey = sessionKey;
+            await LoadDataAsync();
+        });
 
         public ICommand ClearScreenCommand => new DelegateCommand(() =>
          {

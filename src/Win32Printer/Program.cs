@@ -23,6 +23,7 @@ namespace Win32Printer
 
                     PrintDocument doc = new PrintDocument();
                     PrintController printController = new StandardPrintController();
+                    doc.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
                     doc.PrintController = printController;
 
                     if (!string.IsNullOrEmpty(printerName))

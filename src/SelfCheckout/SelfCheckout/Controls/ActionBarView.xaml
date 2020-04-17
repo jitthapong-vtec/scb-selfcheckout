@@ -3,10 +3,15 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
       xmlns:d="http://xamarin.com/schemas/2014/forms/design"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:controls="clr-namespace:SelfCheckout.Controls"
+      xmlns:controls="clr-namespace:SelfCheckout.Controls" 
+      xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
       mc:Ignorable="d"
       HeightRequest="56" VerticalOptions="Start" ColumnSpacing="0" 
       BackgroundColor="{OnIdiom Default=Transparent, Desktop={StaticResource Primary}}"
       x:Class="SelfCheckout.Controls.ActionBarView">
     <controls:GradientBackground IsVisible="{OnIdiom Phone=True, Desktop=False}"/>
+    <ffimageloadingsvg:SvgCachedImage x:Name="headerLogo" HeightRequest="32" Margin="0,-8,0,0" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
+    <controls:TappedGrid x:Name="backButton" IsVisible="False" TappedCommand="{Binding BackCommand}" HorizontalOptions="Start" WidthRequest="36" HeightRequest="36">
+        <Image Source="ic_back" VerticalOptions="Center"/>
+    </controls:TappedGrid>
 </Grid>

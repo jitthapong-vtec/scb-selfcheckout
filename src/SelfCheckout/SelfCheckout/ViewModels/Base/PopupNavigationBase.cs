@@ -19,8 +19,15 @@ namespace SelfCheckout.ViewModels.Base
 
         protected async Task GoBackAsync(TResult result)
         {
-            await NavigationService.GoBackAsync();
-            TaskResult?.SetResult(result);
+            try
+            {
+                await NavigationService.GoBackAsync();
+                TaskResult?.SetResult(result);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         public virtual void OnNavigatedFrom(INavigationParameters parameters)

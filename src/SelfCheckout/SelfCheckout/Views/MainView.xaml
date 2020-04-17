@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ctrls="clr-namespace:SelfCheckout.Controls"
              xmlns:views="clr-namespace:SelfCheckout.Views"
-             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             ScanCommand="{Binding ScanCommand}"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+                        ScanCommand="{Binding ScanCommand}"
              NavigationPage.HasNavigationBar="False"
              x:Name="mainView"
              x:Class="SelfCheckout.Views.MainView">
@@ -91,7 +91,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <ctrls:ActionBarView Grid.Row="0">
+                <ctrls:ActionBarView Grid.Row="0" HeaderLogoVisible="False">
                     <Grid.Resources>
                         <Style TargetType="Label">
                             <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
@@ -99,7 +99,8 @@
                             <Setter Property="VerticalOptions" Value="Center"/>
                         </Style>
                     </Grid.Resources>
-                    <Label Text="{Binding PageTitle}" FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"/>
+                    <Label Text="{Binding PageTitle}" IsVisible="{Binding HeaderLogoVisible, Converter={StaticResource InverseBooleanConverter}}" FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"/>
+                    <ffimageloadingsvg:SvgCachedImage IsVisible="{Binding HeaderLogoVisible}" Margin="0,-8,0,0" HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
                     <ctrls:TappedGrid HorizontalOptions="Start" Padding="8" TappedCommand="{Binding LanguageTappedCommand}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>

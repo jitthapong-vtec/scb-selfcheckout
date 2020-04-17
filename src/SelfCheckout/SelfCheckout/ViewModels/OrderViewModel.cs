@@ -140,6 +140,11 @@ namespace SelfCheckout.ViewModels
             FilterOrder(customer);
             FilterCustomerShowing = false;
         });
+        
+        public ICommand ShowDetailCommand => new DelegateCommand<OrderDetail>(async (order) =>
+        {
+            await NavigationService.NavigateAsync("OrderDetailView", new NavigationParameters() { { "OrderDetail", order } });
+        });
 
         public ICommand ShowCustomerSelectionCommand => new DelegateCommand(() =>
         {

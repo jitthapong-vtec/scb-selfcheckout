@@ -11,7 +11,7 @@
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.SessionOrderDialog">
-    <Frame>
+    <Frame VerticalOptions="Center" HorizontalOptions="Center" Margin="72,48,72,48">
         <Grid>
             <Grid RowSpacing="0" ColumnSpacing="0" Margin="8">
                 <Grid.RowDefinitions>

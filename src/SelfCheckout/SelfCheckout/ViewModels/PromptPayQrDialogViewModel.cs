@@ -105,26 +105,31 @@ namespace SelfCheckout.ViewModels
             if (canGenQr)
             {
                 IsCloseBtnVisible = false;
-                await Task.Run(async () =>
-                {
-                    var stopTimer = false;
-                    while (!stopTimer)
-                    {
-                        if (_ct.IsCancellationRequested)
-                            stopTimer = true;
-
-                        if (--CountDown == 0)
-                        {
-                            _tokenSource.Cancel();
-                            stopTimer = true;
-                        }
-
-                        if (!stopTimer)
-                            await Task.Delay(TimeSpan.FromSeconds(1));
-                    }
-                });
+                StartCountdownTask();
                 await InquireAsync();
             }
+        }
+
+        private void StartCountdownTask()
+        {
+            Task.Run(async () =>
+            {
+                var stopTimer = false;
+                while (!stopTimer)
+                {
+                    if (_ct.IsCancellationRequested)
+                        stopTimer = true;
+
+                    if (--CountDown == 0)
+                    {
+                        _tokenSource.Cancel();
+                        stopTimer = true;
+                    }
+
+                    if (!stopTimer)
+                        await Task.Delay(TimeSpan.FromSeconds(1));
+                }
+            });
         }
 
         async Task<bool> CreateQRCodeAsync()

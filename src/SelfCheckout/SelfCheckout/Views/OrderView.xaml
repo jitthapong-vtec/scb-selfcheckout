@@ -135,7 +135,8 @@
                     </CollectionView.GroupHeaderTemplate>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
+                            <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False" 
+                                                 ShowDetailCommand="{Binding Source={x:RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.ShowDetailCommand}" CommandParameter="{Binding .}"/>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
@@ -145,7 +146,8 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"/>
+                            <views:OrderItemView IsEnableChkOrder="False" IsEnableEntryOrderQty="False"  
+                                                 ShowDetailCommand="{Binding Source={x:RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.ShowDetailCommand}" CommandParameter="{Binding .}"/>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

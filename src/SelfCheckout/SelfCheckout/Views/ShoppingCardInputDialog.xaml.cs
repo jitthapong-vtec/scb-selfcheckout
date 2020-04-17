@@ -16,6 +16,8 @@ namespace SelfCheckout.Views
         public ShoppingCardInputDialog()
         {
             InitializeComponent();
+
+            CloseWhenBackgroundIsClicked = false;
         }
     }
 }

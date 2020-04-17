@@ -46,6 +46,7 @@ namespace SelfCheckout.ViewModels
         string _couponCode;
         string _checkoutButtonText;
 
+        bool _headerLogoVisible;
         bool _systemViewVisible;
         bool _summaryVisible;
         bool _summaryShowing;
@@ -286,12 +287,10 @@ namespace SelfCheckout.ViewModels
 
                 if (Convert.ToInt32(type) == 1)
                 {
-                    var result = await NavigationService.ShowDialogAsync<INavigationParameters>("CameraScannerView", null);
-
-                    var scanData = result.GetValue<string>("ScanData");
-                    if (!string.IsNullOrEmpty(scanData))
+                    var result = await NavigationService.ShowDialogAsync<string>("CameraScannerView", null);
+                    if (!string.IsNullOrEmpty(result))
                     {
-                        PaymentBarcode = scanData;
+                        PaymentBarcode = result;
                         await WalletPaymentAsync();
                     }
                 }
@@ -400,6 +399,15 @@ namespace SelfCheckout.ViewModels
                         IsBeingPaymentProcess = false;
                     }
                 }
+
+                if(value is HomeView)
+                {
+                    HeaderLogoVisible = true;
+                }
+                else
+                {
+                    HeaderLogoVisible = false;
+                }
             });
         }
 
@@ -413,6 +421,12 @@ namespace SelfCheckout.ViewModels
         {
             get => _paymentSelected;
             set => SetProperty(ref _paymentSelected, value);
+        }
+
+        public bool HeaderLogoVisible
+        {
+            get => _headerLogoVisible;
+            set => SetProperty(ref _headerLogoVisible, value);
         }
 
         public int PaymentCountdownTimer

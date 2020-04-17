@@ -17,12 +17,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <ctrls:ActionBarView Grid.Row="0">
-                <ffimageloadingsvg:SvgCachedImage HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
-                <ctrls:TappedGrid TappedCommand="{Binding BackCommand}" HorizontalOptions="Start" WidthRequest="36" HeightRequest="36">
-                    <Label Style="{StaticResource ActionBarLabelIconStyle}" Text="&#xf053;" VerticalOptions="Center" HorizontalOptions="Center"/>
-                </ctrls:TappedGrid>
-            </ctrls:ActionBarView>
+            <ctrls:ActionBarView Grid.Row="0" BackButtonVisible="True" HeaderLogoVisible="True"/>
             <ScrollView BackgroundColor="White" Grid.Row="1">
                 <StackLayout Spacing="0">
                     <StackLayout.Resources>

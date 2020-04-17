@@ -16,9 +16,7 @@
     <ContentPage.Content>
         <Grid>
             <ffimageloading:CachedImage Aspect="AspectFill" Margin="0,-56,0,0" Source="resource://SelfCheckout.Resources.Images.landing_bg.png"/>
-            <controls:ActionBarView>
-                <ffimageloadingsvg:SvgCachedImage HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
-            </controls:ActionBarView>
+            <controls:ActionBarView BackButtonVisible="True" HeaderLogoVisible="True"/>
             <Grid VerticalOptions="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

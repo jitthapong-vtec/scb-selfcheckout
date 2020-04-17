@@ -20,7 +20,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <controls:ActionBarView Grid.Row="0">
+                <controls:ActionBarView Grid.Row="0" BackButtonVisible="True" HeaderLogoVisible="False">
                     <Grid.Resources>
                         <Style TargetType="Label">
                             <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
@@ -29,13 +29,6 @@
                         </Style>
                     </Grid.Resources>
                     <Label VerticalOptions="Center" HorizontalTextAlignment="Center" FontSize="Large" Text="{i18n:Translate ItemDetail}"/>
-                    <controls:TappedGrid HorizontalOptions="Start" VerticalOptions="Center"
-                                         WidthRequest="36"
-                                         HeightRequest="36"
-                                         TappedCommand="{Binding BackCommand}">
-                        <Label VerticalOptions="Center" HorizontalTextAlignment="Center" Style="{StaticResource ActionBarLabelIconStyle}"
-                           Text="&#xf053;" TextColor="{StaticResource Gray50}"/>
-                    </controls:TappedGrid>
                 </controls:ActionBarView>
                 <Frame Grid.Row="1" Padding="16,16,16,0">
                     <Frame.Resources>

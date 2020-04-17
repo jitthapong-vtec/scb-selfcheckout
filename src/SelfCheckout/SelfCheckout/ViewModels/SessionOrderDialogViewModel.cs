@@ -40,8 +40,8 @@ namespace SelfCheckout.ViewModels
 
         async Task SetResult(INavigationParameters parameters)
         {
-            _tcs?.SetResult(parameters);
             await NavigationService.GoBackAsync();
+            _tcs?.SetResult(parameters);
         }
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
