@@ -107,6 +107,7 @@
     <Compile Include="Renderers\CircleActivityIndicatorRenderer.cs" />
     <Compile Include="Renderers\CustomDatePickerRenderer.cs" />
     <Compile Include="Renderers\CustomEntryRenderer.cs" />
+    <Compile Include="Renderers\CustomFlowListViewRenderer.cs" />
     <Compile Include="Renderers\CustomLabelRenderer.cs" />
     <Compile Include="Services\DeviceInfo.cs" />
     <Compile Include="Services\PrintService.cs" />

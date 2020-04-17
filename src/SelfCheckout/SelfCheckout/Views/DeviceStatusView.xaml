@@ -59,12 +59,13 @@
                         <BoxView Grid.Column="1" BackgroundColor="{StaticResource Gray500}" HeightRequest="1" VerticalOptions="Center" Margin="8,24,8,0"/>
                     </Grid>
                 </Grid>
-                <fl:FlowListView Grid.Row="1" RowHeight="200" FlowItemsSource="{Binding Devices}" FlowColumnCount="3"
+                <controls:CustomFlowListView Grid.Row="1" RowHeight="200" FlowItemsSource="{Binding Devices}" FlowColumnCount="3"
                                  FlowRowBackgroundColor="White" FlowTappedBackgroundColor="White"
                                  FlowItemTappedCommand="{Binding ShowOrderDetailCommand}">
                     <fl:FlowListView.FlowColumnTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <controls:TappedGrid TappedCommand="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}, AncestorLevel=1}, Path=BindingContext.ShowOrderDetailCommand}"
+                                                 CommandParameter="{Binding .}">
                                 <forms:CachedImage Aspect="Fill" Source="resource://SelfCheckout.Resources.Images.card_bg.png"/>
                                 <Grid Margin="8" VerticalOptions="Center" RowSpacing="1" ColumnSpacing="1">
                                     <Grid.RowDefinitions>
@@ -162,10 +163,10 @@
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
+                            </controls:TappedGrid>
                         </DataTemplate>
                     </fl:FlowListView.FlowColumnTemplate>
-                </fl:FlowListView>
+                </controls:CustomFlowListView>
             </Grid>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>

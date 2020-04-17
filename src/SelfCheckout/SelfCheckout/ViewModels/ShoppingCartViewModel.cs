@@ -104,8 +104,6 @@ namespace SelfCheckout.ViewModels
         public ICommand ChangeQtyCommand => new DelegateCommand<OrderDetail>(async (order) =>
         {
             var qty = order.BillingQuantity.Quantity;
-            if (qty <= 0)
-                return;
 
             var payload = new
             {

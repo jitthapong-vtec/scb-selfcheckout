@@ -17,9 +17,7 @@
                     Aspect="AspectFill"
                     Source="{OnIdiom Phone=resource://SelfCheckout.Resources.Images.landing_bg.png, 
                     Desktop=resource://SelfCheckout.Resources.Images.desktop_bg.png}"/>
-            <controls:ActionBarView IsVisible="{OnIdiom Phone=True}">
-                <ffimageloadingsvg:SvgCachedImage HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
-            </controls:ActionBarView>
+            <controls:ActionBarView IsVisible="{OnIdiom Phone=True}" HeaderLogoVisible="True"/>
             <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentPage.Content>
