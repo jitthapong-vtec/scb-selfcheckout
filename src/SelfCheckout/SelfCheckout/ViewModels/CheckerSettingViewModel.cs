@@ -4,6 +4,7 @@ using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Device;
 using SelfCheckout.Services.Print;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
@@ -20,6 +21,7 @@ namespace SelfCheckout.ViewModels
     public class CheckerSettingViewModel : SettingViewModelBase
     {
         string _printerName;
+        string _ipAddress;
 
         public CheckerSettingViewModel(INavigationService navigatinService,
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) :
@@ -33,6 +35,8 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _printerName, value);
         }
 
+        public string IPAddress { get => DependencyService.Get<IDeviceInformation>().GetDeviceIp(); }
+    
         public ICommand PickPrinterCommand => new DelegateCommand(async () =>
         {
             try

@@ -27,7 +27,9 @@ namespace SelfCheckout.ViewModels
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            await ReloadData();
+            var backFromConfirm = parameters.GetValue<bool>("BackFromConfirm");
+            if (!backFromConfirm)
+                await ReloadData();
         }
 
         private async Task ReloadData()

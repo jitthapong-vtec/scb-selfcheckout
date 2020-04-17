@@ -69,6 +69,8 @@
                                 </Frame>
                             </controls:TappedGrid>
                         </Grid>
+                        <Label Text="IP Address"/>
+                        <Entry Text="{Binding IPAddress}" IsReadOnly="True"/>
                     </StackLayout>
                 </ScrollView>
             </Grid>

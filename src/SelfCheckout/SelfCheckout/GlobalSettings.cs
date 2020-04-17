@@ -72,7 +72,9 @@ namespace SelfCheckout
         {
             get
             {
-                return DependencyService.Get<IDeviceInformation>().GetDeviceIp();
+                var deviceCode = DependencyService.Get<IDeviceInformation>().GetDeviceCode(); //*/"8865edc3d6e1105a";
+                var ipAddress = DependencyService.Get<IDeviceInformation>().GetDeviceIp(); //*/"192.168.2.22";
+                return Device.RuntimePlatform == Device.Android ? deviceCode : ipAddress;
             }
         }
     }

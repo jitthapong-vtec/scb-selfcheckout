@@ -9,7 +9,7 @@
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.AlertDialog">
   <ContentPage.Content>
-        <Frame Margin="8,48,8,48" VerticalOptions="Center" HorizontalOptions="{OnPlatform UWP=Center}" WidthRequest="{OnPlatform UWP=400}" Padding="8">
+        <Frame Margin="8,48,8,48" VerticalOptions="Center" HorizontalOptions="{OnPlatform UWP=Center}" WidthRequest="{OnPlatform UWP=500}" Padding="8">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

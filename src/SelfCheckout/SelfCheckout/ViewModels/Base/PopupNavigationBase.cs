@@ -21,7 +21,11 @@ namespace SelfCheckout.ViewModels.Base
         {
             try
             {
-                await NavigationService.GoBackAsync();
+                var navigationParameters = new NavigationParameters()
+                {
+                    {"BackFromConfirm", true }
+                };
+                await NavigationService.GoBackAsync(navigationParameters);
                 TaskResult?.SetResult(result);
             }
             catch (Exception ex)
