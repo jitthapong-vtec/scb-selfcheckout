@@ -72,7 +72,7 @@ namespace SelfCheckout
         {
             get
             {
-                return "127.0.0.1";//DependencyService.Get<IDeviceInformation>().GetDeviceIp();
+                return DependencyService.Get<IDeviceInformation>().GetDeviceIp();
             }
         }
     }
