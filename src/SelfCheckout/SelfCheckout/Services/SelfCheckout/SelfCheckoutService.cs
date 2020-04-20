@@ -51,6 +51,7 @@ namespace SelfCheckout.Services.SelfCheckout
 
             var filter = new string[] { "EN", "TH", "ZH" };
             Languages = result.Data.Where(l => filter.Contains(l.LangCode)).ToList();
+            CurrentLanguage = Languages.Where(l => l.LangCode == "EN").FirstOrDefault();
         }
 
         public async Task LoadPaymentAsync()

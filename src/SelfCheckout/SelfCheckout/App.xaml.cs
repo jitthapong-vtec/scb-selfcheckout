@@ -37,7 +37,7 @@ namespace SelfCheckout
 
             GlobalSettings.Instance.InitLanguage();
 
-            await NavigationService.NavigateAsync("NavigationPage/LandingView");
+            await NavigationService.NavigateAsync("myapp://NavigationPage/LandingView");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

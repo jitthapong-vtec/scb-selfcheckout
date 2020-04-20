@@ -10,7 +10,7 @@
              x:Class="SelfCheckout.Views.Components.UserAuthenView">
   <ContentView.Content>
         <StackLayout VerticalOptions="Center">
-            <Label Text="{i18n:Translate UserName}" FontSize="Small"/>
+            <Label x:Name="lblUsername" FontSize="Small"/>
             <Entry FontSize="Medium" Text="{Binding UserName.Value, Mode=TwoWay}"
                                              IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
                 <Entry.Behaviors>
@@ -18,7 +18,7 @@
                 </Entry.Behaviors>
             </Entry>
             <Label Text="{Binding UserName.Errors, Converter={StaticResource FirstValidationErrorConverter}}" IsVisible="{Binding UserName.Errors, Converter={StaticResource ValidatableObjectErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" />
-            <Label Text="{i18n:Translate Password}" FontSize="Small"/>
+            <Label x:Name="lblPassword" FontSize="Small"/>
             <Entry FontSize="Medium" Text="{Binding Password.Value, Mode=TwoWay}" IsPassword="True"
                                              IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
                 <Entry.Behaviors>

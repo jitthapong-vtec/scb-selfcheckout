@@ -40,6 +40,11 @@ namespace SelfCheckout.ViewModels
 
                 await _selfCheckoutService.LoadConfigAsync();
                 await _selfCheckoutService.ValidateMachineAsync(GlobalSettings.Instance.MachineIp);
+                await _selfCheckoutService.LoadLanguageAsync();
+                await _selfCheckoutService.LoadPaymentAsync();
+
+                Languages = _selfCheckoutService.Languages?.ToObservableCollection();
+                LanguageSelected = _selfCheckoutService.CurrentLanguage;
 
                 await NavigationService.NavigateAsync("LoginView");
             }

@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
@@ -15,75 +14,87 @@
              x:Class="SelfCheckout.Views.BorrowView">
     <ContentPage.Content>
         <Grid>
-            <ffimageloading:CachedImage Aspect="AspectFill" Margin="0,-56,0,0" Source="resource://SelfCheckout.Resources.Images.landing_bg.png"/>
-            <controls:ActionBarView BackButtonVisible="True" HeaderLogoVisible="True"/>
-            <Grid VerticalOptions="Center">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <StackLayout Grid.Row="0" VerticalOptions="End" Margin="0,-48,0,16">
-                    <StackLayout.Resources>
-                        <Style TargetType="Label">
-                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
-                        </Style>
-                        <Style TargetType="controls:CustomLabel">
-                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
-                        </Style>
-                    </StackLayout.Resources>
-                    <ffimageloadingsvg:SvgCachedImage VerticalOptions="Start" HeightRequest="48" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
-                    <controls:CustomLabel UpperCase="True" Text="self-checkout" HorizontalTextAlignment="Center" FontSize="Large"/>
-                    <Grid Padding="16,0,16,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <BoxView Grid.Column="0" HeightRequest="1" VerticalOptions="Center" BackgroundColor="{StaticResource Gray50}"/>
-                        <controls:CustomLabel Grid.Column="1" UpperCase="True" VerticalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center" Text="{i18n:Translate Borrow}"/>
-                        <BoxView Grid.Column="2" HeightRequest="1" VerticalOptions="Center" BackgroundColor="{StaticResource Gray50}"/>
-                    </Grid>
-                </StackLayout>
-                <StackLayout Grid.Row="1" VerticalOptions="Start" Padding="16">
-                    <Grid VerticalOptions="Start" ColumnSpacing="0">
+            <Grid>
+                <ffimageloading:CachedImage Aspect="AspectFill" Margin="0,-56,0,0" Source="resource://SelfCheckout.Resources.Images.landing_bg.png"/>
+                <controls:ActionBarView BackButtonVisible="True" HeaderLogoVisible="True">
+                    <controls:TappedGrid HorizontalOptions="Start" Padding="8" Margin="24,0,0,0" TappedCommand="{Binding LanguageTappedCommand}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0" 
+                        <Image Grid.Column="0" Source="{Binding LanguageSelected.Icon}" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="32"/>
+                        <Label Grid.Column="1" Text="{Binding LanguageSelected.LangCode}" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
+                    </controls:TappedGrid>
+                </controls:ActionBarView>
+                <Grid VerticalOptions="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackLayout Grid.Row="0" VerticalOptions="End" Margin="0,-48,0,16">
+                        <StackLayout.Resources>
+                            <Style TargetType="Label">
+                                <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                            </Style>
+                            <Style TargetType="controls:CustomLabel">
+                                <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                            </Style>
+                        </StackLayout.Resources>
+                        <ffimageloadingsvg:SvgCachedImage VerticalOptions="Start" HeightRequest="48" Source="resource://SelfCheckout.Resources.Images.header_logo.svg"/>
+                        <controls:CustomLabel UpperCase="True" Text="self-checkout" HorizontalTextAlignment="Center" FontSize="Large"/>
+                        <Grid Padding="16,0,16,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <BoxView Grid.Column="0" HeightRequest="1" VerticalOptions="Center" BackgroundColor="{StaticResource Gray50}"/>
+                            <controls:CustomLabel Grid.Column="1" UpperCase="True" VerticalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Center" Text="{Binding LabelBorrow}"/>
+                            <BoxView Grid.Column="2" HeightRequest="1" VerticalOptions="Center" BackgroundColor="{StaticResource Gray50}"/>
+                        </Grid>
+                    </StackLayout>
+                    <StackLayout Grid.Row="1" VerticalOptions="Start" Padding="16">
+                        <Grid VerticalOptions="Start" ColumnSpacing="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0" 
                                          effects:RoundCornersEffect.CornerRadius="3"
                                            effects:RoundCornersEffect.RoundCorner="Left"
                                          BackgroundColor="{StaticResource Secondary}">
-                            <controls:TappedGrid WidthRequest="48"
+                                <controls:TappedGrid WidthRequest="48"
                                              TappedCommand="{Binding ScanShoppingCardCommand}">
-                                <Label FontFamily="{StaticResource FontAwesome}" Text="&#xf030;" HorizontalOptions="Center" VerticalOptions="Center" FontSize="24" TextColor="{StaticResource Gray50}"/>
-                            </controls:TappedGrid>
-                        </Grid>
-                        <Entry x:Name="etShoppingCard" FontSize="Large" Grid.Column="1" HorizontalTextAlignment="Center" Text="{Binding InputValue}"/>
-                        <Grid Grid.Column="2" BackgroundColor="{StaticResource Gray200}"
+                                    <Label FontFamily="{StaticResource FontAwesome}" Text="&#xf030;" HorizontalOptions="Center" VerticalOptions="Center" FontSize="24" TextColor="{StaticResource Gray50}"/>
+                                </controls:TappedGrid>
+                            </Grid>
+                            <Entry x:Name="etShoppingCard" FontSize="Large" Grid.Column="1" HorizontalTextAlignment="Center" Text="{Binding InputValue}"/>
+                            <Grid Grid.Column="2" BackgroundColor="{StaticResource Gray200}"
                                          effects:RoundCornersEffect.CornerRadius="3"
                                            effects:RoundCornersEffect.RoundCorner="Right">
-                            <controls:TappedGrid 
+                                <controls:TappedGrid 
                                              WidthRequest="48"
                                              TappedCommand="{Binding ValidateShoppingCardCommand}"
                                              IsEnabled="{Binding Source={x:Reference etShoppingCard}, Path=Text, Converter={StaticResource StringNotNullOrEmptyConverter}}">
-                            <Label FontFamily="{StaticResource FontAwesome}" HorizontalOptions="Center" VerticalOptions="Center" Text="&#xf00c;" FontSize="24" TextColor="{StaticResource Secondary}"/>
-                            </controls:TappedGrid>
+                                    <Label FontFamily="{StaticResource FontAwesome}" HorizontalOptions="Center" VerticalOptions="Center" Text="&#xf00c;" FontSize="24" TextColor="{StaticResource Secondary}"/>
+                                </controls:TappedGrid>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </StackLayout>
+                    </StackLayout>
+                </Grid>
+                <Label VerticalOptions="End" Margin="16,0,0,8" TextColor="{StaticResource Gray50}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Version"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding Version}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
             </Grid>
-            <Label VerticalOptions="End" Margin="16,0,0,8" TextColor="{StaticResource Gray50}">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Version"/>
-                        <Span Text=" "/>
-                        <Span Text="{Binding Version}"/>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
+            <views:LanguageSelectionView IsVisible="{Binding LangShowing}"/>
         </Grid>
     </ContentPage.Content>
 </controls:DensoScannerPage>

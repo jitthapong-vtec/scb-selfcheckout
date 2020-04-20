@@ -24,6 +24,8 @@ namespace SelfCheckout.ViewModels
     {
         object _lock = new object();
 
+        string _labelBorrow;
+
         string _inputValue = "";
 
         bool _isBeingScan;
@@ -32,6 +34,7 @@ namespace SelfCheckout.ViewModels
             ISelfCheckoutService selfCheckoutService, IRegisterService registerService) :
             base(navigationService, saleEngineService, selfCheckoutService, registerService)
         {
+            LabelBorrow = AppResources.Borrow;
         }
 
         public ICommand ScanCommand => new Command<object>((data) =>
@@ -60,6 +63,12 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _inputValue, value);
         }
 
+        public string LabelBorrow
+        {
+            get => _labelBorrow;
+            set => SetProperty(ref _labelBorrow, value);
+        }
+
         public bool IsBegingScan
         {
             get => _isBeingScan;
@@ -69,6 +78,15 @@ namespace SelfCheckout.ViewModels
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             IsBegingScan = false;
+
+            Languages = SelfCheckoutService.Languages.ToObservableCollection();
+            LanguageSelected = SelfCheckoutService.CurrentLanguage;
+        }
+
+        protected override Task OnLanguageChanged(Language lang)
+        {
+            LabelBorrow = AppResources.Borrow;
+            return base.OnLanguageChanged(lang);
         }
 
         protected override Task ScanShoppingCardCallback(string inputValue)

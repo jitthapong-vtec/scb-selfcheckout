@@ -29,12 +29,10 @@ namespace SelfCheckout.ViewModels
         ISelfCheckoutService _selfCheckoutService;
 
         ObservableCollection<TabItem> _tabs;
-        ObservableCollection<Language> _languages;
         ObservableCollection<Currency> _currencies;
         ObservableCollection<Payment> _payments;
 
         ContentView _currentView;
-        Language _languageSelected;
         Currency _currencySelected;
         Payment _paymentSelected;
         OrderData _orderData;
@@ -50,7 +48,6 @@ namespace SelfCheckout.ViewModels
         bool _systemViewVisible;
         bool _summaryVisible;
         bool _summaryShowing;
-        bool _langShowing;
         bool _currencyShowing;
         bool _isBeingPaymentProcess;
         bool _isPaymentProcessing;
@@ -219,20 +216,9 @@ namespace SelfCheckout.ViewModels
             TutorialViewModel.ShowTutorial();
         });
 
-        public ICommand LanguageTappedCommand => new Command(() =>
-        {
-            LangShowing = !LangShowing;
-        });
-
         public ICommand CurrencyTappedCommand => new Command(() =>
         {
             CurrencyShowing = !CurrencyShowing;
-        });
-
-        public ICommand LanguageSelectionCommand => new Command<Language>((lang) =>
-        {
-            LanguageSelected = lang;
-            LangShowing = false;
         });
 
         public ICommand CurrencySelectionCommand => new Command<Currency>(async (currency) =>
@@ -369,12 +355,6 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _tabs, value);
         }
 
-        public ObservableCollection<Language> Languages
-        {
-            get => _languages;
-            set => SetProperty(ref _languages, value);
-        }
-
         public ObservableCollection<Currency> Currencies
         {
             get => _currencies;
@@ -507,27 +487,6 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _orderData, value);
         }
 
-        public Language LanguageSelected
-        {
-            get => _languageSelected;
-            set => SetProperty(ref _languageSelected, value, async () =>
-            {
-                _selfCheckoutService.CurrentLanguage = value;
-
-                if (value.LangCode == "EN")
-                    GlobalSettings.Instance.CountryCode = "en-US";
-                else if (value.LangCode == "TH")
-                    GlobalSettings.Instance.CountryCode = "th-TH";
-                else if (value.LangCode == "ZH")
-                    GlobalSettings.Instance.CountryCode = "zh-Hans";
-                GlobalSettings.Instance.InitLanguage();
-
-                MessagingCenter.Send(this, "LanguageChange");
-                await TutorialViewModel.ReloadImageAsset();
-                RefreshTab();
-            });
-        }
-
         public Currency CurrencySelected
         {
             get => _currencySelected;
@@ -546,19 +505,6 @@ namespace SelfCheckout.ViewModels
                 {
                     if (value)
                         LangShowing = false;
-                });
-            }
-        }
-
-        public bool LangShowing
-        {
-            get => _langShowing;
-            set
-            {
-                SetProperty(ref _langShowing, value, () =>
-                {
-                    if (value)
-                        CurrencyShowing = false;
                 });
             }
         }
@@ -599,10 +545,18 @@ namespace SelfCheckout.ViewModels
             catch { }
         }
 
-        //async Task ShowCameraScannerAsync()
-        //{
-        //    await NavigationService.NavigateAsync("CameraScannerView");
-        //}
+        protected override async Task OnLanguageChanged(Language lang)
+        {
+            await TutorialViewModel.ReloadImageAsset();
+            RefreshTab();
+        }
+
+        protected override Task OnLanguageViewShowingChanged(bool isShowing)
+        {
+            if (isShowing)
+                CurrencyShowing = false;
+            return Task.FromResult(true);
+        }
 
         async Task ChangeCurrency()
         {
@@ -630,14 +584,11 @@ namespace SelfCheckout.ViewModels
         {
             try
             {
-                await _selfCheckoutService.LoadLanguageAsync();
-                await _selfCheckoutService.LoadPaymentAsync();
-
                 Payments = _selfCheckoutService.Payments?.ToObservableCollection();
                 PaymentSelected = _selfCheckoutService.Payments.FirstOrDefault();
 
                 Languages = _selfCheckoutService.Languages?.ToObservableCollection();
-                LanguageSelected = _selfCheckoutService.Languages.Where(l => l.LangCode == "EN").FirstOrDefault();
+                LanguageSelected = _selfCheckoutService.CurrentLanguage;
             }
             catch (Exception ex)
             {

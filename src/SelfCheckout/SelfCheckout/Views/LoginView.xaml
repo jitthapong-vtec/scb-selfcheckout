@@ -3,16 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
-             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:views="clr-namespace:SelfCheckout.Views"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:resx="clr-namespace:SelfCheckout.Resources"
-             xmlns:magic="clr-namespace:MagicGradients;assembly=MagicGradients"
-             xmlns:effects="clr-namespace:SelfCheckout.Effects"
-             xmlns:behaviors="clr-namespace:SelfCheckout.Behaviors"
              xmlns:components="clr-namespace:SelfCheckout.Views.Components"
              NavigationPage.HasNavigationBar="False"
              NavigationPage.HasBackButton="False"
@@ -20,72 +13,84 @@
              x:Class="SelfCheckout.Views.LoginView">
     <ContentPage.Content>
         <Grid>
-            <ffimageloading:CachedImage 
+            <Grid>
+                <ffimageloading:CachedImage 
                     Aspect="AspectFill"
                     Source="{OnIdiom Phone=resource://SelfCheckout.Resources.Images.landing_bg.png, 
                     Desktop=resource://SelfCheckout.Resources.Images.desktop_bg.png}"/>
-            <controls:ActionBarView IsVisible="{OnIdiom Phone=True}" HeaderLogoVisible="False" BackButtonVisible="False">
-                <ffimageloading:CachedImage IsVisible="{OnIdiom Phone=True, Desktop=False}" HeightRequest="32" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.png"/>
-            </controls:ActionBarView>
-            <Grid VerticalOptions="Center">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <ffimageloading:CachedImage Grid.Row="0" Margin="0,-16,0,16"
+                <controls:ActionBarView IsVisible="{OnIdiom Phone=True}" HeaderLogoVisible="False" BackButtonVisible="False">
+                    <ffimageloading:CachedImage IsVisible="{OnIdiom Phone=True, Desktop=False}" HeightRequest="32" Margin="0,-8,0,0" VerticalOptions="Center" Source="resource://SelfCheckout.Resources.Images.header_logo.png"/>
+
+                    <controls:TappedGrid HorizontalOptions="Start" Padding="8" TappedCommand="{Binding LanguageTappedCommand}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="{Binding LanguageSelected.Icon}" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="32"/>
+                        <Label Grid.Column="1" Text="{Binding LanguageSelected.LangCode}" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
+                    </controls:TappedGrid>
+                </controls:ActionBarView>
+                <Grid VerticalOptions="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ffimageloading:CachedImage Grid.Row="0" Margin="0,-16,0,16"
                                             VerticalOptions="Start" HeightRequest="48" 
                                             Source="{OnIdiom Phone=resource://SelfCheckout.Resources.Images.header_logo.png, Desktop=resource://SelfCheckout.Resources.Images.header_logo_blue.png}"/>
-                <Frame Margin="16" Grid.Row="1" Padding="{OnIdiom Phone='16,8,16,16', Desktop='48,8,48,48'}" WidthRequest="{OnIdiom Phone=300, Desktop=400}" 
+                    <Frame Margin="16" Grid.Row="1" Padding="{OnIdiom Phone='16,8,16,16', Desktop='48,8,48,48'}" WidthRequest="{OnIdiom Phone=300, Desktop=400}" 
                        VerticalOptions="Center" HorizontalOptions="Center">
-                    <StackLayout VerticalOptions="Center">
-                        <Label HorizontalTextAlignment="Center" FontSize="Large" Text="{i18n:Translate StaffLogin}"/>
-                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
-                        <components:UserAuthenView/>
-                        <controls:TappedGrid Grid.Column="0"
+                        <StackLayout VerticalOptions="Center">
+                            <Label HorizontalTextAlignment="Center" FontSize="Large" Text="{Binding LoginTitleText}"/>
+                            <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
+                            <components:UserAuthenView LabelUsername="{Binding UsernameLabel}" LabelPassword="{Binding PasswordLabel}"/>
+                            <controls:TappedGrid Grid.Column="0"
                                              Padding="0"
                                              Margin="0,4,0,0"
                                              Style="{StaticResource TappedGridButtonStyle}"
                                              TappedCommand="{Binding AuthorizeCommand}">
-                            <Frame CornerRadius="3" Padding="0">
-                                <Grid>
-                                    <controls:GradientBackground/>
-                                    <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-                                </Grid>
-                            </Frame>
-                        </controls:TappedGrid>
-                    </StackLayout>
-                </Frame>
-            </Grid>
-            <Label VerticalOptions="End" HorizontalOptions="{OnIdiom Phone=Start, Desktop=End}" Margin="16,0,16,8" TextColor="{StaticResource Gray50}">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Version"/>
-                        <Span Text=" "/>
-                        <Span Text="{Binding Version}"/>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
+                                <Frame CornerRadius="3" Padding="0">
+                                    <Grid>
+                                        <controls:GradientBackground/>
+                                        <controls:CustomLabel UpperCase="True" Text="{Binding ConfirmBtnText}" TextColor="{StaticResource Gray50}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                                    </Grid>
+                                </Frame>
+                            </controls:TappedGrid>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+                <Label VerticalOptions="End" HorizontalOptions="{OnIdiom Phone=Start, Desktop=End}" Margin="16,0,16,8" TextColor="{StaticResource Gray50}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Version"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding Version}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
 
-            <controls:TappedGrid IsVisible="{OnIdiom Phone=True}" VerticalOptions="End" HorizontalOptions="End" Margin="0,0,16,8" TappedCommand="{Binding SettingCommand}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Text="&#xf013;" VerticalOptions="Center" FontFamily="{StaticResource FontAwesome}" FontSize="24" TextColor="{StaticResource Gray50}"/>
-                <Label Grid.Column="1" Text="{i18n:Translate Setting}" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
-            </controls:TappedGrid>
+                <controls:TappedGrid IsVisible="{OnIdiom Phone=True}" VerticalOptions="End" HorizontalOptions="End" Margin="0,0,16,8" TappedCommand="{Binding SettingCommand}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Text="&#xf013;" VerticalOptions="Center" FontFamily="{StaticResource FontAwesome}" FontSize="24" TextColor="{StaticResource Gray50}"/>
+                    <Label Grid.Column="1" Text="{Binding SettingLabel}" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
+                </controls:TappedGrid>
 
-            <controls:TappedGrid VerticalOptions="End" HorizontalOptions="Start" Margin="16,0,16,8" IsVisible="{OnIdiom Desktop=True}"
+                <controls:TappedGrid VerticalOptions="End" HorizontalOptions="Start" Margin="16,0,16,8" IsVisible="{OnIdiom Desktop=True}"
                             TappedCommand="{Binding CheckerSettingCommand}"
                                     Padding="0"
                                     WidthRequest="100"
                                     Style="{StaticResource TappedGridButtonStyle}">
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="&#xf013;" FontSize="24" TextColor="{StaticResource Gray50}" Style="{StaticResource LabelIconStyle}" VerticalOptions="Center"/>
-                    <controls:CustomLabel UpperCase="True" Text="Setting" TextColor="{StaticResource Gray50}" VerticalOptions="Center"/>
-                </StackLayout>
-            </controls:TappedGrid>
-            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="&#xf013;" FontSize="24" TextColor="{StaticResource Gray50}" Style="{StaticResource LabelIconStyle}" VerticalOptions="Center"/>
+                        <controls:CustomLabel UpperCase="True" Text="Setting" TextColor="{StaticResource Gray50}" VerticalOptions="Center"/>
+                    </StackLayout>
+                </controls:TappedGrid>
+                <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
+            </Grid>
+            <views:LanguageSelectionView IsVisible="{Binding LangShowing}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
