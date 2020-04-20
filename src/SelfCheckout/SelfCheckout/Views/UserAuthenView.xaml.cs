@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -29,6 +29,9 @@ namespace SelfCheckout.Views.Components
             (bindable as UserAuthenView).lblPassword.Text = (string)newValue;
         }
 
+        public static readonly BindableProperty PasswordCompleteCommandProperty =
+            BindableProperty.Create("PasswordCompleteCommand", typeof(ICommand), typeof(UserAuthenView));
+
         public string LabelUsername
         {
             get => (string)GetValue(LabelUsernameProperty);
@@ -41,12 +44,23 @@ namespace SelfCheckout.Views.Components
             set => SetValue(LabelPasswordProperty, value);
         }
 
+        public ICommand PasswordCompleteCommand
+        {
+            get => (ICommand)GetValue(PasswordCompleteCommandProperty);
+            set => SetValue(PasswordCompleteCommandProperty, value);
+        }
+
         public UserAuthenView()
         {
             InitializeComponent();
 
             LabelUsername = AppResources.UserName;
             LabelPassword = AppResources.Password;
+        }
+
+        private void Entry_Password_Completed(object sender, EventArgs e)
+        {
+            PasswordCompleteCommand?.Execute(null);
         }
     }
 }

@@ -20,7 +20,7 @@
             <Label Text="{Binding UserName.Errors, Converter={StaticResource FirstValidationErrorConverter}}" IsVisible="{Binding UserName.Errors, Converter={StaticResource ValidatableObjectErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" />
             <Label x:Name="lblPassword" FontSize="Small"/>
             <Entry FontSize="Medium" Text="{Binding Password.Value, Mode=TwoWay}" IsPassword="True"
-                                             IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+                   Completed="Entry_Password_Completed" IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
                 <Entry.Behaviors>
                     <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidatePasswordCommand}" />
                 </Entry.Behaviors>

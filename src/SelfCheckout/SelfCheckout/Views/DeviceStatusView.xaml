@@ -111,7 +111,7 @@
                                                         <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.shopping_card_active.png"/>
                                                     </DataTrigger>
                                                     <DataTrigger TargetType="forms:CachedImage" Binding="{Binding SessionStatus.SessionCode}" Value="END">
-                                                        <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.shopping_card_active.png"/>
+                                                        <Setter Property="Source" Value="resource://SelfCheckout.Resources.Images.shopping_card.png"/>
                                                     </DataTrigger>
                                                 </forms:CachedImage.Triggers>
                                             </forms:CachedImage>

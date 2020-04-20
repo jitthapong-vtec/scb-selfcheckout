@@ -30,9 +30,15 @@ namespace Win32Printer
                         doc.PrinterSettings.PrinterName = printerName;
                     doc.PrintPage += new PrintPageEventHandler((sender, e) =>
                     {
-                        //img = ResizeImage(img, e.Graphics.VisibleClipBounds.Size);
-                        e.Graphics.DrawImage(img, Point.Empty);
-                        //e.HasMorePages = true;
+                        var targetSize = e.Graphics.VisibleClipBounds.Size;
+                        var scale = Math.Min(targetSize.Width / img.Width, targetSize.Height / img.Height);
+                        var newWidth = (int)(img.Width * scale) - 1;
+                        var newHeight = (int)(img.Height * scale) - 1;
+                        var rect = new Rectangle(0, 0, newWidth, newHeight);
+                        e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                        e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                        e.Graphics.DrawImage(img, rect);
                     });
                     doc.EndPrint += new PrintEventHandler((sender, e) =>
                     {
@@ -42,13 +48,6 @@ namespace Win32Printer
                 }
             }
             resetEvent.WaitOne();
-        }
-
-        public static Image ResizeImage(Image img, SizeF targetSize)
-        {
-            float scale = Math.Min(targetSize.Width / img.Width, targetSize.Height / img.Height);
-            Size newSize = new Size((int)(img.Width * scale) - 1, (int)(img.Height * scale) - 1);
-            return new Bitmap(img, newSize);
         }
     }
 }

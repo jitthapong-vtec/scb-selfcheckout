@@ -150,11 +150,10 @@ namespace SelfCheckout.ViewModels.Base
                 }
                 catch { }
             }
-
             await PrintInvoiceAsync(invoiceImgUrls);
         }
 
-        async Task PrintInvoiceAsync(List<string> invoiceImgUrls)
+        protected async Task PrintInvoiceAsync(List<string> invoiceImgUrls)
         {
             if (invoiceImgUrls.Any())
             {

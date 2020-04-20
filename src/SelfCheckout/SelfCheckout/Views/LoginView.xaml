@@ -43,7 +43,8 @@
                         <StackLayout VerticalOptions="Center">
                             <Label HorizontalTextAlignment="Center" FontSize="Large" Text="{Binding LoginTitleText}"/>
                             <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
-                            <components:UserAuthenView LabelUsername="{Binding UsernameLabel}" LabelPassword="{Binding PasswordLabel}"/>
+                            <components:UserAuthenView LabelUsername="{Binding UsernameLabel}" LabelPassword="{Binding PasswordLabel}"
+                                                       PasswordCompleteCommand="{Binding AuthorizeCommand}" />
                             <controls:TappedGrid Grid.Column="0"
                                              Padding="0"
                                              Margin="0,4,0,0"
