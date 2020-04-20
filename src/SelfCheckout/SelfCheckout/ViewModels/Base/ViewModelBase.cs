@@ -94,9 +94,6 @@ namespace SelfCheckout.ViewModels.Base
                 else if (value.LangCode == "ZH")
                     GlobalSettings.Instance.CountryCode = "zh-Hans";
                 GlobalSettings.Instance.InitLanguage();
-
-                MessagingCenter.Send(this, "LanguageChange");
-
                 await OnLanguageChanged(value);
             });
         }

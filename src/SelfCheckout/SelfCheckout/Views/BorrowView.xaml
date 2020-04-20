@@ -17,7 +17,7 @@
             <Grid>
                 <ffimageloading:CachedImage Aspect="AspectFill" Margin="0,-56,0,0" Source="resource://SelfCheckout.Resources.Images.landing_bg.png"/>
                 <controls:ActionBarView BackButtonVisible="True" HeaderLogoVisible="True">
-                    <controls:TappedGrid HorizontalOptions="Start" Padding="8" Margin="24,0,0,0" TappedCommand="{Binding LanguageTappedCommand}">
+                    <controls:TappedGrid HorizontalOptions="Start" Padding="8" Margin="32,0,0,0" TappedCommand="{Binding LanguageTappedCommand}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>

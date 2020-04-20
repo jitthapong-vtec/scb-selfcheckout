@@ -31,8 +31,8 @@ namespace SelfCheckout.ViewModels.Base
             SaleEngineService = saleEngineService;
             SelfCheckoutService = selfCheckoutService;
 
-            _userName = new ValidatableObject<string>();
-            _password = new ValidatableObject<string>();
+            UserName = new ValidatableObject<string>();
+            Password = new ValidatableObject<string>();
 
             AddValidation();
         }
@@ -50,6 +50,9 @@ namespace SelfCheckout.ViewModels.Base
                     IsBusy = true;
                     var result = await SaleEngineService.LoginAsync(UserName.Value, Password.Value);
                     await AuthorizeCallback(result);
+
+                    UserName = new ValidatableObject<string>();
+                    Password = new ValidatableObject<string>();
                 }
                 catch (Exception ex)
                 {

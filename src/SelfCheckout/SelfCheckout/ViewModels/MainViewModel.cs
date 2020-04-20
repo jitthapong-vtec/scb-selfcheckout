@@ -549,6 +549,7 @@ namespace SelfCheckout.ViewModels
         {
             await TutorialViewModel.ReloadImageAsset();
             RefreshTab();
+            MessagingCenter.Send(this, "LanguageChange");
         }
 
         protected override Task OnLanguageViewShowingChanged(bool isShowing)
