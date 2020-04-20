@@ -9,7 +9,6 @@
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              NavigationPage.HasNavigationBar="False"
-             NavigationPage.HasBackButton="False"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.OrderDetailView">
     <ContentPage.Content>
@@ -21,14 +20,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <controls:ActionBarView Grid.Row="0" BackButtonVisible="True" HeaderLogoVisible="False">
-                    <Grid.Resources>
-                        <Style TargetType="Label">
-                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
-                            <Setter Property="VerticalTextAlignment" Value="Center"/>
-                            <Setter Property="VerticalOptions" Value="Center"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Label VerticalOptions="Center" HorizontalTextAlignment="Center" FontSize="Large" Text="{i18n:Translate ItemDetail}"/>
+                    <Label VerticalOptions="Center" HorizontalOptions="Center" TextColor="{StaticResource Gray50}" HorizontalTextAlignment="Center" FontSize="Large" Text="{i18n:Translate ItemDetail}"/>
                 </controls:ActionBarView>
                 <Frame Grid.Row="1" Padding="16,16,16,0">
                     <Frame.Resources>

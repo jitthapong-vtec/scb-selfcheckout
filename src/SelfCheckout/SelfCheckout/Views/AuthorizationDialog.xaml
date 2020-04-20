@@ -21,12 +21,12 @@
                                          effects:RoundCornersEffect.CornerRadius="3"
                                              IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
                         <controls:GradientBackground/>
-                        <Label Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                        <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Confirm}" TextColor="{StaticResource Gray50}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                     </controls:TappedGrid>
                     <controls:TappedGrid HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray200}"
                                          effects:RoundCornersEffect.CornerRadius="3"
                                          TappedCommand="{Binding CancelCommand}">
-                        <Label Text="{i18n:Translate Cancel}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                        <controls:CustomLabel UpperCase="True" Text="{i18n:Translate Cancel}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                     </controls:TappedGrid>
                 </StackLayout>
             </StackLayout>
