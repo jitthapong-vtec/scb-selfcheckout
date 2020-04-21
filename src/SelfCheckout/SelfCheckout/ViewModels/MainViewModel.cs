@@ -380,7 +380,7 @@ namespace SelfCheckout.ViewModels
                     }
                 }
 
-                if(value is HomeView)
+                if (value is HomeView)
                 {
                     HeaderLogoVisible = true;
                 }
@@ -753,6 +753,11 @@ namespace SelfCheckout.ViewModels
                         await LoginAsync();
                         await LoadOrderAsync();
                     }
+                    else if ((ex as KPApiException).ErrorCode == "SH03")
+                    {
+                        await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                        await GoBackAsync();
+                    }
                     else
                     {
                         await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
@@ -1080,6 +1085,7 @@ namespace SelfCheckout.ViewModels
                     if (ct.IsCancellationRequested)
                         break;
 
+                    await Task.Delay(1000);
                     var actionPayload = new
                     {
                         OrderGuid = _saleEngineService.OrderData.Guid,

@@ -16,6 +16,8 @@ namespace SelfCheckout.Views
         public AlertDialog()
         {
             InitializeComponent();
+
+            CloseWhenBackgroundIsClicked = false;
         }
     }
 }

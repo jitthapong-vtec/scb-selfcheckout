@@ -16,6 +16,8 @@ namespace SelfCheckout.Views
         public CustomerShoppingCardConfirmDialog()
         {
             InitializeComponent();
+
+            CloseWhenBackgroundIsClicked = false;
         }
     }
 }

@@ -23,6 +23,11 @@ namespace SelfCheckout.ViewModels.Base
             await GoBackAsync();
         });
 
+        public ICommand BackToRootCommand => new DelegateCommand(async () =>
+        {
+            await GoBackToRootAsync();
+        });
+
         protected async Task GoBackAsync()
         {
             await NavigationService.GoBackAsync();

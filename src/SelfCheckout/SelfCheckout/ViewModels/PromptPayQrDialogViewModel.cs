@@ -177,6 +177,7 @@ namespace SelfCheckout.ViewModels
 
                 try
                 {
+                    await Task.Delay(1000);
                     var result = await _paymentService.InquiryAsync(_refNo);
                     if (result != null)
                     {
@@ -200,9 +201,13 @@ namespace SelfCheckout.ViewModels
         private string GetRefNo()
         {
             var orderData = _saleEngineService.OrderData;
-            var shoppingCard = orderData.HeaderAttributes.Where(attr => attr.Code == "shopping_card").FirstOrDefault().ValueOfString;
-            var orderNo = (int)orderData.HeaderAttributes.Where(attr => attr.Code == "order_no").FirstOrDefault().ValueOfDecimal;
-            return $"{shoppingCard}{orderNo}";
+            var customerName = orderData.CustomerDetail?.CustomerName?.Replace(" ", "");
+            var custLen = customerName.Length;
+            if (custLen > 14)
+                custLen = 14;
+            customerName = customerName.Substring(0, custLen);
+            var orderNo = string.Format("{0:000000}", (int)orderData.HeaderAttributes.Where(attr => attr.Code == "order_no").FirstOrDefault().ValueOfDecimal);
+            return $"{customerName}{orderNo}";
         }
     }
 }

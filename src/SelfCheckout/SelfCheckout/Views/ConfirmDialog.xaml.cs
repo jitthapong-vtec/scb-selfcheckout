@@ -16,6 +16,8 @@ namespace SelfCheckout.Views
         public ConfirmDialog()
         {
             InitializeComponent();
+
+            CloseWhenBackgroundIsClicked = false;
         }
     }
 }
