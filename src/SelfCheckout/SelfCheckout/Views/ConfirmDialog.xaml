@@ -16,7 +16,11 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Margin="8,4,8,0" Text="{Binding Title}" FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
-            <Label Grid.Row="1" Margin="8" Text="{Binding Message}" FontSize="Medium" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+            <ScrollView Grid.Row="1">
+                <StackLayout>
+                    <Label Margin="8" Text="{Binding Message}" FontSize="Medium" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                </StackLayout>
+            </ScrollView>
             <Grid Grid.Row="2" HeightRequest="40" HorizontalOptions="{OnPlatform UWP=End, Android=Fill}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{OnPlatform UWP=Auto, Android=*}"/>

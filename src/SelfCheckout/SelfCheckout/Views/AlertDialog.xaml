@@ -8,7 +8,7 @@
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
              mc:Ignorable="d"
              x:Class="SelfCheckout.Views.AlertDialog">
-  <ContentPage.Content>
+    <ContentPage.Content>
         <Frame Margin="8,48,8,48" VerticalOptions="Center" HorizontalOptions="{OnPlatform UWP=Center}" WidthRequest="{OnPlatform UWP=500}" Padding="8">
             <Grid>
                 <Grid.RowDefinitions>
@@ -17,7 +17,9 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Margin="8,4,8,0" Text="{Binding Title}" FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
-                <Label Grid.Row="1" Margin="8" Text="{Binding Message}" FontSize="Medium" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                <ScrollView Grid.Row="1">
+                    <Label Margin="8" Text="{Binding Message}" FontSize="Medium" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                </ScrollView>
                 <controls:TappedGrid Grid.Row="2" HorizontalOptions="End" WidthRequest="100" Margin="8" 
                                      effects:RoundCornersEffect.CornerRadius="3"
                                      TappedCommand="{Binding OkCommand}">
@@ -26,5 +28,5 @@
                 </controls:TappedGrid>
             </Grid>
         </Frame>
-  </ContentPage.Content>
+    </ContentPage.Content>
 </pages:PopupPage>

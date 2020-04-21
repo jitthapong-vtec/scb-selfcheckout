@@ -41,7 +41,11 @@ namespace SelfCheckout.ViewModels.Base
             base.OnNavigatedFrom(parameters);
 
             if (!string.IsNullOrEmpty(SelfCheckoutApi))
+            {
+                if (!SelfCheckoutApi.EndsWith("/"))
+                    SelfCheckoutApi += "/";
                 Preferences.Set("self_checkout_api", SelfCheckoutApi);
+            }
             if (!string.IsNullOrEmpty(PromptPayApi))
             {
                 if (!PromptPayApi.EndsWith("/"))
