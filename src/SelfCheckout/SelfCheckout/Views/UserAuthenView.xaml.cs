@@ -62,5 +62,10 @@ namespace SelfCheckout.Views.Components
         {
             PasswordCompleteCommand?.Execute(null);
         }
+
+        private void Entry_UserName_Completed(object sender, EventArgs e)
+        {
+            entryPassword.Focus();
+        }
     }
 }

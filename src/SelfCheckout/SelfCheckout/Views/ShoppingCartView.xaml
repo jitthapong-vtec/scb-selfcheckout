@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:views="clr-namespace:SelfCheckout.Views"
              xmlns:effects="clr-namespace:SelfCheckout.Effects"
@@ -42,7 +41,7 @@
                                         </DataTrigger>
                                     </Image.Triggers>
                                 </Image>
-                                <Label Text="{i18n:Translate All}" VerticalOptions="Center"/>
+                                <Label Text="{Binding LabelAll}" VerticalOptions="Center"/>
                             </StackLayout>
                         </controls:TappedGrid>
                         <controls:TappedGrid IsVisible="{Binding IsAnyOrderSelected}" TappedCommand="{Binding DeleteOrderCommand}">
@@ -50,7 +49,7 @@
                                 <Frame HorizontalOptions="Center" VerticalOptions="Center" Padding="0" WidthRequest="24" HeightRequest="24" CornerRadius="12" BackgroundColor="Red">
                                     <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="16" Text="&#xf1f8;" TextColor="{StaticResource Gray50}" Style="{StaticResource LabelIconStyle}"/>
                                 </Frame>
-                                <Label Text="{i18n:Translate Delete}" VerticalOptions="Center"/>
+                                <Label Text="{Binding LabelDelete}" VerticalOptions="Center"/>
                             </StackLayout>
                         </controls:TappedGrid>
                     </StackLayout>
@@ -74,7 +73,7 @@
                             <Grid>
                                 <StackLayout VerticalOptions="Center">
                                     <Image Source="shopping_cart" WidthRequest="48" HeightRequest="48" HorizontalOptions="Center" Aspect="AspectFit"/>
-                                    <Label HorizontalTextAlignment="Center" Text="{i18n:Translate ShoppingCartEmpty}" FontSize="Medium"/>
+                                    <Label HorizontalTextAlignment="Center" Text="{Binding LabelShoppingCartEmpty}" FontSize="Medium"/>
                                 </StackLayout>
                             </Grid>
                         </CollectionView.EmptyView>
@@ -106,7 +105,7 @@
                         <Image Source="chk_shopping_cart" HeightRequest="48"/>
                     </controls:TappedGrid>
                     <controls:TappedGrid Grid.Column="1" IsVisible="{Binding IsChangeShoppingCardShowing}" TappedCommand="{Binding ChangeShoppingCardCommand}">
-                        <Label HorizontalTextAlignment="Start" VerticalOptions="Center" TextColor="{StaticResource Gray50}" Text="{i18n:Translate ChangeShoppingCard}"/>
+                        <Label HorizontalTextAlignment="Start" VerticalOptions="Center" TextColor="{StaticResource Gray50}" Text="{Binding LabelChangeShoppingCard}"/>
                     </controls:TappedGrid>
                 </Grid>
             </Grid>

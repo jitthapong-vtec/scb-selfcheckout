@@ -1,4 +1,5 @@
-﻿using SelfCheckout.ViewModels;
+﻿using SelfCheckout.Resources;
+using SelfCheckout.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,16 @@ namespace SelfCheckout.Views
         public OrderSummaryView()
         {
             InitializeComponent();
+
+            MessagingCenter.Subscribe<MainViewModel>(this, "LanguageChange", (sender) =>
+            {
+                lblOrderSummary.Text = AppResources.OrderSummary;
+                lblInvoice.Text = AppResources.Invoices;
+                lblSubTotal.Text = AppResources.SubTotal;
+                lblUnit.Text = AppResources.Units;
+                lblDiscount.Text = AppResources.Discount;
+                lblOrderTotal.Text = AppResources.OrderTotal;
+            });
         }
     }
 }

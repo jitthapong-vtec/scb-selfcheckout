@@ -21,10 +21,9 @@
                         </Style>
                     </Grid.Resources>
                     <Label x:Name="lblSelectPaymentMethod" HorizontalOptions="Start" VerticalOptions="Center"/>
-                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding PaymentMethodTappedCommand}"/>
-                    </Grid.GestureRecognizers>
+                    <controls:TappedGrid HorizontalOptions="End" VerticalOptions="Center" TappedCommand="{Binding PaymentMethodTappedCommand}">
+                        <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" TextColor="{StaticResource Gray50}"/>
+                    </controls:TappedGrid>
                 </Grid>
                 <CollectionView Grid.Row="1" ItemsSource="{Binding Payments}">
                 <CollectionView.ItemsLayout>

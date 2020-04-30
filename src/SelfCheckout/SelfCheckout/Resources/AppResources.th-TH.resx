@@ -330,4 +330,7 @@
   <data name="ScanLaserOnQRCode" xml:space="preserve">
     <value>กรุณาสแกนเลเซอร์ที่คิวอาร์โคด</value>
   </data>
+  <data name="PleaseRegister" xml:space="preserve">
+    <value>กรุณาลงทะเบียนก่อน</value>
+  </data>
 </root>

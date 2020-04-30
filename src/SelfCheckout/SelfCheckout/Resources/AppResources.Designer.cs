@@ -691,6 +691,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please register!.
+        /// </summary>
+        internal static string PleaseRegister {
+            get {
+                return ResourceManager.GetString("PleaseRegister", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please scan coupon.
         /// </summary>
         internal static string PleaseScanCoupon {

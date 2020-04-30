@@ -3,10 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModelBase="clr-namespace:SelfCheckout.ViewModels.Base"
              xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
-             xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
              xmlns:controls="clr-namespace:SelfCheckout.Controls"
              xmlns:views="clr-namespace:SelfCheckout.Views"
              mc:Ignorable="d"
@@ -60,11 +58,11 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Text="{i18n:Translate PassportNo}"/>
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding LabelPassportNo}"/>
                             <Label Grid.Row="0" Grid.Column="1" Text="{Binding CustomerData.Person.PassportNo}" HorizontalTextAlignment="End"/>
-                            <Label Grid.Row="1" Grid.Column="0" Text="{i18n:Translate Nationality}"/>
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding LabelNationality}"/>
                             <Label Grid.Row="1" Grid.Column="1" Text="{Binding CustomerData.Person.Nationality}" HorizontalTextAlignment="End"/>
-                            <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate Type}"/>
+                            <Label Grid.Row="2" Grid.Column="0" Text="{Binding LabelType}"/>
                             <Label Grid.Row="2" Grid.Column="1" Text="{Binding CustomerData.Person.CustomerTypeCode}" HorizontalTextAlignment="End"/>
                         </Grid>
                         <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
@@ -82,7 +80,7 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Text="{i18n:Translate Filter}" VerticalOptions="Center" HorizontalTextAlignment="Start"/>
+                            <Label Text="{Binding LabelFilter}" VerticalOptions="Center" HorizontalTextAlignment="Start"/>
                             <controls:TappedGrid Grid.Column="1" TappedCommand="{Binding ShowCustomerSelectionCommand}">
                                 <Label Text="{Binding SelectedCustomer.CustomerName}" VerticalOptions="Center" HorizontalTextAlignment="End"/>
                             </controls:TappedGrid>

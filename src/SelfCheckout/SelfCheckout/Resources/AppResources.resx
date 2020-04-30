@@ -437,4 +437,7 @@
   <data name="PleaseScanCoupon" xml:space="preserve">
     <value>Please scan coupon</value>
   </data>
+  <data name="PleaseRegister" xml:space="preserve">
+    <value>Please register!</value>
+  </data>
 </root>

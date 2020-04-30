@@ -69,7 +69,10 @@
                                     <Label FontFamily="{StaticResource FontAwesome}" Text="&#xf030;" HorizontalOptions="Center" VerticalOptions="Center" FontSize="24" TextColor="{StaticResource Gray50}"/>
                                 </controls:TappedGrid>
                             </Grid>
-                            <Entry x:Name="etShoppingCard" FontSize="Large" Grid.Column="1" HorizontalTextAlignment="Center" Text="{Binding InputValue}"/>
+                            <Entry x:Name="etShoppingCard" FontSize="Large" Grid.Column="1" HorizontalTextAlignment="Center" 
+                                   Text="{Binding InputValue}" ClearButtonVisibility="WhileEditing"
+                                   ReturnType="Go"
+                                   ReturnCommand="{Binding ValidateShoppingCardCommand}"/>
                             <Grid Grid.Column="2" BackgroundColor="{StaticResource Gray200}"
                                          effects:RoundCornersEffect.CornerRadius="3"
                                            effects:RoundCornersEffect.RoundCorner="Right">

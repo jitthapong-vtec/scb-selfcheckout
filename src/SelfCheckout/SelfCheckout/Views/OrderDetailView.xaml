@@ -77,7 +77,7 @@
                         <Label Grid.Row="6" Grid.Column="0" Text="{i18n:Translate Discount}" TextColor="Red"/>
                         <Label Grid.Row="6" Grid.Column="1" Text="{Binding OrderDetail.BillingAmount.DiscountAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" HorizontalTextAlignment="End" TextColor="Red"/>
                         <BoxView Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="1" BackgroundColor="{StaticResource Gray200}"/>
-                        <Label Grid.Row="8" Grid.Column="0" Text="Net" TextColor="{StaticResource Secondary}" FontSize="Large"/>
+                        <Label Grid.Row="8" Grid.Column="0" Text="{i18n:Translate Net}" TextColor="{StaticResource Secondary}" FontSize="Large"/>
                         <Label Grid.Row="8" Grid.Column="1" Text="{Binding OrderDetail.BillingAmount.NetAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" TextColor="{StaticResource Secondary}" FontSize="Large" HorizontalTextAlignment="End"/>
                     </Grid>
                 </Frame>

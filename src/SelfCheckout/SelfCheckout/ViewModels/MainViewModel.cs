@@ -146,14 +146,10 @@ namespace SelfCheckout.ViewModels
         {
             base.Initialize(parameters);
 
+            RefreshTab();
+
             await LoadMasterDataAsync();
             await LoadCurrencyAsync();
-        }
-
-        public override async void OnNavigatedTo(INavigationParameters parameters)
-        {
-            base.OnNavigatedTo(parameters);
-
             await LoadOrderAsync();
         }
 
@@ -547,8 +543,47 @@ namespace SelfCheckout.ViewModels
 
         protected override async Task OnLanguageChanged(Language lang)
         {
+            try
+            {
+                foreach (var tab in Tabs)
+                {
+                    switch (tab.TabId)
+                    {
+                        case 1:
+                            tab.TabText = AppResources.Home;
+                            tab.Title = AppResources.Home;
+                            break;
+                        case 2:
+                            tab.TabText = AppResources.Device;
+                            tab.Title = AppResources.DeviceInfo;
+                            break;
+                        case 3:
+                            tab.TabText = AppResources.Shopping;
+                            RefreshSummary();
+                            break;
+                        case 4:
+                            tab.TabText = AppResources.Orders;
+                            tab.Title = AppResources.Orders;
+                            break;
+                        case 5:
+                            tab.TabText = AppResources.Profile;
+                            tab.Title = AppResources.Profile;
+                            break;
+                    }
+
+                    if (tab.TabId == _selectedTabId)
+                    {
+                        PageTitle = tab.Title;
+                    }
+                }
+            }
+            catch { }
+
             await TutorialViewModel.ReloadImageAsset();
-            RefreshTab();
+            DeviceViewModel.RefreshLanguage();
+            ShoppingCartViewModel.RefreshLanguage();
+            OrderViewModel.RefreshLanguage();
+
             MessagingCenter.Send(this, "LanguageChange");
         }
 
@@ -1132,11 +1167,12 @@ namespace SelfCheckout.ViewModels
                 ResetPaymentState();
                 await LoginAsync();
 
-                var shoppingCartTab = Tabs.Where(t => t.TabId == 3).FirstOrDefault();
-                await LoadOrderAsync();
-
                 var isContinueShopping = await NavigationService.ConfirmAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.ContinueShopping, AppResources.MyOrder);
-                if (!isContinueShopping)
+                if (isContinueShopping)
+                {
+                    await LoadOrderAsync();
+                }
+                else
                 {
                     var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
                     TabSelectedCommand.Execute(orderTab);

@@ -23,19 +23,18 @@
                     </Style>
                 </Grid.Resources>
                 <Label x:Name="lblSummaryOrder" HorizontalOptions="Start" VerticalOptions="Center"/>
-                <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label" Binding="{Binding SummaryShowing}" Value="True">
-                            <Setter Property="Text" Value="&#xf078;"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label" Binding="{Binding SummaryShowing}" Value="False">
-                            <Setter Property="Text" Value="&#xf077;"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ShowSummaryCommand}"/>
-                </Grid.GestureRecognizers>
+                <controls:TappedGrid HorizontalOptions="End" VerticalOptions="Center" TappedCommand="{Binding ShowSummaryCommand}">
+                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" TextColor="{StaticResource Gray50}">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding SummaryShowing}" Value="True">
+                                <Setter Property="Text" Value="&#xf078;"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label" Binding="{Binding SummaryShowing}" Value="False">
+                                <Setter Property="Text" Value="&#xf077;"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </controls:TappedGrid>
             </Grid>
             <StackLayout Grid.Row="1" Padding="0,0,0,16" IsVisible="{Binding SummaryShowing}">
                 <StackLayout Orientation="Horizontal">

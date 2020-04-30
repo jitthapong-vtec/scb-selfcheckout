@@ -146,7 +146,7 @@ namespace SelfCheckout.ViewModels
                     amount = _saleEngineService.OrderData.RemainingAmount.NetAmount.BaseCurrAmt,
                     ref1 = _refNo,
                     ref2 = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineNo,
-                    ref3 = _saleEngineService.LoginData.UserInfo.MachineEnv.MachineName,
+                    ref3 = ""
                 };
                 QRData = await _paymentService.GeneratePPQrCode(payload);
                 IsQrVisible = true;

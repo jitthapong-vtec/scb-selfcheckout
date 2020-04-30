@@ -18,10 +18,9 @@
                         </Style>
                     </Grid.Resources>
                     <Label x:Name="lblScanPayment" HorizontalOptions="Start" VerticalOptions="Center"/>
-                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding CancelPaymentProcessCommand}"/>
-                    </Grid.GestureRecognizers>
+                    <controls:TappedGrid HorizontalOptions="End" VerticalOptions="Center" TappedCommand="{Binding CancelPaymentProcessCommand}">
+                        <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" TextColor="{StaticResource Gray50}"/>
+                    </controls:TappedGrid>
                 </Grid>
                 <Grid Padding="10" IsVisible="{Binding IsPaymentProcessing, Converter={StaticResource InverseBooleanConverter}}">
                     <Grid.ColumnDefinitions>

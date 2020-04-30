@@ -15,9 +15,6 @@ namespace SelfCheckout.Views
 
             MessagingCenter.Subscribe<MainViewModel>(this, "LanguageChange", (sender) =>
             {
-                if (sender.SummaryVisible)
-                    sender.SummaryVisible = false;
-
                 if (string.IsNullOrEmpty(sender.CouponCode))
                     lblScanCoupon.Text = AppResources.ScanCoupon;
 

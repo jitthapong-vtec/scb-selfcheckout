@@ -42,12 +42,27 @@ namespace SelfCheckout.ViewModels
         bool _isAnyOrderSelected;
         bool _isChangeShoppingCardShowing;
 
+        string _labelAll;
+        string _labelDelete;
+        string _labelShoppingCartEmpty;
+        string _labelChangeShoppingCard;
+
         public ShoppingCartViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
             ISaleEngineService saleEngineService, IRegisterService registerService) :
             base(navigationService, saleEngineService, selfCheckoutService, registerService)
         {
             CustomerData = RegisterService.CustomerData;
             CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
+
+            RefreshLanguage();
+        }
+
+        public void RefreshLanguage()
+        {
+            LabelAll = AppResources.All;
+            LabelDelete = AppResources.Delete;
+            LabelShoppingCartEmpty = AppResources.ShoppingCartEmpty;
+            LabelChangeShoppingCard = AppResources.ChangeShoppingCard;
         }
 
         public ICommand ToggleChangeShoppingCardCommand => new DelegateCommand(() =>
@@ -164,6 +179,30 @@ namespace SelfCheckout.ViewModels
             await RefreshOrderListAsync();
             IsRefreshing = false;
         });
+
+        public string LabelAll
+        {
+            get => _labelAll;
+            set => SetProperty(ref _labelAll, value);
+        }
+
+        public string LabelDelete
+        {
+            get => _labelDelete;
+            set => SetProperty(ref _labelDelete, value);
+        }
+
+        public string LabelShoppingCartEmpty
+        {
+            get => _labelShoppingCartEmpty;
+            set => SetProperty(ref _labelShoppingCartEmpty, value);
+        }
+
+        public string LabelChangeShoppingCard
+        {
+            get => _labelChangeShoppingCard;
+            set => SetProperty(ref _labelChangeShoppingCard, value);
+        }
 
         public ObservableCollection<OrderDetail> OrderDetails
         {

@@ -30,6 +30,11 @@ namespace SelfCheckout.ViewModels
         bool _summaryShowing;
         bool _filterCustomerShowing;
 
+        string _labelPassportNo;
+        string _labelNationality;
+        string _labelType;
+        string _labelFilter;
+
         public OrderViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
             ISaleEngineService saleEngineService, IRegisterService registerService)
             : base(navigationService, selfCheckoutService, saleEngineService, registerService)
@@ -53,6 +58,41 @@ namespace SelfCheckout.ViewModels
                     Arg1 = 2
                 }
             };
+
+            RefreshLanguage();
+        }
+
+        public void RefreshLanguage()
+        {
+            LabelPassportNo = AppResources.PassportNo;
+            LabelNationality = AppResources.Nationality;
+            LabelType = AppResources.Type;
+            LabelFilter = AppResources.Filter;
+            RefreshTab();
+        }
+
+        public string LabelPassportNo
+        {
+            get => _labelPassportNo;
+            set => SetProperty(ref _labelPassportNo, value);
+        }
+
+        public string LabelNationality
+        {
+            get => _labelNationality;
+            set => SetProperty(ref _labelNationality, value);
+        }
+
+        public string LabelType
+        {
+            get => _labelType;
+            set => SetProperty(ref _labelType, value);
+        }
+
+        public string LabelFilter
+        {
+            get => _labelFilter;
+            set => SetProperty(ref _labelFilter, value);
         }
 
         public ObservableCollection<SimpleSelectedItem> Tabs
@@ -140,7 +180,7 @@ namespace SelfCheckout.ViewModels
             FilterOrder(customer);
             FilterCustomerShowing = false;
         });
-        
+
         public ICommand ShowDetailCommand => new DelegateCommand<OrderDetail>(async (order) =>
         {
             await NavigationService.NavigateAsync("OrderDetailView", new NavigationParameters() { { "OrderDetail", order } });

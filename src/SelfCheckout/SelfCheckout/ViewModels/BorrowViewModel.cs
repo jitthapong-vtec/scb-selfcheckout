@@ -37,9 +37,10 @@ namespace SelfCheckout.ViewModels
             LabelBorrow = AppResources.Borrow;
         }
 
-        public ICommand ScanCommand => new Command<object>((data) =>
+        public ICommand ScanCommand => new Command<object>(async (data) =>
         {
             InputValue = Utils.TryDecodeKioskShoppingCard(data?.ToString());
+            await ValidateShoppingCardAsync(InputValue);
         });
 
         public ICommand ScanShoppingCardCommand => new Command(async () =>
@@ -53,6 +54,7 @@ namespace SelfCheckout.ViewModels
             }
             var result = await NavigationService.ShowDialogAsync<string>("CameraScannerView", null);
             InputValue = Utils.TryDecodeKioskShoppingCard(result);
+            await ValidateShoppingCardAsync(InputValue);
         });
 
         public ICommand ValidateShoppingCardCommand => new DelegateCommand(async () => await ValidateShoppingCardAsync(InputValue));
@@ -95,13 +97,20 @@ namespace SelfCheckout.ViewModels
             return Task.FromResult(true);
         }
 
+        protected override Task ValidateShoppingCardFailCallback()
+        {
+            InputValue = "";
+            return base.ValidateShoppingCardFailCallback();
+        }
+
         protected override async Task ValidateShoppingCardCallback(string shoppingCard)
         {
             try
             {
                 IsBusy = true;
                 var userInfo = SaleEngineService.LoginData?.UserInfo;
-                await SelfCheckoutService.StartSessionAsync(userInfo.UserCode, userInfo.MachineEnv.MachineNo, shoppingCard);
+                //TODO: Testing
+                //await SelfCheckoutService.StartSessionAsync(userInfo.UserCode, userInfo.MachineEnv.MachineNo, shoppingCard);
                 await NavigationService.NavigateAsync("MainView");
             }
             catch (Exception ex)

@@ -28,6 +28,9 @@ namespace SelfCheckout.ViewModels.Base
 
         protected async Task ValidateShoppingCardAsync(string shoppingCard)
         {
+            if (string.IsNullOrEmpty(shoppingCard))
+                return;
+
             try
             {
                 IsBusy = true;
@@ -41,7 +44,8 @@ namespace SelfCheckout.ViewModels.Base
                 {
                     if (!customerData.Person.IsActivate)
                     {
-                        await NavigationService.ShowAlertAsync(AppResources.Opps, AppResources.ShoppingCardNotActivate, AppResources.Close);
+                        await NavigationService.ShowAlertAsync(AppResources.Opps, AppResources.PleaseRegister, AppResources.Close);
+                        await ValidateShoppingCardFailCallback();
                         return;
                     }
                     var parameters = new NavigationParameters()
@@ -76,6 +80,11 @@ namespace SelfCheckout.ViewModels.Base
             {
                 IsBusy = false;
             }
+        }
+
+        protected virtual Task ValidateShoppingCardFailCallback()
+        {
+            return Task.FromResult(false);
         }
 
         protected virtual Task ValidateShoppingCardCallback(string shoppingCard)

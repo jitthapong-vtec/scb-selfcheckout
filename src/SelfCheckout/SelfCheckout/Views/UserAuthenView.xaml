@@ -12,6 +12,7 @@
         <StackLayout VerticalOptions="Center">
             <Label x:Name="lblUsername" FontSize="Small"/>
             <Entry FontSize="Medium" Text="{Binding UserName.Value, Mode=TwoWay}"
+                   Completed="Entry_UserName_Completed"
                                              IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
                 <Entry.Behaviors>
                     <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateUserNameCommand}" />
@@ -19,7 +20,7 @@
             </Entry>
             <Label Text="{Binding UserName.Errors, Converter={StaticResource FirstValidationErrorConverter}}" IsVisible="{Binding UserName.Errors, Converter={StaticResource ValidatableObjectErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" />
             <Label x:Name="lblPassword" FontSize="Small"/>
-            <Entry FontSize="Medium" Text="{Binding Password.Value, Mode=TwoWay}" IsPassword="True"
+            <Entry FontSize="Medium" x:Name="entryPassword" Text="{Binding Password.Value, Mode=TwoWay}" IsPassword="True"
                    Completed="Entry_Password_Completed" IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
                 <Entry.Behaviors>
                     <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidatePasswordCommand}" />
