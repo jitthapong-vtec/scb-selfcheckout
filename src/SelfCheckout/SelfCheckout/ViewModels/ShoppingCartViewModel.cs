@@ -313,13 +313,13 @@ namespace SelfCheckout.ViewModels
             try
             {
                 await SaleEngineService.ActionListItemToOrderAsync(payload);
+                await RefreshOrderListAsync();
+                RefreshSummary();
             }
             catch (Exception ex)
             {
+                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message);
             }
-            await RefreshOrderListAsync();
-
-            RefreshSummary();
         }
     }
 }

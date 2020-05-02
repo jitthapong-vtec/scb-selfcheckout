@@ -10,15 +10,8 @@ namespace SelfCheckout.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            try
-            {
-                double? doubleVal = (double)value;
-                return doubleVal <= 0 ? 1 : doubleVal;
-            }
-            catch
-            {
-                return 1;
-            }
+            double? doubleVal = (double)value;
+            return doubleVal <= 0 ? 1 : doubleVal;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

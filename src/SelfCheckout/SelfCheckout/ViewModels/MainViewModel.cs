@@ -579,12 +579,14 @@ namespace SelfCheckout.ViewModels
             }
             catch { }
 
-            await TutorialViewModel.ReloadImageAsset();
+            MessagingCenter.Send(this, "LanguageChange");
+
+            TutorialViewModel.RefreshLanguage();
             DeviceViewModel.RefreshLanguage();
             ShoppingCartViewModel.RefreshLanguage();
             OrderViewModel.RefreshLanguage();
 
-            MessagingCenter.Send(this, "LanguageChange");
+            await TutorialViewModel.ReloadImageAsset();
         }
 
         protected override Task OnLanguageViewShowingChanged(bool isShowing)
@@ -610,7 +612,7 @@ namespace SelfCheckout.ViewModels
                 await _saleEngineService.ActionListItemToOrderAsync(payload);
 
                 await ShoppingCartViewModel.RefreshOrderListAsync();
-
+                await OrderViewModel.RefreshOrderAsync();
                 RefreshSummary();
             }
             catch { }
@@ -856,6 +858,16 @@ namespace SelfCheckout.ViewModels
 
         async Task CheckoutAsync()
         {
+            try
+            {
+                OrderData.OrderDetails.Any();
+            }
+            catch
+            {
+                await NavigationService.ShowAlertAsync(AppResources.Opps, AppResources.ShoppingCartEmpty);
+                return;
+            }
+
             try
             {
                 IsBusy = true;

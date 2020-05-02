@@ -70,7 +70,7 @@
                     <Label Grid.Row="3" Grid.Column="1" MaxLines="1" Text="{Binding BillingAmount.DiscountAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" TextColor="Red" Style="{StaticResource LabelNumericStyle}"/>
                     <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="{StaticResource Gray100}" HeightRequest="1"/>
                     <Entry Grid.Row="5" Grid.Column="0" VerticalOptions="Center" x:Name="entryOrderQty" IsEnabled="{Binding IsEditable}" HorizontalOptions="Start" HorizontalTextAlignment="Center" 
-                                       Unfocused="Entry_Qty_Unfocused" WidthRequest="72" Text="{Binding BillingQuantity.Quantity, Converter={StaticResource PreventZeroConverter}}" Keyboard="Numeric"/>
+                                       Unfocused="Entry_Qty_Unfocused" WidthRequest="72" Text="{Binding BillingQuantity.Quantity}" Keyboard="Numeric"/>
                     <Label Grid.Row="5" Grid.Column="1" MaxLines="1" Text="{Binding BillingAmount.NetAmount.CurrAmt, Converter={StaticResource CurrencyFormatConverter}}" VerticalOptions="Center" TextColor="{StaticResource Primary}" Style="{StaticResource LabelNumericStyle}"/>
                 </Grid>
                 <Grid Grid.Column="3" Padding="4" Margin="8" IsVisible="{OnIdiom Phone=True, Desktop=False}" VerticalOptions="Fill">

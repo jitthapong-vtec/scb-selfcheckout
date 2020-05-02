@@ -35,7 +35,7 @@
                             </forms:ZXingBarcodeImageView.BarcodeOptions>
                         </forms:ZXingBarcodeImageView>
                     </Grid>
-                    <StackLayout Grid.Column="1" Margin="8">
+                    <StackLayout Grid.Column="1" Margin="2,8,8,8">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -58,7 +58,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding LabelPassportNo}"/>
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding LabelPassportNo}" LineBreakMode="TailTruncation"/>
                             <Label Grid.Row="0" Grid.Column="1" Text="{Binding CustomerData.Person.PassportNo}" HorizontalTextAlignment="End"/>
                             <Label Grid.Row="1" Grid.Column="0" Text="{Binding LabelNationality}"/>
                             <Label Grid.Row="1" Grid.Column="1" Text="{Binding CustomerData.Person.Nationality}" HorizontalTextAlignment="End"/>
