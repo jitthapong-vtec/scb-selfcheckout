@@ -175,26 +175,8 @@ namespace SelfCheckout.Models
 
     public class BillingQuantity
     {
-        double? _quantity;
-
-        double? _orgQuantity;
-
         [JsonProperty("Quantity")]
-        public double? Quantity {
-            get => _quantity;
-            set
-            {
-                if (value <= 0)
-                {
-                    _quantity = _orgQuantity == null ? 1 : _orgQuantity;
-                }
-                else
-                {
-                    _orgQuantity = value;
-                    _quantity = value;
-                }
-            }
-        }
+        public double? Quantity { get; set; }
 
         [JsonProperty("UOM")]
         public string Uom { get; set; }

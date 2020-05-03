@@ -26,6 +26,7 @@ namespace SelfCheckout.ViewModels
 
         IPaymentService _paymentService;
         ISaleEngineService _saleEngineService;
+        ISelfCheckoutService _selfCheckoutService;
 
         string _refNo;
         string _qrData;
@@ -37,10 +38,11 @@ namespace SelfCheckout.ViewModels
         bool _isCloseBtnVisible;
 
         public PromptPayQrDialogViewModel(INavigationService navigationService, IPaymentService paymentService,
-            ISaleEngineService saleEngineService) : base(navigationService)
+            ISaleEngineService saleEngineService, ISelfCheckoutService selfCheckoutService) : base(navigationService)
         {
             _paymentService = paymentService;
             _saleEngineService = saleEngineService;
+            _selfCheckoutService = selfCheckoutService;
 
             _tokenSource = new CancellationTokenSource();
             _ct = _tokenSource.Token;
@@ -137,7 +139,7 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                CountDown = GlobalSettings.Instance.PromptPayTimeout;
+                CountDown = _selfCheckoutService.AppConfig.PaymentTimeout;
                 IsCountdownStarted = true;
                 var payload = new
                 {

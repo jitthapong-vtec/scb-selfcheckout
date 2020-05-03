@@ -2,6 +2,7 @@
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
+using SelfCheckout.Exceptions;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
@@ -118,20 +119,35 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ChangeQtyCommand => new DelegateCommand<OrderDetail>(async (order) =>
         {
-            var qty = order.BillingQuantity.Quantity;
-
-            var payload = new
-            {
-                SessionKey = SaleEngineService.LoginData.SessionKey,
-                Rows = new string[] { order.Guid },
-                ActionItemValue = new
-                {
-                    Action = "change_qty",
-                    Value = $"{qty}"
-                }
-            };
-            await SetActionToOrder(payload);
+            await ChangeOrderQtyAsync(order);
         });
+
+        private async Task ChangeOrderQtyAsync(OrderDetail order)
+        {
+            try
+            {
+                var qty = order.BillingQuantity.Quantity;
+
+                var payload = new
+                {
+                    SessionKey = SaleEngineService.LoginData.SessionKey,
+                    Rows = new string[] { order.Guid },
+                    ActionItemValue = new
+                    {
+                        Action = "change_qty",
+                        Value = $"{qty}"
+                    }
+                };
+                await SetActionToOrder(payload);
+            }
+            catch (KPApiException ex)
+            {
+                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message);
+
+                order.BillingQuantity.Quantity = 1;
+                await ChangeOrderQtyAsync(order);
+            }
+        }
 
         public ICommand DeleteOrderCommand => new DelegateCommand<OrderDetail>(async (order) =>
         {
@@ -304,22 +320,22 @@ namespace SelfCheckout.ViewModels
                         Value = "1"
                     }
                 };
-                await SetActionToOrder(payload);
+                try
+                {
+                    await SetActionToOrder(payload);
+                }
+                catch (KPApiException ex)
+                {
+                    await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message);
+                }
             }
         }
 
         async Task SetActionToOrder(object payload)
         {
-            try
-            {
-                await SaleEngineService.ActionListItemToOrderAsync(payload);
-                await RefreshOrderListAsync();
-                RefreshSummary();
-            }
-            catch (Exception ex)
-            {
-                await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message);
-            }
+            await SaleEngineService.ActionListItemToOrderAsync(payload);
+            await RefreshOrderListAsync();
+            RefreshSummary();
         }
     }
 }

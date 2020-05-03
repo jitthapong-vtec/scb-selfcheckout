@@ -66,14 +66,12 @@ namespace SelfCheckout
 
         public string PimCoreUrl { get => "https://pim.kingpower.com/"; }
 
-        public int PromptPayTimeout { get => Preferences.Get("promptpay_timeout", 120); }
-
         public string MachineIp
         {
             get
             {
                 var deviceCode = /*DependencyService.Get<IDeviceInformation>().GetDeviceCode(); //*/"8865edc3d6e1105a" /*"1a3342a692f0e8a2"*/ ;
-                var ipAddress = DependencyService.Get<IDeviceInformation>().GetDeviceIp(); //*/"192.168.2.22";
+                var ipAddress = /*DependencyService.Get<IDeviceInformation>().GetDeviceIp(); //*/"192.168.2.22";
                 return Device.RuntimePlatform == Device.Android ? deviceCode : ipAddress;
             }
         }

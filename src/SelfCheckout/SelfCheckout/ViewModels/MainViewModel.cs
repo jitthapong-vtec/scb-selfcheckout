@@ -292,12 +292,19 @@ namespace SelfCheckout.ViewModels
 
         public ICommand CheckoutCommand => new Command(async () =>
         {
+            bool isShoppingCartEmpty = true;
             try
             {
-                if (!_saleEngineService.OrderData.OrderDetails.Any())
-                    return;
+                if (_saleEngineService.OrderData.OrderDetails.Any())
+                    isShoppingCartEmpty = false;
             }
-            catch { return; }
+            catch { }
+
+            if (isShoppingCartEmpty)
+            {
+                await NavigationService.ShowAlertAsync(AppResources.Opps, AppResources.ShoppingCartEmpty);
+                return;
+            }
 
             if (!IsBeingPaymentProcess)
             {
@@ -858,16 +865,6 @@ namespace SelfCheckout.ViewModels
 
         async Task CheckoutAsync()
         {
-            try
-            {
-                OrderData.OrderDetails.Any();
-            }
-            catch
-            {
-                await NavigationService.ShowAlertAsync(AppResources.Opps, AppResources.ShoppingCartEmpty);
-                return;
-            }
-
             try
             {
                 IsBusy = true;

@@ -109,8 +109,7 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = true;
                 var userInfo = SaleEngineService.LoginData?.UserInfo;
-                //TODO: Testing
-                //await SelfCheckoutService.StartSessionAsync(userInfo.UserCode, userInfo.MachineEnv.MachineNo, shoppingCard);
+                await SelfCheckoutService.StartSessionAsync(userInfo.UserCode, userInfo.MachineEnv.MachineNo, shoppingCard);
                 await NavigationService.NavigateAsync("MainView");
             }
             catch (Exception ex)
