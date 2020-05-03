@@ -627,7 +627,7 @@ namespace SelfCheckout.ViewModels
             }
             else if (CurrentView is OrderView)
             {
-                await OrderViewModel.RefreshOrderAsync(CurrencySelected.CurrCode);
+                //await OrderViewModel.RefreshOrderAsync(CurrencySelected.CurrCode);
             }
         }
 
