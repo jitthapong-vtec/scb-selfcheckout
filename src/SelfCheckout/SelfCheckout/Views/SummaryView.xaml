@@ -23,8 +23,8 @@
                     </Style>
                 </Grid.Resources>
                 <Label x:Name="lblSummaryOrder" HorizontalOptions="Start" VerticalOptions="Center"/>
-                <controls:TappedGrid HorizontalOptions="End" VerticalOptions="Center" TappedCommand="{Binding ShowSummaryCommand}">
-                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" TextColor="{StaticResource Gray50}">
+                <controls:TappedGrid HorizontalOptions="End" WidthRequest="48" TappedCommand="{Binding ShowSummaryCommand}">
+                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" HorizontalOptions="End" FontSize="18" TextColor="{StaticResource Gray50}">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label" Binding="{Binding SummaryShowing}" Value="True">
                                 <Setter Property="Text" Value="&#xf078;"/>

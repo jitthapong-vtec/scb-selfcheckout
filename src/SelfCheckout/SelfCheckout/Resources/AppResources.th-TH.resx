@@ -184,7 +184,7 @@
     <value>รายการสั่งซื้อทั้งหมด</value>
   </data>
   <data name="PassportNo" xml:space="preserve">
-    <value>หมายเลขหนังสือเดินทาง</value>
+    <value>หนังสือเดินทาง</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>รหัสผ่าน</value>
@@ -332,5 +332,8 @@
   </data>
   <data name="PleaseRegister" xml:space="preserve">
     <value>กรุณาลงทะเบียนก่อน</value>
+  </data>
+  <data name="PaymentTypeNotMatch" xml:space="preserve">
+    <value>ประเภทการชำระเงินไม่ตรงกับที่เลือกไว้</value>
   </data>
 </root>

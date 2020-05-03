@@ -23,19 +23,18 @@
                         </Style>
                     </Grid.Resources>
                     <Label x:Name="lblSystem" HorizontalOptions="Start" VerticalOptions="Center"/>
-                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label" Binding="{Binding SystemViewVisible}" Value="True">
-                                <Setter Property="Text" Value="&#xf078;"/>
-                            </DataTrigger>
-                            <DataTrigger TargetType="Label" Binding="{Binding SystemViewVisible}" Value="False">
-                                <Setter Property="Text" Value="&#xf077;"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding HideSystemCommand}"/>
-                    </Grid.GestureRecognizers>
+                    <controls:TappedGrid HorizontalOptions="End" VerticalOptions="Center" TappedCommand="{Binding HideSystemCommand}">
+                        <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" TextColor="{StaticResource Gray50}">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding SystemViewVisible}" Value="True">
+                                    <Setter Property="Text" Value="&#xf078;"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding SystemViewVisible}" Value="False">
+                                    <Setter Property="Text" Value="&#xf077;"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </controls:TappedGrid>
                 </Grid>
                 <StackLayout Grid.Row="1">
                     <Frame Margin="-2,0,-2,0" HorizontalOptions="FillAndExpand">

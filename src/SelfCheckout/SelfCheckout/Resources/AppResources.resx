@@ -440,4 +440,7 @@
   <data name="PleaseRegister" xml:space="preserve">
     <value>Please register!</value>
   </data>
+  <data name="PaymentTypeNotMatch" xml:space="preserve">
+    <value>Payment type not match!</value>
+  </data>
 </root>

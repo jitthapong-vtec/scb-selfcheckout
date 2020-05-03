@@ -26,12 +26,12 @@ namespace SelfCheckout.ViewModels
 
         public void RefreshLanguage()
         {
-            LableHelp = AppResources.Help;
+            LabelHelp = AppResources.Help;
         }
 
         public ICommand HideTutorialCommand => new Command(() => TutorialViewVisible = false);
 
-        public string LableHelp
+        public string LabelHelp
         {
             get => _labelHelp;
             set => SetProperty(ref _labelHelp, value);

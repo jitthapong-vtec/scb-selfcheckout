@@ -26,6 +26,8 @@ namespace SelfCheckout.ViewModels
         CustomerOrder _selectedCustomer;
         CustomerData _customerData;
 
+        CustomerOrder _currentFilter;
+
         bool _isShowGroup;
         bool _summaryShowing;
         bool _filterCustomerShowing;
@@ -101,7 +103,7 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _tabs, value);
         }
 
-        public async Task RefreshOrderAsync()
+        public async Task RefreshOrderAsync(string currencyCode = "")
         {
             try
             {
@@ -118,7 +120,7 @@ namespace SelfCheckout.ViewModels
                     await LoadCustomerSession();
                     CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
 
-                    await LoadOrderListAsync();
+                    await LoadOrderListAsync(currencyCode: currencyCode);
                 }
 
                 RefreshTab();
@@ -156,7 +158,9 @@ namespace SelfCheckout.ViewModels
                 order.ForEach((orderDetail) => OrderDetails.Add(orderDetail));
             }
 
-            CalculateSummary();
+            _currentFilter = customer;
+
+            RefreshSummary();
             RefreshTab();
         }
 

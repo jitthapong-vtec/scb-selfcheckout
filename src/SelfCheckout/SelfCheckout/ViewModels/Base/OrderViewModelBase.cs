@@ -40,7 +40,7 @@ namespace SelfCheckout.ViewModels.Base
         double? _totalDiscount;
         double? _totalNetAmount;
 
-        public OrderViewModelBase(INavigationService navigationService, ISelfCheckoutService selfCheckoutService, 
+        public OrderViewModelBase(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
             ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigationService)
         {
             SaleEngineService = saleEngineService;
@@ -203,7 +203,7 @@ namespace SelfCheckout.ViewModels.Base
             Customers = customers.ToObservableCollection();
         }
 
-        protected async Task LoadOrderListAsync(object filter = null)
+        protected async Task LoadOrderListAsync(object filter = null, string currencyCode = "")
         {
             var appConfig = SelfCheckoutService.AppConfig;
 
@@ -213,7 +213,6 @@ namespace SelfCheckout.ViewModels.Base
             foreach (var customer in customers)
             {
                 var loginResult = await SaleEngineService.LoginAsync(appConfig.UserName, appConfig.Password);
-
                 var payload = new
                 {
                     SessionKey = loginResult.SessionKey,
@@ -243,6 +242,25 @@ namespace SelfCheckout.ViewModels.Base
                 };
 
                 var result = await SaleEngineService.GetOrderListAsync(payload);
+                //if (!string.IsNullOrWhiteSpace(currencyCode))
+                //{
+                //    try
+                //    {
+                //        var changeCurrencyPayload = new
+                //        {
+                //            SessionKey = loginResult.SessionKey,
+                //            ActionItemValue = new
+                //            {
+                //                Action = "change_currency",
+                //                Value = currencyCode
+                //            }
+                //        };
+                //        result = await SaleEngineService.ActionListItemToOrderAsync(changeCurrencyPayload);
+                //    }
+                //    catch(Exception ex) 
+                //    { 
+                //    }
+                //}
                 try
                 {
                     result.ForEach(o =>
@@ -255,6 +273,11 @@ namespace SelfCheckout.ViewModels.Base
                 ordersData.AddRange(result);
             }
 
+            await CreateOrderInvoiceAsync(ordersData);
+        }
+
+        protected Task CreateOrderInvoiceAsync(List<OrderData> ordersData)
+        {
             _allOrderInvoiceGroups = new List<OrderInvoiceGroup>();
             foreach (var order in ordersData)
             {
@@ -307,15 +330,17 @@ namespace SelfCheckout.ViewModels.Base
                     OrderDetails.Add(orderDetail);
                 });
             }
-            CalculateSummary();
+            RefreshSummary();
 
             foreach (var order in _allOrderInvoiceGroups)
             {
-                await SetOrderImage(order.AsEnumerable().ToList());
+                SetOrderImage(order.AsEnumerable().ToList());
             }
+
+            return Task.FromResult(true);
         }
 
-        protected void CalculateSummary()
+        protected void RefreshSummary()
         {
             TotalInvoice = OrderInvoices.Count();
             CurrencyCode = OrderInvoices.FirstOrDefault()?.CurrencyCode;

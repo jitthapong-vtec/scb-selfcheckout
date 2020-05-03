@@ -299,7 +299,7 @@ namespace SelfCheckout.ViewModels
             }
             OrderDetails = orderDetails.ToObservableCollection();
 
-            Task.Run(() => SetOrderImage(orderDetails));
+            SetOrderImage(orderDetails);
 
             IsSelectAllOrder = false;
             IsAnyOrderSelected = false;

@@ -605,24 +605,30 @@ namespace SelfCheckout.ViewModels
 
         async Task ChangeCurrency()
         {
-            try
+            if (CurrentView is ShoppingCartView)
             {
-                var payload = new
+                try
                 {
-                    SessionKey = _saleEngineService.LoginData.SessionKey,
-                    ActionItemValue = new
+                    var payload = new
                     {
-                        Action = "change_currency",
-                        Value = CurrencySelected.CurrCode
-                    }
-                };
-                await _saleEngineService.ActionListItemToOrderAsync(payload);
+                        SessionKey = _saleEngineService.LoginData.SessionKey,
+                        ActionItemValue = new
+                        {
+                            Action = "change_currency",
+                            Value = CurrencySelected.CurrCode
+                        }
+                    };
+                    await _saleEngineService.ActionListItemToOrderAsync(payload);
 
-                await ShoppingCartViewModel.RefreshOrderListAsync();
-                await OrderViewModel.RefreshOrderAsync();
-                RefreshSummary();
+                    await ShoppingCartViewModel.RefreshOrderListAsync();
+                    RefreshSummary();
+                }
+                catch { }
             }
-            catch { }
+            else if (CurrentView is OrderView)
+            {
+                await OrderViewModel.RefreshOrderAsync(CurrencySelected.CurrCode);
+            }
         }
 
         async Task LoadMasterDataAsync()
@@ -982,6 +988,13 @@ namespace SelfCheckout.ViewModels
                 };
 
                 wallet = await _saleEngineService.GetWalletTypeFromBarcodeAsync(walletRequestPayload);
+
+                if (!wallet.WalletType.Equals(PaymentSelected.MethodDesc, StringComparison.OrdinalIgnoreCase))
+                {
+                    await NavigationService.ShowAlertAsync(AppResources.Payment, AppResources.PaymentTypeNotMatch, AppResources.Close);
+                    PaymentBarcode = "";
+                    return;
+                }
             }
             catch (Exception ex)
             {
@@ -1124,12 +1137,13 @@ namespace SelfCheckout.ViewModels
                     return true;
                 });
 
+                var tryCounterInCaseFail = 0;
                 while (true)
                 {
                     if (ct.IsCancellationRequested)
                         break;
 
-                    await Task.Delay(1000);
+                    await Task.Delay(3000);
                     var actionPayload = new
                     {
                         OrderGuid = _saleEngineService.OrderData.Guid,
@@ -1144,6 +1158,11 @@ namespace SelfCheckout.ViewModels
                     {
                         paymentSuccess = true;
                         break;
+                    }
+                    else if (paymentStatus.Status.Equals("FAIL", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (++tryCounterInCaseFail == 2)
+                            break;
                     }
                 }
             }
@@ -1183,6 +1202,26 @@ namespace SelfCheckout.ViewModels
                 }
                 else
                 {
+                    // cause by KP-SCO-0089
+                    // he don't want to create record df_sohdr, so i have to use this way because i can't call function api/SaleEngine/GetOrder
+                    _saleEngineService.OrderData = new OrderData()
+                    {
+                        OrderDetails = new System.Collections.Generic.List<OrderDetail>(),
+                        BillingQuantities = new System.Collections.Generic.List<BillingQuantity>()
+                        {
+                            new BillingQuantity()
+                            {
+                                Quantity = 0
+                            },
+                            new BillingQuantity()
+                            {
+                                Quantity = 0
+                            }
+                        }
+                    };
+                    await ShoppingCartViewModel.RefreshOrderListAsync();
+                    RefreshSummary();
+
                     var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
                     TabSelectedCommand.Execute(orderTab);
                 }

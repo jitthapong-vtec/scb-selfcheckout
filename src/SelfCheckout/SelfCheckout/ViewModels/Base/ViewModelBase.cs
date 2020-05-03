@@ -35,21 +35,24 @@ namespace SelfCheckout.ViewModels.Base
             return Task.FromResult(item);
         }
 
-        protected async Task SetOrderImage(List<OrderDetail> orders)
+        protected void SetOrderImage(List<OrderDetail> orders)
         {
-            var selfCheckoutService = Prism.PrismApplicationBase.Current.Container.Resolve(typeof(ISelfCheckoutService)) as ISelfCheckoutService;
-            if (IsShowArticleImage)
+            Task.Run(async() =>
             {
-                try
+                var selfCheckoutService = Prism.PrismApplicationBase.Current.Container.Resolve(typeof(ISelfCheckoutService)) as ISelfCheckoutService;
+                if (IsShowArticleImage)
                 {
-                    foreach (var order in orders)
+                    try
                     {
-                        var result = await selfCheckoutService.GetArticleImageAsync(order.ItemDetail.Item.Code);
-                        order.ImageUrl = result.ImageUrl;
+                        foreach (var order in orders)
+                        {
+                            var result = await selfCheckoutService.GetArticleImageAsync(order.ItemDetail.Item.Code);
+                            order.ImageUrl = result.ImageUrl;
+                        }
                     }
+                    catch { }
                 }
-                catch { }
-            }
+            });
         }
 
         public ICommand LanguageSelectionCommand => new Command<Language>((lang) =>

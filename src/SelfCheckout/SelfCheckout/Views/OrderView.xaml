@@ -69,7 +69,7 @@
                     </StackLayout>
                 </Grid>
                 <Grid Grid.Row="1" BackgroundColor="{StaticResource Gray100}">
-                    <Grid Margin="1" BackgroundColor="White">
+                    <controls:TappedGrid Margin="1" TappedCommand="{Binding ShowCustomerSelectionCommand}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
@@ -81,14 +81,12 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Label Text="{Binding LabelFilter}" VerticalOptions="Center" HorizontalTextAlignment="Start"/>
-                            <controls:TappedGrid Grid.Column="1" TappedCommand="{Binding ShowCustomerSelectionCommand}">
-                                <Label Text="{Binding SelectedCustomer.CustomerName}" VerticalOptions="Center" HorizontalTextAlignment="End"/>
-                            </controls:TappedGrid>
+                            <Label Grid.Column="1" Text="{Binding SelectedCustomer.CustomerName}" VerticalOptions="Center" HorizontalTextAlignment="End"/>
                         </Grid>
                         <Label Grid.Column="2" VerticalOptions="Center"
                                    Text="&#xf0d7;" FontSize="24"
                                    Margin="8" Style="{StaticResource LabelIconStyle}"/>
-                    </Grid>
+                    </controls:TappedGrid>
                 </Grid>
                 <StackLayout Grid.Row="2" HeightRequest="56" Orientation="Horizontal" Spacing="0" BindableLayout.ItemsSource="{Binding Tabs}"
                          BackgroundColor="{StaticResource Gray200}">

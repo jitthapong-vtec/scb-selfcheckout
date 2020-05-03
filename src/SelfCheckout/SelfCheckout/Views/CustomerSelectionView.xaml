@@ -13,41 +13,41 @@
   <ContentView.Content>
         <Grid BackgroundColor="#99000000">
             <Grid BackgroundColor="{StaticResource Gray50}" VerticalOptions="End">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="8">
-                <Grid.Resources>
-                    <Style TargetType="Label">
-                        <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
-                    </Style>
-                </Grid.Resources>
-                <Label Text="{i18n:Translate FilterCustomer}" HorizontalOptions="Start" VerticalOptions="Center"/>
-                <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label" Binding="{Binding CustomerFilterShowing}" Value="True">
-                            <Setter Property="Text" Value="&#xf078;"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label" Binding="{Binding CustomerFilterShowing}" Value="False">
-                            <Setter Property="Text" Value="&#xf077;"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ShowCustomerSelectionCommand}"/>
-                </Grid.GestureRecognizers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="8">
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Label Text="{i18n:Translate FilterCustomer}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding CustomerFilterShowing}" Value="True">
+                                <Setter Property="Text" Value="&#xf078;"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label" Binding="{Binding CustomerFilterShowing}" Value="False">
+                                <Setter Property="Text" Value="&#xf077;"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding Customers}" HeightRequest="200">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:TappedGrid Padding="16" TappedCommand="{Binding Source={x:Reference this}, Path=BindingContext.CustomerSelectionCommand}" CommandParameter="{Binding .}">
+                                <Label Text="{Binding CustomerName}" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
+                            </controls:TappedGrid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </Grid>
-            <CollectionView Grid.Row="1" ItemsSource="{Binding Customers}" HeightRequest="200">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <controls:TappedGrid Padding="16" TappedCommand="{Binding Source={x:Reference this}, Path=BindingContext.CustomerSelectionCommand}" CommandParameter="{Binding .}">
-                            <Label Text="{Binding CustomerName}" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
-                        </controls:TappedGrid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </Grid>
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding ShowCustomerSelectionCommand}"/>
+            </Grid.GestureRecognizers>
         </Grid>
   </ContentView.Content>
 </ContentView>

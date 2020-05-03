@@ -8,7 +8,7 @@ namespace SelfCheckout.Services.SaleEngine
 {
     public interface ISaleEngineService
     {
-        OrderData OrderData { get; }
+        OrderData OrderData { get; set; }
 
         string CouponCode { get; }
 
@@ -28,7 +28,7 @@ namespace SelfCheckout.Services.SaleEngine
 
         Task<List<OrderData>> ActionItemToOrderAsync(object payload);
 
-        Task<List<OrderData>> ActionListItemToOrderAsync(object payload);
+        Task<List<OrderData>> ActionListItemToOrderAsync(object payload, bool updateOrderData = true);
 
         Task<Wallet> GetWalletTypeFromBarcodeAsync(object payload);
 

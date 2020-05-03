@@ -21,8 +21,8 @@
                         </Style>
                     </Grid.Resources>
                     <Label x:Name="lblSelectPaymentMethod" HorizontalOptions="Start" VerticalOptions="Center"/>
-                    <controls:TappedGrid HorizontalOptions="End" VerticalOptions="Center" TappedCommand="{Binding PaymentMethodTappedCommand}">
-                        <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" TextColor="{StaticResource Gray50}"/>
+                    <controls:TappedGrid HorizontalOptions="End" WidthRequest="48" TappedCommand="{Binding PaymentMethodTappedCommand}">
+                        <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" HorizontalTextAlignment="End" FontSize="18" TextColor="{StaticResource Gray50}"/>
                     </controls:TappedGrid>
                 </Grid>
                 <CollectionView Grid.Row="1" ItemsSource="{Binding Payments}">

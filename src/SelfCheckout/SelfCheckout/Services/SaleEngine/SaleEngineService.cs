@@ -34,7 +34,7 @@ namespace SelfCheckout.Services.SaleEngine
 
         public Currency CurrencySelected { get; set; }
 
-        public OrderData OrderData { get; private set; }
+        public OrderData OrderData { get; set; }
 
         public async Task<List<OrderData>> ActionItemToOrderAsync(object payload)
         {
@@ -46,13 +46,14 @@ namespace SelfCheckout.Services.SaleEngine
             return result.Data;
         }
 
-        public async Task<List<OrderData>> ActionListItemToOrderAsync(object payload)
+        public async Task<List<OrderData>> ActionListItemToOrderAsync(object payload, bool updateOrderData = true)
         {
             var uri = new UriBuilder($"{_selfCheckoutService.AppConfig.UrlSaleEngineApi}api/SaleEngine/ActionListItemToOrder");
             var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
-            OrderData = result.Data.FirstOrDefault();
+            if (updateOrderData)
+                OrderData = result.Data.FirstOrDefault();
             return result.Data;
         }
 

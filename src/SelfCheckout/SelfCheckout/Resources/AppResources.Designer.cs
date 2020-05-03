@@ -673,6 +673,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment type not match!.
+        /// </summary>
+        internal static string PaymentTypeNotMatch {
+            get {
+                return ResourceManager.GetString("PaymentTypeNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter your password.
         /// </summary>
         internal static string PleaseEnterPassword {
