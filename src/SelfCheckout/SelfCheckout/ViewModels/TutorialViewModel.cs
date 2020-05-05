@@ -53,8 +53,6 @@ namespace SelfCheckout.ViewModels
         {
             try
             {
-                if (Assets.Any())
-                    return;
                 await LoadImageAsset();
             }
             catch { }

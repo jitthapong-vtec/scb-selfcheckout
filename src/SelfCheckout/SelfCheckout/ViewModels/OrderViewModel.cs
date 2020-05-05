@@ -103,7 +103,7 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _tabs, value);
         }
 
-        public async Task RefreshOrderAsync(string currencyCode = "")
+        public async Task RefreshOrderAsync()
         {
             try
             {
@@ -120,6 +120,7 @@ namespace SelfCheckout.ViewModels
                     await LoadCustomerSession();
                     CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
 
+                    var currencyCode = "";// SaleEngineService.CurrencySelected.CurrCode;
                     await LoadOrderListAsync(currencyCode: currencyCode);
                 }
 

@@ -242,25 +242,25 @@ namespace SelfCheckout.ViewModels.Base
                 };
 
                 var result = await SaleEngineService.GetOrderListAsync(payload);
-                //if (!string.IsNullOrWhiteSpace(currencyCode))
-                //{
-                //    try
-                //    {
-                //        var changeCurrencyPayload = new
-                //        {
-                //            SessionKey = loginResult.SessionKey,
-                //            ActionItemValue = new
-                //            {
-                //                Action = "change_currency",
-                //                Value = currencyCode
-                //            }
-                //        };
-                //        result = await SaleEngineService.ActionListItemToOrderAsync(changeCurrencyPayload);
-                //    }
-                //    catch(Exception ex) 
-                //    { 
-                //    }
-                //}
+                if (!string.IsNullOrWhiteSpace(currencyCode))
+                {
+                    try
+                    {
+                        var changeCurrencyPayload = new
+                        {
+                            SessionKey = loginResult.SessionKey,
+                            ActionItemValue = new
+                            {
+                                Action = "change_currency",
+                                Value = currencyCode
+                            }
+                        };
+                        result = await SaleEngineService.ActionListItemToOrderAsync(changeCurrencyPayload);
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
                 try
                 {
                     result.ForEach(o =>
@@ -295,11 +295,15 @@ namespace SelfCheckout.ViewModels.Base
                     PassportNo = customerAttr?.Where(c => c.Code == "passport_no").FirstOrDefault()?.ValueOfString,
                     ShoppingCardNo = order.HeaderAttributes.Where(attr => attr.Code == "shopping_card").FirstOrDefault()?.ValueOfString,
                     CurrencyCode = orderInvoice.BillingAmount.NetAmount.CurrCode.Code,
+                    //CurrencyCode = order.BasketBillingAmount.NetAmount.CurrCode.Code,
                     PaymentType = orderInvoice.OrderPayments.FirstOrDefault()?.PaymentType,
                     TotalQty = orderInvoice.BillingQuantity.Quantity,
                     SubTotal = orderInvoice.BillingAmount.TotalAmount.CurrAmt,
                     TotalNet = orderInvoice.BillingAmount.NetAmount.CurrAmt,
                     TotalDiscount = orderInvoice.BillingAmount.DiscountAmount.CurrAmt
+                    //SubTotal = order.BasketBillingAmount.TotalAmount.CurrAmt,
+                    //TotalNet = order.BasketBillingAmount.NetAmount.CurrAmt,
+                    //TotalDiscount = order.BasketBillingAmount.DiscountAmount.CurrAmt
                 };
 
                 try
