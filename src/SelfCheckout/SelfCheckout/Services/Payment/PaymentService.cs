@@ -25,7 +25,7 @@ namespace SelfCheckout.Services.Payment
             {
                 throw new NotiApiException(result.Status.Description);
             }
-            return result.Data.QrRawData;
+            return result.Data.QrImage;
         }
 
         public async Task<PromptPayResult> InquiryAsync(string refField)

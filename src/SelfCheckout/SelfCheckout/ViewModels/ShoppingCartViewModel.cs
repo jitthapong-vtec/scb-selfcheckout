@@ -143,9 +143,7 @@ namespace SelfCheckout.ViewModels
             catch (KPApiException ex)
             {
                 await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message);
-
-                order.BillingQuantity.Quantity = 1;
-                await ChangeOrderQtyAsync(order);
+                await ReloadOrderDataAsync();
             }
         }
 
@@ -192,7 +190,6 @@ namespace SelfCheckout.ViewModels
         {
             IsRefreshing = true;
             await ReloadOrderDataAsync();
-            await RefreshOrderListAsync();
             IsRefreshing = false;
         });
 

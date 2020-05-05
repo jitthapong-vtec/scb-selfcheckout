@@ -7,22 +7,30 @@
              xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
              xmlns:i18n="clr-namespace:SelfCheckout.Services.Localize"
-             xmlns:controls="clr-namespace:SelfCheckout.Controls"
-             mc:Ignorable="d"
+             xmlns:controls="clr-namespace:SelfCheckout.Controls" 
+                  xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                  mc:Ignorable="d"
              x:Class="SelfCheckout.Views.PromptPayQrDialog">
     <ContentPage.Content>
         <Frame VerticalOptions="Center" Margin="16">
-            <Grid Margin="16">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Text="{i18n:Translate PleaseScanPayment}" FontSize="Large" HorizontalTextAlignment="Center"/>
-                    <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center">
-                        <Entry IsVisible="False" Text="{Binding QRData}" x:Name="entryQrData"/>
-                        <Grid>
-                            <forms:ZXingBarcodeImageView
+            <Grid RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <!--<ffimage:CachedImage Grid.Row="0" Source="resource://SelfCheckout.Resources.Images.thai_qr_banner.png" Aspect="AspectFill"/>-->
+                <Grid Grid.Row="1" Margin="16">
+                    <Grid RowSpacing="16">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" IsVisible="True" Text="{i18n:Translate PleaseScanPayment}" FontSize="Large" HorizontalTextAlignment="Center"/>
+                        <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center">
+                            <ffimage:CachedImage Margin="8" IsVisible="False" WidthRequest="200" Source="resource://SelfCheckout.Resources.Images.promptpay_logo.png" Aspect="AspectFit"/>
+                            <!--<Entry IsVisible="False" Text="{Binding QRData}" x:Name="entryQrData"/>-->
+                            <Grid>
+                                <!--<forms:ZXingBarcodeImageView
                         IsVisible="{Binding IsQrVisible}"
                             BarcodeFormat="QR_CODE"
                             HeightRequest="200"
@@ -32,22 +40,25 @@
                                     <common:EncodingOptions Width="200" Height="200" PureBarcode="True"/>
                                 </forms:ZXingBarcodeImageView.BarcodeOptions>
                             </forms:ZXingBarcodeImageView>
-                            <Label Text="{Binding Msg}" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
-                            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center"/>
-                        </Grid>
-                        <Label HorizontalTextAlignment="Center" x:Name="lblCountdown"/>
-                        <Label HorizontalTextAlignment="Center" IsVisible="{Binding IsCountdownStarted}">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="&#xf017;" Style="{StaticResource LabelIconStyle}" FontSize="24" TextColor="{StaticResource Secondary}"/>
-                                    <Span Text=" "/>
-                                    <Span Text="{Binding CountDown}" FontSize="Large" TextColor="{StaticResource Secondary}"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </StackLayout>
+                            <Label Text="{Binding Msg}" HorizontalTextAlignment="Center" VerticalOptions="Center"/>-->
+                                <Image WidthRequest="200" HeightRequest="200" Aspect="AspectFit"
+                                   Source="{Binding QRData, Converter={StaticResource Base64ImageToImageSourceConverter}}"/>
+                                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center"/>
+                            </Grid>
+                            <Label HorizontalTextAlignment="Center" x:Name="lblCountdown"/>
+                            <Label HorizontalTextAlignment="Center" IsVisible="{Binding IsCountdownStarted}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="&#xf017;" Style="{StaticResource LabelIconStyle}" FontSize="24" TextColor="{StaticResource Secondary}"/>
+                                        <Span Text=" "/>
+                                        <Span Text="{Binding CountDown}" FontSize="Large" TextColor="{StaticResource Secondary}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </StackLayout>
+                    </Grid>
                 </Grid>
-                <controls:TappedGrid TappedCommand="{Binding CancelCommand}" VerticalOptions="Start" HorizontalOptions="End" IsVisible="{Binding IsCloseBtnVisible}">
+                <controls:TappedGrid TappedCommand="{Binding CancelCommand}" Margin="8" VerticalOptions="Start" HorizontalOptions="End" IsVisible="{Binding IsCloseBtnVisible}">
                     <Label Style="{StaticResource LabelIconStyle}" FontSize="32" HorizontalOptions="Center" VerticalOptions="Center"
                        Text="&#xf057;" TextColor="{StaticResource PrimaryText}"/>
                 </controls:TappedGrid>

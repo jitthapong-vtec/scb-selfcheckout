@@ -47,7 +47,8 @@ namespace SelfCheckout.Views
                     }
                     catch (DensoScannerException ex)
                     {
-                        //await mainViewModel.AddOrderAsync("00008211470207673");
+                        if (GlobalSettings.Instance.TestMode)
+                            await mainViewModel.AddOrderAsync("00008211470207673");
                     }
                 }
                 shoppingCartViewModel.IsFirstSelect = false;

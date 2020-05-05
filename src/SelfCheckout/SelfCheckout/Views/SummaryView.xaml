@@ -153,12 +153,13 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <controls:TappedGrid Grid.Column="1" TappedCommand="{Binding PaymentMethodTappedCommand}">
-                                <Label Text="{Binding PaymentSelected.MethodDesc}" VerticalOptions="Center"/>
+                            <Label Grid.Column="1" Text="{Binding PaymentSelected.MethodDesc}" VerticalOptions="Center"/>
+                            <controls:TappedGrid Grid.Column="2" HeightRequest="36" TappedCommand="{Binding PaymentMethodTappedCommand}">
+                                <Label VerticalOptions="Center"
+                                       VerticalTextAlignment="Center"
+                                       Text="&#xf0d7;" FontSize="24"
+                                       Margin="8" Style="{StaticResource LabelIconStyle}"/>
                             </controls:TappedGrid>
-                            <Label Grid.Column="2" VerticalOptions="Center"
-                                   Text="&#xf0d7;" FontSize="24"
-                                   Margin="8" Style="{StaticResource LabelIconStyle}"/>
                         </Grid>
                     </Grid>
                 </StackLayout>

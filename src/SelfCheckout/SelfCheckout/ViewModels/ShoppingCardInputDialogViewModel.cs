@@ -29,6 +29,7 @@ namespace SelfCheckout.ViewModels
                 if (!string.IsNullOrEmpty(barcode))
                 {
                     InputValue = Utils.TryDecodeKioskShoppingCard(barcode);
+                    ValidateShoppingCardCommand.Execute(null);
                 }
             });
         }
@@ -42,7 +43,11 @@ namespace SelfCheckout.ViewModels
                  else _isOpenScanner = true;
              }
              var result = await NavigationService.ShowDialogAsync<string>("CameraScannerView", null);
-             InputValue = Utils.TryDecodeKioskShoppingCard(result);
+             if (!string.IsNullOrWhiteSpace(result))
+             {
+                 InputValue = Utils.TryDecodeKioskShoppingCard(result);
+                 ValidateShoppingCardCommand.Execute(null);
+             }
          });
 
         public ICommand ValidateShoppingCardCommand => new DelegateCommand(async () =>

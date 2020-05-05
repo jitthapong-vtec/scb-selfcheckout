@@ -72,6 +72,7 @@ namespace SelfCheckout
             containerRegistry.RegisterSingleton<IRegisterService, RegisterService>();
             containerRegistry.RegisterSingleton<IPimCoreService, PimCoreService>();
             containerRegistry.RegisterSingleton<IPaymentService, PaymentService>();
+            containerRegistry.RegisterForNavigation<TestBase64Image, TestBase64ImageViewModel>();
         }
     }
 }

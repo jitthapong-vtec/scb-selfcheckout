@@ -13,8 +13,6 @@ namespace SelfCheckout.Triggers
         {
             int n;
             var isNumeric = int.TryParse(entry.Text, out n);
-            if (n == 0)
-                isNumeric = false;
 
             if (!string.IsNullOrWhiteSpace(entry.Text) && (entry.Text.Length > 9 || !isNumeric))
             {

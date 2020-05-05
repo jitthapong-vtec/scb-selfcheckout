@@ -36,6 +36,7 @@
         <converter:DateTimeFormatConverter x:Key="DateTimeFormatConverter"/>
         <converter:TranslateConverter x:Key="TranslateConverter"/>
         <converter:PreventZeroConverter x:Key="PreventZeroConverter"/>
+        <converter:Base64ImageToImageSourceConverter x:Key="Base64ImageToImageSourceConverter"/>
 
         <OnPlatform x:Key="FontAwesome" x:TypeArguments="x:String" >
             <On Platform="Android" Value="FontAwesome.ttf#Font Awesome 5 Free Solid"/>

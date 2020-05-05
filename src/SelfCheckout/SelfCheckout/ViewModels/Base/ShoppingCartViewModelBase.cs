@@ -66,6 +66,10 @@ namespace SelfCheckout.ViewModels.Base
                         SelfCheckoutService.CurrentShoppingCard = shoppingCard;
                         await ValidateShoppingCardCallback(shoppingCard);
                     }
+                    else
+                    {
+                        await ValidateShoppingCardFailCallback();
+                    }
                 }
                 else
                 {
@@ -75,6 +79,7 @@ namespace SelfCheckout.ViewModels.Base
             catch (Exception ex)
             {
                 await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                await ValidateShoppingCardFailCallback();
             }
             finally
             {

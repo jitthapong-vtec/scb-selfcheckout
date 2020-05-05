@@ -119,6 +119,7 @@ namespace SelfCheckout.ViewModels
             finally
             {
                 IsBusy = false;
+                InputValue = "";
             }
         }
     }
