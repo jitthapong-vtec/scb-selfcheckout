@@ -14,7 +14,7 @@ namespace SelfCheckout.Services.PimCore
         {
         }
 
-        public List<PimCoreImageAsset> ImageAssets { get; private set; }
+        public PimCoreImageAsset[] ImageAssets { get; private set; }
 
         public async Task<PimCoreApiResult<PimCoreImageAsset>> GetImageByAssetIdAsync(int id, string ratio = "400x200")
         {
@@ -28,9 +28,12 @@ namespace SelfCheckout.Services.PimCore
             var result = await GetAsync<PimCoreApiResult<PimCoreMediaLocation>>(uri.ToString());
             if (result.Status == "success")
             {
-                ImageAssets = new List<PimCoreImageAsset>();
-                foreach (var media in result.Data.ListMedia)
+                var data = result.Data;
+                if (ImageAssets == null)
+                    ImageAssets = new PimCoreImageAsset[data.ListMedia.Count];
+                for (var i = 0; i < data.ListMedia.Count; i++)
                 {
+                    var media = data.ListMedia[i];
                     try
                     {
                         var assetResult = await GetImageByAssetIdAsync(media.Id);
@@ -40,7 +43,7 @@ namespace SelfCheckout.Services.PimCore
                             asset.DetailTitle = media.Title;
                             asset.DetailDesc = "";
                             asset.DetailLink = media.Link;
-                            ImageAssets.Add(asset);
+                            ImageAssets[i] = asset;
                         }
                     }
                     catch { }

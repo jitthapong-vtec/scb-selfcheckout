@@ -154,11 +154,11 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="1" Text="{Binding PaymentSelected.MethodDesc}" VerticalOptions="Center"/>
-                            <controls:TappedGrid Grid.Column="2" HeightRequest="36" TappedCommand="{Binding PaymentMethodTappedCommand}">
+                            <controls:TappedGrid Grid.Column="2" HeightRequest="36" Padding="8,0,8,0" TappedCommand="{Binding PaymentMethodTappedCommand}">
                                 <Label VerticalOptions="Center"
                                        VerticalTextAlignment="Center"
                                        Text="&#xf0d7;" FontSize="24"
-                                       Margin="8" Style="{StaticResource LabelIconStyle}"/>
+                                       Style="{StaticResource LabelIconStyle}"/>
                             </controls:TappedGrid>
                         </Grid>
                     </Grid>

@@ -39,8 +39,8 @@ namespace SelfCheckout.ViewModels
                     _isOpenCameraScanner = true;
             }
             var result = await NavigationService.ShowDialogAsync<string>("CameraScannerView", null);
-            CouponCode = result;
             _isOpenCameraScanner = false;
+            CouponCode = result;
         });
 
         public ICommand OpenHardwareScannerCommand => new Command(() => MessagingCenter.Send<ViewModelBase>(this, "RequestHWScanner"));

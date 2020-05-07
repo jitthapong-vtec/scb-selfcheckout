@@ -342,4 +342,7 @@
   <data name="DataNotfound" xml:space="preserve">
     <value>ไม่พบข้อมูล</value>
   </data>
+  <data name="Logout" xml:space="preserve">
+    <value>ออกจากระบบ</value>
+  </data>
 </root>

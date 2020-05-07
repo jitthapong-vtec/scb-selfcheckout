@@ -54,7 +54,9 @@ namespace SelfCheckout.ViewModels
         bool _paymentSelectionShowing;
         bool _paymentInputShowing;
         bool _isChangingShoppingCard;
+
         bool _isPromptPayProcessing;
+        bool _isCameraScannerOpening;
 
         public MainViewModel(INavigationService navigationService,
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService,
@@ -208,9 +210,9 @@ namespace SelfCheckout.ViewModels
             }
         });
 
-        public ICommand ShowInfoCommand => new Command(() =>
+        public ICommand ShowInfoCommand => new Command(async () =>
         {
-            TutorialViewModel.ShowTutorial();
+            await TutorialViewModel.ShowTutorialAsync();
         });
 
         public ICommand CurrencyTappedCommand => new Command(() =>
@@ -270,7 +272,16 @@ namespace SelfCheckout.ViewModels
 
                 if (Convert.ToInt32(type) == 1)
                 {
+                    lock (_lockProcess)
+                    {
+                        if (_isCameraScannerOpening)
+                            return;
+                        else
+                            _isCameraScannerOpening = true;
+                    }
                     var result = await NavigationService.ShowDialogAsync<string>("CameraScannerView", null);
+                    _isCameraScannerOpening = false;
+
                     if (!string.IsNullOrEmpty(result))
                     {
                         PaymentBarcode = result;
@@ -559,13 +570,6 @@ namespace SelfCheckout.ViewModels
 
         protected override async Task OnLanguageChanged(Language lang)
         {
-            if (CurrentView is ShoppingCartView)
-                await ShoppingCartViewModel.RefreshOrderListAsync();
-            if (CurrentView is OrderView)
-                await OrderViewModel.RefreshOrderAsync();
-
-            await TutorialViewModel.ReloadImageAsset();
-
             try
             {
                 foreach (var tab in Tabs)
@@ -582,7 +586,6 @@ namespace SelfCheckout.ViewModels
                             break;
                         case 3:
                             tab.TabText = AppResources.Shopping;
-                            RefreshSummary();
                             break;
                         case 4:
                             tab.TabText = AppResources.Orders;
@@ -604,10 +607,24 @@ namespace SelfCheckout.ViewModels
 
             MessagingCenter.Send(this, "LanguageChange");
 
-            TutorialViewModel.RefreshLanguage();
-            DeviceViewModel.RefreshLanguage();
-            ShoppingCartViewModel.RefreshLanguage();
-            OrderViewModel.RefreshLanguage();
+            await Task.Run(async () =>
+            {
+                if (CurrentView is ShoppingCartView)
+                {
+                    await ShoppingCartViewModel.RefreshOrderListAsync();
+                    RefreshSummary();
+                }
+                else if (CurrentView is OrderView)
+                {
+                    await OrderViewModel.RefreshOrderAsync();
+                }
+
+                await HomeViewModel.ReloadImageAsset();
+                TutorialViewModel.RefreshLanguage();
+                DeviceViewModel.RefreshLanguage();
+                ShoppingCartViewModel.RefreshLanguage();
+                OrderViewModel.RefreshLanguage();
+            });
         }
 
         protected override Task OnLanguageViewShowingChanged(bool isShowing)

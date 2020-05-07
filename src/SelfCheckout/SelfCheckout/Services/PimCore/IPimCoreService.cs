@@ -8,7 +8,7 @@ namespace SelfCheckout.Services.PimCore
 {
     public interface IPimCoreService
     {
-        List<PimCoreImageAsset> ImageAssets { get;}
+        PimCoreImageAsset[] ImageAssets { get;}
 
         Task GetMediaByLocationAsync(string lang = "en");
 

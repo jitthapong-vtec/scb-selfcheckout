@@ -32,10 +32,14 @@ namespace SelfCheckout.ViewModels
             }
         });
 
-        public override async Task OnTabSelected(TabItem item)
+        public async Task ReloadImageAsset()
         {
-            await LoadImageAsset();
-            Assets = PimCoreService.ImageAssets?.ToObservableCollection();
+            try
+            {
+                await LoadImageAsset();
+                Assets = PimCoreService.ImageAssets?.ToObservableCollection();
+            }
+            catch { }
         }
     }
 }

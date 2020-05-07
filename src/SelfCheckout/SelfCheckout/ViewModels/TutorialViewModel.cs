@@ -43,10 +43,10 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _tutorialViewVisible, value);
         }
 
-        public void ShowTutorial()
+        public async Task ShowTutorialAsync()
         {
-            Assets = PimCoreService.ImageAssets?.ToObservableCollection();
             TutorialViewVisible = true;
+            await ReloadImageAsset();
         }
 
         public async Task ReloadImageAsset()
@@ -54,6 +54,7 @@ namespace SelfCheckout.ViewModels
             try
             {
                 await LoadImageAsset();
+                Assets = PimCoreService.ImageAssets?.ToObservableCollection();
             }
             catch { }
         }
