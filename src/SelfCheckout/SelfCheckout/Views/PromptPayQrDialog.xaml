@@ -13,24 +13,20 @@
              x:Class="SelfCheckout.Views.PromptPayQrDialog">
     <ContentPage.Content>
         <Frame VerticalOptions="Center" Margin="16">
-            <Grid RowSpacing="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <!--<ffimage:CachedImage Grid.Row="0" Source="resource://SelfCheckout.Resources.Images.thai_qr_banner.png" Aspect="AspectFill"/>-->
-                <Grid Grid.Row="1" Margin="16">
-                    <Grid RowSpacing="16">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0" IsVisible="True" Text="{i18n:Translate PleaseScanPayment}" FontSize="Large" HorizontalTextAlignment="Center"/>
-                        <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center">
-                            <ffimage:CachedImage Margin="8" IsVisible="False" WidthRequest="200" Source="resource://SelfCheckout.Resources.Images.promptpay_logo.png" Aspect="AspectFit"/>
-                            <!--<Entry IsVisible="False" Text="{Binding QRData}" x:Name="entryQrData"/>-->
-                            <Grid>
-                                <!--<forms:ZXingBarcodeImageView
+            <Grid Grid.Row="1" Margin="16">
+                <Grid RowSpacing="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" IsVisible="True" Text="{i18n:Translate PleaseScanPayment}" Margin="8" FontSize="Large" HorizontalTextAlignment="Center"/>
+                    <BoxView HeightRequest="1" Grid.Row="1" BackgroundColor="{StaticResource Gray100}"/>
+                    <StackLayout Grid.Row="2" HorizontalOptions="Center" VerticalOptions="Center">
+                        <!--<ffimage:CachedImage Margin="8" IsVisible="False" WidthRequest="200" Source="resource://SelfCheckout.Resources.Images.promptpay_logo.png" Aspect="AspectFit"/>-->
+                        <!--<Entry IsVisible="False" Text="{Binding QRData}" x:Name="entryQrData"/>-->
+                        <Grid>
+                            <!--<forms:ZXingBarcodeImageView
                         IsVisible="{Binding IsQrVisible}"
                             BarcodeFormat="QR_CODE"
                             HeightRequest="200"
@@ -41,22 +37,21 @@
                                 </forms:ZXingBarcodeImageView.BarcodeOptions>
                             </forms:ZXingBarcodeImageView>
                             <Label Text="{Binding Msg}" HorizontalTextAlignment="Center" VerticalOptions="Center"/>-->
-                                <Image WidthRequest="200" HeightRequest="200" Aspect="AspectFit"
+                            <Image WidthRequest="200" HeightRequest="200" Aspect="AspectFit"
                                    Source="{Binding QRData, Converter={StaticResource Base64ImageToImageSourceConverter}}"/>
-                                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center"/>
-                            </Grid>
-                            <Label HorizontalTextAlignment="Center" x:Name="lblCountdown"/>
-                            <Label HorizontalTextAlignment="Center" IsVisible="{Binding IsCountdownStarted}">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="&#xf017;" Style="{StaticResource LabelIconStyle}" FontSize="24" TextColor="{StaticResource Secondary}"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding CountDown}" FontSize="Large" TextColor="{StaticResource Secondary}"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </StackLayout>
-                    </Grid>
+                            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center"/>
+                        </Grid>
+                        <Label HorizontalTextAlignment="Center" x:Name="lblCountdown"/>
+                        <Label HorizontalTextAlignment="Center" IsVisible="{Binding IsCountdownStarted}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="&#xf017;" Style="{StaticResource LabelIconStyle}" FontSize="24" TextColor="{StaticResource Secondary}"/>
+                                    <Span Text=" "/>
+                                    <Span Text="{Binding CountDown}" FontSize="Large" TextColor="{StaticResource Secondary}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
                 </Grid>
                 <controls:TappedGrid TappedCommand="{Binding CancelCommand}" Margin="8" VerticalOptions="Start" HorizontalOptions="End" IsVisible="{Binding IsCloseBtnVisible}">
                     <Label Style="{StaticResource LabelIconStyle}" FontSize="32" HorizontalOptions="Center" VerticalOptions="Center"

@@ -354,13 +354,44 @@ namespace SelfCheckout.Models
             }
         }
 
-        public bool IsEditable {
+        public bool IsEditable
+        {
             get => _isEditable;
             set
             {
                 _isEditable = value;
                 NotifyPropertyChanged();
             }
+        }
+
+        public OrderDetail Clone()
+        {
+            var orderDetail = (OrderDetail)this.MemberwiseClone();
+            orderDetail.BillingQuantity = new BillingQuantity()
+            {
+                Quantity = orderDetail.BillingQuantity?.Quantity,
+                Uom = orderDetail.BillingQuantity?.Uom
+            };
+            orderDetail.BillingAmount = new IngAmount()
+            {
+                TotalAmount = new DiscountAmount()
+                {
+                    CurrAmt = orderDetail.BillingAmount?.TotalAmount.CurrAmt
+                },
+                DiscountAmount = new DiscountAmount()
+                {
+                    CurrAmt = orderDetail.BillingAmount?.DiscountAmount.CurrAmt
+                },
+                VatAmount = new DiscountAmount()
+                {
+                    CurrAmt = orderDetail.BillingAmount?.VatAmount.CurrAmt
+                },
+                NetAmount = new DiscountAmount()
+                {
+                    CurrAmt = orderDetail.BillingAmount?.NetAmount.CurrAmt
+                }
+            };
+            return orderDetail;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

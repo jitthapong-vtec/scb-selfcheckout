@@ -241,6 +241,15 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data is not found.
+        /// </summary>
+        internal static string DataNotfound {
+            get {
+                return ResourceManager.GetString("DataNotfound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date/Time.
         /// </summary>
         internal static string DateSlashTime {
@@ -583,7 +592,7 @@ namespace SelfCheckout.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opps.
+        ///   Looks up a localized string similar to Message.
         /// </summary>
         internal static string Opps {
             get {

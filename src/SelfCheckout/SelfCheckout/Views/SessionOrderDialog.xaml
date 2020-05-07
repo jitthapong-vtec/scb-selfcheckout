@@ -23,7 +23,7 @@
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <Entry IsVisible="False" Text="{Binding SessionData.SessionKey}" x:Name="hidenEntry"/>
@@ -40,7 +40,7 @@
                     <StackLayout Grid.Column="1" Margin="8">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <StackLayout Grid.Column="0">
@@ -57,8 +57,8 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Row="0" Grid.Column="0" Text="{i18n:Translate PassportNo}"/>
                             <Label Grid.Row="0" Grid.Column="1" Text="{Binding CustomerData.Person.PassportNo}" HorizontalTextAlignment="End"/>

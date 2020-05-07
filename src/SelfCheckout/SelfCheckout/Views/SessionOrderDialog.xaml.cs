@@ -16,6 +16,7 @@ namespace SelfCheckout.Views
         public SessionOrderDialog()
         {
             InitializeComponent();
+            CloseWhenBackgroundIsClicked = false;
         }
     }
 }

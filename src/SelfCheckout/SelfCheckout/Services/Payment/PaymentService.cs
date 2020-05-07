@@ -34,5 +34,12 @@ namespace SelfCheckout.Services.Payment
             var result = await GetAsync<List<PromptPayResult>>(uri.ToString());
             return result.FirstOrDefault();
         }
+
+        public async Task<PromptPayResult> ScbInquiryAsync(string ref1, string ref2, DateTime? transactionDate = null)
+        {
+            var uri = new UriBuilder($"{GlobalSettings.Instance.PromptPayApi}api/promptpay/inquiry?ref1={ref1}&ref2={ref2}&transactionDate={transactionDate}");
+            var result = await GetAsync<List<PromptPayResult>>(uri.ToString());
+            return result.FirstOrDefault();
+        }
     }
 }

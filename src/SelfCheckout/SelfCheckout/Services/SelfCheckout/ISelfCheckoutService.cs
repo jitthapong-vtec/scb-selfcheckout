@@ -32,7 +32,7 @@ namespace SelfCheckout.Services.SelfCheckout
 
         Task<bool> EndSessionAsync(long sessionKey, string userId, string machineNo);
 
-        Task<SessionData> GetSessionDetialAsync(long key);
+        Task<SessionData> GetSessionDetialAsync(string key);
 
         Task<List<DeviceStatus>> GetDeviceStatusAsync(string machineNo);
 

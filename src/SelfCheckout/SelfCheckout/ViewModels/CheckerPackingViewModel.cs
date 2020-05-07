@@ -22,22 +22,32 @@ namespace SelfCheckout.ViewModels
 {
     public class CheckerPackingViewModel : CheckerOrderViewModelBase
     {
-        public CheckerPackingViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService, 
-            ISaleEngineService saleEngineService, IRegisterService registerService) : 
+        bool _canFinishSession;
+
+        public CheckerPackingViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
+            ISaleEngineService saleEngineService, IRegisterService registerService) :
             base(navigationService, selfCheckoutService, saleEngineService, registerService)
         {
         }
 
-        public ICommand GetSessionDetailCommand => new Command<string>(async (sessionKey) =>
+        public bool CanFinishSession
         {
-            if (string.IsNullOrEmpty(sessionKey))
+            get => _canFinishSession;
+            set => SetProperty(ref _canFinishSession, value);
+        }
+
+        public ICommand GetSessionDetailCommand => new Command(async () =>
+        {
+            if (string.IsNullOrEmpty(SessionKey))
                 return;
-            SessionKey = sessionKey;
-            await LoadDataAsync();
+            CanFinishSession = await LoadDataAsync();
+            if (!CanFinishSession)
+                SessionKey = "";
         });
 
         public ICommand ClearScreenCommand => new DelegateCommand(() =>
          {
+             SessionKey = "";
              OrderInvoices?.Clear();
              OrderDetails?.Clear();
              SessionData = new SessionData();

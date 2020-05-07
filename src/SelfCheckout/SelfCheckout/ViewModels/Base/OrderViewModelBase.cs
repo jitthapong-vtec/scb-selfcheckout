@@ -25,6 +25,7 @@ namespace SelfCheckout.ViewModels.Base
         protected IRegisterService RegisterService { get; private set; }
 
         protected List<OrderInvoiceGroup> _allOrderInvoiceGroups;
+        List<OrderDetail> _allOrderDetails;
 
         ObservableCollection<OrderInvoiceGroup> _orderInvoices;
         ObservableCollection<OrderDetail> _orderDetails;
@@ -113,7 +114,7 @@ namespace SelfCheckout.ViewModels.Base
             set => SetProperty(ref _orderDetails, value);
         }
 
-        protected async Task<bool> LoadSessionDetailAsync(long sessionkey)
+        protected async Task<bool> LoadSessionDetailAsync(string sessionkey)
         {
             SessionData = await SelfCheckoutService.GetSessionDetialAsync(sessionkey);
 
@@ -203,7 +204,7 @@ namespace SelfCheckout.ViewModels.Base
             Customers = customers.ToObservableCollection();
         }
 
-        protected async Task LoadOrderListAsync(object filter = null, string currencyCode = "")
+        protected async Task LoadOrderListAsync(object filter = null, string currencyCode = "", bool groupingOrderDetail = false)
         {
             var appConfig = SelfCheckoutService.AppConfig;
 
@@ -273,16 +274,13 @@ namespace SelfCheckout.ViewModels.Base
                 ordersData.AddRange(result);
             }
 
-            await CreateOrderInvoiceAsync(ordersData);
-        }
-
-        protected Task CreateOrderInvoiceAsync(List<OrderData> ordersData)
-        {
             _allOrderInvoiceGroups = new List<OrderInvoiceGroup>();
+            _allOrderDetails = new List<OrderDetail>();
             foreach (var order in ordersData)
             {
                 var orderInvoice = order.OrderInvoices.FirstOrDefault();
                 var orderDetails = new List<OrderDetail>(orderInvoice.OrderDetails);
+                _allOrderDetails.AddRange(orderInvoice.OrderDetails);
 
                 var customerAttr = order.CustomerDetail?.CustomerAttributes;
                 var orderInvoiceGroup = new OrderInvoiceGroup(orderDetails)
@@ -324,24 +322,50 @@ namespace SelfCheckout.ViewModels.Base
             var ordersNo = sessionDetails.Select(s => s.OrderNo).ToList();
 
             _allOrderInvoiceGroups = _allOrderInvoiceGroups.Where(o => ordersNo.Contains(o.OrderNo)).ToList();
+
             OrderInvoices = _allOrderInvoiceGroups.ToObservableCollection();
 
-            OrderDetails = new ObservableCollection<OrderDetail>();
-            foreach (var order in _allOrderInvoiceGroups)
-            {
-                order.ForEach((orderDetail) =>
-                {
-                    OrderDetails.Add(orderDetail);
-                });
-            }
-            RefreshSummary();
-
+            var orderDetailsTemp = new List<OrderDetail>();
             foreach (var order in _allOrderInvoiceGroups)
             {
                 SetOrderImage(order.AsEnumerable().ToList());
+                order.ForEach((orderDetail) =>
+                {
+                    orderDetailsTemp.Add(orderDetail);
+                });
             }
 
-            return Task.FromResult(true);
+            if (groupingOrderDetail)
+            {
+                var groups = orderDetailsTemp.GroupBy(o => o.ItemDetail.Item.Code, (k, g) =>
+                                new
+                                {
+                                    Order = g.FirstOrDefault().Clone(),
+                                    TotalQty = g.Sum(o => o.BillingQuantity.Quantity),
+                                    TotalAmount = g.Sum(o => o.BillingAmount.TotalAmount.CurrAmt),
+                                    TotalDiscount = g.Sum(o => o.BillingAmount.DiscountAmount.CurrAmt),
+                                    TotalNet = g.Sum(o => o.BillingAmount.NetAmount.CurrAmt),
+                                    OrderDetails = g.ToList()
+                                }).ToList();
+
+                var groupingTemp = new List<OrderDetail>();
+                foreach (var group in groups)
+                {
+                    group.Order.BillingQuantity.Quantity = group.TotalQty;
+                    group.Order.BillingAmount.TotalAmount.CurrAmt = group.TotalAmount;
+                    group.Order.BillingAmount.DiscountAmount.CurrAmt = group.TotalDiscount;
+                    group.Order.BillingAmount.NetAmount.CurrAmt = group.TotalNet;
+
+                    SetOrderImage(new List<OrderDetail>() { group.Order });
+                    groupingTemp.Add(group.Order);
+                }
+                OrderDetails = groupingTemp.ToObservableCollection();
+            }
+            else
+            {
+                OrderDetails = orderDetailsTemp.ToObservableCollection();
+            }
+            RefreshSummary();
         }
 
         protected void RefreshSummary()

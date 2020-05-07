@@ -8,7 +8,7 @@
              x:Class="SelfCheckout.Views.OrderInvoiceItemView">
     <ContentView.Resources>
         <Style TargetType="Label">
-            <Setter Property="FontSize" Value="{OnIdiom Phone=Small, Desktop=Micro}"/>
+            <Setter Property="FontSize" Value="{OnPlatform Android=Small, UWP=Micro}"/>
             <Setter Property="FontAttributes" Value="None"/>
         </Style>
     </ContentView.Resources>
@@ -27,7 +27,7 @@
                 <Grid.Resources>
                     <Style TargetType="Label">
                         <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
-                        <Setter Property="LineHeight" Value="{OnPlatform UWP=2, Android=1}"/>
+                        <Setter Property="LineHeight" Value="{OnPlatform UWP=2}"/>
                     </Style>
                 </Grid.Resources>
                 <Label Grid.Row="0" Text="{i18n:Translate InvoiceNo}" MaxLines="1"/>
@@ -56,12 +56,12 @@
                 </Label>
                 <Label Grid.Row="0" Grid.Column="1" MaxLines="1" Text="{Binding ShoppingCardNo}" HorizontalOptions="EndAndExpand" 
                            HorizontalTextAlignment="End" Margin="{OnIdiom Desktop='0,0,12,0'}"/>
-                <Label Grid.Row="1" Grid.Column="0" MaxLines="2" HorizontalOptions="StartAndExpand">
+                <Label Grid.Row="1" Grid.Column="0" MaxLines="3" FontSize="Micro" HorizontalOptions="StartAndExpand">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{i18n:Translate PassportNo}"/>
+                            <Span Text="{i18n:Translate PassportNo}" FontSize="{OnPlatform UWP=10,Android=Micro}"/>
                             <Span Text=" "/>
-                            <Span Text="{Binding PassportNo}" FontAttributes="Bold"/>
+                            <Span Text="{Binding PassportNo}" FontSize="{OnPlatform UWP=Micro, Android=Small}" FontAttributes="Bold"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>

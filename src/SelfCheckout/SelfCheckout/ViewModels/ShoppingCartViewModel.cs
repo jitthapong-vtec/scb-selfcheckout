@@ -294,7 +294,7 @@ namespace SelfCheckout.ViewModels
             {
                 orderDetails.ForEach(o => o.IsEditable = false);
             }
-            OrderDetails = orderDetails.ToObservableCollection();
+            OrderDetails = orderDetails?.ToObservableCollection();
 
             SetOrderImage(orderDetails);
 

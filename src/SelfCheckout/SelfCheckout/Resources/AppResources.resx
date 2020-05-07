@@ -276,7 +276,7 @@
     <value>Ok</value>
   </data>
   <data name="Opps" xml:space="preserve">
-    <value>Opps</value>
+    <value>Message</value>
   </data>
   <data name="Order" xml:space="preserve">
     <value>Order</value>
@@ -442,5 +442,8 @@
   </data>
   <data name="PaymentTypeNotMatch" xml:space="preserve">
     <value>Payment type not match!</value>
+  </data>
+  <data name="DataNotfound" xml:space="preserve">
+    <value>Data is not found</value>
   </data>
 </root>

@@ -87,29 +87,13 @@ namespace SelfCheckout.Services.SelfCheckout
             return result.Data;
         }
 
-        public async Task<SessionData> GetSessionDetialAsync(long key)
+        public async Task<SessionData> GetSessionDetialAsync(string key)
         {
             var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Session/SessionDetai?key={key}");
             var result = await GetAsync<ApiResultData<SessionData>>(uri.ToString());
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             return result.Data;
-
-            //var apiResultData = new ApiResultData<SessionData>();
-            //var assembly = Assembly.GetExecutingAssembly();
-            //var resourceName = "SelfCheckout.Resources.sess_detail.json";
-
-            //try
-            //{
-            //    using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            //    using (StreamReader reader = new StreamReader(stream))
-            //    {
-            //        string result = await reader.ReadToEndAsync();
-            //        apiResultData = JsonConvert.DeserializeObject<ApiResultData<SessionData>>(result);
-            //    }
-            //}
-            //catch { }
-            //return apiResultData.Data;
         }
 
         public async Task<List<DeviceStatus>> GetSessionHistory(DateTime? date, long sessionKey, string machineNo)

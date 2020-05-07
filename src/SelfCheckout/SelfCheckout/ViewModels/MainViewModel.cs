@@ -54,6 +54,7 @@ namespace SelfCheckout.ViewModels
         bool _paymentSelectionShowing;
         bool _paymentInputShowing;
         bool _isChangingShoppingCard;
+        bool _isPromptPayProcessing;
 
         public MainViewModel(INavigationService navigationService,
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService,
@@ -314,6 +315,14 @@ namespace SelfCheckout.ViewModels
             {
                 if (!PaymentSelected.IsAlipay)
                 {
+                    lock (_lockProcess)
+                    {
+                        if (_isPromptPayProcessing)
+                            return;
+                        else
+                            IsPaymentProcessing = true;
+                    }
+
                     var result = await NavigationService.ShowDialogAsync<INavigationParameters>("PromptPayQrDialog", null);
                     var promptPayResult = result.GetValue<PromptPayResult>("PromptPayResult");
                     if (promptPayResult == null)
@@ -538,7 +547,7 @@ namespace SelfCheckout.ViewModels
         {
             try
             {
-                var sessionData = await _selfCheckoutService.GetSessionDetialAsync(_selfCheckoutService.BorrowSessionKey);
+                var sessionData = await _selfCheckoutService.GetSessionDetialAsync(_selfCheckoutService.BorrowSessionKey.ToString());
                 if (sessionData.SessionStatus.SessionCode == "END")
                 {
                     await _saleEngineService.LogoutAsync();
@@ -550,6 +559,13 @@ namespace SelfCheckout.ViewModels
 
         protected override async Task OnLanguageChanged(Language lang)
         {
+            if (CurrentView is ShoppingCartView)
+                await ShoppingCartViewModel.RefreshOrderListAsync();
+            if (CurrentView is OrderView)
+                await OrderViewModel.RefreshOrderAsync();
+
+            await TutorialViewModel.ReloadImageAsset();
+
             try
             {
                 foreach (var tab in Tabs)
@@ -592,8 +608,6 @@ namespace SelfCheckout.ViewModels
             DeviceViewModel.RefreshLanguage();
             ShoppingCartViewModel.RefreshLanguage();
             OrderViewModel.RefreshLanguage();
-
-            await TutorialViewModel.ReloadImageAsset();
         }
 
         protected override Task OnLanguageViewShowingChanged(bool isShowing)

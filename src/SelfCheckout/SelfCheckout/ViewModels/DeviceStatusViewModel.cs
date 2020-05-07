@@ -27,7 +27,7 @@ namespace SelfCheckout.ViewModels
         int _totalOccupiedDevice;
 
         public DeviceStatusViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
-            ISaleEngineService saleEngineService, IRegisterService registerService) : 
+            ISaleEngineService saleEngineService, IRegisterService registerService) :
             base(navigationService, selfCheckoutService, saleEngineService, registerService)
         {
             _selfCheckoutService = selfCheckoutService;
@@ -38,7 +38,7 @@ namespace SelfCheckout.ViewModels
             await GetDeviceStatusAsync(search);
         });
 
-        public ICommand ShowOrderDetailCommand => new DelegateCommand<DeviceStatus>(async(sess) =>
+        public ICommand ShowOrderDetailCommand => new DelegateCommand<DeviceStatus>(async (sess) =>
         {
             if (sess.SessionStatus.SessionCode == "START")
                 await ShowSessionOrder(sess);
@@ -68,6 +68,12 @@ namespace SelfCheckout.ViewModels
                 IsBusy = true;
 
                 var devices = await _selfCheckoutService.GetDeviceStatusAsync(search);
+                if (!devices.Any())
+                {
+                    await NavigationService.ShowAlertAsync(AppResources.Opps, AppResources.DataNotfound, AppResources.Close);
+                    return;
+                }
+
                 Devices = devices.ToObservableCollection();
 
                 TotalOccupiedDevice = devices.Where(d => d.SessionStatus.SessionCode == "START").Count();

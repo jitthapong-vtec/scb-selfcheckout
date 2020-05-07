@@ -21,7 +21,7 @@ namespace SelfCheckout.ViewModels.Base
         string _sessionKey;
         CustomerData _customerData;
 
-        public CheckerOrderViewModelBase(INavigationService navigationService, ISelfCheckoutService selfCheckoutService, 
+        public CheckerOrderViewModelBase(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
             ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigationService, selfCheckoutService, saleEngineService, registerService)
         {
         }
@@ -63,25 +63,24 @@ namespace SelfCheckout.ViewModels.Base
             }
         });
 
-        protected async Task LoadDataAsync()
+        protected async Task<bool> LoadDataAsync()
         {
             try
             {
                 IsBusy = true;
-                var isAlreadyEnd = await LoadSessionDetailAsync(Convert.ToInt64(SessionKey));
+                var isAlreadyEnd = await LoadSessionDetailAsync(SessionKey);
                 if (isAlreadyEnd)
                 {
                     Clear();
                     await NavigationService.ShowAlertAsync(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
-                    return;
+                    return false;
                 }
 
                 await LoadCustomerSession();
 
                 CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
 
-                await LoadOrderListAsync();
-                GroupingOrder();
+                await LoadOrderListAsync(groupingOrderDetail: true);
             }
             catch (Exception ex)
             {
@@ -91,31 +90,7 @@ namespace SelfCheckout.ViewModels.Base
             {
                 IsBusy = false;
             }
-        }
-
-        protected void GroupingOrder()
-        {
-            var groups = OrderDetails.GroupBy(o => o.ItemDetail.Item.Code, (k, g) =>
-                                new
-                                {
-                                    Order = g.FirstOrDefault(),
-                                    TotalQty = g.Sum(o => o.BillingQuantity.Quantity),
-                                    TotalAmount = g.Sum(o => o.BillingAmount.TotalAmount.CurrAmt),
-                                    TotalDiscount = g.Sum(o => o.BillingAmount.DiscountAmount.CurrAmt),
-                                    TotalNet = g.Sum(o => o.BillingAmount.NetAmount.CurrAmt),
-                                    OrderDetails = g.ToList()
-                                }).ToList();
-
-            var temp = new List<OrderDetail>();
-            foreach (var group in groups)
-            {
-                group.Order.BillingQuantity.Quantity = group.TotalQty;
-                group.Order.BillingAmount.TotalAmount.CurrAmt = group.TotalAmount;
-                group.Order.BillingAmount.DiscountAmount.CurrAmt = group.TotalDiscount;
-                group.Order.BillingAmount.NetAmount.CurrAmt = group.TotalNet;
-                temp.Add(group.Order);
-            }
-            OrderDetails = temp.ToObservableCollection();
+            return true;
         }
     }
 }

@@ -16,5 +16,21 @@ namespace SelfCheckout.Views
         {
             InitializeComponent();
         }
+
+        private void SetEntryQrCode()
+        {
+            if (!string.IsNullOrWhiteSpace(entrySessionKey.Text))
+                hidenEntry.Text = entrySessionKey.Text;
+        }
+
+        private void entrySessionKey_Completed(object sender, EventArgs e)
+        {
+            SetEntryQrCode();
+        }
+
+        private void TappedGrid_Tapped(object sender, object e)
+        {
+            SetEntryQrCode();
+        }
     }
 }

@@ -17,14 +17,14 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="8">
+                <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="0,8,0,8">
                     <Grid.Resources>
                         <Style TargetType="Label">
                             <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
                         </Style>
                     </Grid.Resources>
-                    <Label Text="{i18n:Translate PleaseScanCoupon}" HorizontalOptions="Start" VerticalOptions="Center"/>
-                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
+                    <Label Text="{i18n:Translate PleaseScanCoupon}" HorizontalOptions="Start" Margin="8,0,0,0" VerticalOptions="Center"/>
+                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" Padding="8,0,8,0" FontSize="18" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource Gray50}"/>
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding HideCouponInputCommand}"/>
                     </Grid.GestureRecognizers>

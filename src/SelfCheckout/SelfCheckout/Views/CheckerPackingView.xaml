@@ -35,13 +35,14 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Entry Grid.Column="0" FontSize="Medium" VerticalOptions="Center" x:Name="entrySessionKey"
-                           ReturnCommand="{Binding GetSessionDetailCommand}"
-                           ReturnCommandParameter="{Binding Source={RelativeSource Mode=Self},Path=Text}"/>
+                           Text="{Binding SessionKey}"
+                           Completed="entrySessionKey_Completed"
+                           ReturnCommand="{Binding GetSessionDetailCommand}"/>
                     <controls:TappedGrid Grid.Column="1"
                                          HorizontalOptions="Center"
                                          WidthRequest="70"
-                                         TappedCommand="{Binding GetSessionDetailCommand}"
-                                         CommandParameter="{Binding Source={Reference entrySessionKey}, Path=Text}">
+                                         Tapped="TappedGrid_Tapped"
+                                         TappedCommand="{Binding GetSessionDetailCommand}">
                         <Frame Padding="2" BackgroundColor="{StaticResource Gray200}">
                             <Label FontFamily="{StaticResource FontAwesome}" HorizontalOptions="Center" VerticalOptions="Center" Text="&#xf00c;" FontSize="24" TextColor="{StaticResource Secondary}"/>
                         </Frame>
@@ -53,11 +54,12 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
+                        <Entry x:Name="hidenEntry" IsVisible="False"/>
                         <forms:ZXingBarcodeImageView
                             BarcodeFormat="QR_CODE"
                             HeightRequest="150"
                             WidthRequest="150"
-                            BarcodeValue="{Binding SessionKey}">
+                            BarcodeValue="{Binding Source={Reference hidenEntry}, Path=Text}">
                             <forms:ZXingBarcodeImageView.BarcodeOptions>
                                 <common:EncodingOptions Width="150" Height="150" PureBarcode="True"/>
                             </forms:ZXingBarcodeImageView.BarcodeOptions>
@@ -171,6 +173,7 @@
 
                 <StackLayout Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" HorizontalOptions="Center">
                     <controls:TappedGrid
+                        IsEnabled="{Binding CanFinishSession}"
                             TappedCommand="{Binding SaveSessionCommand}"
                                     Padding="0"
                                     Margin="4"

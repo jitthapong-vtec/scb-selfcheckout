@@ -167,13 +167,38 @@ namespace SelfCheckout.ViewModels
             return false;
         }
 
+        async Task ScbInquireAsync()
+        {
+            var counter = 0;
+            while (true)
+            {
+                try
+                {
+                    var result = await _paymentService.ScbInquiryAsync(_refNo, _saleEngineService.LoginData.UserInfo.MachineEnv.MachineNo);
+                    if (result != null)
+                    {
+                        await SetResult(result);
+                        break;
+                    }
+                }
+                catch { }
+
+                await Task.Delay(1000);
+                if (++counter == 2)
+                {
+                    await SetResult(null);
+                    break;
+                }
+            }
+        }
+
         async Task InquireAsync()
         {
             while (true)
             {
                 if (_ct.IsCancellationRequested)
                 {
-                    await SetResult(null);
+                    await ScbInquireAsync();
                     break;
                 }
 

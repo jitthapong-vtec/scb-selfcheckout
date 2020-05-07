@@ -184,7 +184,7 @@
     <value>รายการสั่งซื้อทั้งหมด</value>
   </data>
   <data name="PassportNo" xml:space="preserve">
-    <value>หนังสือเดินทาง</value>
+    <value>หมายเลขหนังสือเดินทาง</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>รหัสผ่าน</value>
@@ -335,5 +335,11 @@
   </data>
   <data name="PaymentTypeNotMatch" xml:space="preserve">
     <value>ประเภทการชำระเงินไม่ตรงกับที่เลือกไว้</value>
+  </data>
+  <data name="Opps" xml:space="preserve">
+    <value>ข้อความ</value>
+  </data>
+  <data name="DataNotfound" xml:space="preserve">
+    <value>ไม่พบข้อมูล</value>
   </data>
 </root>

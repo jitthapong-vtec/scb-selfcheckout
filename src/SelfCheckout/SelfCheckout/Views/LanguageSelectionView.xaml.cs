@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SelfCheckout.Resources;
+using SelfCheckout.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +17,11 @@ namespace SelfCheckout.Views
         public LanguageSelectionView()
         {
             InitializeComponent();
+
+            MessagingCenter.Subscribe<MainViewModel>(this, "LanguageChange", (sender) =>
+            {
+                lblLanguage.Text = AppResources.Language;
+            });
         }
     }
 }

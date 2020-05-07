@@ -36,9 +36,10 @@ namespace SelfCheckout.UWP.Services
 
             if (icp?.NetworkAdapter == null) return null;
             var hostname =
-                NetworkInformation.GetHostNames().Where(hn =>
-                            hn.IPInformation?.NetworkAdapter != null && hn.IPInformation.NetworkAdapter.NetworkAdapterId
-                            == icp.NetworkAdapter.NetworkAdapterId).FirstOrDefault();
+                NetworkInformation.GetHostNames().Where(hn => 
+                            hn.Type == Windows.Networking.HostNameType.Ipv4 &&
+                            hn.IPInformation?.NetworkAdapter != null && 
+                            hn.IPInformation.NetworkAdapter.NetworkAdapterId == icp.NetworkAdapter.NetworkAdapterId).FirstOrDefault();
             return hostname?.CanonicalName;
         }
     }

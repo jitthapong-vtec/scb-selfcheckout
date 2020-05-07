@@ -143,6 +143,11 @@ namespace SelfCheckout.ViewModels
                 }
                 catch { }
                 _allSessionHistories = await SelfCheckoutService.GetSessionHistory(FilterDate, sessionKey, FilterMachineNo);
+                if (!_allSessionHistories.Any())
+                {
+                    await NavigationService.ShowAlertAsync(AppResources.Opps, AppResources.DataNotfound, AppResources.Close);
+                    return;
+                }
                 SessionHistories = _allSessionHistories.ToObservableCollection();
             }
             catch (Exception ex)

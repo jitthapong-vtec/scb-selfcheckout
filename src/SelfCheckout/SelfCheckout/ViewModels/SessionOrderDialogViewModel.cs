@@ -48,7 +48,7 @@ namespace SelfCheckout.ViewModels
         {
             _tcs = parameters.GetValue<TaskCompletionSource<INavigationParameters>>("TaskResult");
 
-            var sessionKey = parameters.GetValue<long>("SessionKey");
+            var sessionKey = parameters.GetValue<string>("SessionKey");
             var shoppingCard = parameters.GetValue<string>("ShoppingCard");
             var sessionDate = parameters.GetValue<DateTime>("SessionDate");
 
@@ -77,8 +77,7 @@ namespace SelfCheckout.ViewModels
                         }
                     };
                 }*/
-                await LoadOrderListAsync(filter);
-                GroupingOrder();
+                await LoadOrderListAsync(filter, groupingOrderDetail: true);
             }
             catch { }
             finally

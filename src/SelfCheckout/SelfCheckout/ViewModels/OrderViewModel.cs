@@ -108,7 +108,7 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-                var isAlreadyEnd = await LoadSessionDetailAsync(SelfCheckoutService.BorrowSessionKey);
+                var isAlreadyEnd = await LoadSessionDetailAsync(SelfCheckoutService.BorrowSessionKey.ToString());
                 if (isAlreadyEnd)
                 {
                     Clear();
@@ -121,7 +121,7 @@ namespace SelfCheckout.ViewModels
                     CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
 
                     var currencyCode = "";// SaleEngineService.CurrencySelected.CurrCode;
-                    await LoadOrderListAsync(currencyCode: currencyCode);
+                    await LoadOrderListAsync(currencyCode: currencyCode, groupingOrderDetail: true);
                 }
 
                 RefreshTab();

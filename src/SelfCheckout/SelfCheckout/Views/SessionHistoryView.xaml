@@ -21,8 +21,10 @@
                 <StackLayout Grid.Row="0" Orientation="Horizontal" Padding="8,0,8,0" HeightRequest="56">
                     <Label VerticalOptions="Center" VerticalTextAlignment="Center" Text="{i18n:Translate History}" FontSize="Medium" FontAttributes="Bold" Margin="0,0,16,0"/>
                     <controls:CustomDatePicker VerticalOptions="Center" CustomDate="{Binding FilterDate}" CustomMaxDate="{Binding MaxDate}"/>
-                    <Entry WidthRequest="200" VerticalOptions="Center" Placeholder="{i18n:Translate SessionKey}" Text="{Binding FilterSessionKey}"/>
-                    <Entry WidthRequest="200" VerticalOptions="Center" Placeholder="{i18n:Translate MachineNo}" Text="{Binding FilterMachineNo}"/>
+                    <Entry WidthRequest="200" VerticalOptions="Center" Placeholder="{i18n:Translate SessionKey}" Text="{Binding FilterSessionKey}"
+                           ReturnCommand="{Binding FilterCommand}"/>
+                    <Entry WidthRequest="200" VerticalOptions="Center" Placeholder="{i18n:Translate MachineNo}" Text="{Binding FilterMachineNo}"
+                           ReturnCommand="{Binding FilterCommand}"/>
                     <controls:TappedGrid VerticalOptions="Center" TappedCommand="{Binding FilterCommand}"
                                     Padding="0"
                                     Style="{StaticResource TappedGridButtonStyle}">

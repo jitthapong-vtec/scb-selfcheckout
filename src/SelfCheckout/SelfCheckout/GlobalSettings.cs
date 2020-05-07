@@ -66,7 +66,7 @@ namespace SelfCheckout
 
         public string PimCoreUrl { get => "https://pim.kingpower.com/"; }
 
-        public bool TestMode { get => false; }
+        public bool TestMode { get => true; }
 
         public string MachineIp
         {
@@ -74,14 +74,14 @@ namespace SelfCheckout
             {
                 if (TestMode)
                 {
-                    var deviceCode = "8865edc3d6e1105a" /*"1a3342a692f0e8a2"*/ ;
+                    var deviceCode = /*"8865edc3d6e1105a"*/ "1a3342a692f0e8a2" ;
                     var ipAddress = "192.168.2.22";
                     return Device.RuntimePlatform == Device.Android ? deviceCode : ipAddress;
                 }
                 else
                 {
-                    var deviceCode = DependencyService.Get<IDeviceInformation>().GetDeviceCode(); //*/"8865edc3d6e1105a" /*"1a3342a692f0e8a2"*/ ;
-                    var ipAddress = DependencyService.Get<IDeviceInformation>().GetDeviceIp(); //*/"192.168.2.22";
+                    var deviceCode = DependencyService.Get<IDeviceInformation>().GetDeviceCode();
+                    var ipAddress = DependencyService.Get<IDeviceInformation>().GetDeviceIp();
                     return Device.RuntimePlatform == Device.Android ? deviceCode : ipAddress;
                 }
             }

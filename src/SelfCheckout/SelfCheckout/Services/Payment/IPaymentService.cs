@@ -11,5 +11,7 @@ namespace SelfCheckout.Services.Payment
         Task<string> GeneratePPQrCode(object payload);
 
         Task<PromptPayResult> InquiryAsync(string refField);
+
+        Task<PromptPayResult> ScbInquiryAsync(string ref1, string ref2, DateTime? transactionDate = null);
     }
 }
