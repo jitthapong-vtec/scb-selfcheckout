@@ -120,7 +120,7 @@ namespace SelfCheckout.ViewModels
                     await LoadCustomerSession();
                     CustomerData = await GetCustomerSessionAsync(SessionData.ShoppingCard);
 
-                    var currencyCode = "";// SaleEngineService.CurrencySelected.CurrCode;
+                    var currencyCode = SaleEngineService.CurrencySelected.CurrCode;
                     await LoadOrderListAsync(currencyCode: currencyCode, groupingOrderDetail: true);
                 }
 

@@ -132,22 +132,6 @@ namespace SelfCheckout.Services.SaleEngine
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             return result.Data;
-
-            //var apiResultData = new ApiResultData<List<OrderData>>();
-            //var assembly = Assembly.GetExecutingAssembly();
-            //var resourceName = "SelfCheckout.Resources.order_list.json";
-
-            //try
-            //{
-            //    using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            //    using (StreamReader reader = new StreamReader(stream))
-            //    {
-            //        string result = await reader.ReadToEndAsync();
-            //        apiResultData = JsonConvert.DeserializeObject<ApiResultData<List<OrderData>>>(result);
-            //    }
-            //}
-            //catch { }
-            //return apiResultData;
         }
 
         public async Task<Wallet> GetWalletTypeFromBarcodeAsync(object payload)

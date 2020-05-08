@@ -14,15 +14,15 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="8">
+            <Grid Grid.Row="0" BackgroundColor="{StaticResource Secondary}" Padding="0,8,0,8">
                 <Grid.Resources>
                     <Style TargetType="Label">
                         <Setter Property="TextColor" Value="{StaticResource Gray50}"/>
                     </Style>
                 </Grid.Resources>
-                <Label x:Name="lblOrderSummary" HorizontalOptions="Start" VerticalOptions="Center"/>
-                <controls:TappedGrid HorizontalOptions="End" TappedCommand="{Binding ShowSummaryCommand}">
-                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" FontSize="18" TextColor="{StaticResource Gray50}">
+                <Label x:Name="lblOrderSummary" HorizontalOptions="Start" Margin="8,0,0,0" VerticalOptions="Center"/>
+                <controls:TappedGrid HorizontalOptions="End" WidthRequest="48" Padding="8,0,8,0" TappedCommand="{Binding ShowSummaryCommand}">
+                    <Label Style="{StaticResource LabelIconStyle}" Text="&#xf078;" HorizontalOptions="End" FontSize="18" TextColor="{StaticResource Gray50}">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label" Binding="{Binding SummaryShowing}" Value="True">
                                 <Setter Property="Text" Value="&#xf078;"/>

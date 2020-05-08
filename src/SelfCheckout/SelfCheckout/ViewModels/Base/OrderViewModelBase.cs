@@ -258,9 +258,7 @@ namespace SelfCheckout.ViewModels.Base
                         };
                         result = await SaleEngineService.ActionListItemToOrderAsync(changeCurrencyPayload);
                     }
-                    catch (Exception ex)
-                    {
-                    }
+                    catch { }
                 }
                 try
                 {

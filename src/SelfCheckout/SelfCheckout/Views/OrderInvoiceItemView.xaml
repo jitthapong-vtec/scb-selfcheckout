@@ -59,7 +59,7 @@
                 <Label Grid.Row="1" Grid.Column="0" MaxLines="3" FontSize="Micro" HorizontalOptions="StartAndExpand">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{i18n:Translate PassportNo}" FontSize="{OnPlatform UWP=10,Android=Micro}"/>
+                            <Span Text="{i18n:Translate PassportNo}"/>
                             <Span Text=" "/>
                             <Span Text="{Binding PassportNo}" FontSize="{OnPlatform UWP=Micro, Android=Small}" FontAttributes="Bold"/>
                         </FormattedString>

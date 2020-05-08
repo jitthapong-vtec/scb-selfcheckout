@@ -658,7 +658,7 @@ namespace SelfCheckout.ViewModels
             }
             else if (CurrentView is OrderView)
             {
-                //await OrderViewModel.RefreshOrderAsync();
+                await OrderViewModel.RefreshOrderAsync();
             }
         }
 
