@@ -21,6 +21,7 @@ namespace SelfCheckout.ViewModels
 {
     public class CheckerMainViewModel : NavigatableViewModelBase
     {
+        readonly ISaleEngineService _saleEngineService;
         ContentView _currentView;
 
         ObservableCollection<TabItem> _tabs;
@@ -28,6 +29,7 @@ namespace SelfCheckout.ViewModels
         public CheckerMainViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
             ISaleEngineService saleEngineService, IRegisterService registerService) : base(navigationService)
         {
+            _saleEngineService = saleEngineService;
             PackingViewModel = new CheckerPackingViewModel(navigationService, selfCheckoutService, saleEngineService, registerService);
             DeviceStatusViewModel = new DeviceStatusViewModel(navigationService, selfCheckoutService, saleEngineService, registerService);
             SessionHistoryViewModel = new SessionHistoryViewModel(navigationService, selfCheckoutService, saleEngineService, registerService);
@@ -79,6 +81,20 @@ namespace SelfCheckout.ViewModels
 
             item.Selected = true;
             CurrentView = item.Page;
+        });
+
+        public ICommand LogoutCommand => new Command(async () =>
+        {
+            try
+            {
+                var result = await NavigationService.ConfirmAsync(AppResources.Logout, AppResources.ConfirmLogout, AppResources.Yes, AppResources.No);
+                if (result)
+                {
+                    await _saleEngineService.LogoutAsync();
+                    await GoBackToRootAsync();
+                }
+            }
+            catch { }
         });
 
         public override Task OnTabSelected(TabItem item)

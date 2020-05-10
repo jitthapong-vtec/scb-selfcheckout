@@ -140,7 +140,7 @@ namespace SelfCheckout.ViewModels
                 };
                 await SetActionToOrder(payload);
             }
-            catch (KPApiException ex)
+            catch (Exception ex)
             {
                 await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message);
                 await ReloadOrderDataAsync();
@@ -321,7 +321,7 @@ namespace SelfCheckout.ViewModels
                 {
                     await SetActionToOrder(payload);
                 }
-                catch (KPApiException ex)
+                catch (Exception ex)
                 {
                     await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message);
                 }

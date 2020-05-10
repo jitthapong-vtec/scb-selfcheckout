@@ -18,13 +18,18 @@
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Margin="8,4,8,0" Text="{Binding Title}" FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
                 <ScrollView Grid.Row="1">
-                    <Label Margin="8" Text="{Binding Message}" FontSize="Medium" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                    <StackLayout Padding="12">
+                        <Label Text="{Binding Message}" FontSize="Medium" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                    </StackLayout>
                 </ScrollView>
-                <controls:TappedGrid Grid.Row="2" HorizontalOptions="End" WidthRequest="100" Margin="8" 
-                                     effects:RoundCornersEffect.CornerRadius="3"
+                <controls:TappedGrid Grid.Row="2" HorizontalOptions="Center" WidthRequest="100" Margin="8" 
                                      TappedCommand="{Binding OkCommand}">
-                    <controls:GradientBackground/>
-                    <Label Text="{Binding OkButtonText}" TextColor="{StaticResource Gray50}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    <Frame Style="{StaticResource FrameButtonStyle}">
+                        <Grid>
+                            <controls:GradientBackground/>
+                            <Label Text="{Binding OkButtonText}" TextColor="{StaticResource Gray50}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                        </Grid>
+                    </Frame>
                 </controls:TappedGrid>
             </Grid>
         </Frame>

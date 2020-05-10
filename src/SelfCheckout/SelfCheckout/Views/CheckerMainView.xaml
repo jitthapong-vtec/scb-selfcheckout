@@ -42,8 +42,19 @@
                         </StackLayout>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="End">
                             <Label Text="{i18n:Translate Order}"/>
+                            <BoxView WidthRequest="1" BackgroundColor="White" VerticalOptions="Center" HeightRequest="18"/>
                             <Label Text="{i18n:Translate AllDevice}"/>
-                            <ffimageloading:CachedImage VerticalOptions="Center" HorizontalOptions="Center" Source="resource://SelfCheckout.Resources.Images.ic_user_share.png" HeightRequest="32"/>
+                            <ffimageloading:CachedImage VerticalOptions="Center" HorizontalOptions="Center" Source="resource://SelfCheckout.Resources.Images.ic_user_share.png" HeightRequest="24"/>
+                            <BoxView WidthRequest="1" BackgroundColor="White" VerticalOptions="Center" HeightRequest="18"/>
+                            <controls:TappedGrid TappedCommand="{Binding LogoutCommand}" ColumnSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{i18n:Translate Logout}" Grid.Column="0" Margin="0,0,-4,0"/>
+                                <ffimageloading:CachedImage Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" 
+                                                            Source="resource://SelfCheckout.Resources.Images.ic_logout.png" HeightRequest="20"/>
+                            </controls:TappedGrid>
                         </StackLayout>
                     </Grid>
                 </controls:ActionBarView>

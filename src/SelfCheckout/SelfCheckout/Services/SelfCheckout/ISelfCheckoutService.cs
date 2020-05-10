@@ -14,6 +14,8 @@ namespace SelfCheckout.Services.SelfCheckout
 
         IList<Language> Languages { get; }
 
+        TutorialImage[] TutorialImages { get; }
+        
         Language CurrentLanguage { get; set; }
 
         long BorrowSessionKey { get; }
@@ -43,5 +45,7 @@ namespace SelfCheckout.Services.SelfCheckout
         Task<bool> ValidateShoppingCardAsync(string machineIp, string shoppingCard);
 
         Task<ArticleImage> GetArticleImageAsync(string code);
+
+        Task<List<TutorialImage>> GetTutorialImageAsync(string langCode = "en");
     }
 }

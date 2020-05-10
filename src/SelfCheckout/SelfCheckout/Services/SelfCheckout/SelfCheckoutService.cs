@@ -31,6 +31,8 @@ namespace SelfCheckout.Services.SelfCheckout
 
         public IList<Language> Languages { get; private set; }
 
+        public TutorialImage[] TutorialImages { get; private set; }
+
         public Language CurrentLanguage { get; set; }
 
         public async Task LoadConfigAsync()
@@ -167,6 +169,19 @@ namespace SelfCheckout.Services.SelfCheckout
         {
             var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Master/ArticleImg?article_code={code}");
             var result = await GetAsync<ApiResultData<ArticleImage>>(uri.ToString());
+            return result.Data;
+        }
+
+        public async Task<List<TutorialImage>> GetTutorialImageAsync(string langCode = "en")
+        {
+            var uri = new UriBuilder($"{GlobalSettings.Instance.SelfCheckoutApi}api/Master/TutorialImg?lang_code={langCode}");
+            var result = await GetAsync<ApiResultData<List<TutorialImage>>>(uri.ToString());
+            if (TutorialImages == null)
+                TutorialImages = new TutorialImage[result.Data.Count];
+            for (var i = 0; i < result.Data.Count; i++)
+            {
+                TutorialImages[i] = result.Data[i];
+            }
             return result.Data;
         }
     }

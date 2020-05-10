@@ -17,8 +17,8 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Margin="8,4,8,0" Text="{Binding Title}" FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
             <ScrollView Grid.Row="1">
-                <StackLayout>
-                    <Label Margin="8" Text="{Binding Message}" FontSize="Medium" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                <StackLayout Padding="12">
+                    <Label Text="{Binding Message}" FontSize="Medium" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
                 </StackLayout>
             </ScrollView>
             <Grid Grid.Row="2" HeightRequest="40" HorizontalOptions="{OnPlatform UWP=End, Android=Fill}">
@@ -27,24 +27,28 @@
                     <ColumnDefinition Width="{OnPlatform UWP=Auto, Android=*}"/>
                 </Grid.ColumnDefinitions>
                 <controls:TappedGrid Grid.Column="0" TappedCommand="{Binding YesCommand}"
-                                     WidthRequest="{OnPlatform UWP=100}"
-                                     effects:RoundCornersEffect.CornerRadius="3">
-                    <controls:GradientBackground IsVisible="{Binding OkAsRedButton, Converter={StaticResource InverseBooleanConverter}}"/>
-                    <Label Text="{Binding OkButtonText}" TextColor="{StaticResource Gray50}" Margin="4,0,4,0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
-                    <controls:TappedGrid.Triggers>
-                        <DataTrigger TargetType="controls:TappedGrid" Binding="{Binding OkAsRedButton}" Value="True">
-                            <Setter Property="BackgroundColor" Value="{StaticResource Red}"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="controls:TappedGrid" Binding="{Binding OkAsRedButton}" Value="False">
-                            <Setter Property="BackgroundColor" Value="Transparent"/>
-                        </DataTrigger>
-                    </controls:TappedGrid.Triggers>
+                                     WidthRequest="{OnPlatform UWP=100}">
+                    <Frame Style="{StaticResource FrameButtonStyle}">
+                        <Grid>
+                            <controls:GradientBackground IsVisible="{Binding OkAsRedButton, Converter={StaticResource InverseBooleanConverter}}"/>
+                            <Label Text="{Binding OkButtonText}" TextColor="{StaticResource Gray50}" Margin="4,0,4,0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                        </Grid>
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame" Binding="{Binding OkAsRedButton}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Red}"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Frame" Binding="{Binding OkAsRedButton}" Value="False">
+                                <Setter Property="BackgroundColor" Value="Transparent"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                    </Frame>
                 </controls:TappedGrid>
-                <controls:TappedGrid Grid.Column="1" BackgroundColor="{StaticResource Gray200}" 
+                <controls:TappedGrid Grid.Column="1" 
                                      WidthRequest="{OnPlatform UWP=100}"
-                                     effects:RoundCornersEffect.CornerRadius="3"
                                      TappedCommand="{Binding NoCommand}">
-                    <Label Text="{Binding CancelButtonText}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    <Frame Style="{StaticResource FrameButtonStyle}" BackgroundColor="{StaticResource Gray200}">
+                        <Label Text="{Binding CancelButtonText}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    </Frame>
                 </controls:TappedGrid>
             </Grid>
         </Grid>

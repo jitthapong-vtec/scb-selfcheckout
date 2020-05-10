@@ -19,6 +19,7 @@
     <None Remove="Resources\Images\header_logo.png" />
     <None Remove="Resources\Images\header_logo.svg" />
     <None Remove="Resources\Images\header_logo_blue.png" />
+    <None Remove="Resources\Images\ic_logout.png" />
     <None Remove="Resources\Images\ic_user_share.png" />
     <None Remove="Resources\Images\landing_bg.png" />
     <None Remove="Resources\Images\promptpay_logo.png" />
@@ -53,6 +54,7 @@
     <EmbeddedResource Include="Resources\Images\entry_bg.png" />
     <EmbeddedResource Include="Resources\Images\header_logo.png" />
     <EmbeddedResource Include="Resources\Images\header_logo.svg" />
+    <EmbeddedResource Include="Resources\Images\ic_logout.png" />
     <EmbeddedResource Include="Resources\Images\ic_user_share.png" />
     <EmbeddedResource Include="Resources\Images\landing_bg.png" />
     <EmbeddedResource Include="Resources\Images\header_logo_blue.png" />

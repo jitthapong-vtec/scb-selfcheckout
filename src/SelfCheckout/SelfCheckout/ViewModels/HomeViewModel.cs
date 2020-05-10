@@ -2,7 +2,6 @@
 using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
-using SelfCheckout.Services.PimCore;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
@@ -17,8 +16,7 @@ namespace SelfCheckout.ViewModels
     {
         public Action ShowSystemView;
 
-        public HomeViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
-            IPimCoreService pimCoreService) : base(navigationService, selfCheckoutService, pimCoreService)
+        public HomeViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService) : base(navigationService, selfCheckoutService)
         {
         }
 
@@ -37,7 +35,7 @@ namespace SelfCheckout.ViewModels
             try
             {
                 await LoadImageAsset();
-                Assets = PimCoreService.ImageAssets?.ToObservableCollection();
+                Assets = SelfCheckoutService.TutorialImages?.ToObservableCollection();
             }
             catch { }
         }

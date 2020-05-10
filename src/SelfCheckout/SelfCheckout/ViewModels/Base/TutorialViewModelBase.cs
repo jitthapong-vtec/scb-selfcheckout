@@ -3,7 +3,6 @@ using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
-using SelfCheckout.Services.PimCore;
 using SelfCheckout.Services.SelfCheckout;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,28 +12,19 @@ namespace SelfCheckout.ViewModels.Base
 {
     public abstract class TutorialViewModelBase : NavigatableViewModelBase
     {
-        ISelfCheckoutService _selfCheckoutService;
+        ObservableCollection<TutorialImage> _assets;
 
-        ObservableCollection<PimCoreImageAsset> _assets;
-
-        public TutorialViewModelBase(INavigationService navigationService, ISelfCheckoutService selfCheckoutService, 
-            IPimCoreService pimCoreService) : base(navigationService)
+        public TutorialViewModelBase(INavigationService navigationService, ISelfCheckoutService selfCheckoutService) : base(navigationService)
         {
-            _selfCheckoutService = selfCheckoutService;
-            PimCoreService = pimCoreService;
+            SelfCheckoutService = selfCheckoutService;
         }
 
-        public ObservableCollection<PimCoreImageAsset> Assets
+        protected ISelfCheckoutService SelfCheckoutService { get; }
+
+        public ObservableCollection<TutorialImage> Assets
         {
             get => _assets;
             set => SetProperty(ref _assets, value);
-        }
-
-        protected IPimCoreService PimCoreService { get; private set; }
-
-        public PimCoreImageAsset GetImageAssetById(int id)
-        {
-            return PimCoreService.ImageAssets?.Where(a => a.AssetId == id).FirstOrDefault();
         }
 
         protected async Task LoadImageAsset()
@@ -42,8 +32,8 @@ namespace SelfCheckout.ViewModels.Base
             try
             {
                 IsBusy = true;
-                var lang = _selfCheckoutService.CurrentLanguage.LangCode;
-                await PimCoreService.GetMediaByLocationAsync(lang.ToLower());
+                var lang = SelfCheckoutService.CurrentLanguage.LangCode;
+                await SelfCheckoutService.GetTutorialImageAsync(lang.ToLower());
             }
             catch { }
             finally

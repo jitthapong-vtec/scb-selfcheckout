@@ -3,7 +3,6 @@ using Prism.Services.Dialogs;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
-using SelfCheckout.Services.PimCore;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System.Linq;
@@ -18,8 +17,7 @@ namespace SelfCheckout.ViewModels
         bool _tutorialViewVisible;
         string _labelHelp;
 
-        public TutorialViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService,
-            IPimCoreService pimCoreService) : base(navigationService, selfCheckoutService, pimCoreService)
+        public TutorialViewModel(INavigationService navigationService, ISelfCheckoutService selfCheckoutService) : base(navigationService, selfCheckoutService)
         {
             RefreshLanguage();
         }
@@ -54,7 +52,7 @@ namespace SelfCheckout.ViewModels
             try
             {
                 await LoadImageAsset();
-                Assets = PimCoreService.ImageAssets?.ToObservableCollection();
+                Assets = SelfCheckoutService.TutorialImages?.ToObservableCollection();
             }
             catch { }
         }

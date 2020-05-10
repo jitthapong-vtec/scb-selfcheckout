@@ -4,7 +4,6 @@ using SelfCheckout.Exceptions;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
-using SelfCheckout.Services.PimCore;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
@@ -60,12 +59,12 @@ namespace SelfCheckout.ViewModels
 
         public MainViewModel(INavigationService navigationService,
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService,
-            IRegisterService registerService, IPimCoreService pimCoreService) : base(navigationService)
+            IRegisterService registerService) : base(navigationService)
         {
             _saleEngineService = saleEngineService;
             _selfCheckoutService = selfCheckoutService;
 
-            HomeViewModel = new HomeViewModel(navigationService, selfCheckoutService, pimCoreService);
+            HomeViewModel = new HomeViewModel(navigationService, selfCheckoutService);
             HomeViewModel.ShowSystemView = () => SystemViewVisible = true;
 
             DeviceViewModel = new DeviceViewModel(saleEngineService, registerService);
@@ -79,7 +78,7 @@ namespace SelfCheckout.ViewModels
 
             ProfileViewModel = new ProfileViewModel(selfCheckoutService);
 
-            TutorialViewModel = new TutorialViewModel(navigationService, selfCheckoutService, pimCoreService);
+            TutorialViewModel = new TutorialViewModel(navigationService, selfCheckoutService);
 
             CouponInputViewModel = new CouponInputViewModel(navigationService);
             CouponInputViewModel.SetCouponAsync = AddCouponAsync;

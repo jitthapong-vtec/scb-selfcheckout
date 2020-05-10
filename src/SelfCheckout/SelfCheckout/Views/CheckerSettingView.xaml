@@ -25,7 +25,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <controls:ActionBarView Grid.Row="0">
+                <controls:ActionBarView Grid.Row="0" HeaderLogoVisible="False">
                     <Grid Padding="48,8,16,8">
                         <Grid.Resources>
                             <Style TargetType="Label">

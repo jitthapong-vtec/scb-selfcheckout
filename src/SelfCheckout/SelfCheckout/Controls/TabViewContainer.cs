@@ -17,9 +17,13 @@ namespace SelfCheckout.Controls
 
         private static void OnContentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var content = bindable as TabViewContainer;
-            content.Children.Clear();
-            content.Children.Add((View)newValue);
+            try
+            {
+                var content = bindable as TabViewContainer;
+                content.Children.Clear();
+                content.Children.Add((View)newValue);
+            }
+            catch { }
         }
     }
 }

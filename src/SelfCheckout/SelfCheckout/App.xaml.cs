@@ -3,7 +3,6 @@ using Prism;
 using Prism.Ioc;
 using Prism.Plugin.Popups;
 using SelfCheckout.Services.Payment;
-using SelfCheckout.Services.PimCore;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
@@ -70,7 +69,6 @@ namespace SelfCheckout
             containerRegistry.RegisterSingleton<ISaleEngineService, SaleEngineService>();
             containerRegistry.RegisterSingleton<ISelfCheckoutService, SelfCheckoutService>();
             containerRegistry.RegisterSingleton<IRegisterService, RegisterService>();
-            containerRegistry.RegisterSingleton<IPimCoreService, PimCoreService>();
             containerRegistry.RegisterSingleton<IPaymentService, PaymentService>();
             containerRegistry.RegisterForNavigation<TestBase64Image, TestBase64ImageViewModel>();
         }
