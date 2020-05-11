@@ -1256,6 +1256,10 @@ namespace SelfCheckout.ViewModels
                     TabSelectedCommand.Execute(orderTab);
                 }
             }
+            else
+            {
+                ResetPaymentState();
+            }
         }
 
         private async Task LoginAsync()
