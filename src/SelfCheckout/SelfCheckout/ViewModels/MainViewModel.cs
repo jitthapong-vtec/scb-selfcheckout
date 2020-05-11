@@ -71,6 +71,7 @@ namespace SelfCheckout.ViewModels
 
             ShoppingCartViewModel = new ShoppingCartViewModel(navigationService, selfCheckoutService, saleEngineService, registerService);
             ShoppingCartViewModel.ReloadOrderDataAsync = LoadOrderAsync;
+            ShoppingCartViewModel.ChangeCurrencyAsync = ChangeCurrency;
             ShoppingCartViewModel.RefreshSummary = RefreshSummary;
             ShoppingCartViewModel.ShoppingCardChanging = (isChanging) => _isChangingShoppingCard = isChanging;
 
@@ -1134,8 +1135,6 @@ namespace SelfCheckout.ViewModels
             PaymentInputShowing = false;
             PaymentBarcode = "";
             CouponCode = "";
-
-            SetDefaultCurrency();
         }
 
         async Task ConfirmPaymentAsync(object paymentPayload, bool isWallet)

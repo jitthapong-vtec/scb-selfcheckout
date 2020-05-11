@@ -30,6 +30,8 @@ namespace SelfCheckout.ViewModels
         object _lock = new object();
 
         public Func<Task> ReloadOrderDataAsync;
+        public Func<Task> ChangeCurrencyAsync;
+
         public Action RefreshSummary;
         public Action<bool> ShoppingCardChanging;
 
@@ -265,7 +267,15 @@ namespace SelfCheckout.ViewModels
         {
             if (IsFirstSelect)
             {
-                await ReloadOrderDataAsync();
+                try
+                {
+                    if (SaleEngineService.OrderData?.OrderDetails.Any() == true)
+                    {
+                        await ChangeCurrencyAsync?.Invoke();
+                    }
+                }
+                catch { }
+                await ReloadOrderDataAsync?.Invoke();
             }
         }
 
