@@ -1117,6 +1117,7 @@ namespace SelfCheckout.ViewModels
             catch (Exception ex)
             {
                 await NavigationService.ShowAlertAsync(AppResources.Payment, ex.Message, AppResources.Close);
+                IsPaymentProcessing = false;
             }
             finally
             {
@@ -1258,7 +1259,7 @@ namespace SelfCheckout.ViewModels
             }
             else
             {
-                ResetPaymentState();
+                IsPaymentProcessing = false;
             }
         }
 
