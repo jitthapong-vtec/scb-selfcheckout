@@ -46,12 +46,22 @@ namespace SelfCheckout.ViewModels
         });
 
         public ICommand ClearScreenCommand => new DelegateCommand(() =>
-         {
-             SessionKey = "";
-             OrderInvoices?.Clear();
-             OrderDetails?.Clear();
-             SessionData = new SessionData();
-             CustomerData = new CustomerData();
-         });
+        {
+            ClearScreen();
+        });
+
+        private void ClearScreen()
+        {
+            SessionKey = "";
+            OrderInvoices?.Clear();
+            OrderDetails?.Clear();
+            SessionData = new SessionData();
+            CustomerData = new CustomerData();
+        }
+
+        protected override void SaveSuccessCallback()
+        {
+            ClearScreen();
+        }
     }
 }

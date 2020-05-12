@@ -8,6 +8,7 @@ using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -61,22 +62,23 @@ namespace SelfCheckout.ViewModels
                 CustomerData = await GetCustomerSessionAsync(shoppingCard);
 
                 object filter = null;
-                /*
+                
                 if (sessionDate != null)
                 {
+                    var fromDate = new DateTime(sessionDate.Year, sessionDate.Month, sessionDate.Day, 0, 0, 0);
                     filter = new object[]
                     {
                         new
                         {
                             sign = "string",
-                            element = "order_data",
+                            element = "order_date",
                             option = "string",
                             type = "string",
-                            low = sessionDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
-                            height = sessionDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                            low = fromDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                            high = sessionDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
                         }
                     };
-                }*/
+                }
                 await LoadOrderListAsync(filter, groupingOrderDetail: true);
             }
             catch { }

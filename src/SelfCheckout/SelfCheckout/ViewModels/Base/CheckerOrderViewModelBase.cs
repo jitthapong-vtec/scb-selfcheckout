@@ -50,8 +50,9 @@ namespace SelfCheckout.ViewModels.Base
             try
             {
                 IsBusy = true;
-                await SaveSessionAsync(SessionKey);
+                await SaveSessionAsync(SessionData.SessionKey);
                 await LoadDataAsync();
+                SaveSuccessCallback();
             }
             catch (Exception ex)
             {
@@ -63,6 +64,10 @@ namespace SelfCheckout.ViewModels.Base
             }
         });
 
+        protected virtual void SaveSuccessCallback()
+        {
+        }
+
         protected async Task<bool> LoadDataAsync()
         {
             try
@@ -72,7 +77,7 @@ namespace SelfCheckout.ViewModels.Base
                 if (isAlreadyEnd)
                 {
                     Clear();
-                    await NavigationService.ShowAlertAsync(AppResources.Alert, AppResources.SessionAlreadyFinish, AppResources.Close);
+                    await NavigationService.ShowAlertAsync(AppResources.Opps, AppResources.SessionAlreadyFinish, AppResources.Close);
                     return false;
                 }
 

@@ -125,11 +125,11 @@ namespace SelfCheckout.ViewModels.Base
             return false;
         }
 
-        protected async Task SaveSessionAsync(string sessionKey)
+        protected async Task SaveSessionAsync(long sessionKey)
         {
             var appSetting = SelfCheckoutService.AppConfig;
             var machineNo = SaleEngineService.LoginData.UserInfo.MachineEnv.MachineNo;
-            await SelfCheckoutService.EndSessionAsync(Convert.ToInt64(sessionKey), appSetting.UserName, machineNo);
+            await SelfCheckoutService.EndSessionAsync(sessionKey, appSetting.UserName, machineNo);
 
             var invoiceImgUrls = new List<string>();
             foreach (var orderInvoice in OrderInvoices)

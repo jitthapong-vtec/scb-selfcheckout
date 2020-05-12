@@ -160,7 +160,7 @@ namespace SelfCheckout.ViewModels
 
         public ICommand ScanCommand => new Command<object>(async (data) =>
         {
-            if (IsBeingPaymentProcess)
+            if (PaymentInputShowing && IsBeingPaymentProcess)
             {
                 PaymentBarcode = data?.ToString();
                 if (!string.IsNullOrEmpty(PaymentBarcode))
@@ -331,7 +331,7 @@ namespace SelfCheckout.ViewModels
                         if (_isPromptPayProcessing)
                             return;
                         else
-                            IsPaymentProcessing = true;
+                            _isPromptPayProcessing = true;
                     }
 
                     var result = await NavigationService.ShowDialogAsync<INavigationParameters>("PromptPayQrDialog", null);
@@ -346,6 +346,7 @@ namespace SelfCheckout.ViewModels
                     {
                         await QRPaymentAsync(promptPayResult);
                     }
+                    _isPromptPayProcessing = false;
                 }
                 else
                 {
@@ -801,11 +802,11 @@ namespace SelfCheckout.ViewModels
                         new
                         {
                             sign = "string",
-                            element = "order_data",
+                            element = "order_date",
                             option = "string",
                             type = "string",
                             low = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
-                            height = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                            high = DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
                         }
                     },
                     sorting = new object[]
@@ -828,13 +829,18 @@ namespace SelfCheckout.ViewModels
             {
                 if (ex is KPApiException)
                 {
-                    if ((ex as KPApiException).ErrorCode == "SESSION_EXPIRE")
+                    if ((ex as KPApiException).ErrorCode.Equals("SESSION_EXPIRE", StringComparison.OrdinalIgnoreCase))
                     {
                         await NavigationService.ShowAlertAsync(AppResources.Opps, AppResources.CannotConnectToServer, AppResources.Close);
                         await LoginAsync();
                         await LoadOrderAsync();
                     }
-                    else if ((ex as KPApiException).ErrorCode == "SH03")
+                    else if((ex as KPApiException).ErrorCode.Equals("EX1", StringComparison.OrdinalIgnoreCase))
+                    {
+                        await LoginAsync();
+                        await LoadOrderAsync();
+                    }
+                    else if ((ex as KPApiException).ErrorCode.Equals("SH03", StringComparison.OrdinalIgnoreCase))
                     {
                         await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
                         await GoBackAsync();
@@ -1043,7 +1049,6 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
-
                 var paymentPayload = new
                 {
                     OrderGuid = _saleEngineService.OrderData.Guid,
@@ -1140,6 +1145,7 @@ namespace SelfCheckout.ViewModels
         async Task ConfirmPaymentAsync(object paymentPayload, bool isWallet)
         {
             await _saleEngineService.AddPaymentToOrderAsync(paymentPayload);
+            IsBusy = false;
 
             var paymentSuccess = false;
             if (isWallet)

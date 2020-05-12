@@ -30,7 +30,10 @@ namespace SelfCheckout.Services.Base
         {
             _converterService = converterService;
 
-            _httpClient = new HttpClient();
+            _httpClient = new HttpClient(new HttpClientHandler()
+            {
+                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
+            });
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _httpClient.Timeout = TimeSpan.FromSeconds(60);
         }

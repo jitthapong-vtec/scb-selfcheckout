@@ -24,7 +24,11 @@ namespace SelfCheckout.Views
 
             MessagingCenter.Subscribe<ViewModelBase>(this, "RequestHWScanner", (sender) =>
             {
-                FireScanEvent();
+                try
+                {
+                    FireScanEvent();
+                }
+                catch { }
             });
         }
 

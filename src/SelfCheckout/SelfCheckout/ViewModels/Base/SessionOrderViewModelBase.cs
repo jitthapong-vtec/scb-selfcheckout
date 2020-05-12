@@ -46,7 +46,7 @@ namespace SelfCheckout.ViewModels.Base
                     try
                     {
                         IsBusy = true;
-                        await SaveSessionAsync(sess.SessionKey.ToString());
+                        await SaveSessionAsync(sess.SessionKey);
                         await SessionCloseCallback();
                     }
                     catch (Exception ex)
