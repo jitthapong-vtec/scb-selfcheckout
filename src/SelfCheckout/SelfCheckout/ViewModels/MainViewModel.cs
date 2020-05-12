@@ -1132,9 +1132,9 @@ namespace SelfCheckout.ViewModels
             }
         }
 
-        private void ResetPaymentState()
+        private void ResetPaymentState(bool summaryShowing = false)
         {
-            SummaryShowing = false;
+            SummaryShowing = summaryShowing;
             IsBeingPaymentProcess = false;
             IsPaymentProcessing = false;
             PaymentInputShowing = false;
@@ -1264,7 +1264,7 @@ namespace SelfCheckout.ViewModels
             }
             else
             {
-                IsPaymentProcessing = false;
+                ResetPaymentState(true);
             }
         }
 
