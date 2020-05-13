@@ -835,7 +835,7 @@ namespace SelfCheckout.ViewModels
                         await LoginAsync();
                         await LoadOrderAsync();
                     }
-                    else if((ex as KPApiException).ErrorCode.Equals("EX1", StringComparison.OrdinalIgnoreCase))
+                    else if ((ex as KPApiException).ErrorCode.Equals("EX1", StringComparison.OrdinalIgnoreCase))
                     {
                         await LoginAsync();
                         await LoadOrderAsync();
@@ -1174,12 +1174,20 @@ namespace SelfCheckout.ViewModels
                 });
 
                 var tryCounterInCaseFail = 0;
+                var tryCounterInCaseTimeout = 0;
                 while (true)
                 {
                     if (ct.IsCancellationRequested)
-                        break;
+                    {
+                        if (tryCounterInCaseTimeout++ == 2)
+                            break;
+                    }
 
-                    await Task.Delay(3000);
+                    if (!ct.IsCancellationRequested)
+                        await Task.Delay(3000);
+                    else
+                        await Task.Delay(1000);
+
                     var actionPayload = new
                     {
                         OrderGuid = _saleEngineService.OrderData.Guid,
