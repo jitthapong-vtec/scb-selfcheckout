@@ -185,7 +185,7 @@
   </data>
   <data name="DeviceInfo" xml:space="preserve">
     <value>Device Info</value>
-    <comment>No translate</comment>
+    
   </data>
   <data name="DeviceStatus" xml:space="preserve">
     <value>Device status</value>
@@ -210,7 +210,7 @@
   </data>
   <data name="General" xml:space="preserve">
     <value>General</value>
-    <comment>No translate</comment>
+    
   </data>
   <data name="History" xml:space="preserve">
     <value>History</value>

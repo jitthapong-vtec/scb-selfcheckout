@@ -330,17 +330,8 @@
   <data name="ScanLaserOnQRCode" xml:space="preserve">
     <value>กรุณาสแกนเลเซอร์ที่คิวอาร์โคด</value>
   </data>
-  <data name="PleaseRegister" xml:space="preserve">
-    <value>กรุณาลงทะเบียนก่อน</value>
-  </data>
-  <data name="PaymentTypeNotMatch" xml:space="preserve">
-    <value>ประเภทการชำระเงินไม่ตรงกับที่เลือกไว้</value>
-  </data>
   <data name="Opps" xml:space="preserve">
     <value>ข้อความ</value>
-  </data>
-  <data name="DataNotfound" xml:space="preserve">
-    <value>ไม่พบข้อมูล</value>
   </data>
   <data name="Logout" xml:space="preserve">
     <value>ออกจากระบบ</value>
