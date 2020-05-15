@@ -330,9 +330,6 @@
   <data name="ScanLaserOnQRCode" xml:space="preserve">
     <value>กรุณาสแกนเลเซอร์ที่คิวอาร์โคด</value>
   </data>
-  <data name="Opps" xml:space="preserve">
-    <value>ข้อความ</value>
-  </data>
   <data name="Logout" xml:space="preserve">
     <value>ออกจากระบบ</value>
   </data>
