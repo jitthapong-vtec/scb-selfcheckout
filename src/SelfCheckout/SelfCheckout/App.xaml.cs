@@ -36,10 +36,7 @@ namespace SelfCheckout
 
             GlobalSettings.Instance.InitLanguage();
 
-            if (Device.RuntimePlatform == Device.UWP)
-                await NavigationService.NavigateAsync("NavigationPage/LandingView");
-            else
-                await NavigationService.NavigateAsync("myapp://NavigationPage/LandingView");
+            await NavigationService.NavigateAsync("NavigationPage/LandingView");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

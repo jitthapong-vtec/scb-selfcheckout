@@ -1,6 +1,7 @@
 ﻿using SelfCheckout.Exceptions;
 using SelfCheckout.Models;
 using SelfCheckout.Services.Base;
+using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.Serializer;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,11 @@ namespace SelfCheckout.Services.Payment
 {
     public class PaymentService : HttpClientBase, IPaymentService
     {
-        public PaymentService(ISerializeService converterService) : base(converterService)
+        ISaleEngineService _saleEngineService;
+
+        public PaymentService(ISerializeService converterService, ISaleEngineService saleEngineService) : base(converterService)
         {
+            _saleEngineService = saleEngineService;
             SetRequestHeaderWithoutValidation("Authorization", GlobalSettings.PromptPayApiKey);
         }
 
@@ -26,6 +30,18 @@ namespace SelfCheckout.Services.Payment
                 throw new NotiApiException(result.Status.Description);
             }
             return result.Data.QrImage;
+        }
+
+        public string GetPaymentRefNo()
+        {
+            var orderData = _saleEngineService.OrderData;
+            var customerName = orderData.CustomerDetail?.CustomerName?.Replace(" ", "");
+            var custLen = customerName.Length;
+            if (custLen > 14)
+                custLen = 14;
+            customerName = customerName.Substring(0, custLen);
+            var orderNo = string.Format("{0:000000}", (int)orderData.HeaderAttributes.Where(attr => attr.Code == "order_no").FirstOrDefault().ValueOfDecimal);
+            return $"{customerName}{orderNo}";
         }
 
         public async Task<PromptPayResult> InquiryAsync(string refField)

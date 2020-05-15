@@ -109,7 +109,6 @@
                     </controls:TappedGrid>
                 </Grid>
             </Grid>
-            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
         </Grid>
     </ContentView.Content>
 </ContentView>

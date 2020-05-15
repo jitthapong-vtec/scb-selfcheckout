@@ -149,7 +149,6 @@
                 </CollectionView>
             </Grid>
             <views:OrderSummaryView VerticalOptions="End"/>
-            <views:ActivityIndicatorView IsVisible="{Binding IsBusy}"/>
             <views:CustomerSelectionView IsVisible="{Binding FilterCustomerShowing}"/>
         </Grid>
     </ContentView.Content>

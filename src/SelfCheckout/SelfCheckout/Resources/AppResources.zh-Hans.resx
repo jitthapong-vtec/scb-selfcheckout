@@ -315,4 +315,16 @@
   <data name="No" xml:space="preserve">
     <value>沒有</value>
   </data>
+  <data name="PleaseRegister" xml:space="preserve">
+    <value>請註冊</value>
+  </data>
+  <data name="PleaseScanCoupon" xml:space="preserve">
+    <value>請掃描優惠券</value>
+  </data>
+  <data name="PleaseScanPayment" xml:space="preserve">
+    <value>請掃描付款</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>登出</value>
+  </data>
 </root>

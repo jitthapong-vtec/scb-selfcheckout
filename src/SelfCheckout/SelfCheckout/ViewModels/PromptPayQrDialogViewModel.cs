@@ -47,7 +47,7 @@ namespace SelfCheckout.ViewModels
             _tokenSource = new CancellationTokenSource();
             _ct = _tokenSource.Token;
 
-            _refNo = GetRefNo();
+            _refNo = _paymentService.GetPaymentRefNo();
         }
 
         public ICommand CancelCommand => new DelegateCommand(async () =>
@@ -223,18 +223,6 @@ namespace SelfCheckout.ViewModels
                     { "PromptPayResult", result}
                 };
             await GoBackAsync(parameter);
-        }
-
-        private string GetRefNo()
-        {
-            var orderData = _saleEngineService.OrderData;
-            var customerName = orderData.CustomerDetail?.CustomerName?.Replace(" ", "");
-            var custLen = customerName.Length;
-            if (custLen > 14)
-                custLen = 14;
-            customerName = customerName.Substring(0, custLen);
-            var orderNo = string.Format("{0:000000}", (int)orderData.HeaderAttributes.Where(attr => attr.Code == "order_no").FirstOrDefault().ValueOfDecimal);
-            return $"{customerName}{orderNo}";
         }
     }
 }

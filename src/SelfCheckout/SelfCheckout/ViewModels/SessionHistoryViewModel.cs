@@ -88,6 +88,12 @@ namespace SelfCheckout.ViewModels
             set => SetProperty(ref _filterMachineNo, value);
         }
 
+        public override Task OnTabSelected(TabItem item)
+        {
+            FilterDate = null;
+            return base.OnTabSelected(item);
+        }
+
         public ICommand ShowOrderDetailCommand => new DelegateCommand<DeviceStatus>(async (sess) =>
         {
             await ShowSessionOrder(sess);

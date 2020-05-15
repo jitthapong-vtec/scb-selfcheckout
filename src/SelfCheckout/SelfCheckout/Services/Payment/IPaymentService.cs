@@ -13,5 +13,7 @@ namespace SelfCheckout.Services.Payment
         Task<PromptPayResult> InquiryAsync(string refField);
 
         Task<PromptPayResult> ScbInquiryAsync(string ref1, string ref2, DateTime? transactionDate = null);
+
+        string GetPaymentRefNo();
     }
 }

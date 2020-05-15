@@ -4,6 +4,7 @@ using SelfCheckout.Exceptions;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services.Payment;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
@@ -26,6 +27,7 @@ namespace SelfCheckout.ViewModels
 
         ISaleEngineService _saleEngineService;
         ISelfCheckoutService _selfCheckoutService;
+        IPaymentService _paymentService;
 
         ObservableCollection<TabItem> _tabs;
         ObservableCollection<Currency> _currencies;
@@ -59,10 +61,11 @@ namespace SelfCheckout.ViewModels
 
         public MainViewModel(INavigationService navigationService,
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService,
-            IRegisterService registerService) : base(navigationService)
+            IRegisterService registerService, IPaymentService paymentService) : base(navigationService)
         {
             _saleEngineService = saleEngineService;
             _selfCheckoutService = selfCheckoutService;
+            _paymentService = paymentService;
 
             HomeViewModel = new HomeViewModel(navigationService, selfCheckoutService);
             HomeViewModel.ShowSystemView = () => SystemViewVisible = true;
@@ -76,6 +79,7 @@ namespace SelfCheckout.ViewModels
             ShoppingCartViewModel.ShoppingCardChanging = (isChanging) => _isChangingShoppingCard = isChanging;
 
             OrderViewModel = new OrderViewModel(navigationService, selfCheckoutService, saleEngineService, registerService);
+            OrderViewModel.ShowOrHideLoading = (isBusy) => IsBusy = isBusy;
 
             ProfileViewModel = new ProfileViewModel(selfCheckoutService);
 
@@ -334,8 +338,24 @@ namespace SelfCheckout.ViewModels
                             _isPromptPayProcessing = true;
                     }
 
-                    var result = await NavigationService.ShowDialogAsync<INavigationParameters>("PromptPayQrDialog", null);
-                    var promptPayResult = result.GetValue<PromptPayResult>("PromptPayResult");
+                    // try inquiry from noti first
+                    PromptPayResult promptPayResult = null;
+                    try
+                    {
+                        IsBusy = true;
+                        var refNo = _paymentService.GetPaymentRefNo();
+                        await _paymentService.InquiryAsync(refNo);
+                    }
+                    catch { }
+                    finally
+                    {
+                        IsBusy = false;
+                    }
+                    if (promptPayResult == null)
+                    {
+                        var result = await NavigationService.ShowDialogAsync<INavigationParameters>("PromptPayQrDialog", null);
+                        promptPayResult = result.GetValue<PromptPayResult>("PromptPayResult");
+                    }
                     if (promptPayResult == null)
                     {
                         PaymentInputShowing = false;
@@ -1123,7 +1143,7 @@ namespace SelfCheckout.ViewModels
             catch (Exception ex)
             {
                 await NavigationService.ShowAlertAsync(AppResources.Payment, ex.Message, AppResources.Close);
-                IsPaymentProcessing = false;
+                ResetPaymentState(false);
             }
             finally
             {
@@ -1132,14 +1152,17 @@ namespace SelfCheckout.ViewModels
             }
         }
 
-        private void ResetPaymentState(bool summaryShowing = false)
+        private void ResetPaymentState(bool isPaymentSuccess)
         {
-            SummaryShowing = summaryShowing;
+            if (isPaymentSuccess)
+            {
+                SummaryShowing = false;
+                CouponCode = "";
+            }
             IsBeingPaymentProcess = false;
             IsPaymentProcessing = false;
             PaymentInputShowing = false;
             PaymentBarcode = "";
-            CouponCode = "";
         }
 
         async Task ConfirmPaymentAsync(object paymentPayload, bool isWallet)
@@ -1236,7 +1259,7 @@ namespace SelfCheckout.ViewModels
                 var orderNo = Convert.ToInt32(headerAttr.ValueOfDecimal);
                 var result = await _selfCheckoutService.UpdateSessionAsync(_selfCheckoutService.BorrowSessionKey, orderNo, _selfCheckoutService.CurrentShoppingCard);
 
-                ResetPaymentState();
+                ResetPaymentState(paymentSuccess);
                 await LoginAsync();
 
                 var isContinueShopping = await NavigationService.ConfirmAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.ContinueShopping, AppResources.MyOrder);
@@ -1272,7 +1295,7 @@ namespace SelfCheckout.ViewModels
             }
             else
             {
-                ResetPaymentState(true);
+                ResetPaymentState(paymentSuccess);
             }
         }
 

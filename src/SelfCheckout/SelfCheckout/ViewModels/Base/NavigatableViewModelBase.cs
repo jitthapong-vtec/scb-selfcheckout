@@ -35,7 +35,7 @@ namespace SelfCheckout.ViewModels.Base
 
         protected async Task GoBackToRootAsync()
         {
-            await NavigationService.NavigateAsync("myapp://NavigationPage/LandingView");
+            await NavigationService.NavigateAsync("/NavigationPage/LandingView");
         }
 
         public virtual void OnNavigatedFrom(INavigationParameters parameters)

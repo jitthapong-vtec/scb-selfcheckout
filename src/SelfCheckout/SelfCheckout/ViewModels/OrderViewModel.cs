@@ -22,6 +22,8 @@ namespace SelfCheckout.ViewModels
 {
     public class OrderViewModel : OrderViewModelBase
     {
+        public Action<bool> ShowOrHideLoading;
+
         ObservableCollection<SimpleSelectedItem> _tabs;
 
         CustomerOrder _selectedCustomer;
@@ -71,6 +73,8 @@ namespace SelfCheckout.ViewModels
             LabelNationality = AppResources.Nationality;
             LabelType = AppResources.Type;
             LabelFilter = AppResources.Filter;
+            if (!SelectedCustomer.SessionDetails.Any())
+                SelectedCustomer.CustomerName = AppResources.All;
             RefreshTab();
         }
 
@@ -108,7 +112,7 @@ namespace SelfCheckout.ViewModels
         {
             try
             {
-                IsBusy = true;
+                ShowOrHideLoading?.Invoke(true);
                 var isAlreadyEnd = await LoadSessionDetailAsync(SelfCheckoutService.BorrowSessionKey.ToString());
                 if (isAlreadyEnd)
                 {
@@ -145,7 +149,7 @@ namespace SelfCheckout.ViewModels
             }
             finally
             {
-                IsBusy = false;
+                ShowOrHideLoading?.Invoke(false);
             }
         }
 
