@@ -316,12 +316,15 @@
     <value>沒有</value>
   </data>
   <data name="PleaseScanCoupon" xml:space="preserve">
-    <value>請掃描優惠券</value>
+    <value>请扫描优惠券</value>
   </data>
   <data name="PleaseScanPayment" xml:space="preserve">
-    <value>請掃描付款</value>
+    <value>请扫码付款</value>
   </data>
   <data name="Logout" xml:space="preserve">
     <value>登出</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>帮助</value>
   </data>
 </root>
