@@ -2,6 +2,7 @@
 using Prism;
 using Prism.Ioc;
 using Prism.Plugin.Popups;
+using SelfCheckout.Services;
 using SelfCheckout.Services.Payment;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;

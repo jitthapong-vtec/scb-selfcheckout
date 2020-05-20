@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Prism.Services;
 using SelfCheckout.Models;
 using SelfCheckout.Services.Serializer;
 using System;

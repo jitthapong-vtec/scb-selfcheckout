@@ -9,6 +9,10 @@ using Android;
 using Prism;
 using Prism.Ioc;
 using Plugin.CurrentActivity;
+using SelfCheckout.Services;
+using DryIoc;
+using Prism.DryIoc;
+using Xamarin.Forms;
 
 namespace SelfCheckout.Droid
 {
@@ -38,7 +42,6 @@ namespace SelfCheckout.Droid
                 DiskCacheDuration = TimeSpan.FromSeconds(20)
             });
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
-
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -48,14 +51,8 @@ namespace SelfCheckout.Droid
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-        }
-
-        protected override void OnStart()
-        {
-            ActivityCompat.RequestPermissions(this, new string[]{
-                    Manifest.Permission.WriteExternalStorage,
-                    Manifest.Permission.Camera}, 1212);
-            base.OnStart();
+            var logService = DependencyService.Get<ILogService>();
+            logService?.LogError((e.ExceptionObject as Exception)?.Message);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
@@ -70,7 +67,6 @@ namespace SelfCheckout.Droid
     {
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            // Register any platform specific implementations
         }
     }
 }

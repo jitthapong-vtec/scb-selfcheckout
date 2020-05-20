@@ -139,6 +139,8 @@ namespace SelfCheckout.ViewModels
                         }
                     };
                     await LoadOrderListAsync(filter: filter, currencyCode: currencyCode, groupingOrderDetail: true);
+                    if (_currentFilter != null)
+                        FilterOrder(_currentFilter);
                 }
 
                 RefreshTab();

@@ -932,6 +932,15 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = true;
 
+                var paymentStatus = await InquirePaymentAsync();
+                if(paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
+                {
+                    await FinishPaymentAsync();
+                }
+                else if(paymentStatus.Status.Equals("USERPAYING", StringComparison.OrdinalIgnoreCase)) {
+                    await CancelPaymentAsync();
+                }
+
                 var payload = new
                 {
                     OrderGuid = _saleEngineService.OrderData.Guid,
@@ -1211,22 +1220,13 @@ namespace SelfCheckout.ViewModels
                     else
                         await Task.Delay(1000);
 
-                    var actionPayload = new
-                    {
-                        OrderGuid = _saleEngineService.OrderData.Guid,
-                        Rows = _saleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
-                        Action = 3,
-                        Value = "",
-                        currency = "",
-                        SessionKey = _saleEngineService.LoginData.SessionKey
-                    };
-                    var paymentStatus = await _saleEngineService.ActionPaymentToOrderAsync(actionPayload);
+                    var paymentStatus = await InquirePaymentAsync();
                     if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
                     {
                         paymentSuccess = true;
                         break;
                     }
-                    else if (paymentStatus.Status.Equals("FAIL", StringComparison.OrdinalIgnoreCase))
+                    else if(paymentStatus.Status.Equals("FAIL", StringComparison.OrdinalIgnoreCase))
                     {
                         if (++tryCounterInCaseFail == 2)
                             break;
@@ -1240,11 +1240,49 @@ namespace SelfCheckout.ViewModels
 
             if (paymentSuccess)
             {
-                var finishPaymentPayload = new
-                {
-                    SessionKey = _saleEngineService.LoginData.SessionKey,
-                    OrderGuid = _saleEngineService.OrderData.Guid,
-                    OrderSignature = new object[]
+                await FinishPaymentAsync();
+            }
+            else
+            {
+                ResetPaymentState(paymentSuccess);
+            }
+        }
+
+        async Task<OrderPayment> CancelPaymentAsync()
+        {
+            var actionPayload = new
+            {
+                OrderGuid = _saleEngineService.OrderData.Guid,
+                Rows = new string[] { },
+                Action = 2,
+                Value = "",
+                currency = "",
+                SessionKey = _saleEngineService.LoginData.SessionKey
+            };
+            return await _saleEngineService.ActionPaymentToOrderAsync(actionPayload);
+        }
+
+        async Task<OrderPayment> InquirePaymentAsync()
+        {
+            var actionPayload = new
+            {
+                OrderGuid = _saleEngineService.OrderData.Guid,
+                Rows = _saleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
+                Action = 3,
+                Value = "",
+                currency = "",
+                SessionKey = _saleEngineService.LoginData.SessionKey
+            };
+            return await _saleEngineService.ActionPaymentToOrderAsync(actionPayload);
+        }
+
+        async Task FinishPaymentAsync()
+        {
+            var finishPaymentPayload = new
+            {
+                SessionKey = _saleEngineService.LoginData.SessionKey,
+                OrderGuid = _saleEngineService.OrderData.Guid,
+                OrderSignature = new object[]
                     {
                             new
                             {
@@ -1252,29 +1290,29 @@ namespace SelfCheckout.ViewModels
                                 signature = ""
                             }
                     }
-                };
-                await _saleEngineService.FinishPaymentOrderAsync(finishPaymentPayload);
+            };
+            await _saleEngineService.FinishPaymentOrderAsync(finishPaymentPayload);
 
-                var headerAttr = _saleEngineService.OrderData.HeaderAttributes.Where(o => o.Code == "order_no").FirstOrDefault();
-                var orderNo = Convert.ToInt32(headerAttr.ValueOfDecimal);
-                var result = await _selfCheckoutService.UpdateSessionAsync(_selfCheckoutService.BorrowSessionKey, orderNo, _selfCheckoutService.CurrentShoppingCard);
+            var headerAttr = _saleEngineService.OrderData.HeaderAttributes.Where(o => o.Code == "order_no").FirstOrDefault();
+            var orderNo = Convert.ToInt32(headerAttr.ValueOfDecimal);
+            var result = await _selfCheckoutService.UpdateSessionAsync(_selfCheckoutService.BorrowSessionKey, orderNo, _selfCheckoutService.CurrentShoppingCard);
 
-                ResetPaymentState(paymentSuccess);
-                await LoginAsync();
+            ResetPaymentState(true);
+            await LoginAsync();
 
-                var isContinueShopping = await NavigationService.ConfirmAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.ContinueShopping, AppResources.MyOrder);
-                if (isContinueShopping)
+            var isContinueShopping = await NavigationService.ConfirmAsync(AppResources.ThkForOrderTitle, AppResources.ThkForOrderDetail, AppResources.ContinueShopping, AppResources.MyOrder);
+            if (isContinueShopping)
+            {
+                await LoadOrderAsync();
+            }
+            else
+            {
+                // cause by KP-SCO-0089
+                // he don't want to create record df_sohdr, so i have to use this way because i can't call function api/SaleEngine/GetOrder
+                _saleEngineService.OrderData = new OrderData()
                 {
-                    await LoadOrderAsync();
-                }
-                else
-                {
-                    // cause by KP-SCO-0089
-                    // he don't want to create record df_sohdr, so i have to use this way because i can't call function api/SaleEngine/GetOrder
-                    _saleEngineService.OrderData = new OrderData()
-                    {
-                        OrderDetails = new System.Collections.Generic.List<OrderDetail>(),
-                        BillingQuantities = new System.Collections.Generic.List<BillingQuantity>()
+                    OrderDetails = new System.Collections.Generic.List<OrderDetail>(),
+                    BillingQuantities = new System.Collections.Generic.List<BillingQuantity>()
                         {
                             new BillingQuantity()
                             {
@@ -1285,17 +1323,12 @@ namespace SelfCheckout.ViewModels
                                 Quantity = 0
                             }
                         }
-                    };
-                    await ShoppingCartViewModel.RefreshOrderListAsync();
-                    RefreshSummary();
+                };
+                await ShoppingCartViewModel.RefreshOrderListAsync();
+                RefreshSummary();
 
-                    var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
-                    TabSelectedCommand.Execute(orderTab);
-                }
-            }
-            else
-            {
-                ResetPaymentState(paymentSuccess);
+                var orderTab = Tabs.Where(t => t.TabId == 4).FirstOrDefault();
+                TabSelectedCommand.Execute(orderTab);
             }
         }
 

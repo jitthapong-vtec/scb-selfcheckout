@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace SelfCheckout.ViewModels
@@ -27,6 +28,17 @@ namespace SelfCheckout.ViewModels
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
+            var status = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
+            if (status != PermissionStatus.Granted)
+            {
+                await Permissions.RequestAsync<Permissions.StorageWrite>();
+            }
+            status = await Permissions.CheckStatusAsync<Permissions.Camera>();
+            if (status != PermissionStatus.Granted)
+            {
+                await Permissions.RequestAsync<Permissions.Camera>();
+            }
+
             var backFromConfirm = parameters.GetValue<bool>("BackFromConfirm");
             if (!backFromConfirm)
                 await ReloadData();
