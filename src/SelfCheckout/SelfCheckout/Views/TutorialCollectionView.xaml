@@ -4,7 +4,8 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
-             x:Class="SelfCheckout.Views.TutorialCollectionView">
+             x:Class="SelfCheckout.Views.TutorialCollectionView"
+             x:Name="this">
     <ContentView.Content>
         <Grid>
             <Grid Padding="0,0,0,8">
@@ -41,7 +42,7 @@
                                    HorizontalOptions="Center"
                                    ItemsSource="{Binding Assets}"/>
             </Grid>
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center"/>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding Source={x:Reference this}, Path=ShowIndicator}" VerticalOptions="Center" HorizontalOptions="Center"/>
         </Grid>
     </ContentView.Content>
 </ContentView>

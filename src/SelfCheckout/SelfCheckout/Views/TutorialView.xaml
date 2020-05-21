@@ -31,7 +31,7 @@
                 </Grid>
                 <Grid Grid.Row="1">
                     <Frame Margin="16" CornerRadius="12">
-                        <views:TutorialCollectionView/>
+                        <views:TutorialCollectionView ShowIndicator="True"/>
                     </Frame>
                 </Grid>
             </Grid>

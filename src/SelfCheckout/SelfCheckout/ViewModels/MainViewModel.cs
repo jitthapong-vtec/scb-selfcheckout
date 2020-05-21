@@ -4,6 +4,7 @@ using SelfCheckout.Exceptions;
 using SelfCheckout.Extensions;
 using SelfCheckout.Models;
 using SelfCheckout.Resources;
+using SelfCheckout.Services;
 using SelfCheckout.Services.Payment;
 using SelfCheckout.Services.Register;
 using SelfCheckout.Services.SaleEngine;
@@ -849,31 +850,23 @@ namespace SelfCheckout.ViewModels
             {
                 if (ex is KPApiException)
                 {
-                    if ((ex as KPApiException).ErrorCode.Equals("SESSION_EXPIRE", StringComparison.OrdinalIgnoreCase))
+                    var apiException = ex as KPApiException;
+                    if (apiException.ErrorCode.Equals("SESSION_EXPIRE", StringComparison.OrdinalIgnoreCase))
                     {
                         await NavigationService.ShowAlertAsync(AppResources.Opps, AppResources.CannotConnectToServer, AppResources.Close);
                         await LoginAsync();
                         await LoadOrderAsync();
                     }
-                    else if ((ex as KPApiException).ErrorCode.Equals("EX1", StringComparison.OrdinalIgnoreCase))
-                    {
-                        await LoginAsync();
-                        await LoadOrderAsync();
-                    }
-                    else if ((ex as KPApiException).ErrorCode.Equals("SH03", StringComparison.OrdinalIgnoreCase))
-                    {
-                        await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
-                        await GoBackAsync();
-                    }
                     else
                     {
-                        await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                        await NavigationService.ShowAlertAsync(AppResources.Opps, $"{apiException.ErrorCode} {apiException.Message}", AppResources.Close);
                     }
                 }
                 else
                 {
                     await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
                 }
+                DependencyService.Get<ILogService>().LogError(ex.Message, ex);
             }
             finally
             {
@@ -932,24 +925,50 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = true;
 
-                var paymentStatus = await InquirePaymentAsync();
-                if(paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
+                OrderPayment paymentStatus = null;
+                try
                 {
-                    await FinishPaymentAsync();
+                    paymentStatus = await InquirePaymentAsync();
                 }
-                else if(paymentStatus.Status.Equals("USERPAYING", StringComparison.OrdinalIgnoreCase)) {
-                    await CancelPaymentAsync();
-                }
+                catch { }
 
-                var payload = new
+                bool canCheckout = false;
+                if (paymentStatus != null)
                 {
-                    OrderGuid = _saleEngineService.OrderData.Guid,
-                    SessionKey = _saleEngineService.LoginData.SessionKey
-                };
+                    try
+                    {
+                        if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
+                        {
+                            await FinishPaymentAsync();
+                        }
+                        else// if (paymentStatus.Status.Equals("USERPAYING", StringComparison.OrdinalIgnoreCase))
+                        {
+                            await CancelPaymentAsync();
+                            canCheckout = true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                    }
+                }
+                else
+                {
+                    canCheckout = true;
+                }
 
-                await _saleEngineService.CheckoutPaymentOrder(payload);
+                if (canCheckout)
+                {
+                    var payload = new
+                    {
+                        OrderGuid = _saleEngineService.OrderData.Guid,
+                        SessionKey = _saleEngineService.LoginData.SessionKey
+                    };
 
-                IsBeingPaymentProcess = true;
+                    await _saleEngineService.CheckoutPaymentOrder(payload);
+
+                    IsBeingPaymentProcess = true;
+                }
             }
             catch (Exception ex)
             {
@@ -1226,7 +1245,7 @@ namespace SelfCheckout.ViewModels
                         paymentSuccess = true;
                         break;
                     }
-                    else if(paymentStatus.Status.Equals("FAIL", StringComparison.OrdinalIgnoreCase))
+                    else if (paymentStatus.Status.Equals("FAIL", StringComparison.OrdinalIgnoreCase))
                     {
                         if (++tryCounterInCaseFail == 2)
                             break;

@@ -170,13 +170,17 @@ namespace SelfCheckout.ViewModels
             if (!customer.SessionDetails.Any())
                 OrderInvoices = _allOrderInvoiceGroups.ToObservableCollection();
             else
-                OrderInvoices = _allOrderInvoiceGroups.Where(o => ordersNo.Contains(o.OrderNo)).ToList().ToObservableCollection();
+                OrderInvoices = _allOrderInvoiceGroups.Where(o => 
+                o.ShoppingCardNo.Equals(customer.CustomerShoppingCard, StringComparison.OrdinalIgnoreCase) 
+                && ordersNo.Contains(o.OrderNo)).ToList().ToObservableCollection();
 
-            OrderDetails = new ObservableCollection<OrderDetail>();
+            var orderDetails = new List<OrderDetail>();
             foreach (var order in OrderInvoices)
             {
-                order.ForEach((orderDetail) => OrderDetails.Add(orderDetail));
+                order.ForEach((orderDetail) => orderDetails.Add(orderDetail));
             }
+            var orderDetailGrouping = GroupingOrderDetail(orderDetails);
+            OrderDetails = orderDetailGrouping.ToObservableCollection();
 
             _currentFilter = customer;
 

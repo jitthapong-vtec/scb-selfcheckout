@@ -291,15 +291,11 @@ namespace SelfCheckout.ViewModels.Base
                     PassportNo = customerAttr?.Where(c => c.Code == "passport_no").FirstOrDefault()?.ValueOfString,
                     ShoppingCardNo = order.HeaderAttributes.Where(attr => attr.Code == "shopping_card").FirstOrDefault()?.ValueOfString,
                     CurrencyCode = orderInvoice.BillingAmount.NetAmount.CurrCode.Code,
-                    //CurrencyCode = order.BasketBillingAmount.NetAmount.CurrCode.Code,
                     PaymentType = orderInvoice.OrderPayments.FirstOrDefault()?.PaymentType,
                     TotalQty = orderInvoice.BillingQuantity.Quantity,
                     SubTotal = orderInvoice.BillingAmount.TotalAmount.CurrAmt,
                     TotalNet = orderInvoice.BillingAmount.NetAmount.CurrAmt,
                     TotalDiscount = orderInvoice.BillingAmount.DiscountAmount.CurrAmt
-                    //SubTotal = order.BasketBillingAmount.TotalAmount.CurrAmt,
-                    //TotalNet = order.BasketBillingAmount.NetAmount.CurrAmt,
-                    //TotalDiscount = order.BasketBillingAmount.DiscountAmount.CurrAmt
                 };
 
                 try
@@ -335,35 +331,41 @@ namespace SelfCheckout.ViewModels.Base
 
             if (groupingOrderDetail)
             {
-                var groups = orderDetailsTemp.GroupBy(o => o.ItemDetail.Item.Code, (k, g) =>
-                                new
-                                {
-                                    Order = g.FirstOrDefault().Clone(),
-                                    TotalQty = g.Sum(o => o.BillingQuantity.Quantity),
-                                    TotalAmount = g.Sum(o => o.BillingAmount.TotalAmount.CurrAmt),
-                                    TotalDiscount = g.Sum(o => o.BillingAmount.DiscountAmount.CurrAmt),
-                                    TotalNet = g.Sum(o => o.BillingAmount.NetAmount.CurrAmt),
-                                    OrderDetails = g.ToList()
-                                }).ToList();
-
-                var groupingTemp = new List<OrderDetail>();
-                foreach (var group in groups)
-                {
-                    group.Order.BillingQuantity.Quantity = group.TotalQty;
-                    group.Order.BillingAmount.TotalAmount.CurrAmt = group.TotalAmount;
-                    group.Order.BillingAmount.DiscountAmount.CurrAmt = group.TotalDiscount;
-                    group.Order.BillingAmount.NetAmount.CurrAmt = group.TotalNet;
-
-                    SetOrderImage(new List<OrderDetail>() { group.Order });
-                    groupingTemp.Add(group.Order);
-                }
-                OrderDetails = groupingTemp.ToObservableCollection();
+                var orderDetailGrouping = GroupingOrderDetail(orderDetailsTemp);
+                OrderDetails = orderDetailGrouping.ToObservableCollection();
             }
             else
             {
                 OrderDetails = orderDetailsTemp.ToObservableCollection();
             }
             RefreshSummary();
+        }
+
+        protected List<OrderDetail> GroupingOrderDetail(List<OrderDetail> orderDetails)
+        {
+            var groups = orderDetails.GroupBy(o => o.ItemDetail.Item.Code, (k, g) =>
+                                            new
+                                            {
+                                                Order = g.FirstOrDefault().Clone(),
+                                                TotalQty = g.Sum(o => o.BillingQuantity.Quantity),
+                                                TotalAmount = g.Sum(o => o.BillingAmount.TotalAmount.CurrAmt),
+                                                TotalDiscount = g.Sum(o => o.BillingAmount.DiscountAmount.CurrAmt),
+                                                TotalNet = g.Sum(o => o.BillingAmount.NetAmount.CurrAmt),
+                                                OrderDetails = g.ToList()
+                                            }).ToList();
+
+            var orderDetailGrouping = new List<OrderDetail>();
+            foreach (var group in groups)
+            {
+                group.Order.BillingQuantity.Quantity = group.TotalQty;
+                group.Order.BillingAmount.TotalAmount.CurrAmt = group.TotalAmount;
+                group.Order.BillingAmount.DiscountAmount.CurrAmt = group.TotalDiscount;
+                group.Order.BillingAmount.NetAmount.CurrAmt = group.TotalNet;
+
+                SetOrderImage(new List<OrderDetail>() { group.Order });
+                orderDetailGrouping.Add(group.Order);
+            }
+            return orderDetailGrouping;
         }
 
         protected void RefreshSummary()
