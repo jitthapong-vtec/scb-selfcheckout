@@ -556,6 +556,11 @@ namespace SelfCheckout.ViewModels
 
         async Task SelectTabAsync(TabItem item)
         {
+            if (!(item.Page is OrderView))
+            {
+                await CheckSessionAlreadyEndAsync();
+            }
+
             PageTitle = item.Title;
             CurrentView = item.Page;
             item.Selected = true;
@@ -569,17 +574,13 @@ namespace SelfCheckout.ViewModels
                 selectedTab.Selected = false;
             }
             catch { }
-
-            if (!(item.Page is OrderView))
-            {
-                await CheckSessionAlreadyEndAsync();
-            }
         }
 
         async Task CheckSessionAlreadyEndAsync()
         {
             try
             {
+                IsBusy = true;
                 var sessionData = await _selfCheckoutService.GetSessionDetialAsync(_selfCheckoutService.BorrowSessionKey.ToString());
                 if (sessionData.SessionStatus.SessionCode == "END")
                 {
@@ -588,6 +589,10 @@ namespace SelfCheckout.ViewModels
                 }
             }
             catch { }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         protected override async Task OnLanguageChanged(Language lang)
