@@ -73,7 +73,8 @@ namespace SelfCheckout.Services.SaleEngine
             var result = await PostAsync<object, ApiResultData<List<OrderData>>>(uri.ToString(), payload);
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
-            return result.Data?.FirstOrDefault().OrderPayments?.FirstOrDefault();
+            var filter = new string[] { "ALI", "WEC", "PMP" };
+            return result.Data?.FirstOrDefault().OrderPayments.Where(p => filter.Contains(p.PaymentCode)).FirstOrDefault();
         }
 
         public async Task<List<OrderData>> AddItemToOrderAsync(object payload)

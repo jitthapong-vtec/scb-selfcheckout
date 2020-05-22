@@ -12,7 +12,7 @@
              x:Class="SelfCheckout.Views.AuthorizationDialog">
     <ContentPage.Content>
         <Frame VerticalOptions="Center" Margin="16,48,16,48" WidthRequest="{OnPlatform UWP=400}" Padding="8">
-            <StackLayout>
+            <StackLayout Margin="8">
                 <Label Text="{i18n:Translate ForAdmin}" FontSize="Large" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
                 <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray100}"/>
                 <components:UserAuthenView/>

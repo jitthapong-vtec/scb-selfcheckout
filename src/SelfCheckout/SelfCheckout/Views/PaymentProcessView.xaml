@@ -47,13 +47,13 @@
                         <Label FontFamily="{StaticResource KPIconFont}" HorizontalOptions="Center" VerticalOptions="Center" Text="&#xe901;" FontSize="24" TextColor="{StaticResource Primary}"/>
                     </controls:TappedGrid>
                 </Grid>
-                <Grid Padding="12,0,12,0">
+                <Grid Padding="12,12,12,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" x:Name="lblPayment" FontSize="Medium"/>
-                    <Label Grid.Column="1" HorizontalTextAlignment="End" FontSize="Medium">
+                    <Label Grid.Column="0" x:Name="lblPayment" FontSize="Medium" VerticalTextAlignment="Center"/>
+                    <Label Grid.Column="1" VerticalOptions="Center" HorizontalTextAlignment="End" FontSize="Medium">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="{Binding OrderData.TotalBillingAmount.TotalAmount.CurrCode.Code}"/>

@@ -793,6 +793,15 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
+
+                var filter = new string[] { "ALI", "WEC", "PMP" };
+                var pendingPayment = _saleEngineService.OrderData.OrderPayments.Where(p => filter.Contains(p.PaymentCode)).FirstOrDefault();
+                if (pendingPayment != null)
+                {
+                    Xamarin.Forms.DependencyService.Get<ILogService>()?.LogInfo("Cancel payment after delete promotion");
+                    await CancelPaymentAsync();
+                }
+
                 await _saleEngineService.ActionOrderPaymentAsync(payload);
                 CouponCode = "";
 
@@ -866,6 +875,11 @@ namespace SelfCheckout.ViewModels
                     if (apiException.ErrorCode.Equals("SESSION_EXPIRE", StringComparison.OrdinalIgnoreCase))
                     {
                         await NavigationService.ShowAlertAsync(AppResources.Opps, AppResources.CannotConnectToServer, AppResources.Close);
+                        await LoginAsync();
+                        await LoadOrderAsync();
+                    }
+                    else if (apiException.ErrorCode.Equals("EX1", StringComparison.OrdinalIgnoreCase))
+                    {
                         await LoginAsync();
                         await LoadOrderAsync();
                     }
@@ -948,35 +962,21 @@ namespace SelfCheckout.ViewModels
                 bool canCheckout = false;
                 if (inquiryResult != null)
                 {
-                    var paymentCodes = new string[]
+                    try
                     {
-                        "ALI",
-                        "WEC",
-                        "PMP"
-                    };
-
-                    if (paymentCodes.Contains(inquiryResult.PaymentCode))
-                    {
-                        try
+                        if (inquiryResult.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (inquiryResult.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
-                            {
-                                await FinishPaymentAsync();
-                            }
-                            else
-                            {
-                                await CancelPaymentAsync();
-                                canCheckout = true;
-                            }
+                            await FinishPaymentAsync();
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                            await CancelPaymentAsync();
+                            canCheckout = true;
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        canCheckout = true;
+                        await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
                     }
                 }
                 else
