@@ -82,6 +82,8 @@ namespace SelfCheckout.Services.Base
                 var json = JsonConvert.SerializeObject(data);
                 content = new StringContent(json, Encoding.UTF8, "application/json");
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                Xamarin.Forms.DependencyService.Get<ILogService>().LogInfo($"Request {uri} => {json}");
             }
 
             HttpResponseMessage response = null;
@@ -107,6 +109,9 @@ namespace SelfCheckout.Services.Base
 
             await HandleResponse(response);
             var result = await response.Content.ReadAsStringAsync();
+
+            Xamarin.Forms.DependencyService.Get<ILogService>().LogInfo($"Response {uri} => {result}");
+
             return await _converterService.Serialize<TResult>(result);
         }
 

@@ -1,4 +1,6 @@
-﻿using Prism.Navigation;
+﻿using Newtonsoft.Json;
+using Prism.Navigation;
+using Prism.Services;
 using Prism.Services.Dialogs;
 using SelfCheckout.Exceptions;
 using SelfCheckout.Extensions;
@@ -158,7 +160,6 @@ namespace SelfCheckout.ViewModels
 
             await LoadMasterDataAsync();
             await LoadCurrencyAsync();
-            await LoadOrderAsync();
         }
 
         public ICommand TabSelectedCommand => new Command<TabItem>(async (item) => await SelectTabAsync(item));
@@ -556,27 +557,31 @@ namespace SelfCheckout.ViewModels
 
         async Task SelectTabAsync(TabItem item)
         {
-            if (!(item.Page is OrderView))
+            var isSessionAlreadyEnd = false;
+            if (!(item.Page is OrderView) && !(item.Page is ShoppingCartView))
             {
-                await CheckSessionAlreadyEndAsync();
+                isSessionAlreadyEnd = await CheckSessionAlreadyEndAsync();
             }
 
-            PageTitle = item.Title;
-            CurrentView = item.Page;
-            item.Selected = true;
-
-            _selectedTabId = item.TabId;
-
-            try
+            if (!isSessionAlreadyEnd)
             {
-                // Reset selected tab
-                var selectedTab = Tabs.Where(t => t.TabId != item.TabId && t.Selected).FirstOrDefault();
-                selectedTab.Selected = false;
+                PageTitle = item.Title;
+                CurrentView = item.Page;
+                item.Selected = true;
+
+                _selectedTabId = item.TabId;
+
+                try
+                {
+                    // Reset selected tab
+                    var selectedTab = Tabs.Where(t => t.TabId != item.TabId && t.Selected).FirstOrDefault();
+                    selectedTab.Selected = false;
+                }
+                catch { }
             }
-            catch { }
         }
 
-        async Task CheckSessionAlreadyEndAsync()
+        async Task<bool> CheckSessionAlreadyEndAsync()
         {
             try
             {
@@ -586,6 +591,7 @@ namespace SelfCheckout.ViewModels
                 {
                     await _saleEngineService.LogoutAsync();
                     await GoBackToRootAsync();
+                    return true;
                 }
             }
             catch { }
@@ -593,6 +599,7 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = false;
             }
+            return false;
         }
 
         protected override async Task OnLanguageChanged(Language lang)
@@ -871,7 +878,7 @@ namespace SelfCheckout.ViewModels
                 {
                     await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
                 }
-                DependencyService.Get<ILogService>().LogError(ex.Message, ex);
+                Xamarin.Forms.DependencyService.Get<ILogService>().LogError(ex.Message, ex);
             }
             finally
             {
@@ -930,31 +937,46 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = true;
 
-                OrderPayment paymentStatus = null;
+                OrderPayment inquiryResult = null;
                 try
                 {
-                    paymentStatus = await InquirePaymentAsync();
+                    Xamarin.Forms.DependencyService.Get<ILogService>().LogInfo("Checkout Inquiry");
+                    inquiryResult = await InquirePaymentAsync();
                 }
                 catch { }
 
                 bool canCheckout = false;
-                if (paymentStatus != null)
+                if (inquiryResult != null)
                 {
-                    try
+                    var paymentCodes = new string[]
                     {
-                        if (paymentStatus.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
+                        "ALI",
+                        "WEC",
+                        "PMP"
+                    };
+
+                    if (paymentCodes.Contains(inquiryResult.PaymentCode))
+                    {
+                        try
                         {
-                            await FinishPaymentAsync();
+                            if (inquiryResult.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
+                            {
+                                await FinishPaymentAsync();
+                            }
+                            else
+                            {
+                                await CancelPaymentAsync();
+                                canCheckout = true;
+                            }
                         }
-                        else// if (paymentStatus.Status.Equals("USERPAYING", StringComparison.OrdinalIgnoreCase))
+                        catch (Exception ex)
                         {
-                            await CancelPaymentAsync();
-                            canCheckout = true;
+                            await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
                         }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        await NavigationService.ShowAlertAsync(AppResources.Opps, ex.Message, AppResources.Close);
+                        canCheckout = true;
                     }
                 }
                 else
@@ -1200,6 +1222,8 @@ namespace SelfCheckout.ViewModels
 
         async Task ConfirmPaymentAsync(object paymentPayload, bool isWallet)
         {
+            Xamarin.Forms.DependencyService.Get<ILogService>().LogInfo("Add Payment");
+
             await _saleEngineService.AddPaymentToOrderAsync(paymentPayload);
             IsBusy = false;
 
@@ -1274,6 +1298,7 @@ namespace SelfCheckout.ViewModels
 
         async Task<OrderPayment> CancelPaymentAsync()
         {
+            Xamarin.Forms.DependencyService.Get<ILogService>().LogInfo("Cancel Payment");
             var actionPayload = new
             {
                 OrderGuid = _saleEngineService.OrderData.Guid,
@@ -1302,6 +1327,8 @@ namespace SelfCheckout.ViewModels
 
         async Task FinishPaymentAsync()
         {
+            Xamarin.Forms.DependencyService.Get<ILogService>().LogInfo("Finish Payment");
+
             var finishPaymentPayload = new
             {
                 SessionKey = _saleEngineService.LoginData.SessionKey,
