@@ -1313,10 +1313,11 @@ namespace SelfCheckout.ViewModels
 
         async Task<OrderPayment> InquirePaymentAsync()
         {
+            var paymentGuid = _saleEngineService.OrderData.OrderPayments?.Where(p => new string[] { "ALI", "WEC", "PMP" }.Contains(p.PaymentCode)).Select(p => p.Guid).ToArray();
             var actionPayload = new
             {
                 OrderGuid = _saleEngineService.OrderData.Guid,
-                Rows = _saleEngineService.OrderData.OrderPayments?.Select(p => p.Guid).ToArray(),
+                Rows = paymentGuid,
                 Action = 3,
                 Value = "",
                 currency = "",
