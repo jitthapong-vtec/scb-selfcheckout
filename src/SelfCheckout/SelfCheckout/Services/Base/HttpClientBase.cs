@@ -104,10 +104,10 @@ namespace SelfCheckout.Services.Base
             }
             catch (HttpRequestException)
             {
-                throw new HttpRequestExceptionEx(HttpStatusCode.BadGateway, "Can't connect to server!");
+                throw new HttpRequestExceptionEx(HttpStatusCode.BadGateway, "Network connection lost");
             }
 
-            await HandleResponse(response);
+            await HandleResponse(response, uri);
             var result = await response.Content.ReadAsStringAsync();
 
             Xamarin.Forms.DependencyService.Get<ILogService>().LogInfo($"Response {uri} => {result}");
@@ -115,11 +115,13 @@ namespace SelfCheckout.Services.Base
             return await _converterService.Serialize<TResult>(result);
         }
 
-        private async Task HandleResponse(HttpResponseMessage response)
+        private async Task HandleResponse(HttpResponseMessage response, string url)
         {
             if (!response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                    content = $"Not found {url}";
                 throw new HttpRequestExceptionEx(response.StatusCode, content);
             }
         }

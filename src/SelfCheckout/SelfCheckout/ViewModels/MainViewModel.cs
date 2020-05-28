@@ -14,6 +14,7 @@ using SelfCheckout.Services.SelfCheckout;
 using SelfCheckout.ViewModels.Base;
 using SelfCheckout.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace SelfCheckout.ViewModels
         ISaleEngineService _saleEngineService;
         ISelfCheckoutService _selfCheckoutService;
         IPaymentService _paymentService;
+        IRegisterService _registerService;
 
         ObservableCollection<TabItem> _tabs;
         ObservableCollection<Currency> _currencies;
@@ -69,6 +71,7 @@ namespace SelfCheckout.ViewModels
             _saleEngineService = saleEngineService;
             _selfCheckoutService = selfCheckoutService;
             _paymentService = paymentService;
+            _registerService = registerService;
 
             HomeViewModel = new HomeViewModel(navigationService, selfCheckoutService);
             HomeViewModel.ShowSystemView = () => SystemViewVisible = true;
@@ -823,17 +826,52 @@ namespace SelfCheckout.ViewModels
             try
             {
                 IsBusy = true;
+                var attrs = new List<object>
+                {
+                    new {
+                        GROUP = "tran_no",
+                        CODE = "shopping_card",
+                        valueOfString = _selfCheckoutService.CurrentShoppingCard
+                    }
+                };
+
+                if (_registerService.CustomerData?.IsMember == true)
+                {
+                    var identities = _registerService.CustomerData.Person?.ListIdentity;
+                    var memberId = identities?.Where(i => i.IdentityType == "MID").FirstOrDefault()?.IdentityValue;
+                    var cardGroupCode = identities?.Where(i => i.IdentityType == "CARDGROUPCODE").FirstOrDefault()?.IdentityValue;
+                    var cardTypeCode = identities?.Where(i => i.IdentityType == "CARDTYPECODE").FirstOrDefault()?.IdentityValue;
+                    var embossId = identities?.Where(i => i.IdentityType == "EMBOSSID").FirstOrDefault()?.IdentityValue;
+                    attrs.Add(new
+                    {
+                        GROUP = "tran_no",
+                        CODE = "member_id",
+                        valueOfString = memberId
+                    });
+                    attrs.Add(new
+                    {
+                        GROUP = "tran_no",
+                        CODE = "CARDGROUPCODE",
+                        valueOfString = cardGroupCode
+                    });
+                    attrs.Add(new
+                    {
+                        GROUP = "tran_no",
+                        CODE = "CARDTYPECODE",
+                        valueOfString = cardTypeCode
+                    });
+                    attrs.Add(new
+                    {
+                        GROUP = "tran_no",
+                        CODE = "EMBOSSID",
+                        valueOfString = embossId
+                    });
+                }
+
                 var payload = new
                 {
                     SessionKey = _saleEngineService.LoginData.SessionKey,
-                    Attributes = new object[]
-                    {
-                        new {
-                            GROUP = "tran_no",
-                            CODE = "shopping_card",
-                            valueOfString = _selfCheckoutService.CurrentShoppingCard
-                        }
-                    },
+                    Attributes = attrs.ToArray(),
                     paging = new
                     {
                         pageNo = 1,
@@ -964,15 +1002,15 @@ namespace SelfCheckout.ViewModels
                 {
                     try
                     {
-                        if (inquiryResult.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
-                        {
-                            await FinishPaymentAsync();
-                        }
-                        else
-                        {
-                            await CancelPaymentAsync();
-                            canCheckout = true;
-                        }
+                        //if (inquiryResult.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
+                        //{
+                        //    await FinishPaymentAsync();
+                        //}
+                        //else
+                        //{
+                        await CancelPaymentAsync();
+                        canCheckout = true;
+                        //}
                     }
                     catch (Exception ex)
                     {
@@ -1023,7 +1061,7 @@ namespace SelfCheckout.ViewModels
                         PaymentCode = "PROMT",
                         PaymentType = "VISA",
                         PaymentIcon = "",
-                        RefNo = promptPayResult.TransactionId,
+                        RefNo = promptPayResult.BillPaymentRef1,
                         URLService = "",
                         CardHolderName = "",
                         ApproveCode = "",

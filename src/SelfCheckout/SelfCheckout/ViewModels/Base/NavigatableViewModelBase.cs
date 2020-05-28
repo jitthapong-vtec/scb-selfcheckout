@@ -28,12 +28,12 @@ namespace SelfCheckout.ViewModels.Base
             await GoBackToRootAsync();
         });
 
-        protected async Task GoBackAsync()
+        protected virtual async Task GoBackAsync()
         {
             await NavigationService.GoBackAsync();
         }
 
-        protected async Task GoBackToRootAsync()
+        protected virtual async Task GoBackToRootAsync()
         {
             await NavigationService.NavigateAsync("/NavigationPage/LandingView");
         }

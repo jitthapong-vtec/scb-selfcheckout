@@ -287,6 +287,12 @@ namespace SelfCheckout.ViewModels
 
         protected override async Task ValidateShoppingCardCallback(string shoppingCard)
         {
+            try
+            {
+                await SaleEngineService.LogoutAsync();
+            }
+            catch { }
+
             CustomerData = RegisterService.CustomerData;
             CurrentShoppingCard = SelfCheckoutService.CurrentShoppingCard;
 

@@ -4,6 +4,7 @@ using SelfCheckout.Models;
 using SelfCheckout.Services.Device;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -36,10 +37,8 @@ namespace SelfCheckout.ViewModels.Base
             MachineNo = loginData?.UserInfo?.MachineEnv?.MachineNo;
         }
 
-        public override void OnNavigatedFrom(INavigationParameters parameters)
+        protected override Task GoBackToRootAsync()
         {
-            base.OnNavigatedFrom(parameters);
-
             if (!string.IsNullOrEmpty(SelfCheckoutApi))
             {
                 if (!SelfCheckoutApi.EndsWith("/"))
@@ -52,6 +51,7 @@ namespace SelfCheckout.ViewModels.Base
                     PromptPayApi += "/";
                 Preferences.Set("promptpay_api", PromptPayApi);
             }
+            return base.GoBackToRootAsync();
         }
 
         public string PromptPayApi
