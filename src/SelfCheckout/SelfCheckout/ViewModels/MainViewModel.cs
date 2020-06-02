@@ -349,7 +349,7 @@ namespace SelfCheckout.ViewModels
                     {
                         IsBusy = true;
                         var refNo = _paymentService.GetPaymentRefNo();
-                        await _paymentService.InquiryAsync(refNo);
+                        promptPayResult = await _paymentService.InquiryAsync(refNo);
                     }
                     catch { }
                     finally
