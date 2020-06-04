@@ -784,15 +784,6 @@ namespace SelfCheckout.ViewModels
             if (!isDeleteCoupon)
                 return;
 
-            var payload = new
-            {
-                OrderGuid = "",
-                Rows = new object[] { },
-                Action = "clear_all_special_discount",
-                Value = "",
-                SessionKey = _saleEngineService.LoginData.SessionKey
-            };
-
             try
             {
                 IsBusy = true;
@@ -805,11 +796,7 @@ namespace SelfCheckout.ViewModels
                     await CancelPaymentAsync();
                 }
 
-                await _saleEngineService.ActionOrderPaymentAsync(payload);
-                CouponCode = "";
-
-                await ShoppingCartViewModel.RefreshOrderListAsync();
-                RefreshSummary();
+                await ClearAllSpecialDiscountAsync();
             }
             catch (Exception ex)
             {
@@ -819,6 +806,23 @@ namespace SelfCheckout.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        private async Task ClearAllSpecialDiscountAsync()
+        {
+            var payload = new
+            {
+                OrderGuid = "",
+                Rows = new object[] { },
+                Action = "clear_all_special_discount",
+                Value = "",
+                SessionKey = _saleEngineService.LoginData.SessionKey
+            };
+            await _saleEngineService.ActionOrderPaymentAsync(payload);
+            CouponCode = "";
+
+            await ShoppingCartViewModel.RefreshOrderListAsync();
+            RefreshSummary();
         }
 
         public async Task LoadOrderAsync()
@@ -1002,15 +1006,9 @@ namespace SelfCheckout.ViewModels
                 {
                     try
                     {
-                        //if (inquiryResult.Status.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase))
-                        //{
-                        //    await FinishPaymentAsync();
-                        //}
-                        //else
-                        //{
                         await CancelPaymentAsync();
+                        //await ClearAllSpecialDiscountAsync();
                         canCheckout = true;
-                        //}
                     }
                     catch (Exception ex)
                     {
@@ -1337,10 +1335,11 @@ namespace SelfCheckout.ViewModels
         async Task<OrderPayment> CancelPaymentAsync()
         {
             Xamarin.Forms.DependencyService.Get<ILogService>().LogInfo("Cancel Payment");
+            var paymentGuid = _saleEngineService.OrderData.OrderPayments?.Where(p => new string[] { "ALI", "WEC", "PMP" }.Contains(p.PaymentCode)).Select(p => p.Guid).ToArray();
             var actionPayload = new
             {
                 OrderGuid = _saleEngineService.OrderData.Guid,
-                Rows = new string[] { },
+                Rows = paymentGuid,
                 Action = 2,
                 Value = "",
                 currency = "",
