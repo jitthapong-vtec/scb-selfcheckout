@@ -1340,7 +1340,7 @@ namespace SelfCheckout.ViewModels
             {
                 OrderGuid = _saleEngineService.OrderData.Guid,
                 Rows = paymentGuid,
-                Action = 2,
+                Action = 1,
                 Value = "",
                 currency = "",
                 SessionKey = _saleEngineService.LoginData.SessionKey
