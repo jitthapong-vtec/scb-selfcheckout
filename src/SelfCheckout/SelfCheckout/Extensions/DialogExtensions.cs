@@ -9,6 +9,9 @@ namespace SelfCheckout.Extensions
 {
     public static class DialogExtensions
     {
+        static object _lock = new object();
+        static bool _isConfirmShowing;
+
         public static async Task<INavigationParameters> ShowAlertAsync(this INavigationService navigationService, string title, string message, string okButtonText = "Close")
         {
             var tcs = new TaskCompletionSource<INavigationParameters>();
@@ -32,6 +35,14 @@ namespace SelfCheckout.Extensions
 
         public static async Task<bool> ConfirmAsync(this INavigationService navigationService, string title, string message, string okButtonText, string cancelButtonText, bool okAsRedButton = false)
         {
+            lock (_lock)
+            {
+                if (_isConfirmShowing)
+                    return false;
+                else
+                    _isConfirmShowing = true;
+            }
+
             var tcs = new TaskCompletionSource<bool>();
             var parameters = new NavigationParameters
                 {
@@ -50,7 +61,9 @@ namespace SelfCheckout.Extensions
             {
                 tcs.SetException(ex);
             }
-            return await tcs.Task;
+            var result = await tcs.Task;
+            _isConfirmShowing = false;
+            return result;
         }
 
         public static async Task<TResult> ShowDialogAsync<TResult>(this INavigationService navigationService, string name, INavigationParameters parameters)

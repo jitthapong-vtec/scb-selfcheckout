@@ -281,6 +281,7 @@ namespace SelfCheckout.ViewModels.Base
                 _allOrderDetails.AddRange(orderInvoice.OrderDetails);
 
                 var customerAttr = order.CustomerDetail?.CustomerAttributes;
+                var payments = orderInvoice.OrderPayments.Select(p => p.PaymentCode?.Trim()).ToArray();
                 var orderInvoiceGroup = new OrderInvoiceGroup(orderDetails)
                 {
                     LoginSession = order.LoginSession,
@@ -291,7 +292,7 @@ namespace SelfCheckout.ViewModels.Base
                     PassportNo = customerAttr?.Where(c => c.Code == "passport_no").FirstOrDefault()?.ValueOfString,
                     ShoppingCardNo = order.HeaderAttributes.Where(attr => attr.Code == "shopping_card").FirstOrDefault()?.ValueOfString,
                     CurrencyCode = orderInvoice.BillingAmount.NetAmount.CurrCode.Code,
-                    PaymentType = orderInvoice.OrderPayments.FirstOrDefault()?.PaymentType,
+                    PaymentType = string.Join(", ", payments),
                     TotalQty = orderInvoice.BillingQuantity.Quantity,
                     SubTotal = orderInvoice.BillingAmount.TotalAmount.CurrAmt,
                     TotalNet = orderInvoice.BillingAmount.NetAmount.CurrAmt,
