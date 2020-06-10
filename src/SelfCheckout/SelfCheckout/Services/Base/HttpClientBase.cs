@@ -122,6 +122,8 @@ namespace SelfCheckout.Services.Base
                 var content = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode == HttpStatusCode.NotFound)
                     content = $"Not found {url}";
+                else
+                    content = "Can't connect to API";
                 throw new HttpRequestExceptionEx(response.StatusCode, content);
             }
         }
