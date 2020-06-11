@@ -6,7 +6,7 @@
              xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:ctrls="clr-namespace:SelfCheckout.Controls"
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
-             xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms" xmlns:behaviors="clr-namespace:SelfCheckout.Behaviors"
              NavigationPage.HasNavigationBar="False"
              Visual="Material"
              mc:Ignorable="d"
@@ -43,6 +43,23 @@
                     <Entry Placeholder="Web Member" Text="{Binding AppConfig.UrlMemberWeb}"/>
                     <Entry Placeholder="Payment Time out" Keyboard="Numeric" Text="{Binding AppConfig.PaymentTimeout}"/>
                     <Entry Placeholder="Device UID" x:Name="entryDeviceUid" Text="{Binding DeviceUID}" IsReadOnly="True"/>
+                    <StackLayout Orientation="Horizontal" Spacing="4" Padding="8">
+                        <Label Style="{StaticResource LabelIconStyle}" VerticalOptions="Center"
+                               FontSize="24" Text="&#xf058;">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsEnableLog}" Value="True">
+                                    <Setter Property="TextColor" Value="{StaticResource Accent}"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsEnableLog}" Value="False">
+                                    <Setter Property="TextColor" Value="{StaticResource Gray200}"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Label Text="Enable log" VerticalOptions="Center"/>
+                        <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding CheckedChangeCommand}"/>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
                     <Entry IsVisible="False" x:Name="entryMachineNo" Text="{Binding DeviceUID}"/>
                     <forms:ZXingBarcodeImageView
                                 BarcodeFormat="QR_CODE"

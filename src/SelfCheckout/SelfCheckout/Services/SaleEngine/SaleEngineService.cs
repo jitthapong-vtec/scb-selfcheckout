@@ -53,7 +53,17 @@ namespace SelfCheckout.Services.SaleEngine
             if (!result.IsCompleted)
                 throw new KPApiException(result.DefaultMessage);
             if (updateOrderData)
-                OrderData = result.Data.FirstOrDefault();
+            {
+                var isSameOrder = true;
+                try
+                {
+                    if (OrderData.Guid != result.Data.FirstOrDefault().Guid)
+                        isSameOrder = false;
+                }
+                catch { }
+                if (isSameOrder)
+                    OrderData = result.Data.FirstOrDefault();
+            }
             return result.Data;
         }
 

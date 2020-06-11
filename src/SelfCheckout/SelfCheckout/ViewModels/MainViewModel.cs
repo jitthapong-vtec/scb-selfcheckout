@@ -677,6 +677,7 @@ namespace SelfCheckout.ViewModels
             {
                 try
                 {
+                    IsBusy = true;
                     var payload = new
                     {
                         SessionKey = _saleEngineService.LoginData.SessionKey,
@@ -692,6 +693,10 @@ namespace SelfCheckout.ViewModels
                     RefreshSummary();
                 }
                 catch { }
+                finally
+                {
+                    IsBusy = false;
+                }
             }
             else if (CurrentView is OrderView)
             {

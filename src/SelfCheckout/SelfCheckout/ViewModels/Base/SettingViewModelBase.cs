@@ -1,10 +1,13 @@
-﻿using Prism.Navigation;
+﻿using Prism.Commands;
+using Prism.Navigation;
 using Prism.Services.Dialogs;
 using SelfCheckout.Models;
 using SelfCheckout.Services.Device;
 using SelfCheckout.Services.SaleEngine;
 using SelfCheckout.Services.SelfCheckout;
+using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -18,12 +21,22 @@ namespace SelfCheckout.ViewModels.Base
         string _selfCheckoutApi;
         string _promptPayApi;
         string _machineNo;
+        bool _isEnableLog;
+
+        public ICommand CheckedChangeCommand { get; set; }
 
         public SettingViewModelBase(INavigationService navigatinService,
             ISelfCheckoutService selfCheckoutService, ISaleEngineService saleEngineService) : base(navigatinService)
         {
             SelfCheckoutService = selfCheckoutService;
             SaleEngineService = saleEngineService;
+
+            CheckedChangeCommand = new DelegateCommand(CheckedChange);
+        }
+
+        private void CheckedChange()
+        {
+            IsEnableLog = !IsEnableLog;
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
@@ -35,6 +48,8 @@ namespace SelfCheckout.ViewModels.Base
 
             var loginData = parameters.GetValue<LoginData>("LoginData");
             MachineNo = loginData?.UserInfo?.MachineEnv?.MachineNo;
+
+            IsEnableLog = GlobalSettings.Instance.EnableLog;
         }
 
         protected override Task GoBackToRootAsync()
@@ -51,7 +66,15 @@ namespace SelfCheckout.ViewModels.Base
                     PromptPayApi += "/";
                 Preferences.Set("promptpay_api", PromptPayApi);
             }
+
+            Preferences.Set("enable_log", IsEnableLog);
+
             return base.GoBackToRootAsync();
+        }
+
+        public bool IsEnableLog {
+            get => _isEnableLog;
+            set => SetProperty(ref _isEnableLog, value);
         }
 
         public string PromptPayApi

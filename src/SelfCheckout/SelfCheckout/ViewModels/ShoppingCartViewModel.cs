@@ -267,15 +267,17 @@ namespace SelfCheckout.ViewModels
         {
             if (IsFirstSelect)
             {
+                await ReloadOrderDataAsync?.Invoke();
                 try
                 {
                     if (SaleEngineService.OrderData?.OrderDetails.Any() == true)
                     {
-                        await ChangeCurrencyAsync?.Invoke();
+                        var currentCurrency = SaleEngineService.CurrencySelected.CurrCode;
+                        if(currentCurrency != SaleEngineService.OrderData?.BillingAmount?.NetAmount?.CurrCode?.Code)
+                            await ChangeCurrencyAsync?.Invoke();
                     }
                 }
                 catch { }
-                await ReloadOrderDataAsync?.Invoke();
             }
         }
 
