@@ -35,7 +35,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Entry Grid.Column="0" FontSize="Medium" VerticalOptions="Center" x:Name="entrySessionKey"
-                           Text="{Binding SessionKey}"
+                           Placeholder="Input Session or Machine no." Text="{Binding SessionKey}"
                            Completed="entrySessionKey_Completed"
                            ReturnCommand="{Binding GetSessionDetailCommand}"/>
                     <controls:TappedGrid Grid.Column="1"

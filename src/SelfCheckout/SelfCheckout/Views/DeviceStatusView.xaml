@@ -30,6 +30,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Entry x:Name="entrySearch" Grid.Column="0" VerticalOptions="Center"
+                                   Placeholder="Search Device"
                                    ClearButtonVisibility="WhileEditing"
                                    ReturnCommand="{Binding SearchCommand}"
                                    ReturnCommandParameter="{Binding Source={RelativeSource Mode=Self},Path=Text}"/>
