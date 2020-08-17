@@ -35,8 +35,6 @@ namespace SelfCheckout.ViewModels.Base
             {
                 IsBusy = true;
 
-                await SelfCheckoutService.ValidateShoppingCardAsync(GlobalSettings.Instance.MachineIp, shoppingCard);
-
                 var customersData = await RegisterService.GetCustomerAsync(shoppingCard);
 
                 var customerData = customersData.FirstOrDefault();
@@ -63,6 +61,9 @@ namespace SelfCheckout.ViewModels.Base
                             await NavigationService.ShowAlertAsync(AppResources.Opps, "Can't get SHOPCARD", AppResources.Close);
                             return;
                         }
+
+                        await SelfCheckoutService.ValidateShoppingCardAsync(GlobalSettings.Instance.MachineIp, shoppingCard);
+
                         SelfCheckoutService.CurrentShoppingCard = shoppingCard;
                         await ValidateShoppingCardCallback(shoppingCard);
                     }
