@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SelfCheckout.ViewModels.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,12 @@ namespace SelfCheckout.Views
         public CheckerSettingView()
         {
             InitializeComponent();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            ((SettingViewModelBase)BindingContext)?.BackToRootCommand.Execute(null);
+            return base.OnBackButtonPressed();
         }
     }
 }
