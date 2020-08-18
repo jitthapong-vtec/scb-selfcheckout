@@ -2,6 +2,7 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
 		<AndroidEnableAssemblyCompression>false</AndroidEnableAssemblyCompression>
+		<AndroidLinkMode>None</AndroidLinkMode>
 	</PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -32,11 +33,8 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidLinkMode>None</AndroidLinkMode>
     <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
-    <BundleAssemblies>false</BundleAssemblies>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -50,10 +48,7 @@
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
     <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
-    <BundleAssemblies>false</BundleAssemblies>
-    <AndroidLinkMode>None</AndroidLinkMode>
     <MandroidI18n />
   </PropertyGroup>
   <ItemGroup>
@@ -140,7 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SelfCheckout\SelfCheckout.csproj">
-      <Project>{00255AE3-9353-4144-AE72-0DF0E9E68484}</Project>
+      <Project>{2C24F4FA-F462-4C0B-812C-0B1357823AE1}</Project>
       <Name>SelfCheckout</Name>
     </ProjectReference>
   </ItemGroup>
