@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<PropertyGroup>
-		<AndroidEnableAssemblyCompression>false</AndroidEnableAssemblyCompression>
-		<AndroidLinkMode>None</AndroidLinkMode>
-	</PropertyGroup>
+  <PropertyGroup>
+    <AndroidEnableAssemblyCompression>false</AndroidEnableAssemblyCompression>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -50,6 +50,8 @@
     <AotAssemblies>false</AotAssemblies>
     <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
     <MandroidI18n />
+    <EnableLLVM>false</EnableLLVM>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="bhtsdk_r1001300_v1.00.13">
